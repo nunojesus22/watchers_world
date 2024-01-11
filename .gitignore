@@ -48,3 +48,10 @@ Thumbs.db
 *.mov
 *.wmv
 
+*.vsidx
+WatchersWorld/.vs/WatchersWorld/v17/.suo
+WatchersWorld/.vs/WatchersWorld/v17/.futdcache.v2
+WatchersWorld/.vs/WatchersWorld/DesignTimeBuild/.dtbcache.v2
+WatchersWorld/.vs/ProjectEvaluation/watchersworld.projects.v7.bin
+WatchersWorld/.vs/ProjectEvaluation/watchersworld.metadata.v7.bin
+WatchersWorld/.vs/WatchersWorld/DesignTimeBuild/.dtbcache.v2

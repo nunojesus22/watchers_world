@@ -1,0 +1,25 @@
+button {
+  background-color: #FFFFFF;
+  color: #000000;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  width: 100%;
+}
+
+span {
+  padding: 10px;
+}
+
+img{
+  width: 16px;
+  height: 16px;
+}
+
+
+
+
