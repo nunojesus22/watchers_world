@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   width: 30%;
-  gap: 5px 0px;
+  gap: 5px;
 }
 
 .login-form .forgot-password-link,
@@ -27,7 +27,6 @@
 .login-form authentication-button{
   width: 75%;
 }
-
 
 .login-form .forgot-password-link,
 .login-form .register-link {
@@ -52,6 +51,44 @@ a{
     margin: 90px 0px 50px 0px;
     width: 7.5%
 }
+
+/*** INPUTS FIELDS */
+.input-with-icon input {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+  padding: 5px;
+  flex-grow: 1;
+  width: 100%;
+  color: white;
+}
+
+.input-with-icon {
+  background-color: transparent;
+  color: #000000;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  box-sizing: border-box;
+  padding: 5px 20px;
+  border: 2px solid white;
+  cursor: pointer;
+  width: 75%;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.input-with-icon .fa {
+  color: white;
+  width: 16px;
+  height: 16px
+}
+
 
 
 

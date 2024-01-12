@@ -12,6 +12,8 @@
   border: none; 
   cursor: pointer;
   width: 100%;
+  height: 40px;
+  
 }
 
 .btn-with-icon:hover {
