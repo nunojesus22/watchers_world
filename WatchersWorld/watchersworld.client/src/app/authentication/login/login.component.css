@@ -1,11 +1,10 @@
-.login-container{
-    width: 100%;
-    background-color: black;
-    display: flex;
-    flex-direction:column; 
-    align-items: center;
-    justify-content: center;
-    padding: 30px 0px;
+.login-container {
+  width: 100%;
+  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(40,40,40,1) 50%, rgba(0,0,0,1) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-form-container {
@@ -19,30 +18,41 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  gap: 10px;
-}
-
-.login-form authentication-button,
-.login-form span,
-.login-form a
-{
   width: 30%;
+  gap: 5px 0px;
 }
 
-.login-form span,
-.login-form a {
-  text-align: right;
+.login-form .forgot-password-link,
+.login-form .register-link,
+.login-form authentication-button{
+  width: 75%;
+}
+
+
+.login-form .forgot-password-link,
+.login-form .register-link {
+  display: flex;
+  justify-content: end;
+  color: white;
+}
+
+a{
   color: white;
 }
 
 .divider {
   height: 1px;
-  width: 45%;
+  width: 100%;
   background-color: white;
   margin: 20px 0;
   border-radius: 15px;
 }
+
+.logo{
+    margin: 90px 0px 50px 0px;
+    width: 7.5%
+}
+
 
 
 

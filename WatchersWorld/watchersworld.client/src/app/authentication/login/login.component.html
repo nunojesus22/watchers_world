@@ -1,15 +1,17 @@
 <div class="login-container">0
-  <p>H</p><!-- Imagem -->
+  <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
   <div class="login-form-container">
     <form class="login-form">
-      <!-- Input de email-->
+      
       <!-- Input de password -->
-      <authentication-button [buttonText]="'LOGIN'" [buttonType]="'submit'"></authentication-button> <!-- Botão de Login -->
+      <authentication-button [buttonText]="'LOGIN'" [buttonType]="'submit'"></authentication-button>
       <a href="#" class="forgot-password-link">Esqueceu-se da palavra-passe?</a>
-      <div class="divider"></div><!-- DIVISÓRIA -->
-      <authentication-button [buttonText]="'LOGIN COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button><!-- Butão de Login com Google -->
-      <!-- Registe-se Aqui -->
-      <span>Não possui conta? <a href="#" class="register-link">Registe-se aqui!</a></span>
+      <div class="divider"></div>
+      <authentication-button [buttonText]="'LOGIN COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
+      <span class="register-link">
+        Não possui conta?
+        <a href="#">Registe-se aqui!</a>
+      </span>
     </form>
   </div>
 </div>

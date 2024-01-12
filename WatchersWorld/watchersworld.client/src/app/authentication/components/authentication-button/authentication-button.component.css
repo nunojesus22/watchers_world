@@ -1,25 +1,30 @@
-button {
+.btn-with-icon {
   background-color: #FFFFFF;
   color: #000000;
-  border-radius: 15px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: bold;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 5px 20px;
+  border: none; 
+  cursor: pointer;
   width: 100%;
 }
 
-span {
-  padding: 10px;
+.btn-with-icon:hover {
+  background-color: rgba(148, 148, 148, 1);
 }
 
-img{
+.btn-with-icon .button-icon {
   width: 16px;
   height: 16px;
 }
 
-
-
+.btn-with-icon span {
+  padding: 5px;
+  flex-grow: 1;
+}
 

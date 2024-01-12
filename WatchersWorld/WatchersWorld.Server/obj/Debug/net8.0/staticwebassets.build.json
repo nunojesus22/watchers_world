@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "2r99b+HBGCgvGeHrxzndpKXa7vPqw2SWjwVB46xQIaw=",
+  "Hash": "BBpqhvpHdOf6hwRcCJgKGuzUUuoX/rjIGu+WW+5d4H4=",
   "Source": "WatchersWorld.Server",
   "BasePath": "_content/WatchersWorld.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\watchers-worldd\\WatchersWorld\\watchersworld.client\\watchersworld.client.esproj",
+      "Identity": "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\watchersworld.client\\watchersworld.client.esproj",
       "Version": 2,
       "Source": "watchersworld.client",
       "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
