@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\WatchersWorld"
   ],
-  "SelectedNode": "\\WatchersWorld.sln",
+  "SelectedNode": "\\WatchersWorld\\WatchersWorld.sln",
   "PreviewInSolutionExplorer": false
 }
