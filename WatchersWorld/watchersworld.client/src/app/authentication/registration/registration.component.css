@@ -8,10 +8,10 @@
 }
 
 .login-form-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-form {
@@ -22,20 +22,20 @@
   gap: 5px;
 }
 
-.login-form .forgot-password-link,
-.login-form .register-link,
-.login-form authentication-button{
-  width: 75%;
-}
+  .login-form .forgot-password-link,
+  .login-form .register-link,
+  .login-form authentication-button {
+    width: 75%;
+  }
 
-.login-form .forgot-password-link,
-.login-form .register-link {
-  display: flex;
-  justify-content: end;
-  color: white;
-}
+  .login-form .forgot-password-link,
+  .login-form .register-link {
+    display: flex;
+    justify-content: end;
+    color: white;
+  }
 
-a{
+a {
   color: white;
 }
 
@@ -47,9 +47,16 @@ a{
   border-radius: 15px;
 }
 
-.logo{
-    margin: 90px 0px 50px 0px;
-    width: 7.5%
+.logo {
+  margin: 90px 0px 50px 0px;
+  width: 7.5%
+}
+
+
+/*** REGISTER NAME */
+.register-name {
+  color: white;
+
 }
 
 /*** INPUTS FIELDS */
@@ -82,17 +89,9 @@ a{
   height: 40px;
   margin-bottom: 20px;
 }
-
 .input-with-icon .fa {
-  color: white;
-  width: 16px;
-  height: 16px
+    color: white;
+    width: 16px;
+    height: 16px
+
 }
-/*** LOGIN NAME */
-.login-name {
-  color: white;
-}
-
-
-
-

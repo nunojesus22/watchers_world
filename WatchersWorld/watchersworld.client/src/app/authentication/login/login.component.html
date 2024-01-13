@@ -1,13 +1,19 @@
 <div class="login-container">0
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
   <div class="login-form-container">
+    <h1 class="login-name">LOGIN</h1>
+
     <form class="login-form">
       <!-- Input de username -->
       <div class="input-with-icon">
-        <i class="fa fa-search"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
+        <i class="fa fa-user"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
         <input type="text" placeholder="USERNAME/EMAIL" />
-      </div>
 
+      </div>
+      <div class="input-with-icon">
+        <i class="fa fa-lock"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
+        <input type="text" placeholder="PALAVRA-PASSE" />
+      </div>
 
       <!-- Input de password -->
       <div></div>
@@ -17,7 +23,7 @@
       <authentication-button [buttonText]="'LOGIN COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
       <span class="register-link">
         Não possui conta?
-        <a href="#">Registe-se aqui!</a>
+        <a>Registe-se aqui!</a>
       </span>
     </form>
   </div>

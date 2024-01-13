@@ -1,25 +1,68 @@
-<main>
-  <section class="intro">
-    <h2>Bem-vindo à ESTeStore!</h2>
-    <p>Encontre as melhores ofertas em tecnologia e inovação.</p>
-  </section>
-  <app-login></app-login>
 
-  <!--<section class="destaques">
+<main>
+  <nav>
+    <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
+
+    <a href="#">
+      <i class="fa fa-bars"></i>
+      <a href="#">Menu</a>
+    </a>
+    <div class="search-bar">
+      <i class="fa fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Pesquisar" class="search-input">
+      <div id="searchSuggestions" class="search-suggestions"></div>
+    </div>
+
+    <a href="#">Séries</a>
+    <a href="#">Filmes</a>
+    <a href="#"><i class="fa fa-user"></i></a>
+  </nav>
+  <app-registration></app-registration>
+
+  <!--
+    <app-login></app-login>
+    <section class="destaques">
     <h3>Produtos em Destaque</h3>
     <div class="produtos-destaque">-->
-      <!-- Os produtos em destaque serão exibidos aqui -->
-      <!-- Exemplo de produto (deverá ser gerado dinamicamente) -->
-      <!--<article class="produto">
-        <img src="caminho-para-imagem.jpg" alt="Nome do Produto">
-        <h4>Nome do Produto</h4>
-        <p>Preço</p>
-      </article>-->
-      <!-- Repita o bloco acima para cada produto em destaque -->
-    <!--</div>
+  <!-- Os produtos em destaque serão exibidos aqui -->
+  <!-- Exemplo de produto (deverá ser gerado dinamicamente) -->
+  <!--<article class="produto">
+    <img src="caminho-para-imagem.jpg" alt="Nome do Produto">
+    <h4>Nome do Produto</h4>
+    <p>Preço</p>
+  </article>-->
+  <!-- Repita o bloco acima para cada produto em destaque -->
+  <!--</div>
   </section>-->
 </main>
+<footer class="footer">
+  <div class="container row">
+    <div class="footer-col">
+      <h4>Serviço Cliente:</h4>
+      <ul>
+        <li><a href="#">Sobre Nós</a></li>
+        <li><a href="#">Acessibilidade</a></li>
+        <li><a href="#">Termos/Responsabilidade</a></li>
 
-<footer>
-  <p>&copy; 2024 ESTeStore. Todos os direitos reservados.</p>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contactar:</h4>
+      <ul>
+        <li><a href="#">Email</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Segue-nos:</h4>
+      <div class="social-links">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+    </div>
+  </div>
+  <p class="wwcr">&#64; Watchers World Team,2024 </p>
 </footer>
+

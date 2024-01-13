@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { RegistrationComponent } from './authentication/registration/registration.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
     AppComponent,
     AuthenticationButtonComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
