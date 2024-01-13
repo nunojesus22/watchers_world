@@ -11,6 +11,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { RegistrationComponent } from './authentication/registration/registration.component';
+import { PersonalProfileComponent } from './profile/personal-profile/personal-profile.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { RegistrationComponent } from './authentication/registration/registratio
     AuthenticationButtonComponent,
     LoginComponent,
     HomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    PersonalProfileComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
