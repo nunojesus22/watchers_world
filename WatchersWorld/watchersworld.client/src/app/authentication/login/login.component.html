@@ -1,7 +1,6 @@
 <div class="login-container">0
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
   <div class="login-form-container">
-    <h1 class="login-name">LOGIN</h1>
 
     <form class="login-form">
       <!-- Input de username -->
@@ -22,8 +21,9 @@
       <div class="divider"></div>
       <authentication-button [buttonText]="'LOGIN COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
       <span class="register-link">
-        Não possui conta?
-        <a>Registe-se aqui!</a>
+        Já possui conta?
+        <span class="login-separator"> </span> <!-- Espaçador -->
+        <a class="login-link" href="#">Faça login aqui!</a>
       </span>
     </form>
   </div>

@@ -5,25 +5,48 @@
 
 /**NAV BAR*/
 nav {
-  background-color: #333;
+  background-color: black;
   color: white;
   padding: 10px;
   text-align: center;
   display: flex;
   align-items: center; /* Centraliza verticalmente */
   justify-content: space-between; /* Distribui os itens ao longo do eixo horizontal */
+  font-size: 25px;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 50px;
-}
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 50px;
+    font-weight: bold;
+  }
 
+/* Aumentar o tamanho do ícone do menu */
+.fa-bars {
+  font-size: 40px; /* Ajuste o tamanho conforme necessário */
+}
 
 .logo {
-  width: 7.5%
+  width: 7%
 }
+
+.menu-item {
+  display: flex; /* Organiza o ícone e o texto lado a lado */
+  align-items: center; /* Centraliza verticalmente */
+  color: white; /* Cor do texto e ícone */
+  text-decoration: none; /* Remove o sublinhado do link */
+}
+
+  .menu-item i {
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+  }
+
+.user-icon {
+  width: 50px; /* ou outro tamanho desejado */
+  height: auto; /* mantém a proporção da imagem */
+}
+
 
 /**BARRA DE PESQUISA*/
 .search-bar {
@@ -40,11 +63,11 @@ nav a {
 
 .search-input {
   padding: 10px;
-  padding-left: 30px; /* Adicione esta linha */
+  padding-left: 50px; /* Adicione esta linha */
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   font-size: 16px;
-  width: 200px; /* Ajuste conforme necessário */
+  width: 280px; /* Ajuste conforme necessário */
 }
 
 .search-suggestions {
@@ -71,10 +94,15 @@ nav a {
 
 .footer {
   background-color: black;
-  padding: 80px 0;
+  padding: 10px 0;
   border-top: 2px solid #fff;
-  margin-top: 
 }
+
+  .footer .logo {
+    width: 150px; /* ou o tamanho desejado */
+    height: auto; /* para manter a proporção da imagem */
+    padding-bottom: 20px;
+  }
 
 .container {
   max-width: 1170px;
@@ -101,26 +129,23 @@ ul {
     font-size: 18px;
     color: #FFF;
     text-transform: capitalize;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     font-weight: 500;
     position: relative;
   }
-
-    .footer-col h4::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -10px;
-      background-color: #4caefe;
-      width: 50px;
-      height: 2px;
-    }
 
   .footer-col ul li:not(:last-child) {
     margin-bottom: 10px;
   }
 
+  .footer-col ul li, .footer-col ul li span {
+    color: #DDD; /* Cor do texto */
+    /* outros estilos, se necessário */
+  }
+
+
   .footer-col ul li a {
+       list-style-type: disc;
     color: #DDD;
     display: block;
     font-size: 1rem;
@@ -165,14 +190,9 @@ ul {
     width: 100%;
   }
 }
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: white;
-  margin: 20px 0;
-  border-radius: 15px;
-}
+
+
 .wwcr {
-   padding-top: 10px;
-   color: white;
+  padding-top: 10px;
+  color: white;
 }

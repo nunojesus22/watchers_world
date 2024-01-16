@@ -3,21 +3,22 @@
   <nav>
     <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
 
-    <a href="#">
-      <i class="fa fa-bars"></i>
-      <a href="#">Menu</a>
+    <a href="#" class="menu-item">
+      <i class="fa fa-bars"></i> <!-- Ícone do menu -->
+      <span>Menu</span> <!-- Texto do menu -->
     </a>
+
     <div class="search-bar">
       <i class="fa fa-search search-icon"></i>
-      <input type="text" id="searchInput" placeholder="Pesquisar" class="search-input">
+      <input type="text" id="searchInput" placeholder="Procurar..." class="search-input">
       <div id="searchSuggestions" class="search-suggestions"></div>
     </div>
 
     <a href="#">Séries</a>
     <a href="#">Filmes</a>
-    <a href="#"><i class="fa fa-user"></i></a>
+    <img src="assets/img/user.png" alt="User Icon" class="user-icon" />
   </nav>
-  <app-personal-profile></app-personal-profile>
+  <app-login></app-login>
 
   <!--
     <app-login></app-login>
@@ -36,6 +37,7 @@
   </section>-->
 </main>
 <footer class="footer">
+  <img src="assets/img/WatchersWorld.png" alt="Logo Image" class="logo" />
   <div class="container row">
     <div class="footer-col">
       <h4>Serviço Cliente:</h4>
@@ -49,7 +51,7 @@
     <div class="footer-col">
       <h4>Contactar:</h4>
       <ul>
-        <li><a href="#">Email</a></li>
+        <li><span>watchersworld&#64;gmail.com</span></li> 
       </ul>
     </div>
 
@@ -63,6 +65,6 @@
       </div>
     </div>
   </div>
-  <p class="wwcr">&#64; Watchers World Team,2024 </p>
+  <p class="wwcr">&#64;Watchers World Team, 2024 </p>
 </footer>
 
