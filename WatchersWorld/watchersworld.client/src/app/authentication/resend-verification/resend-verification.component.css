@@ -8,10 +8,10 @@
 }
 
 .login-form-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .login-form {
@@ -22,44 +22,19 @@
   gap: 5px;
 }
 
-.login-form .forgot-password-link,
-.login-form .register-link,
-.login-form authentication-button{
-  width: 75%;
+
+  .login-form authentication-button {
+    width: 75%;
+    padding-bottom: 150px;
+  }
+
+
+
+.logo {
+  margin: 90px 0px 20px 0px;
+  width: 12%
 }
 
-.login-form .forgot-password-link,
-.login-form .register-link {
-  display: flex;
-  justify-content: end;
-  color: white;
-}
-
-a{
-  color: white;
-}
-
-.divider {
-  height: 1px;
-  width: 100%;
-  background-color: white;
-  margin: 20px 0;
-  border-radius: 15px;
-}
-
-.logo{
-    margin: 90px 0px 20px 0px;
-    width: 12%
-}
-
-.register-link {
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 75%;
-  margin-bottom: 20px;
-}
 
 .login-separator {
   margin: 0 2px; /* Ajuste o espaçamento conforme necessário */
@@ -96,16 +71,17 @@ a{
   margin-bottom: 20px;
 }
 
-.input-with-icon .fa {
-  color: white;
-  width: 16px;
-  height: 16px
-}
+  .input-with-icon .fa {
+    color: white;
+    width: 16px;
+    height: 16px
+  }
 /*** LOGIN NAME */
 .login-name {
   color: white;
 }
 
-
-
-
+h3 {
+  font-weight: bold;
+  color: white;
+}

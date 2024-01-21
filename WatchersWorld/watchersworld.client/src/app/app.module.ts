@@ -11,6 +11,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { RegistrationComponent } from './authentication/registration/registration.component';
+import { RecoverPasswordComponent } from './authentication/recover-password/recover-password.component';
+import { PendingVerificationComponent } from './authentication/pending-verification/pending-verification.component';
+import { ResendVerificationComponent } from './authentication/resend-verification/resend-verification.component';
+import { BlockedAccountComponent } from './authentication/blocked-account/blocked-account.component';
+import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
 
 
 @NgModule({
@@ -19,7 +24,12 @@ import { RegistrationComponent } from './authentication/registration/registratio
     AuthenticationButtonComponent,
     LoginComponent,
     HomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    RecoverPasswordComponent,
+    PendingVerificationComponent,
+    ResendVerificationComponent,
+    BlockedAccountComponent,
+    SuspendedAccountComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
