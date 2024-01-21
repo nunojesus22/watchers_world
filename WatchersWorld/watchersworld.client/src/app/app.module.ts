@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationButtonComponent } from './authentication/components/authentication-button/authentication-button.component';
 import { LoginComponent } from './authentication/login/login.component';
-import { HomeComponent } from './home/home.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -16,6 +15,7 @@ import { PendingVerificationComponent } from './authentication/pending-verificat
 import { ResendVerificationComponent } from './authentication/resend-verification/resend-verification.component';
 import { BlockedAccountComponent } from './authentication/blocked-account/blocked-account.component';
 import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -23,13 +23,13 @@ import { SuspendedAccountComponent } from './authentication/suspended-account/su
     AppComponent,
     AuthenticationButtonComponent,
     LoginComponent,
-    HomeComponent,
     RegistrationComponent,
     RecoverPasswordComponent,
     PendingVerificationComponent,
     ResendVerificationComponent,
     BlockedAccountComponent,
     SuspendedAccountComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
