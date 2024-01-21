@@ -16,6 +16,9 @@ import { ResendVerificationComponent } from './authentication/resend-verificatio
 import { BlockedAccountComponent } from './authentication/blocked-account/blocked-account.component';
 import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
 import { HomeComponent } from './home/home.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { FooterComponent } from './footer/footer.component';
+
 
 
 @NgModule({
@@ -30,6 +33,8 @@ import { HomeComponent } from './home/home.component';
     BlockedAccountComponent,
     SuspendedAccountComponent,
     HomeComponent,
+    NavMenuComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

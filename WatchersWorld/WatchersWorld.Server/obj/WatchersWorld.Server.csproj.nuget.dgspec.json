@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {}
+    "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {}
   },
   "projects": {
-    "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {
+    "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+        "projectUniqueName": "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
         "projectName": "WatchersWorld.Server",
-        "projectPath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-        "packagesPath": "C:\\Users\\johnn\\.nuget\\packages\\",
-        "outputPath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+        "projectPath": "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+        "packagesPath": "C:\\Users\\nunoj\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\johnn\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\nunoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -58,9 +54,35 @@
                 "NU1605"
               ]
             },
+            "Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
             "Microsoft.AspNetCore.SpaProxy": {
               "target": "Package",
               "version": "[8.*-*, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.1, )"
             },
             "Microsoft.Identity.Web": {
               "target": "Package",
@@ -70,9 +92,17 @@
               "target": "Package",
               "version": "[2.15.2, )"
             },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.2.0, )"
             }
           },
           "imports": [
