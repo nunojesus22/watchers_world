@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -6,26 +7,53 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
-export class RegistrationComponent implements OnInit {
-  registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+export class RegistrationComponent implements OnInit{
+  registrationForm: FormGroup = new FormGroup([]);
+  submitted = false;
+  errorMessages: any = {};
+  submittedValues: any = {};
 
-  ngOnInit() {
-    this.registerForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+  constructor(
+    private accountService: AuthenticationService,
+    private formBuilder: FormBuilder
+  ) { }
+
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm() {
+    this.registrationForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+      email: ['', [Validators.required, Validators.pattern("^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$")]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}"), Validators.maxLength(12)]]
     });
   }
 
-  onRegister() {
-    if (this.registerForm.valid) {
-      // Implement your registration logic here
-      console.log('Registration successful', this.registerForm.value);
-    } else {
-      // If form is invalid, you might want to end execution here
-      console.log('Registration form is not valid');
-    }
+  register() {
+    this.submitted = true;
+    this.errorMessages = {};
+;
+
+    this.accountService.register(this.registrationForm.value).subscribe({
+      next: (response) => {
+        console.log("Registro bem-sucedido:");
+      },
+      error: error => {
+        if (error.error.errors) {
+          console.log(error.error.errors);
+        } else {
+          this.errorMessages[error.error.field] = error.error.message;
+          this.submittedValues["username"] = this.registrationForm.get("username")!.value;
+          this.submittedValues["email"] = this.registrationForm.get("email")!.value;
+        }
+      }
+    });
+  }
+
+  isFieldModified(fieldName: string) {
+    return this.registrationForm.get(fieldName)!.value !== this.submittedValues[fieldName];
   }
 }

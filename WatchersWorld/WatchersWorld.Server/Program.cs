@@ -10,6 +10,7 @@ using WatchersWorld.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,11 +62,44 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = actionContext =>
+    {
+        var errors = actionContext.ModelState
+            .Where(e => e.Value.Errors.Count > 0)
+            .SelectMany(kvp => kvp.Value.Errors.Select(error => new
+            {
+                Message = error.ErrorMessage,
+                Field = kvp.Key
+            }))
+            .ToArray();
+
+        var toReturn = new
+        {
+            Errors = errors
+        };
+
+        return new BadRequestObjectResult(toReturn);
+    };
+
+});
+
 var app = builder.Build();
+
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseCors(options =>
+{
+    options.AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials()
+           .WithOrigins(builder.Configuration["JWT:ClientURL"]);
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

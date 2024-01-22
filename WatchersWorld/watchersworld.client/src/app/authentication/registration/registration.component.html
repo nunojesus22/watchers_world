@@ -1,33 +1,63 @@
 <div class="register-container">
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
   <div class="register-form-container">
-    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
+    <form [formGroup]="registrationForm" class="register-form" (ngSubmit)="register()" autocomplete="off">
 
-      <div class="input-with-icon">
+
+      <div class="input-with-icon"
+           [class.has-error]="submitted && (registrationForm.get('username')?.errors || (errorMessages['Username'] && !isFieldModified('username')))">
         <i class="fa fa-user"></i>
-        <input formControlName="username" type="text" placeholder="USERNAME" />
-        <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']" class="error-message">
-          O nome de utilizador é obrigatório.
-        </div>
+        <input formControlName="username" type="text" placeholder="USERNAME"
+               [class.is-invalid]="submitted && registrationForm.get('username')?.errors" />
       </div>
 
-      <div class="input-with-icon">
+      <div class="error-container" *ngIf="submitted && (registrationForm.get('username')?.errors || errorMessages['Username'])">
+        <span class="error-message" *ngIf="registrationForm.get('username')?.hasError('required')">
+          O nome de utilizador é obrigatório!
+        </span>
+        <span class="error-message" *ngIf="registrationForm.get('username')?.hasError('minlength') || registrationForm.get('username')?.hasError('maxlength')">
+          O nome de utilizador tem de conter entre 4-20 caracteres!
+        </span>
+        <span class="error-message" *ngIf="!registrationForm.get('username')?.errors && errorMessages['Username'] && !isFieldModified('username')">
+          {{ errorMessages['Username'] }}
+        </span>
+      </div>
+
+
+      <div class="input-with-icon"
+           [class.has-error]="submitted && (registrationForm.get('email')?.errors || (errorMessages['Email'] && !isFieldModified('email')))">
         <i class="fa fa-envelope"></i>
-        <input formControlName="email" type="email" placeholder="EMAIL" />
-        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']" class="error-message">
-          O e-mail é obrigatório.
-        </div>
-        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']" class="error-message">
-          Insira um e-mail válido.
-        </div>
+        <input formControlName="email" type="email" placeholder="EMAIL"
+               [class.is-invalid]="submitted && registrationForm.get('email')?.errors" />
       </div>
 
-      <div class="input-with-icon">
+      <div class="error-container" *ngIf="submitted && (registrationForm.get('email')?.errors || errorMessages['Email'])">
+        <span class="error-message" *ngIf="registrationForm.get('email')?.hasError('required')">
+          O email é obrigatório!
+        </span>
+        <span class="error-message" *ngIf="registrationForm.get('email')?.hasError('pattern')">
+          A nomenclatura do email está incorreta!
+        </span>
+        <span class="error-message" *ngIf="!registrationForm.get('email')?.errors && errorMessages['Email'] && !isFieldModified('email')">
+          {{ errorMessages['Email'] }}
+        </span>
+      </div>
+
+      <div class="input-with-icon"
+           [class.has-error]="submitted && registrationForm.get('password')?.errors">
         <i class="fa fa-lock"></i>
         <input formControlName="password" type="password" placeholder="PALAVRA-PASSE" />
-        <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']" class="error-message">
-          A senha é obrigatória.
-        </div>
+      </div>
+
+      <div class="error-container" *ngIf="submitted && registrationForm.get('password')?.errors">
+        <span class="error-message" *ngIf="registrationForm.get('password')?.hasError('required')">
+          A palavra-passe é obrigatória!
+        </span>
+        <span class="error-message" *ngIf="registrationForm.get('password')?.hasError('minlength')
+                                        || registrationForm.get('password')?.hasError('pattern')
+                                        || registrationForm.get('password')?.hasError('maxlength')">
+          A palavra-passe tem de conter entre 8-12 caracteres, entre eles pelo menos uma letra minúscula, uma letra maiúscula e um número!
+        </span>
       </div>
 
       <authentication-button [buttonText]="'REGISTAR'" [buttonType]="'submit'"></authentication-button>
@@ -36,42 +66,10 @@
 
       <span class="register-link">
         Já possui conta?
-        <span class="register-separator"></span>
-        <a href="#">Faça login aqui!</a>
+        <span class="register-separator"></span> <!-- Espaçador -->
+        <a routerLink="/account/login" class="login-link">Faça login aqui!</a>
       </span>
     </form>
   </div>
 </div>
 
-<!-- <div class="register-container">
-  <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
-  <div class="register-form-container">
-    <form class="register-form">
-
-      <div class="input-with-icon">
-        <i class="fa fa-user"></i>
-<input type="text" placeholder="USERNAME" />
-      </div>
-
-<div class="input-with-icon">
-  <i class="fa fa-envelope"></i> 
-  <input type="text" placeholder="EMAIL" />
-</div>
-
-<div class="input-with-icon">
-  <i class="fa fa-lock"></i> 
-  <input type="text" placeholder="PALAVRA-PASSE" />
-</div>
-
-<authentication-button [buttonText]="'REGISTAR'" [buttonType]="'submit'"></authentication-button>
-<div class="divider"></div>
-<authentication-button [buttonText]="'REGISTAR COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
-
-<span class="register-link">
-  Já possui conta?
-  <span class="register-separator"> </span> 
-  <a href="#">Faça login aqui!</a>
-</span>
-    </form>
-  </div>
-</div>-->

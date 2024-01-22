@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.DTOs.Account;
@@ -7,6 +9,7 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
+    [Authorize]
     [Microsoft.AspNetCore.Components.Route("api/{controller}")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -35,24 +38,41 @@ namespace WatchersWorld.Server.Controllers
             return CreateApplicationUserDto(user);
         }
 
-        [HttpPost("register")]
+        [AllowAnonymous]
+        [HttpPost("api/account/register")]
         public async Task<IActionResult> Register(RegisterDto model)
         {
-            if(await CheckEmailExistsAsync(model.Email))
+            if (await CheckUsernameExistsAsync(model.Username))
             {
-                return BadRequest($"An existing account is using {model.Email}, email address. Please try with another email address.");
+                var error = new {
+                    Message = "Já existe um utilizador com esse nome de utilizador!",
+                    Field = "Username"
+                };
+
+                return BadRequest(error);
+            }
+
+            if (await CheckEmailExistsAsync(model.Email))
+            {
+                var error = new
+                {
+                    Message = "Já existe uma conta associada a esse email!",
+                    Field = "Email"
+                };
+
+                return BadRequest(error);
             }
 
             var userToAdd = new User
             {
-                UserName = model.Username.ToLower(),
+                UserName = model.Username,
                 Email = model.Email.ToLower(),
                 EmailConfirmed = true,
             };
 
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
-            return Ok("Your account has ben created, you can login.");
+            return Ok(new JsonResult(new {title="Account Created", message="A tua conta foi criada com sucesso!"}));
         }
 
         #region Private Help Methods
@@ -67,6 +87,11 @@ namespace WatchersWorld.Server.Controllers
         private async Task<bool> CheckEmailExistsAsync(string email)
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
+        }
+
+        private async Task<bool> CheckUsernameExistsAsync(string username)
+        {
+            return await _userManager.Users.AnyAsync(x => x.UserName == username);
         }
         #endregion
     }
