@@ -18,6 +18,7 @@ import { SuspendedAccountComponent } from './authentication/suspended-account/su
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FooterComponent } from './footer/footer.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -38,7 +39,7 @@ import { FooterComponent } from './footer/footer.component';
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FontAwesomeModule
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

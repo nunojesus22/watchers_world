@@ -1,11 +1,91 @@
-.nav-bar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #000000;
-  height: 100px;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.img{
-    width:
+/**NAV BAR*/
+nav {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: space-between; /* Distribui os itens ao longo do eixo horizontal */
+  font-size: 25px;
+}
+
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 50px;
+    font-weight: bold;
+  }
+
+/* Aumentar o tamanho do ícone do menu */
+.fa-bars {
+  font-size: 40px; /* Ajuste o tamanho conforme necessário */
+}
+
+.logo {
+  width: 5%
+}
+
+.menu-item {
+  display: flex; /* Organiza o ícone e o texto lado a lado */
+  align-items: center; /* Centraliza verticalmente */
+  color: white; /* Cor do texto e ícone */
+  text-decoration: none; /* Remove o sublinhado do link */
+}
+
+  .menu-item i {
+    margin-right: 10px; /* Espaço entre o ícone e o texto */
+  }
+
+.user-icon {
+  width: 50px; /* ou outro tamanho desejado */
+  height: auto; /* mantém a proporção da imagem */
+}
+
+
+/**BARRA DE PESQUISA*/
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute; /* Adicione esta linha */
+  left: 10px; /* Adicione esta linha */
+  color: #555; /* Cor do ícone */
+}
+
+.search-input {
+  padding: 10px;
+  padding-left: 50px; /* Adicione esta linha */
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  width: 280px; /* Ajuste conforme necessário */
+}
+
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.search-suggestion {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.search-input:hover {
+  background-color: #eee;
 }

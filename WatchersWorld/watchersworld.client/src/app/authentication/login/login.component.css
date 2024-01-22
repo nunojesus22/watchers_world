@@ -49,7 +49,7 @@ a{
 
 .logo{
     margin: 90px 0px 20px 0px;
-    width: 12%
+    width: 10%
 }
 
 .register-link {
@@ -101,11 +101,6 @@ a{
   width: 16px;
   height: 16px
 }
-/*** LOGIN NAME */
-.login-name {
-  color: white;
-}
-
 
 
 

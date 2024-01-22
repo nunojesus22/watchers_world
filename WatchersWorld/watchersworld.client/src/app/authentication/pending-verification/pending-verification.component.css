@@ -1,4 +1,4 @@
-.login-container {
+.pending-verification-container {
   width: 100%;
   background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(40,40,40,1) 50%, rgba(0,0,0,1) 100%);
   display: flex;
@@ -7,14 +7,14 @@
   justify-content: center;
 }
 
-.login-form-container {
+.pending-verification-form-container {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.login-form {
+.pending-verification-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,20 +23,13 @@
 }
 
 
-  .login-form authentication-button {
+.pending-verification-form authentication-button {
     width: 75%;
-  }
-
-
+}
 
 .logo {
   margin: 90px 0px 20px 0px;
-  width: 12%
-}
-
-
-.login-separator {
-  margin: 0 2px; /* Ajuste o espaçamento conforme necessário */
+  width: 10%
 }
 
 /*** INPUTS FIELDS */
@@ -70,19 +63,19 @@
   margin-bottom: 20px;
 }
 
-  .input-with-icon .fa {
+.input-with-icon .fa {
     color: white;
     width: 16px;
     height: 16px
-  }
-/*** LOGIN NAME */
-.login-name {
-  color: white;
 }
 
 h3 {
   font-weight: bold;
   color: white;
+  width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .resend-email-button  {

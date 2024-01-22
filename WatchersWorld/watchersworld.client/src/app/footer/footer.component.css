@@ -1,0 +1,105 @@
+/** FOOTER */
+
+.footer {
+  background-color: black;
+  padding: 10px 0;
+  border-top: 2px solid #fff;
+  text-align: center; /* Centraliza o texto horizontalmente */
+  display: flex; /* Torna o rodapé um contêiner flexível */
+  flex-direction: column; /* Organiza os itens em uma coluna */
+  align-items: center; /* Alinha os itens da coluna no centro horizontalmente */
+}
+
+  .footer .logo {
+    width: 150px; /* ou o tamanho desejado */
+    height: auto; /* para manter a proporção da imagem */
+    padding-bottom: 20px;
+  }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Adicionado para centralizar as colunas */
+  width: 800px;
+}
+
+ul {
+  list-style: none;
+}
+
+.footer-col {
+  width: 25%;
+  padding: 0 15px;
+}
+
+  .footer-col h4 {
+    font-size: 18px;
+    color: #FFF;
+    text-transform: capitalize;
+    margin-bottom: 25px;
+    font-weight: bold;
+    position: relative;
+  }
+
+  .footer-col ul li:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul li, .footer-col ul li span {
+    color: #DDD; /* Cor do texto */
+    /* outros estilos, se necessário */
+  }
+
+
+    .footer-col ul li a {
+      list-style-type: disc;
+      color: #DDD;
+      display: block;
+      font-size: 1rem;
+      font-weight: 300;
+      text-transform: capitalize;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+      .footer-col ul li a:hover {
+        color: #FFF;
+        padding-left: 7px;
+      }
+
+  .footer-col .social-links a {
+    color: #FFF;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    text-align: center;
+    margin: 0 10px 10px 0;
+    line-height: 40px;
+    transition: all 0.5s ease;
+  }
+
+    .footer-col .social-links a:hover {
+      color: #151515;
+      background-color: #FFF;
+    }
+
+@media(max-width: 767px) {
+  .footer-col {
+    width: 50%;
+    margin-bottom: 30px;
+  }
+}
+
+@media(max-width: 574px) {
+  .footer-col {
+    width: 100%;
+  }
+}
+
+
+.wwcr {
+  padding-top: 10px;
+  color: white;
+}

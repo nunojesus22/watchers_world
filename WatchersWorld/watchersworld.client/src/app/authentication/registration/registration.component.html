@@ -1,37 +1,77 @@
-<div class="login-container">
-  
+<div class="register-container">
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
-  <div class="login-form-container">
-    <form class="login-form">
-      <!-- Input de username -->
-      <div class="input-with-icon">
-        <i class="fa fa-user"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
-        <input type="text" placeholder="USERNAME" />
+  <div class="register-form-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
 
+      <div class="input-with-icon">
+        <i class="fa fa-user"></i>
+        <input formControlName="username" type="text" placeholder="USERNAME" />
+        <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']" class="error-message">
+          O nome de utilizador é obrigatório.
+        </div>
       </div>
 
       <div class="input-with-icon">
-        <i class="fa fa-envelope"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
-        <input type="text" placeholder="EMAIL"/>
+        <i class="fa fa-envelope"></i>
+        <input formControlName="email" type="email" placeholder="EMAIL" />
+        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']" class="error-message">
+          O e-mail é obrigatório.
+        </div>
+        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']" class="error-message">
+          Insira um e-mail válido.
+        </div>
       </div>
 
       <div class="input-with-icon">
-        <i class="fa fa-lock"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
-        <input type="text" placeholder="PALAVRA-PASSE" />
+        <i class="fa fa-lock"></i>
+        <input formControlName="password" type="password" placeholder="PALAVRA-PASSE" />
+        <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']" class="error-message">
+          A senha é obrigatória.
+        </div>
       </div>
 
-
-
-      <!-- Input de password -->
-      <div></div>
       <authentication-button [buttonText]="'REGISTAR'" [buttonType]="'submit'"></authentication-button>
       <div class="divider"></div>
       <authentication-button [buttonText]="'REGISTAR COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
+
       <span class="register-link">
         Já possui conta?
-        <span class="login-separator"> </span> <!-- Espaçador -->
-        <a class="login-link" href="#">Faça login aqui!</a>
+        <span class="register-separator"></span>
+        <a href="#">Faça login aqui!</a>
       </span>
     </form>
   </div>
 </div>
+
+<!-- <div class="register-container">
+  <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
+  <div class="register-form-container">
+    <form class="register-form">
+
+      <div class="input-with-icon">
+        <i class="fa fa-user"></i>
+<input type="text" placeholder="USERNAME" />
+      </div>
+
+<div class="input-with-icon">
+  <i class="fa fa-envelope"></i> 
+  <input type="text" placeholder="EMAIL" />
+</div>
+
+<div class="input-with-icon">
+  <i class="fa fa-lock"></i> 
+  <input type="text" placeholder="PALAVRA-PASSE" />
+</div>
+
+<authentication-button [buttonText]="'REGISTAR'" [buttonType]="'submit'"></authentication-button>
+<div class="divider"></div>
+<authentication-button [buttonText]="'REGISTAR COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
+
+<span class="register-link">
+  Já possui conta?
+  <span class="register-separator"> </span> 
+  <a href="#">Faça login aqui!</a>
+</span>
+    </form>
+  </div>
+</div>-->
