@@ -2,6 +2,8 @@
 
 namespace WatchersWorld.Server.DTOs.Account
 {
+    // DTO (Data Transfer Object) for user registration.
+    // This is used to transfer registration data from the client to the server.
     public class RegisterDto
     {
         [Required(ErrorMessage = "O nome de utilizador é obrigatório!")]
