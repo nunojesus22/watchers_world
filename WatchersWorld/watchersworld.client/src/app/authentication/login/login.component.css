@@ -93,7 +93,12 @@ a{
   cursor: pointer;
   width: 75%;
   height: 40px;
+  position: relative;
   margin-bottom: 20px;
+}
+
+.has-error {
+  margin-bottom: 0px !important;
 }
 
 .input-with-icon .fa {
@@ -102,5 +107,19 @@ a{
   height: 16px
 }
 
+.error-container {
+  width: 75%;
+  display: flex;
+}
 
+.error-container span {
+  width: 100%;
+  padding: 5px 20px;
+}
+
+.error-message {
+  font-size: 14px;
+  color: red;
+  /* Remova margens negativas se houver */
+}
 

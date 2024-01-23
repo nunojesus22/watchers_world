@@ -6,8 +6,10 @@ namespace WatchersWorld.Server.Models.Authentication
     // This class represents a standard user with additional personal information.
     public class RegularUser : User
     {
-        // The user's date of birth.
-        // This information can be used for age verification or displayed in user profiles.
+        /// <summary>
+        /// The user's date of birth.
+        /// This information can be used for age verification or displayed in user profiles
+        /// </summary>
         public DateTime BirthDate { get; set; }
 
         // A brief description or bio of the user.

@@ -2,20 +2,42 @@
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
   <div class="login-form-container">
 
-    <form class="login-form">
-      <!-- Input de username -->
-      <div class="input-with-icon">
-        <i class="fa fa-user"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
-        <input type="text" placeholder="USERNAME/EMAIL" />
+    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()" autocomplete="off">
 
-      </div>
-      <div class="input-with-icon">
-        <i class="fa fa-lock"></i> <!-- Substitua com o ícone desejado de Font Awesome -->
-        <input type="password" placeholder="PALAVRA-PASSE" />
+
+      <div class="input-with-icon"
+           [class.has-error]="submitted && (loginForm.get('email')?.errors || (errorMessages['Email'] && !isFieldModified('email')))">
+        <i class="fa fa-envelope"></i>
+        <input formControlName="email" type="email" placeholder="EMAIL"
+               [class.is-invalid]="submitted && loginForm.get('email')?.errors" />
       </div>
 
-      <!-- Input de password -->
-      <authentication-button [buttonText]="'LOGIN'" [buttonType]="'submit'" ></authentication-button>
+      <div class="error-container" *ngIf="submitted && (loginForm.get('email')?.errors || errorMessages['Email'])">
+        <span class="error-message" *ngIf="loginForm.get('email')?.hasError('required')">
+          O email é obrigatório!
+        </span>
+        <span class="error-message" *ngIf="!loginForm.get('email')?.errors && errorMessages['Email'] && !isFieldModified('email')">
+          {{ errorMessages['Email'] }}
+        </span>
+      </div>
+
+      <div class="input-with-icon"
+           [class.has-error]="submitted && loginForm.get('password')?.errors">
+        <i class="fa fa-lock"></i>
+        <input formControlName="password" type="password" placeholder="PALAVRA-PASSE" />
+      </div>
+
+      <div class="error-container" *ngIf="submitted && loginForm.get('password')?.errors">
+        <span class="error-message" *ngIf="loginForm.get('password')?.hasError('required')">
+          A palavra-passe é obrigatória!
+        </span>
+        <span class="error-message" *ngIf="!loginForm.get('password')?.errors && errorMessages['Password'] && !isFieldModified('password')">
+          {{ errorMessages['Password'] }}
+        </span>
+      </div>
+
+
+      <authentication-button [buttonText]="'LOGIN'" [buttonType]="'submit'"></authentication-button>
       <a routerLink="/account/recover-password" class="forgot-password-link">Esqueceu-se da palavra-passe?</a>
       <div class="divider"></div>
       <authentication-button [buttonText]="'LOGIN COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.DTOs.Account;
@@ -29,16 +30,16 @@ namespace WatchersWorld.Server.Controllers
             _userManager = userManager;
         }
 
-        // Method to handle login requests.
-        [HttpPost("login")]
+        [AllowAnonymous]
+        [HttpPost("api/account/login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user == null) return Unauthorized("Invalid Username");
-            if (!user.EmailConfirmed) return Unauthorized("Please confirm your email");
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return Unauthorized("Não existe nenhuma conta associada a esse email!");
+            if (user.EmailConfirmed == false) return Unauthorized("Please confirm your email");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded) return Unauthorized("Password Incorrect");
+            if (!result.Succeeded) return Unauthorized("A password está incorreta.");
 
             return CreateApplicationUserDto(user);
         }

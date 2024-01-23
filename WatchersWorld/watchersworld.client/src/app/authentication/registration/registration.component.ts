@@ -36,21 +36,22 @@ export class RegistrationComponent implements OnInit{
     this.submitted = true;
     this.errorMessages = {};
 ;
-
-    this.accountService.register(this.registrationForm.value).subscribe({
-      next: (response) => {
-        console.log("Registro bem-sucedido:");
-      },
-      error: error => {
-        if (error.error.errors) {
-          console.log(error.error.errors);
-        } else {
-          this.errorMessages[error.error.field] = error.error.message;
-          this.submittedValues["username"] = this.registrationForm.get("username")!.value;
-          this.submittedValues["email"] = this.registrationForm.get("email")!.value;
+    if (this.registrationForm.valid) {
+      this.accountService.register(this.registrationForm.value).subscribe({
+        next: (response) => {
+          console.log("Registro bem-sucedido:");
+        },
+        error: error => {
+          if (error.error.errors) {
+            console.log(error.error.errors);
+          } else {
+            this.errorMessages[error.error.field] = error.error.message;
+            this.submittedValues["username"] = this.registrationForm.get("username")!.value;
+            this.submittedValues["email"] = this.registrationForm.get("email")!.value;
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   isFieldModified(fieldName: string) {
