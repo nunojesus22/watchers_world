@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+HEVdeWDNdEZh5RyNxPVGfaC2dAOAxugVK2Gzf51NzwghSXZfjNvgp1+p4sImiATX5fJy8f9Gt1hPAS6k+hsAg==",
+  "dgSpecHash": "jXfw9gMKSlvjaQAG9BdERT6JReaROB/S2B4btg6Wo4rTv2IVLxN6qe9dRtxnajMnRJr0UmgTgGksFe0Eu2NUbQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\nunoj\\Documents\\DEV\\Watchers World\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+  "projectFilePath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nunoj\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\nunoj\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

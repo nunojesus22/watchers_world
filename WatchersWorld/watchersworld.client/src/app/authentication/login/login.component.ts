@@ -34,26 +34,36 @@ export class LoginComponent {
   login() {
     this.submitted = true;
     this.errorMessages = {};
-    ;
+    this.submittedValues = {};
+
     if (this.loginForm.valid) {
       this.accountService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          console.log("Login bem-sucedido:");
+          console.log("Login bem-sucedido");
         },
         error: error => {
           if (error.error.errors) {
-            console.log(error.error.errors);
+            error.error.errors.forEach((value: any) => {
+              if (!this.errorMessages[value.field]) { //check if the error with this field already exists
+                this.errorMessages[value.field] = value.message;
+              }
+            });
+            this.saveSubmittedValues();
           } else {
             this.errorMessages[error.error.field] = error.error.message;
-            this.submittedValues["email"] = this.loginForm.get("email")!.value;
-            this.submittedValues["password"] = this.loginForm.get("password")!.value;
+            this.saveSubmittedValues();
           }
         }
       });
     }
   }
 
-  isFieldModified(fieldName: string) {
+  isFieldModified(fieldName: string): boolean {
     return this.loginForm.get(fieldName)!.value !== this.submittedValues[fieldName];
+  }
+
+  private saveSubmittedValues(): void {
+    this.submittedValues["email"] = this.loginForm.get("email")!.value;
+    this.submittedValues["password"] = this.loginForm.get("password")!.value;
   }
 }

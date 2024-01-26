@@ -34,36 +34,77 @@ namespace WatchersWorld.Server.Controllers
         [HttpPost("api/account/login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized("Não existe nenhuma conta associada a esse email!");
-            if (user.EmailConfirmed == false) return Unauthorized("Please confirm your email");
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Any())
+                    .Select(kvp => new {
+                        Field = kvp.Key,
+                        Message = kvp.Value.Errors.First().ErrorMessage
+                    }).ToList();
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded) return Unauthorized("A password está incorreta.");
+                return BadRequest(new { Errors = errors });
+            }
+
+            var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
+            }
+
+            var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+            if (!passwordCheck.Succeeded)
+            {
+                return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
+            }
+
+            if (!await _signInManager.UserManager.IsEmailConfirmedAsync(user))
+            {
+                return BadRequest(new { Message = "A conta está por confirmar!", Field = "EmailPorConfirmar" });
+            }
+
+            if (!passwordCheck.Succeeded) return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
 
             return CreateApplicationUserDto(user);
         }
 
         // Method to handle registration requests.
-        [HttpPost("register")]
+        [AllowAnonymous]
+        [HttpPost("api/account/register")]
         public async Task<IActionResult> Register(RegisterDto model)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Any())
+                    .Select(kvp => new {
+                        Field = kvp.Key,
+                        Message = kvp.Value.Errors.First().ErrorMessage
+                    }).ToList();
+
+                return BadRequest(new { Errors = errors });
+            }
+
+            if (await CheckUsernameExistsAsync(model.Username))
+            {
+                return BadRequest(new { Message = "Já existe um utilizador com esse nome de utilizador!", Field = "Username" });
+            }
+
             if (await CheckEmailExistsAsync(model.Email))
             {
-                return BadRequest($"An existing account is using {model.Email}, email address. Please try with another email address.");
+                return BadRequest(new { Message = "Já existe uma conta associada a esse email!", Field = "Email" });
             }
 
             var userToAdd = new User
             {
-                UserName = model.Username.ToLower(),
+                UserName = model.Username,
                 Email = model.Email.ToLower(),
-                EmailConfirmed = true, 
+                EmailConfirmed = true,
             };
 
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
-
-            return Ok("Your account has been created, you can now login.");
+            return Ok(new JsonResult(new { title = "Account Created", message = "A tua conta foi criada com sucesso!" }));
         }
 
         #region Private Helper Methods
@@ -80,6 +121,12 @@ namespace WatchersWorld.Server.Controllers
         private async Task<bool> CheckEmailExistsAsync(string email)
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
+        }
+
+        // Checks if the username already exists in the database.
+        private async Task<bool> CheckUsernameExistsAsync(string username)
+        {
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
         #endregion
     }

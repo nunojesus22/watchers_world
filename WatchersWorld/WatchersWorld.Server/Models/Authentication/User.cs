@@ -8,9 +8,6 @@ namespace WatchersWorld.Server.Models.Authentication
     // This class includes all basic user information like username, password, etc., and any additional properties specific to your application.
     public class User : IdentityUser
     {
-        // A unique identifier for the user. Required attribute ensures this field is always populated.
-        // Guid is used here to ensure that the identifier is globally unique.
-        [Required]
-        public Guid UserId { get; set; }
+        
     }
 }

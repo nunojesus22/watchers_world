@@ -1,11 +1,14 @@
 ﻿using System;
+using WatchersWorld.Server.Models.Authentication.Status;
 
 namespace WatchersWorld.Server.Models.Authentication
 {
-    // RegularUser class extending the User class. 
-    // This class represents a standard user with additional personal information.
-    public class RegularUser : User
+    // Profile class representing a user's profile.
+    // This class associates additional profile details with a RegularUser.
+    public class ProfileInfo
     {
+        public string UserEmail { get; set; }
+
         /// <summary>
         /// The user's date of birth.
         /// This information can be used for age verification or displayed in user profiles
@@ -23,5 +26,9 @@ namespace WatchersWorld.Server.Models.Authentication
         // URL or path to the user's cover photo.
         // This is often a larger image displayed at the top of the user's profile.
         public string CoverPhoto { get; set; }
+
+        // Enum representing the status of the profile (e.g., Public, Private).
+        // It dictates the visibility or accessibility of the profile to other users.
+        public AccountStatus ProfileStatus { get; set; }
     }
 }
