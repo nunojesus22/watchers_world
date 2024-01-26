@@ -1,0 +1,21 @@
+/* app.component.css */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Use Viewport Height para garantir que o conteúdo preencha a altura da tela */
+}
+
+.container {
+  flex: 1; /* Isso empurra o rodapé para baixo se o conteúdo não for suficiente */
+  display: flex;
+  flex-direction: column; /* Se você tiver outros estilos, ajuste conforme necessário */
+}
+
+app-footer {
+  margin-top: auto; /* Isso garante que o rodapé fique na parte inferior */
+}

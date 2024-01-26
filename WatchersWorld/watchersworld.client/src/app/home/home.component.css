@@ -1,0 +1,44 @@
+.session-container {
+  padding: 10px;
+  background-color: #f2f2f2; /* Cor de fundo da div */
+  border-radius: 5px;
+  display: flex;
+  align-items: center; /* Alinha verticalmente o conteúdo da div */
+  justify-content: space-between; /* Espaçamento entre o texto de boas-vindas e o botão */
+  height: 50px; /* Altura da div */
+  margin: 20px; /* Margem ao redor da div */
+}
+
+.logout-button {
+  padding: 10px 20px;
+  background-color: #f44336; /* Vermelho para indicar ação de logout */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+  .logout-button:hover {
+    background-color: #d32f2f; /* Cor um pouco mais escura ao passar o mouse */
+  }
+
+/* Ajustes responsivos, se necessário */
+@media (max-width: 768px) {
+  .session-container {
+    flex-direction: column; /* Empilha o texto e o botão verticalmente */
+    height: auto; /* Altura automática para acomodar o conteúdo interno */
+  }
+
+  .logout-button {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    margin-top: 10px; /* Espaçamento acima do botão */
+  }
+}
+
+.main-page {
+    height:400px;
+}
