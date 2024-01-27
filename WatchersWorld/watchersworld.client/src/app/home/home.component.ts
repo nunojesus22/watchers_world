@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication/services/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -8,13 +9,10 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(private router: Router) { }
+  constructor(public authService: AuthenticationService, private router: Router) { }
 
   logout() {
-    // A lógica para terminar a sessão aqui
-    // ...
-
-    // Redireciona para a página de registro e substitui a entrada atual no histórico de navegação
-    this.router.navigateByUrl('/account/register', { replaceUrl: true });
+    this.authService.logout();
   }
+  
 }

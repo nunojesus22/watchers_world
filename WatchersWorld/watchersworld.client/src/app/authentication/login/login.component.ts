@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
+import { take } from 'rxjs';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +15,30 @@ export class LoginComponent {
   submitted = false;
   errorMessages: any = {};
   submittedValues: any = {};
+  returnUrl: string | null = null;
 
   constructor(
-    private accountService: AuthenticationService,
-    private formBuilder: FormBuilder
-  ) { }
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.authService.user$.pipe(take(1)).subscribe({
+      next: (user: User | null) => {
+        if (user) {
+          this.router.navigateByUrl("/home");
+        } else {
+          this.activatedRoute.queryParamMap.subscribe({
+            next: (params: any) => {
+              if (params) {
+                this.returnUrl = params.get('returnUrl');
+              }
+            }
+          })
+        }
+      }
+    });
+  }
 
 
   ngOnInit(): void {
@@ -37,9 +58,13 @@ export class LoginComponent {
     this.submittedValues = {};
 
     if (this.loginForm.valid) {
-      this.accountService.login(this.loginForm.value).subscribe({
+      this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          console.log("Login bem-sucedido");
+          if (this.returnUrl) {
+            this.router.navigateByUrl(this.returnUrl);
+          } else {
+            this.router.navigateByUrl('/home');
+          }
         },
         error: error => {
           if (error.error.errors) {

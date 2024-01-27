@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,6 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FooterComponent } from './footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileComponent } from './profile/profile/profile.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 
 
@@ -20,12 +22,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     NavMenuComponent,
     FooterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FontAwesomeModule, ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { User } from '../models/user';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -15,9 +18,18 @@ export class RegistrationComponent implements OnInit{
   submittedValues: any = {};
 
   constructor(
-    private accountService: AuthenticationService,
-    private formBuilder: FormBuilder
-  ) { }
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder,
+    private router : Router,
+  ) {
+    this.authService.user$.pipe(take(1)).subscribe({
+      next: (user: User | null) => {
+        if (user) {
+          this.router.navigateByUrl("/home");
+        }
+      }
+    });
+  }
 
 
   ngOnInit(): void {
@@ -38,7 +50,7 @@ export class RegistrationComponent implements OnInit{
     this.submittedValues = {};
 ;
     if (this.registrationForm.valid) {
-      this.accountService.register(this.registrationForm.value).subscribe({
+      this.authService.register(this.registrationForm.value).subscribe({
         next: (response) => {
           console.log("Registro bem-sucedido");
         },

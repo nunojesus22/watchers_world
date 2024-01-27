@@ -1,6 +1,11 @@
-<div class="session-container">
+<div class="session-container" *ngIf="(authService.user$ | async) === null">
   <span>
-    Bem-vindo, username!
+    Por dar login.
+  </span>
+</div>
+<div class="session-container" *ngIf="(authService.user$ | async) as user">
+  <span>
+    Bem-vindo, {{user.username | titlecase}}!
   </span>
   <button (click)="logout()" class="logout-button">Terminar sessão</button>
 </div>

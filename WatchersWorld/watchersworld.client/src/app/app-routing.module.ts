@@ -1,11 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegistrationComponent } from './authentication/registration/registration.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile/profile.component';
+import { AuthorizationGuard } from './guards/authorization.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthorizationGuard],
+    children: [
+      {path: 'profile', component: ProfileComponent}
+    ]
+  },
+  { path: 'home', component: HomeComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule)}
 ];
 

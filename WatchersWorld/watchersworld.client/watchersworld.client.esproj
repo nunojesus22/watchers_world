@@ -9,6 +9,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\authentication\services\" />
+    <Folder Include="src\app\guards\" />
+    <Folder Include="src\app\interceptors\" />
+    <Folder Include="src\app\profile\services\" />
     <Folder Include="src\assets\img\icons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\app\profile-service\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\profile-service\**" />
   </ItemGroup>
 </Project>

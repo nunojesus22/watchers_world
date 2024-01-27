@@ -1009,3 +1009,4 @@ C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world
 C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.pdb
 C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
+C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Mailjet.Client.dll
