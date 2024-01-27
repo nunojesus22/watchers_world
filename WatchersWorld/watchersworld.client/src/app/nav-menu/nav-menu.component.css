@@ -13,6 +13,7 @@ nav {
   align-items: center; /* Centraliza verticalmente */
   justify-content: space-between; /* Distribui os itens ao longo do eixo horizontal */
   font-size: 25px;
+  font-family: 'Inter';
 }
 
   nav a {
@@ -58,7 +59,7 @@ nav {
 .search-icon {
   position: absolute; /* Adicione esta linha */
   left: 10px; /* Adicione esta linha */
-  color: #555; /* Cor do ícone */
+  color: #474747; /* Cor do ícone */
 }
 
 .search-input {
@@ -66,7 +67,8 @@ nav {
   padding-left: 50px; /* Adicione esta linha */
   border: none;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 18px;
+  font-family: 'Inter';
   width: 280px; /* Ajuste conforme necessário */
 }
 
