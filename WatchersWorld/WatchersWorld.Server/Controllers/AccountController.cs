@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Mailjet.Client.TransactionalEmails;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -67,20 +68,20 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
             }
 
+            if (!await _signInManager.UserManager.IsEmailConfirmedAsync(user))
+            {
+                return Ok(new { message = "A conta está por confirmar!", Field = "EmailPorConfirmar", user = CreateApplicationUserDto(user) });
+            }
+
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
             if (!passwordCheck.Succeeded)
             {
                 return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
             }
 
-            if (!await _signInManager.UserManager.IsEmailConfirmedAsync(user))
-            {
-                return BadRequest(new { Message = "A conta está por confirmar!", Field = "EmailPorConfirmar" });
-            }
-
             if (!passwordCheck.Succeeded) return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
 
-            return CreateApplicationUserDto(user);
+            return Ok ( new { user = CreateApplicationUserDto(user) });
         }
 
         // Method to handle registration requests.
@@ -161,7 +162,7 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-        [HttpPost("api/account/resend-email-confirmatiion-link/{email}")]
+        [HttpPost("api/account/resend-email-confirmation-link/{email}")]
         public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
@@ -183,6 +184,7 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest("Failed to send email. Please contact admin");
             }
         }
+
 
         [HttpPost("api/account/forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)

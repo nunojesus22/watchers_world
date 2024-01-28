@@ -1,14 +1,24 @@
 <div class="pending-verification-container">
-  0
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
-  <div class="pending-verification-form-container">
+  <div class="pending-verification-form-container" *ngIf="success">
 
     <form class="pending-verification-form">
-      <h3> A sua conta ainda se encontra por verificar.
-           Verifique-a primeiro no email.</h3>
-      <authentication-button class="resend-email-button" [buttonText]="'REENVIAR EMAIL'" [buttonType]="'submit'"></authentication-button>
+      <h3>
+        A sua conta ainda foi confirmada. Já pode dar login.
+      </h3>
+      <authentication-button class="back-button" [buttonText]="'VOLTAR'" (buttonClick)="login()" [buttonType]="'button'"></authentication-button>
+    </form>
+  </div>
+  <div class="pending-verification-form-container" *ngIf="!success">
+
+    <form class="pending-verification-form">
+      <h3>
+        A sua conta ainda se encontra por verificar.
+        Verifique-a primeiro no email.
+      </h3>
+      <authentication-button class="resend-email-button" [buttonText]="'REENVIAR EMAIL'" (click)="resendEmailConfirmationLink()" [buttonType]="'button'"></authentication-button>
       <div></div>
-      <authentication-button class="back-button" [buttonText]="'VOLTAR'" [buttonType]="'submit'"></authentication-button>
+      <authentication-button class="back-button" [buttonText]="'VOLTAR'" (buttonClick)="login()" [buttonType]="'button'"></authentication-button>
     </form>
   </div>
 </div>

@@ -8,6 +8,7 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist\watchersworld.client\</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\authentication\send-email\" />
     <Folder Include="src\app\authentication\services\" />
     <Folder Include="src\app\guards\" />
     <Folder Include="src\app\interceptors\" />

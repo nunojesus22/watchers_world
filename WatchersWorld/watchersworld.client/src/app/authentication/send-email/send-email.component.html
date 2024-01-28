@@ -1,0 +1,65 @@
+<div class="send-email-container" *ngIf="(mode == 'resend-email-confirmation-link')">
+  <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
+  <div class="send-email-form-container">
+
+    <form [formGroup]="emailForm" (ngSubmit)="sendEmail()" autocomplete="off" class="send-email-form">
+      <h3>
+        Insira o seu email para podermos reenviar a confirmação.
+      </h3>
+      <div class="input-with-icon"
+           [class.has-error]="submitted && (emailForm.get('email')?.errors || (errorMessages['Email'] && !isFieldModified('email')))">
+        <i class="fa fa-envelope"></i>
+        <input formControlName="email" type="email" placeholder="EMAIL"
+               [class.is-invalid]="submitted && emailForm.get('email')?.errors" />
+      </div>
+
+      <div class="error-container" *ngIf="submitted && (emailForm.get('email')?.errors || errorMessages['Email'])">
+        <span class="error-message" *ngIf="emailForm.get('email')?.hasError('required')">
+          O email é obrigatório!
+        </span>
+        <span class="error-message" *ngIf="emailForm.get('email')?.hasError('email')">
+          A nomenclatura do email está incorreta!
+        </span>
+        <span class="error-message" *ngIf="!emailForm.get('email')?.errors && errorMessages['Email'] && !isFieldModified('email')">
+          {{ errorMessages['Email'] }}
+        </span>
+      </div>
+
+      <authentication-button [buttonText]="'REENVIAR EMAIL'" [buttonType]="'submit'"></authentication-button>
+      <authentication-button [buttonText]="'VOLTAR'" [buttonType]="'button'" (buttonClick)="cancel()" ></authentication-button>
+    </form>
+  </div>
+</div>
+
+<div class="send-email-container" *ngIf="(mode == 'forgot-password')">
+  <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
+  <div class="send-email-form-container">
+
+    <form [formGroup]="emailForm" (ngSubmit)="sendEmail()" autocomplete="off" class="send-email-form">
+      <h3>
+        Insira o seu email para podermos enviar o link para alteração da palavra passe.
+      </h3>
+      <div class="input-with-icon"
+           [class.has-error]="submitted && (emailForm.get('email')?.errors || (errorMessages['Email'] && !isFieldModified('email')))">
+        <i class="fa fa-envelope"></i>
+        <input formControlName="email" type="email" placeholder="EMAIL"
+               [class.is-invalid]="submitted && emailForm.get('email')?.errors" />
+      </div>
+
+      <div class="error-container" *ngIf="submitted && (emailForm.get('email')?.errors || errorMessages['Email'])">
+        <span class="error-message" *ngIf="emailForm.get('email')?.hasError('required')">
+          O email é obrigatório!
+        </span>
+        <span class="error-message" *ngIf="emailForm.get('email')?.hasError('email')">
+          A nomenclatura do email está incorreta!
+        </span>
+        <span class="error-message" *ngIf="!emailForm.get('email')?.errors && errorMessages['Email'] && !isFieldModified('email')">
+          {{ errorMessages['Email'] }}
+        </span>
+      </div>
+
+      <authentication-button [buttonText]="'RECUPERAR PALAVRA-PASSE'" [buttonType]="'submit'"></authentication-button>
+      <authentication-button [buttonText]="'VOLTAR'" [buttonType]="'button'" (buttonClick)="cancel()"></authentication-button>
+    </form>
+  </div>
+</div>

@@ -6,11 +6,11 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { AuthenticationButtonComponent } from './components/authentication-button/authentication-button.component';
 import { HttpClientModule } from '@angular/common/http';
-import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 import { PendingVerificationComponent } from './pending-verification/pending-verification.component';
-import { ResendVerificationComponent } from './resend-verification/resend-verification.component';
 import { SuspendedAccountComponent } from './suspended-account/suspended-account.component';
 import { BlockedAccountComponent } from './blocked-account/blocked-account.component';
+import { SendEmailComponent } from './send-email/send-email.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -18,11 +18,11 @@ import { BlockedAccountComponent } from './blocked-account/blocked-account.compo
     LoginComponent,
     RegistrationComponent,
     AuthenticationButtonComponent,
-    RecoverPasswordComponent,
     PendingVerificationComponent,
-    ResendVerificationComponent,
     BlockedAccountComponent,
     SuspendedAccountComponent,
+    SendEmailComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     CommonModule,

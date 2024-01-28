@@ -1,5 +1,5 @@
 
-<button [type]="buttonType" class="btn-with-icon">
+<button (click)="onClick()" [type]="buttonType" class="btn-with-icon">
     <img *ngIf="icon" [src]="icon" class="button-icon" />
     <span>{{ buttonText }}</span>
  </button>

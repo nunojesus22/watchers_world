@@ -59,8 +59,10 @@ export class LoginComponent {
 
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          if (this.returnUrl) {
+        next: (response: any) => {
+          if (response == "A conta está por confirmar!") {
+            this.router.navigateByUrl('/account/confirm-email');
+          } else if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
           } else {
             this.router.navigateByUrl('/home');
@@ -78,6 +80,7 @@ export class LoginComponent {
             this.errorMessages[error.error.field] = error.error.message;
             this.saveSubmittedValues();
           }
+          
         }
       });
     }

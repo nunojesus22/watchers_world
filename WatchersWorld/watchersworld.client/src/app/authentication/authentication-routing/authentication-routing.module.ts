@@ -3,12 +3,16 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { RegistrationComponent } from '../registration/registration.component';
 import { LoginComponent } from '../login/login.component';
-import { RecoverPasswordComponent } from '../recover-password/recover-password.component';
+import { PendingVerificationComponent } from '../pending-verification/pending-verification.component';
+import { SendEmailComponent } from '../send-email/send-email.component';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'recover-password', component : RecoverPasswordComponent}
+  { path: 'confirm-email', component: PendingVerificationComponent },
+  { path: 'send-email/:mode', component: SendEmailComponent },
+  { path: 'reset-password', component: ResetPasswordComponent}
 ];
 
 

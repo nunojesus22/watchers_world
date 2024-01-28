@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'authentication-button',
@@ -9,6 +9,11 @@ export class AuthenticationButtonComponent {
   @Input() buttonText: string = "";
   @Input() buttonType: string = "";
   @Input() icon: string = "";
+  @Output() buttonClick = new EventEmitter<void>();
 
-  constructor(){ }
+  constructor() { }
+
+  onClick(): void {
+    this.buttonClick.emit();
+  }
 }

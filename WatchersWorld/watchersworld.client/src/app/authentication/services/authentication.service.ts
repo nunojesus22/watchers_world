@@ -6,6 +6,8 @@ import { Login } from '../models/login';
 import { User } from '../models/user';
 import { ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { ConfirmEmail } from '../models/confirmEmail';
+import { ResetPassword } from '../models/resetPassword';
 
 @Injectable({
   providedIn: 'root'
@@ -38,13 +40,39 @@ export class AuthenticationService {
     return this.http.post(`${environment.appUrl}/api/account/register`, model);
   }
 
+  confirmEmail(model: ConfirmEmail) {
+    return this.http.put(`${environment.appUrl}/api/account/confirm-email`, model);
+  }
+
+  resendEmailConfirmationLink(email: string) {
+    return this.http.post(`${environment.appUrl}/api/account/resend-email-confirmation-link/${email}`, {});
+  }
+
+  forgotPassword(email: string) {
+    return this.http.post(`${environment.appUrl}/api/account/forgot-password/${email}`, {});
+  }
+
+  resetPassword(model: ResetPassword) {
+    return this.http.put(`${environment.appUrl}/api/account/reset-password`, model);
+  }
+
   login(model: Login) {
     return this.http.post<User>(`${environment.appUrl}/api/account/login`, model).pipe(
-      map((user: User) => {
-        if (user) {
+      map((response: any) => {
+        var user: User | undefined;
+        var message = response.message;
+
+        if (response.message === "A conta está por confirmar!") {
+          return message;
+        }
+
+        if (response && response.user.email && response.user.jwt && response.user.username) {
+          user = new User(response.user.email, response.user.jwt, response.user.username);
           this.setUser(user);
         }
-      })
+        
+        return { user, message };
+      }),
     );
   }
 
