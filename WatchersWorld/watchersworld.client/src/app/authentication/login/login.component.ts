@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Inject, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { take } from 'rxjs';
 import { User } from '../models/user';
+import { CredentialResponse } from 'google-one-tap';
+import { LoginWithExternal } from '../../../../loginWithExternals';
+import { jwtDecode } from 'jwt-decode';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +15,7 @@ import { User } from '../models/user';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  @ViewChild('googleButton', { static: true }) googleButton: ElementRef = new ElementRef({});
   loginForm: FormGroup = new FormGroup([]);
   submitted = false;
   errorMessages: any = {};
@@ -21,7 +26,9 @@ export class LoginComponent {
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private _renderer2: Renderer2,
+    @Inject(DOCUMENT) private _document: Document
   ) {
     this.authService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
@@ -40,8 +47,8 @@ export class LoginComponent {
     });
   }
 
-
   ngOnInit(): void {
+    this.initializeGoogleButton();
     this.initializeForm();
   }
 
@@ -50,6 +57,14 @@ export class LoginComponent {
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+  }
+  ngAfterViewInit() {
+    const script1 = this._renderer2.createElement('script');
+    script1.src = 'https://accounts.google.com/gsi/client';
+    script1.async = 'true';
+    script1.defer = 'true';
+    this._renderer2.appendChild(this._document.body, script1);
+
   }
 
   login() {
@@ -86,6 +101,39 @@ export class LoginComponent {
     }
   }
 
+   private initializeGoogleButton() {
+    (window as any).onGoogleLibraryLoad = () => {
+      //@ts-ignore
+      google.accounts.id.initialize({
+        client_id: '290666772375-5s2b58vflc2ohpc01f7q1hguo9k5gpi7.apps.googleusercontent.com',
+        callback: this.googleCallBack.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+      //@ts-ignore
+      google.accounts.id.renderButton(
+        this.googleButton.nativeElement,
+        { size: 'medium', shape: 'rectangular', text: 'signin_with', logo_alignment: 'center' }
+      );
+    };
+  }
+  private async googleCallBack(response: CredentialResponse) {
+    const decodedToken: any = jwtDecode(response.credential);
+    this.authService.loginWithThirdParty(new LoginWithExternal(response.credential, decodedToken.sub, "google", decodedToken.email))//
+      .subscribe({
+        next: _ => {
+          if (this.returnUrl) {
+             this.router.navigateByUrl(this.returnUrl);
+          } else {
+            this.router.navigateByUrl('/');
+          }
+
+        }, error: error => {
+            console.log("ola");
+        }
+      });
+
+  }
   isFieldModified(fieldName: string): boolean {
     return this.loginForm.get(fieldName)!.value !== this.submittedValues[fieldName];
   }
@@ -94,4 +142,5 @@ export class LoginComponent {
     this.submittedValues["email"] = this.loginForm.get("email")!.value;
     this.submittedValues["password"] = this.loginForm.get("password")!.value;
   }
+
 }

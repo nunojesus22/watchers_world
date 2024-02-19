@@ -1,4 +1,5 @@
-﻿using Mailjet.Client.TransactionalEmails;
+﻿using Google.Apis.Auth;
+using Mailjet.Client.TransactionalEmails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +84,42 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok ( new { user = CreateApplicationUserDto(user) });
         }
+        [AllowAnonymous]
+        [HttpPost("api/account/login-with-third-party")]
+        public async Task<ActionResult<UserDto>> LoginWithThirdParty(LoginWithExternalDto model)
+        {
+            if (model.Provider.Equals(SD.Google))
+            {
+                try
+                {
+
+                    if (!GoogleValidatedAsync(model.AcessToken, model.UserId).GetAwaiter().GetResult())
+
+                    {
+                        return Unauthorized("Unable to login with google");
+                    }
+                }
+                catch (Exception)
+                {
+                    return Unauthorized("Unable to Login with google");
+                }
+
+            }
+            else
+            {
+                return BadRequest("Invalid PRovider");
+            }
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(
+            x => x.UserName == model.UserId &&
+            x.Provider == model.Provider &&
+            x.Email == model.Email
+
+            );
+            if (user == null) return Unauthorized("Unable to find your account");
+            return CreateApplicationUserDto(user);
+
+        }
 
         // Method to handle registration requests.
         [AllowAnonymous]
@@ -134,7 +171,53 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest("Failed to send email. Please contact admin");
             }
         }
+        [HttpPost("/api/account/register-with-third-party")]
 
+        public async Task<ActionResult<UserDto>> RegisterWithThirdParty(RegisterWithExternalDto model)
+        {
+            if (model.Provider.Equals(SD.Google))
+            {
+                try
+                {
+
+                    if (!GoogleValidatedAsync(model.AccessToken, model.UserId).GetAwaiter().GetResult())
+                    {
+                        return Unauthorized("Unable to register with google");
+                    }
+                }
+                catch (Exception)
+                {
+                    return Unauthorized("Unable to Register with google");
+                }
+
+            }
+            else
+            {
+                return BadRequest("Invalid PRovider");
+            }
+
+            //var user = await _userManager.FindByEmailAsync(model.Email);
+            //if (user != null) return Unauthorized("Email Already Exist");
+
+            if (await CheckEmailExistsAsync(model.Email))
+            {
+                return BadRequest(new { Message = "Já existe uma conta associada a esse email!", Field = "Email" });
+            }
+
+            var userToAdd = new User
+            {
+                UserName = model.Username.ToLower(),
+                Provider = model.Provider,
+                Email = model.Email.ToLower(),
+
+            };
+
+            var result = await _userManager.CreateAsync(userToAdd);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return CreateApplicationUserDto(userToAdd);
+
+        }
         [HttpPut("api/account/confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto model)
         {
@@ -231,6 +314,33 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
+        {
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(accessToken);
+            if (!payload.Audience.Equals(_config["Google:ClientId"]))
+            {
+                return false;
+            }
+
+            if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+                return false;
+
+            if (payload.ExpirationTimeSeconds == null)
+                return false;
+
+            DateTime now = DateTime.Now.ToUniversalTime();
+            DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+
+            if (now > expiration) return false;
+
+
+            if (!payload.Subject.Equals(userId)) return false;
+
+            return true;
+
+        }
+
 
         #region Private Helper Methods
         // Creates a UserDto from user information.
@@ -289,4 +399,6 @@ namespace WatchersWorld.Server.Controllers
         }
         #endregion
     }
+
+
 }

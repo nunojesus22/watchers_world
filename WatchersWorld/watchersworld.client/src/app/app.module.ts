@@ -23,6 +23,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     NavMenuComponent,
     FooterComponent,
     ProfileComponent,
+
   ],
   imports: [
     BrowserModule, HttpClientModule,

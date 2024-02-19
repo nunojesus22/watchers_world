@@ -8,6 +8,10 @@ namespace WatchersWorld.Server.Models.Authentication
     // This class includes all basic user information like username, password, etc., and any additional properties specific to your application.
     public class User : IdentityUser
     {
-        
+
+
+        [Required]
+        public string Provider { get; set; }
+
     }
 }
