@@ -89,8 +89,6 @@ export class AuthenticationService {
       );
   }
 
-
-
   loginWithThirdParty(model: LoginWithExternal) {
     return this.http.post<User>(`${environment.appUrl}/api/account/login-with-third-party`, model)
       .pipe(

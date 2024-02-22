@@ -5,7 +5,7 @@ namespace WatchersWorld.Server.DTOs.Account
     public class LoginWithExternalDto
     {
         [Required]
-        public string AcessToken { get; set; }
+        public string AccessToken { get; set; }
 
         [Required]
         public string UserId { get; set; }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using System.Security.Claims;
 using System.Text;
 using WatchersWorld.Server.DTOs.Account;
@@ -63,6 +64,11 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { Errors = errors });
             }
 
+            if (await CheckProviderAsync(model.Email, "google"))
+            {
+                return BadRequest(new { Message = "Email associado a uma conta google!", Field = "Email" });
+            }
+
             var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
@@ -93,7 +99,7 @@ namespace WatchersWorld.Server.Controllers
                 try
                 {
 
-                    if (!GoogleValidatedAsync(model.AcessToken, model.UserId).GetAwaiter().GetResult())
+                    if (!GoogleValidatedAsync(model.AccessToken, model.UserId).GetAwaiter().GetResult())
 
                     {
                         return Unauthorized("Unable to login with google");
@@ -111,12 +117,13 @@ namespace WatchersWorld.Server.Controllers
             }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(
-            x => x.UserName == model.UserId &&
-            x.Provider == model.Provider &&
-            x.Email == model.Email
-
+                x => x.Provider == model.Provider &&
+                     x.Email == model.Email
             );
+
             if (user == null) return Unauthorized("Unable to find your account");
+            user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+
             return CreateApplicationUserDto(user);
 
         }
@@ -138,6 +145,11 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { Errors = errors });
             }
 
+            if (await CheckProviderAsync(model.Email, "google"))
+            {
+                return BadRequest(new { Message = "Email associado a uma conta google!", Field = "Email" });
+            }
+
             if (await CheckUsernameExistsAsync(model.Username))
             {
                 return BadRequest(new { Message = "Já existe um utilizador com esse nome de utilizador!", Field = "Username" });
@@ -152,6 +164,7 @@ namespace WatchersWorld.Server.Controllers
             {
                 UserName = model.Username,
                 Email = model.Email.ToLower(),
+                Provider = "Credentials"
             };
 
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
@@ -207,9 +220,9 @@ namespace WatchersWorld.Server.Controllers
             var userToAdd = new User
             {
                 UserName = model.Username.ToLower(),
+                EmailConfirmed = true,
                 Provider = model.Provider,
                 Email = model.Email.ToLower(),
-
             };
 
             var result = await _userManager.CreateAsync(userToAdd);
@@ -352,6 +365,11 @@ namespace WatchersWorld.Server.Controllers
                 Email = user.Email,
                 JWT = _jwtService.CreateJWT(user),
             };
+        }
+
+        private async Task<bool> CheckProviderAsync(string email, string provider)
+        {
+            return await _userManager.Users.AnyAsync(u => u.Email == email && u.Provider.Equals(provider));
         }
 
         // Checks if the email already exists in the database.

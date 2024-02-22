@@ -1330,3 +1330,8 @@ C:\Users\dalia\OneDrive\Documentos\GitHub\watchers_world\WatchersWorld\WatchersW
 C:\Users\dalia\OneDrive\Documentos\GitHub\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Google.Apis.Core.dll
 C:\Users\dalia\OneDrive\Documentos\GitHub\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Management.dll
 C:\Users\dalia\OneDrive\Documentos\GitHub\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Google.Apis.dll
+C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Google.Apis.Auth.dll
+C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Google.Apis.Core.dll
+C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Management.dll
+C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
