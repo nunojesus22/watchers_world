@@ -32,6 +32,16 @@ export class NavMenuComponent {
       }
     }
   }
+
+  closeNav() {
+    this.showMenu = false;
+    let sidebar = document.getElementById("sidebar");
+    if (sidebar) {
+      sidebar.style.width = "0";
+    }
+
+  }
+
 }
 
 

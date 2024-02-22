@@ -133,3 +133,9 @@ nav {
     font-size: 36px;
     margin-left: 50px;
   }
+
+
+.wwimage {
+  max-width: 50%;
+  height: auto;
+}
