@@ -1,4 +1,4 @@
-<!-- p *ngIf="message">{{message}}</!--p>--> 
+<!-- p *ngIf="message">{{message}}</!--p>-->
 
 <div class="main">
   <br /><br />
@@ -12,23 +12,52 @@
       <div class="user-name">
         <h1>João Silva</h1>
       </div>
-      <div class="user-icons">
-        <a href="#" class="profile-icon">
-          <img src="assets/img/statistic.png" alt="Estatisticas">
-        </a>
-        <a href="#" class="profile-icon">
-          <img src="assets/img/messenger.png" alt="Chat">
-        </a>
-        <a routerLink="/editProfile" class="profile-icon">
-          <img src="assets/img/edit profile.png" alt="Editar perfil">
-        </a>
+      <div class="user-btns">
+        <div class="button-container">
+          <p> Modo do perfil: </p>
+          <button class="image-button">
+            <img src="assets/img/private.png" alt="Private">
+          </button>
+        </div>
+        <br />
+        <button class="custom-button">Alterar palavra-passe</button>
+        <br />
+        <button class="custom-button">Apagar Conta</button>
       </div>
     </div>
+
+
     <div class="user-details">
-      <p>Descrição: Gosto de Filmes</p>
-      <p>Gênero: M</p>
-      <p>Data de nascimento: 10/10/2000</p>
+      <div class="detail-container">
+        <div class="button-container">
+          <button class="image-button">
+            <img src="assets/img/edit.png" alt="Button 1">
+          </button>
+        </div>
+        <p>Descrição: Gosto de Filmes</p>
+      </div>
+
+      <div class="detail-container">
+        <div class="button-container">
+          <button class="image-button">
+            <img src="assets/img/edit.png" alt="Button 2">
+          </button>
+        </div>
+        <p>Gênero: M</p>
+      </div>
+
+      <div class="detail-container">
+        <div class="button-container">
+          <button class="image-button">
+            <img src="assets/img/edit.png" alt="Button 3">
+          </button>
+        </div>
+        <p>Data de nascimento: 10/10/2000</p>
+      </div>
     </div>
+
+
+
     <div class="user-followers">
       <p>Seguidores: 220 • A Seguir: 221</p>
     </div>

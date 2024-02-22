@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WatchersWorld.Server.Data;
 
 #nullable disable
 
-namespace WatchersWorld.Server.Data.Migrations
+namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    partial class WatchersWorldServerContextModelSnapshot : ModelSnapshot
+    [Migration("20240222223930_WathcerWorld")]
+    partial class WathcerWorld
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,6 +158,31 @@ namespace WatchersWorld.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.ProfileInfo", b =>
+                {
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CoverPhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProfileStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserEmail");
+
+                    b.ToTable("ProfileInfo");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.User", b =>
                 {
                     b.Property<string>("Id")
@@ -202,9 +230,6 @@ namespace WatchersWorld.Server.Data.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

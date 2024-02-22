@@ -66,20 +66,83 @@
   margin-right: 10px;
 }
 
-.profile-icon {
-  font-size: 24px;
-  text-decoration: none; /* Remove o sublinhado dos links */
-  color: inherit; /* Herda a cor do texto do pai ou especifica uma cor */
-  padding: 8px; /* Adiciona um pouco de padding para aumentar a área de clique */
-  border-radius: 4px; /* Arredonda as bordas se você decidir adicionar um fundo ou borda */
-  transition: background-color 0.3s, transform 0.3s; /* Suaviza a transição de estados */
-  display: inline-block
+.custom-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
 }
 
-.profile-icon img {
-  width: 30px;
-  height: auto;
+  .custom-button:hover {
+    background-color: lightblue;
+  }
+
+
+.button-container p{
+    font-weight: bold;
 }
+
+.image-button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.button-container{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+}
+
+
+.image-button img{
+    width: 50px;
+    height: auto;
+}
+
+  .image-button:hover img {
+    opacity: 0.5;
+  }
+
+
+.user-details {
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+}
+
+.detail-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Adjust as needed for vertical spacing */
+}
+
+.button-container {
+  margin-right: 10px; /* Adjust as needed for horizontal spacing */
+}
+
+.image-button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+  .image-button img {
+    width: 20px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .image-button:hover img {
+    opacity: 0.8;
+  }
+
+
 
 
   .profile-icon:hover, .profile-icon:active {

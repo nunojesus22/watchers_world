@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { AuthorizationGuard } from './guards/authorization.guard';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,7 +18,9 @@ const routes: Routes = [
   },
   { path: 'home', component: HomeComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'editProfile', component: EditProfileComponent },
   { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule)}
+
 ];
 
 @NgModule({

@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text;
+using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Account;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Authentication.Status;
 using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
@@ -28,14 +30,17 @@ namespace WatchersWorld.Server.Controllers
         private readonly EmailService _emailService;
         private readonly IConfiguration _config;
 
+        private WatchersWorldServerContext _context;
+
         // Constructor for dependency injection.
-        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config)
+        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context)
         {
             _jwtService = jWTService;
             _signInManager = signInManager;
             _userManager = userManager;
             _emailService = emailService;
             _config = config;
+            _context = context;
         }
 
         [Authorize]
@@ -117,7 +122,18 @@ namespace WatchersWorld.Server.Controllers
                 Email = model.Email.ToLower(),
             };
 
+            var profileInfoToAdd = new ProfileInfo
+            {
+                UserEmail = model.Email.ToLower(),
+                ProfileStatus = AccountStatus.Public,
+            };
+
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
+
+            //fazer verificacoes
+            _context.ProfileInfo.Add(profileInfoToAdd);
+            await _context.SaveChangesAsync();
+
             if (!result.Succeeded) return BadRequest(result.Errors);
            
             try
@@ -236,6 +252,7 @@ namespace WatchersWorld.Server.Controllers
         // Creates a UserDto from user information.
         private UserDto CreateApplicationUserDto(User user)
         {
+            if (user == null) return null;
             return new UserDto
             {
                 Username = user.UserName,

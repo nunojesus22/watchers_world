@@ -976,7 +976,7 @@
           "lib/netstandard2.0/Microsoft.AspNetCore.Razor.Language.dll": {}
         }
       },
-      "Microsoft.AspNetCore.SpaProxy/8.0.1": {
+      "Microsoft.AspNetCore.SpaProxy/8.0.2": {
         "type": "package",
         "compile": {
           "lib/net8.0/Microsoft.AspNetCore.SpaProxy.dll": {}
@@ -6130,10 +6130,10 @@
         "microsoft.aspnetcore.razor.language.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.SpaProxy/8.0.1": {
-      "sha512": "Cr90fgPoG1Esw/pKTD/sdIHkjPcnbVoaoSrblSPsaPk6vCzpHtiS254gNfeNkiV2rm4Igu2S2XseNidXBemL/A==",
+    "Microsoft.AspNetCore.SpaProxy/8.0.2": {
+      "sha512": "AJO5WO1A7WsyxxjVbcHlvAu3dCJOchP7zgjmcLTJum3wqIgCxVWUL+X+bB24eat91jtPXAJRdH1imwZg/1BeQw==",
       "type": "package",
-      "path": "microsoft.aspnetcore.spaproxy/8.0.1",
+      "path": "microsoft.aspnetcore.spaproxy/8.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -6141,7 +6141,7 @@
         "THIRD-PARTY-NOTICES.TXT",
         "build/Microsoft.AspNetCore.SpaProxy.targets",
         "lib/net8.0/Microsoft.AspNetCore.SpaProxy.dll",
-        "microsoft.aspnetcore.spaproxy.8.0.1.nupkg.sha512",
+        "microsoft.aspnetcore.spaproxy.8.0.2.nupkg.sha512",
         "microsoft.aspnetcore.spaproxy.nuspec"
       ]
     },
@@ -14249,19 +14249,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nunoj\\.nuget\\packages\\": {}
+    "C:\\Users\\diogo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "projectUniqueName": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
       "projectName": "WatchersWorld.Server",
-      "projectPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-      "packagesPath": "C:\\Users\\nunoj\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+      "projectPath": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\nunoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14375,7 +14375,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
