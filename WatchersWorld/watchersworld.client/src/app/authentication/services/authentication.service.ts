@@ -8,8 +8,8 @@ import { ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmEmail } from '../models/confirmEmail';
 import { ResetPassword } from '../models/resetPassword';
-import { LoginWithExternal } from '../../../../loginWithExternals';
-import { RegisterWithExternal } from '../../../../registerWithExternal';
+import { LoginWithExternal } from '../models/loginWithExternals';
+import { RegisterWithExternal } from '../models/registerWithExternal';
 
 @Injectable({
   providedIn: 'root'

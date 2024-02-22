@@ -5,7 +5,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { take } from 'rxjs';
 import { User } from '../models/user';
 import { CredentialResponse } from 'google-one-tap';
-import { LoginWithExternal } from '../../../../loginWithExternals';
+import { LoginWithExternal } from '../models/loginWithExternals';
 import { jwtDecode } from 'jwt-decode';
 import { DOCUMENT } from '@angular/common';
 

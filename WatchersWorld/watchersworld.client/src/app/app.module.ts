@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 
 
@@ -23,6 +24,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     NavMenuComponent,
     FooterComponent,
     ProfileComponent,
+    AboutUsComponent,
 
   ],
   imports: [

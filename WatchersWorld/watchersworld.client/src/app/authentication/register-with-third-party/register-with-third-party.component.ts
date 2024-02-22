@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { take } from 'rxjs';
 import { User } from '../models/user';
-import { RegisterWithExternal } from '../../../../registerWithExternal';
+import { RegisterWithExternal } from '../models/registerWithExternal';
 
 @Component({
   selector: 'app-register-with-third-party',
