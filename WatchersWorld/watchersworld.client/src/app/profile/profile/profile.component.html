@@ -1,4 +1,4 @@
-<!-- p *ngIf="message">{{message}}</!--p>--> 
+<!-- p *ngIf="message">{{message}}</!--p>-->
 
 <div class="main">
   <br /><br />
@@ -13,10 +13,10 @@
         <h1>João Silva</h1>
       </div>
       <div class="user-icons">
-        <a href="#" class="profile-icon">
+        <a routerLink="/" class="profile-icon">
           <img src="assets/img/statistic.png" alt="Estatisticas">
         </a>
-        <a href="#" class="profile-icon">
+        <a routerLink="/" class="profile-icon">
           <img src="assets/img/messenger.png" alt="Chat">
         </a>
         <a routerLink="/editProfile" class="profile-icon">
@@ -24,11 +24,20 @@
         </a>
       </div>
     </div>
-    <div class="user-details">
-      <p>Descrição: Gosto de Filmes</p>
-      <p>Gênero: M</p>
-      <p>Data de nascimento: 10/10/2000</p>
-    </div>
+    <form class="user-details">
+      <div>
+        <label for="hobby">Descrição:</label>
+        <input type="text" id="hobby" name="hobby" value="Gosto de Filmes" readonly>
+      </div>
+      <div>
+        <label for="gender">Género:</label>
+        <input type="text" id="gender" name="gender" value="M" readonly>
+      </div>
+      <div>
+        <label for="birthdate">Data de nascimento:</label>
+        <input type="date" id="birthdate" name="birthdate" value="2000-10-10" readonly>
+      </div>
+    </form>
     <div class="user-followers">
       <p>Seguidores: 220 • A Seguir: 221</p>
     </div>
@@ -56,17 +65,6 @@
 
     <div class="side-div-suggestions">
       <h2>Sugestões</h2>
-      <ul>
-        <li>
-          <p> Game Of Thrones</p>
-        </li>
-        <li>
-          <p> Game Of Thrones</p>
-        </li>
-        <li>
-          <p> Game Of Thrones</p>
-        </li>
-      </ul>
       <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>

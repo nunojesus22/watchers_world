@@ -76,10 +76,10 @@
   display: inline-block
 }
 
-.profile-icon img {
-  width: 30px;
-  height: auto;
-}
+  .profile-icon img {
+    width: 30px;
+    height: auto;
+  }
 
 
   .profile-icon:hover, .profile-icon:active {
@@ -199,12 +199,15 @@
       margin-right: 10px; /* Espaçamento entre a imagem e o texto */
     }
 
-/* Exemplo de um botão 'Seguir' */
-.follow-btn {
-  padding: 5px 15px;
-  background-color: #blue; /* Escolha a cor que preferir */
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
+input[type="text"],
+input[type="date"] {
+  border: none;
+  outline: none;
+  font-size: 16px;
 }
+
+  /* Se você também quer remover o fundo para parecer que não é um campo editável */
+  input[type="text"]:read-only,
+  input[type="date"]:read-only {
+    background: transparent;
+  }

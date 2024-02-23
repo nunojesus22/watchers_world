@@ -42,6 +42,7 @@
   height: 400px;
 }
 
+
 .user-name-and-icons {
   display: flex;
   flex-direction: row;
@@ -66,7 +67,103 @@
   margin-right: 10px;
 }
 
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------- BOTÕES --------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
+
 .custom-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+
+
+  .custom-button:hover {
+    background-color: lightblue;
+  }
+
+.button-container p {
+  font-weight: bold;
+}
+
+.lock-button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.button-container {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.lock-button img {
+  width: 50px;
+  height: auto;
+}
+
+.lock-button:hover img {
+  opacity: 0.5;
+}
+
+.lock-button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+  .lock-button img {
+    width: 30px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+.image-button img {
+  width: 20px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.lock-button:hover img {
+  opacity: 0.8;
+}
+
+.change-password-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.delete-account-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+.save-changes-button {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #4CAEFE;
@@ -77,78 +174,30 @@
   margin-bottom: 5px;
 }
 
-  .custom-button:hover {
-    background-color: lightblue;
-  }
-
-
-.button-container p{
-    font-weight: bold;
-}
-
-.image-button {
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.button-container{
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
+.save-changes-button-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  margin-right: 20px;
 }
 
 
-.image-button img{
-    width: 50px;
-    height: auto;
-}
-
-  .image-button:hover img {
-    opacity: 0.5;
-  }
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
 .user-details {
   display: flex;
   flex-direction: column; /* Arrange items vertically */
+  width: 75%;
+  margin-top:20px;
 }
 
-.detail-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px; /* Adjust as needed for vertical spacing */
+.profile-icon:hover, .profile-icon:active {
+  background-color: #f0f0f0; /* Cor de fundo quando passa o mouse por cima ou clica */
+  transform: scale(1.1); /* Aumenta ligeiramente o ícone quando passa o mouse por cima ou clica */
 }
-
-.button-container {
-  margin-right: 10px; /* Adjust as needed for horizontal spacing */
-}
-
-.image-button {
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-  .image-button img {
-    width: 20px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-  }
-
-  .image-button:hover img {
-    opacity: 0.8;
-  }
-
-
-
-
-  .profile-icon:hover, .profile-icon:active {
-    background-color: #f0f0f0; /* Cor de fundo quando passa o mouse por cima ou clica */
-    transform: scale(1.1); /* Aumenta ligeiramente o ícone quando passa o mouse por cima ou clica */
-  }
 
 .user-details {
   margin-left: 30px;
@@ -262,12 +311,39 @@
       margin-right: 10px; /* Espaçamento entre a imagem e o texto */
     }
 
-/* Exemplo de um botão 'Seguir' */
-.follow-btn {
-  padding: 5px 15px;
-  background-color: #blue; /* Escolha a cor que preferir */
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
+
+input[type="text"],
+input[type="date"] {
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+  /* Se você também quer remover o fundo para parecer que não é um campo editável */
+  input[type="text"]:read-only,
+  input[type="date"]:read-only {
+    background: transparent;
+  }
+
+
+input[readonly] {
+  background-color: #f3f3f3; /* cor de fundo para campos somente leitura */
+  border: 1px solid #dcdcdc; /* borda para campos somente leitura */
+  cursor: not-allowed; /* cursor para indicar que o campo não é editável */
+}
+
+input:not([readonly]) {
+  background-color: #fff; /* cor de fundo para campos editáveis */
+  border: 1px solid #66afe9; /* borda para campos editáveis */
+  cursor: text; /* cursor de texto para indicar que o campo é editável */
+}
+
+.image-button {
+  cursor: pointer; /* cursor de ponteiro para os botões */
+}
+
+.bold-and-large {
+    margin-top:20px;
+  font-weight: bold;
+  font-size: 20px;
 }

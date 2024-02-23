@@ -1325,3 +1325,4 @@ C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Se
 C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.pdb
 C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Mailjet.Client.dll

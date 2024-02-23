@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
-
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,7 +28,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule 
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

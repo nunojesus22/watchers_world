@@ -9,57 +9,61 @@
 
   <div class="profile-info">
     <div class="user-name-and-icons">
-      <div class="user-name">
-        <h1>João Silva</h1>
-      </div>
-      <div class="user-btns">
-        <div class="button-container">
-          <p> Modo do perfil: </p>
-          <button class="image-button">
-            <img src="assets/img/private.png" alt="Private">
+      <form class="user-name">
+        <div>
+          <input type="text" id="name" name="name"
+                 [(ngModel)]="userName"
+                 [readonly]="!nameEditable"
+                 [class.bold-and-large]="true"> <!-- Aplica a classe independentemente do estado de edição -->
+          <button type="button" class="image-button edit-name-button" (click)="toggleEdit('name')">
+            <img src="assets/img/edit.png" alt="Editar">
           </button>
         </div>
-        <br />
-        <button class="custom-button">Alterar palavra-passe</button>
-        <br />
-        <button class="custom-button">Apagar Conta</button>
+      </form>
+      <div class="button-container">
+        <p> Modo do perfil: </p>
+        <button class="lock-button" (click)="toggleLock()">
+          <img [src]="profileLocked ? 'assets/img/private.png' : 'assets/img/public.png'" alt="Lock Status">
+        </button>
+        <button class="change-password-button">
+          Alterar palavra-passe
+        </button>
+        <button class="delete-account-button">
+          Apagar conta
+        </button>
       </div>
     </div>
 
-
-    <div class="user-details">
-      <div class="detail-container">
-        <div class="button-container">
-          <button class="image-button">
-            <img src="assets/img/edit.png" alt="Button 1">
-          </button>
-        </div>
-        <p>Descrição: Gosto de Filmes</p>
+    <form class="user-details">
+      <div>
+        <label for="hobby">Descrição:</label>
+        <input type="text" id="hobby" name="hobby" [(ngModel)]="hobby" [readonly]="!hobbyEditable">
+        <button type="button" class="image-button" (click)="toggleEdit('hobby')">
+          <img src="assets/img/edit.png" alt="Editar Descrição">
+        </button>
       </div>
-
-      <div class="detail-container">
-        <div class="button-container">
-          <button class="image-button">
-            <img src="assets/img/edit.png" alt="Button 2">
-          </button>
-        </div>
-        <p>Gênero: M</p>
+      <div>
+        <label for="gender">Género:</label>
+        <input type="text" id="gender" name="gender" [(ngModel)]="gender" [readonly]="!genderEditable">
+        <button type="button" class="image-button" (click)="toggleEdit('gender')">
+          <img src="assets/img/edit.png" alt="Editar Género">
+        </button>
       </div>
-
-      <div class="detail-container">
-        <div class="button-container">
-          <button class="image-button">
-            <img src="assets/img/edit.png" alt="Button 3">
-          </button>
-        </div>
-        <p>Data de nascimento: 10/10/2000</p>
+      <div>
+        <label for="birthdate">Data de nascimento:</label>
+        <input type="date" id="birthdate" name="birthdate" [(ngModel)]="birthdate" [readonly]="!birthdateEditable">
+        <button type="button" class="image-button" (click)="toggleEdit('birthdate')">
+          <img src="assets/img/edit.png" alt="Editar Data de Nascimento">
+        </button>
       </div>
-    </div>
-
+    </form>
 
 
     <div class="user-followers">
       <p>Seguidores: 220 • A Seguir: 221</p>
+    </div>
+    <div class="save-changes-button-row">
+      <a class="save-changes-button" routerLink="/profile">Salvar alterações</a>
     </div>
   </div>
 
@@ -85,17 +89,6 @@
 
     <div class="side-div-suggestions">
       <h2>Sugestões</h2>
-      <ul>
-        <li>
-          <p> Game Of Thrones</p>
-        </li>
-        <li>
-          <p> Game Of Thrones</p>
-        </li>
-        <li>
-          <p> Game Of Thrones</p>
-        </li>
-      </ul>
       <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
