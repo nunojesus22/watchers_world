@@ -1,14 +1,24 @@
 ﻿namespace WatchersWorld.Server.DTOs.Account
 {
-    // DTO (Data Transfer Object) for User.
-    // This is used to transfer user-related data, such as authentication tokens.
+    /// <summary>
+    /// DTO for User.
+    /// Used to transfer user-related data, such as authentication tokens.
+    /// </summary>
     public class UserDto
     {
-
-        // Property to hold the JSON Web Token (JWT).
-        // This token is used for authentication and authorization purposes.
+        /// <summary>
+        /// JWT token for authentication and authorization purposes.
+        /// </summary>
         public string JWT { get; set; }
+
+        /// <summary>
+        /// Username of the user.
+        /// </summary>
         public string Username { get; set; }
-        public string? Email { get; set; }
+
+        /// <summary>
+        /// Email address of the user.
+        /// </summary>
+        public string Email { get; set; }
     }
 }

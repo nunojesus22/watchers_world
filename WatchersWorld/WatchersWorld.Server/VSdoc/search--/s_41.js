@@ -1,0 +1,1 @@
+search_result['41']=["topic_0000000000000015.html","ConfirmEmailDto Class","Data Transfer Object (DTO) for confirming email.\r\nUsed to transfer necessary data for email confirmation processes."];

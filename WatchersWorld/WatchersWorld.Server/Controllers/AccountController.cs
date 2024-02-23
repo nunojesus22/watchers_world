@@ -14,7 +14,9 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
-    // Defines routing for the API controller, handling user account-related requests.
+    /// <summary>
+    /// Controller handling user account-related requests such as authentication, registration, email confirmation, and password management.
+    /// </summary>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -30,7 +32,15 @@ namespace WatchersWorld.Server.Controllers
         private readonly EmailService _emailService;
         private readonly IConfiguration _config;
 
-        // Constructor for dependency injection.
+        /// <summary>
+        /// Constructor for AccountController.
+        /// </summary>
+        /// <param name="jWTService">Service for generating JWT tokens.</param>
+        /// <param name="signInManager">Manager for handling sign-in processes.</param>
+        /// <param name="userManager">Manager for user-related operations.</param>
+        /// <param name="emailService">Service for handling email operations.</param>
+        /// <param name="config">Application configuration settings.</param>
+
         public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config)
         {
             _jwtService = jWTService;
@@ -40,6 +50,14 @@ namespace WatchersWorld.Server.Controllers
             _config = config;
         }
 
+        /// <summary>
+        /// Constructor for AccountController.
+        /// </summary>
+        /// <param name="jWTService">Service for generating JWT tokens.</param>
+        /// <param name="signInManager">Manager for handling sign-in processes.</param>
+        /// <param name="userManager">Manager for user-related operations.</param>
+        /// <param name="emailService">Service for handling email operations.</param>
+        /// <param name="config">Application configuration settings.</param>
         [Authorize]
         [HttpGet("api/account/refresh-user-token")]
         public async Task<ActionResult<UserDto>> RefreshUserToken()
@@ -48,6 +66,11 @@ namespace WatchersWorld.Server.Controllers
             return CreateApplicationUserDto(user);
         }
 
+        /// <summary>
+        /// Handles the login process for a user.
+        /// </summary>
+        /// <param name="model">Login DTO containing user credentials.</param>
+        /// <returns>UserDto on successful login; otherwise, returns an error.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
@@ -128,7 +151,11 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
-        // Method to handle registration requests.
+        /// <summary>
+        /// Handles the user registration process.
+        /// </summary>
+        /// <param name="model">Registration DTO containing new user details.</param>
+        /// <returns>ActionResult indicating the result of the registration process.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
         public async Task<IActionResult> Register(RegisterDto model)
@@ -231,6 +258,11 @@ namespace WatchersWorld.Server.Controllers
             return CreateApplicationUserDto(userToAdd);
 
         }
+        /// <summary>
+        /// Confirms a user's email address.
+        /// </summary>
+        /// <param name="model">DTO containing the email and confirmation token.</param>
+        /// <returns>ActionResult indicating the result of the email confirmation process.</returns>
         [HttpPut("api/account/confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto model)
         {
@@ -258,6 +290,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Resends the email confirmation link to a user.
+        /// </summary>
+        /// <param name="email">Email address of the user.</param>
+        /// <returns>ActionResult indicating the result of the resend operation.</returns>
         [HttpPost("api/account/resend-email-confirmation-link/{email}")]
         public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
@@ -281,7 +318,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Handles the process for a user to reset their forgotten password.
+        /// </summary>
+        /// <param name="email">Email address of the user.</param>
+        /// <returns>ActionResult indicating the result of the forgot password process.</returns>
         [HttpPost("api/account/forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
@@ -303,6 +344,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Resets a user's password.
+        /// </summary>
+        /// <param name="model">DTO containing new password details and token.</param>
+        /// <returns>ActionResult indicating the result of the password reset process.</returns>
         [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
@@ -356,7 +402,11 @@ namespace WatchersWorld.Server.Controllers
 
 
         #region Private Helper Methods
-        // Creates a UserDto from user information.
+        /// <summary>
+        /// Creates a UserDto from the provided user information.
+        /// </summary>
+        /// <param name="user">User object containing the user's information.</param>
+        /// <returns>A UserDto object containing username, email, and JWT token.</returns>
         private UserDto CreateApplicationUserDto(User user)
         {
             return new UserDto
@@ -372,18 +422,32 @@ namespace WatchersWorld.Server.Controllers
             return await _userManager.Users.AnyAsync(u => u.Email == email && u.Provider.Equals(provider));
         }
 
-        // Checks if the email already exists in the database.
+        
+        /// <summary>
+        /// Asynchronously checks if the provided email already exists in the database.
+        /// </summary>
+        /// <param name="email">Email address to check.</param>
+        /// <returns>True if the email exists, otherwise false.</returns>
         private async Task<bool> CheckEmailExistsAsync(string email)
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
         }
 
-        // Checks if the username already exists in the database.
+        /// <summary>
+        /// Asynchronously checks if the provided username already exists in the database.
+        /// </summary>
+        /// <param name="username">Username to check.</param>
+        /// <returns>True if the username exists, otherwise false.</returns>
         private async Task<bool> CheckUsernameExistsAsync(string username)
         {
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
+        /// <summary>
+        /// Sends an email for account confirmation to the user.
+        /// </summary>
+        /// <param name="user">User object to whom the confirmation email will be sent.</param>
+        /// <returns>True if the email was sent successfully, otherwise false.</returns>
         private async Task<bool> SendConfirmEmailAsync(User user)
         {
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -400,6 +464,11 @@ namespace WatchersWorld.Server.Controllers
             return await _emailService.SendEmailAsync(emailSend);
         }
 
+        /// <summary>
+        /// Sends an email to the user with instructions on how to reset their password.
+        /// </summary>
+        /// <param name="user">User object to whom the password reset email will be sent.</param>
+        /// <returns>True if the email was sent successfully, otherwise false.</returns>
         private async Task<bool> SendForgotPasswordEmail(User user)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);

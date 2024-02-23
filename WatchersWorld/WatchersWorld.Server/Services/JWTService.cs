@@ -9,14 +9,19 @@ using WatchersWorld.Server.Models.Authentication;
 
 namespace WatchersWorld.Server.Services
 {
-    // JWTService class for creating JSON Web Tokens (JWT).
-    // This service is responsible for generating JWTs for user authentication.
+    /// <summary>
+    /// Service class for creating JSON Web Tokens (JWT).
+    /// This class is responsible for generating JWTs for user authentication.
+    /// </summary>
     public class JWTService
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _jwtKey;
 
-        // Constructor to inject configuration settings.
+        /// <summary>
+        /// Initializes a new instance of the JWTService class.
+        /// </summary>
+        /// <param name="config">Configuration object to access application settings.</param>
         public JWTService(IConfiguration config)
         {
             _config = config;
@@ -25,7 +30,11 @@ namespace WatchersWorld.Server.Services
             _jwtKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]));
         }
 
-        // Method to create a JWT for a given user.
+        /// <summary>
+        /// Creates a JWT for a given user.
+        /// </summary>
+        /// <param name="user">The user for whom the JWT is to be created.</param>
+        /// <returns>A string representing the serialized JWT token.</returns>
         public string CreateJWT(User user)
         {
             // Claims are the pieces of data included within the token.

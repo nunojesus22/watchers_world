@@ -1,0 +1,1 @@
+search_result['108']=["topic_000000000000003A.html","ProfileInfo.CoverPhoto Property","URL or path to the user\u0027s cover photo.\r\nThis is often a larger image displayed prominently at the top of the user\u0027s profile page, typically used for personalization and branding."];

@@ -1,0 +1,1 @@
+search_result['98']=["topic_0000000000000035.html","ProfileInfo Class","Profile class representing a user\u0027s profile.\r\nAssociates additional details such as bio, photos, and status with a user.\r\nThis class is intended to capture and convey user-specific profile information..."];

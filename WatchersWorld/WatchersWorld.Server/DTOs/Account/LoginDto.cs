@@ -2,21 +2,21 @@
 
 namespace WatchersWorld.Server.DTOs.Account
 {
-    // DTO (Data Transfer Object) for user login. 
-    // This is used to transfer login data from the client to the server.
+    /// <summary>
+    /// DTO for user login.
+    /// Used to transfer login data from the client to the server.
+    /// </summary>
     public class LoginDto
     {
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Email address of the user.
         /// </summary>
         [Required(ErrorMessage = "O email é obrigatório!")]
         [EmailAddress(ErrorMessage = "A nomenclatura do email está incorreta!")]
         public string Email { get; set; }
 
         /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
+        /// Password of the user.
         /// </summary>
         [Required(ErrorMessage = "A palavra-passe é obrigatória!")]
         [StringLength(12, ErrorMessage = "A palavra-passe tem de conter entre {2}-{1} caracteres, entre eles pelo menos uma letra minúscula, uma letra maiúscula e um número!", MinimumLength = 8)]

@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"WatchersWorld.Server Reference","topic_0000000000000044.html"],['18',"WatchersWorld.Server.DTOs.Account Namespace","topic_0000000000000014.html"],['29',"LoginDto Class","topic_000000000000001D.html"],['30',"Properties","topic_000000000000001D_props--.html"],['31',"Email Property","topic_000000000000001E.html"]];
