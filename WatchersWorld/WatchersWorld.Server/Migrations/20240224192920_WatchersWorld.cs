@@ -58,6 +58,7 @@ namespace WatchersWorld.Server.Migrations
                     UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(1)", nullable: true),
                     ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CoverPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileStatus = table.Column<int>(type: "int", nullable: false)

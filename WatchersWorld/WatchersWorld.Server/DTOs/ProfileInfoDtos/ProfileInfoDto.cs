@@ -1,23 +1,18 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using WatchersWorld.Server.Models.Authentication.Status;
 
-namespace WatchersWorld.Server.Models.Authentication
+namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 {
-    /// <summary>
-    /// Profile class representing a user's profile.
-    /// Associates additional details such as bio, photos, and status with a user.
-    /// This class is intended to capture and convey user-specific profile information.
-    /// </summary>
-    public class ProfileInfo
+    public class ProfileInfoDto
     {
-        [Key, ForeignKey("User")]
         /// <summary>
         /// Email associated with the user's profile.
         /// Used as a unique identifier for the user's profile and for communication purposes.
         /// </summary>
         public string UserEmail { get; set; }
+
+        public string UserName { get; set; }    
 
         /// <summary>
         /// The user's date of birth.

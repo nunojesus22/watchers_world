@@ -1,29 +1,62 @@
-import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../services/profile.service';
-import { Profile } from '../models/profile';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { Profile } from '../models/profile';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrls: ['./edit-profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class EditProfileComponent {
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
 
   message: string | undefined;
   errorMessages: any;
+  hobbyEditable = false;
+  genderEditable = false;
+  birthdateEditable = false;
+  nameEditable = false; // Variable to control the editability of the name
+  profileLocked = false;
+  isDateEditable: boolean = false;
 
   constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
 
+  toggleEdit(field: string) {
+    switch (field) {
+      case 'hobby':
+        this.hobbyEditable = !this.hobbyEditable;
+        this.toggleFormControl('hobby', this.hobbyEditable);
+        break;
+      case 'gender':
+        this.genderEditable = !this.genderEditable;
+        this.toggleFormControl('gender', this.genderEditable);
+        break;
+      case 'birthdate':
+        this.birthdateEditable = !this.birthdateEditable;
+        this.toggleFormControl('birthdate', this.birthdateEditable);
+        break;
+      default:
+      // Handle default case or throw an error
+    }
+  }
+
+  private toggleFormControl(controlName: string, isEditable: boolean) {
+    if (isEditable) {
+      this.profileForm.get(controlName)?.enable();
+    } else {
+      this.profileForm.get(controlName)?.disable();
+    }
+  }
+
+  toggleLock() {
+    this.profileLocked = !this.profileLocked;
+  }
+
   ngOnInit(): void {
-    //this.profileService.getProfile().subscribe({
-    //  next: (response: any) => this.message = response.value.message,
-    //  error: error => console.log(error)
-    //});
     this.initializeForm();
     this.setFormFields();
   }
@@ -43,15 +76,15 @@ export class ProfileComponent implements OnInit {
         console.log(error);
         return error;
       }
-    },
-    );
+    });
   }
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
-      hobby: [''],
+      hobby: [{ value: '', disabled: !this.hobbyEditable }],
       gender: [''],
-      date: [''],
+      date: [{ value: '', disabled: !this.birthdateEditable }],
+      name: [{ value: '', disabled: !this.nameEditable }]
     });
   }
 
@@ -75,10 +108,5 @@ export class ProfileComponent implements OnInit {
         }
       }
     );
-
-
   }
-
-
-
 }

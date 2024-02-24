@@ -268,6 +268,17 @@ namespace WatchersWorld.Server.Controllers
                 Email = model.Email.ToLower(),
             };
 
+
+            var profileInfoToAdd = new ProfileInfo
+            {
+                UserEmail = model.Email.ToLower(),
+                ProfileStatus = AccountStatus.Public,
+            };
+
+            //fazer verificacoes
+            _context.ProfileInfo.Add(profileInfoToAdd);
+            await _context.SaveChangesAsync();
+
             var result = await _userManager.CreateAsync(userToAdd);
             if (!result.Succeeded) return BadRequest(result.Errors);
 

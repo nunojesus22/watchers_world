@@ -19,23 +19,26 @@
         <a routerLink="/" class="profile-icon">
           <img src="assets/img/messenger.png" alt="Chat">
         </a>
-        <a routerLink="/editProfile" class="profile-icon">
+        <a routerLink="/editProfile" (click)="getUserProfileInfo()" class="profile-icon">
           <img src="assets/img/edit profile.png" alt="Editar perfil">
         </a>
       </div>
     </div>
-    <form class="user-details">
+    <form [formGroup]="profileForm" class="user-details">
       <div>
         <label for="hobby">Descrição:</label>
-        <input type="text" id="hobby" name="hobby" value="Gosto de Filmes" readonly>
+        <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
       </div>
       <div>
-        <label for="gender">Género:</label>
-        <input type="text" id="gender" name="gender" value="M" readonly>
+        <label>Gênero:</label>
+        <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'" >
+        <label for="male">Masculino</label>
+        <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'" >
+        <label for="female">Feminino</label>
       </div>
       <div>
         <label for="birthdate">Data de nascimento:</label>
-        <input type="date" id="birthdate" name="birthdate" value="2000-10-10" readonly>
+        <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
       </div>
     </form>
     <div class="user-followers">

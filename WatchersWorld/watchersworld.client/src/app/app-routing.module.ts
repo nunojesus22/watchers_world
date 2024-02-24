@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { AuthorizationGuard } from './guards/authorization.guard';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 
 const routes: Routes = [
