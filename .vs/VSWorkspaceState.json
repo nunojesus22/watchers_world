@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\WatchersWorld",
-    "\\WatchersWorld\\watchersworld.client",
-    "\\WatchersWorld\\WatchersWorld.Server"
+    "\\WatchersWorld\\WatchersWorld.Server",
+    "\\WatchersWorld\\WatchersWorld.Server\\Services"
   ],
+  "SelectedNode": "\\WatchersWorld\\WatchersWorld.sln",
   "PreviewInSolutionExplorer": false
 }

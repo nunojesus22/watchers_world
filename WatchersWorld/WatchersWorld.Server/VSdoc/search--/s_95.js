@@ -1,0 +1,1 @@
+search_result['95']=["topic_000000000000002D.html","AccountStatus Enumeration","Enum representing the status of an account.\r\nUsed to define whether an account is public or private."];

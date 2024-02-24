@@ -11,6 +11,7 @@ import { SuspendedAccountComponent } from './suspended-account/suspended-account
 import { BlockedAccountComponent } from './blocked-account/blocked-account.component';
 import { SendEmailComponent } from './send-email/send-email.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { RegisterWithThirdPartyComponent } from './register-with-third-party/register-with-third-party.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     SuspendedAccountComponent,
     SendEmailComponent,
     ResetPasswordComponent,
+    RegisterWithThirdPartyComponent,
   ],
   imports: [
     CommonModule,

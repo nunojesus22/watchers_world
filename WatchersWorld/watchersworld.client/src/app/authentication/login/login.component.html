@@ -25,7 +25,7 @@
            [class.has-error]="submitted && (loginForm.get('password')?.errors || (errorMessages['Password'] && !isFieldModified('password')))">
         <i class="fa fa-lock"></i>
         <input formControlName="password" type="password" placeholder="PALAVRA-PASSE"
-               [class.is-invalid]="submitted && loginForm.get('password')?.errors"/>
+               [class.is-invalid]="submitted && loginForm.get('password')?.errors" />
       </div>
 
       <div class="error-container" *ngIf="submitted && (loginForm.get('password')?.errors || errorMessages['Password'])">
@@ -41,6 +41,8 @@
       <authentication-button [buttonText]="'LOGIN'" [buttonType]="'submit'"></authentication-button>
       <a routerLink="/account/send-email/forgot-password" class="forgot-password-link">Esqueceu-se da palavra-passe?</a>
       <div class="divider"></div>
+      <div #googleButton></div>
+
       <authentication-button [buttonText]="'LOGIN COM GOOGLE'" [buttonType]="'submit'" [icon]="'assets/img/google.png'"></authentication-button>
       <span class="register-link">
         Não possui conta?

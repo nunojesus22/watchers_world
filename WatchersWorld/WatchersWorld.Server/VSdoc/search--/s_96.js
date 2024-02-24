@@ -1,0 +1,1 @@
+search_result['96']=["topic_0000000000000030.html","ActivityStatus Enumeration","Enum representing the activity status of a user.\r\nUsed to indicate whether a user is currently online, offline, or in a restricted state."];

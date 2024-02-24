@@ -1,9 +1,9 @@
 <nav>
   <img [routerLink]="['/home']" src="assets/img/Logo.png" alt="Logo Image" class="logo" />
 
-  <a href="#" class="menu-item">
-    <i class="fa fa-bars"></i> <!-- Ícone do menu -->
-    <span>Menu</span> <!-- Texto do menu -->
+  <a class="menu-item" (click)="toggleMenu($event)">
+    <i class="fa fa-bars"></i>
+    <span>Menu</span>
   </a>
 
   <div class="search-bar">
@@ -15,4 +15,18 @@
   <a href="#">Séries</a>
   <a href="#">Filmes</a>
   <img [routerLink]="['/profile']" src="assets/img/user.png" alt="User Icon" class="user-icon" />
+
+
+  <div id="sidebar" class="sidebar">
+    <img class="wwimage" [routerLink]="['/profile']" src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />
+    <a href="#"> <i class="fas fa-envelope"></i> Mensagens</a>
+    <a href="#"> <i class="fas fa-bell"></i> Notificações </a>
+    <a href="#"> <i class="fas fa-user"></i> Perfil </a>
+    <a href="#"> <i class="fas fa-tv"></i> Séries </a>
+    <a href="#"> <i class="fas fa-film"></i> Filmes </a>
+    <a href="#"> <i class="fas fa-cog"></i> Definições </a>
+    <a href="#"> <i class="fas fa-sign-out-alt"></i> Terminar Sessão </a>
+    <a href="#" class="closebtn" (click)="closeNav()"><i class="fas fa-times"></i></a>
+
+  </div>
 </nav>

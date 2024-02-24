@@ -1,9 +1,11 @@
-﻿using Mailjet.Client.TransactionalEmails;
+﻿using Google.Apis.Auth;
+using Mailjet.Client.TransactionalEmails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using System.Security.Claims;
 using System.Text;
 using WatchersWorld.Server.Data;
@@ -14,7 +16,9 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
-    // Defines routing for the API controller, handling user account-related requests.
+    /// <summary>
+    /// Controller handling user account-related requests such as authentication, registration, email confirmation, and password management.
+    /// </summary>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -34,6 +38,14 @@ namespace WatchersWorld.Server.Controllers
 
         // Constructor for dependency injection.
         public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context)
+        /// <summary>
+        /// Constructor for AccountController.
+        /// </summary>
+        /// <param name="jWTService">Service for generating JWT tokens.</param>
+        /// <param name="signInManager">Manager for handling sign-in processes.</param>
+        /// <param name="userManager">Manager for user-related operations.</param>
+        /// <param name="emailService">Service for handling email operations.</param>
+        /// <param name="config">Application configuration settings.</param>
         {
             _jwtService = jWTService;
             _signInManager = signInManager;
@@ -43,6 +55,14 @@ namespace WatchersWorld.Server.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Constructor for AccountController.
+        /// </summary>
+        /// <param name="jWTService">Service for generating JWT tokens.</param>
+        /// <param name="signInManager">Manager for handling sign-in processes.</param>
+        /// <param name="userManager">Manager for user-related operations.</param>
+        /// <param name="emailService">Service for handling email operations.</param>
+        /// <param name="config">Application configuration settings.</param>
         [Authorize]
         [HttpGet("api/account/refresh-user-token")]
         public async Task<ActionResult<UserDto>> RefreshUserToken()
@@ -51,6 +71,11 @@ namespace WatchersWorld.Server.Controllers
             return CreateApplicationUserDto(user);
         }
 
+        /// <summary>
+        /// Handles the login process for a user.
+        /// </summary>
+        /// <param name="model">Login DTO containing user credentials.</param>
+        /// <returns>UserDto on successful login; otherwise, returns an error.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
@@ -65,6 +90,11 @@ namespace WatchersWorld.Server.Controllers
                     }).ToList();
 
                 return BadRequest(new { Errors = errors });
+            }
+
+            if (await CheckProviderAsync(model.Email, "google"))
+            {
+                return BadRequest(new { Message = "Email associado a uma conta google!", Field = "Email" });
             }
 
             var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
@@ -88,8 +118,49 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok ( new { user = CreateApplicationUserDto(user) });
         }
+        [AllowAnonymous]
+        [HttpPost("api/account/login-with-third-party")]
+        public async Task<ActionResult<UserDto>> LoginWithThirdParty(LoginWithExternalDto model)
+        {
+            if (model.Provider.Equals(SD.Google))
+            {
+                try
+                {
 
-        // Method to handle registration requests.
+                    if (!GoogleValidatedAsync(model.AccessToken, model.UserId).GetAwaiter().GetResult())
+
+                    {
+                        return Unauthorized("Unable to login with google");
+                    }
+                }
+                catch (Exception)
+                {
+                    return Unauthorized("Unable to Login with google");
+                }
+
+            }
+            else
+            {
+                return BadRequest("Invalid PRovider");
+            }
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(
+                x => x.Provider == model.Provider &&
+                     x.Email == model.Email
+            );
+
+            if (user == null) return Unauthorized("Unable to find your account");
+            user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+
+            return CreateApplicationUserDto(user);
+
+        }
+
+        /// <summary>
+        /// Handles the user registration process.
+        /// </summary>
+        /// <param name="model">Registration DTO containing new user details.</param>
+        /// <returns>ActionResult indicating the result of the registration process.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
         public async Task<IActionResult> Register(RegisterDto model)
@@ -106,6 +177,11 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { Errors = errors });
             }
 
+            if (await CheckProviderAsync(model.Email, "google"))
+            {
+                return BadRequest(new { Message = "Email associado a uma conta google!", Field = "Email" });
+            }
+
             if (await CheckUsernameExistsAsync(model.Username))
             {
                 return BadRequest(new { Message = "Já existe um utilizador com esse nome de utilizador!", Field = "Username" });
@@ -120,6 +196,7 @@ namespace WatchersWorld.Server.Controllers
             {
                 UserName = model.Username,
                 Email = model.Email.ToLower(),
+                Provider = "Credentials"
             };
 
             var profileInfoToAdd = new ProfileInfo
@@ -150,7 +227,58 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest("Failed to send email. Please contact admin");
             }
         }
+        [HttpPost("/api/account/register-with-third-party")]
 
+        public async Task<ActionResult<UserDto>> RegisterWithThirdParty(RegisterWithExternalDto model)
+        {
+            if (model.Provider.Equals(SD.Google))
+            {
+                try
+                {
+
+                    if (!GoogleValidatedAsync(model.AccessToken, model.UserId).GetAwaiter().GetResult())
+                    {
+                        return Unauthorized("Unable to register with google");
+                    }
+                }
+                catch (Exception)
+                {
+                    return Unauthorized("Unable to Register with google");
+                }
+
+            }
+            else
+            {
+                return BadRequest("Invalid PRovider");
+            }
+
+            //var user = await _userManager.FindByEmailAsync(model.Email);
+            //if (user != null) return Unauthorized("Email Already Exist");
+
+            if (await CheckEmailExistsAsync(model.Email))
+            {
+                return BadRequest(new { Message = "Já existe uma conta associada a esse email!", Field = "Email" });
+            }
+
+            var userToAdd = new User
+            {
+                UserName = model.Username.ToLower(),
+                EmailConfirmed = true,
+                Provider = model.Provider,
+                Email = model.Email.ToLower(),
+            };
+
+            var result = await _userManager.CreateAsync(userToAdd);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return CreateApplicationUserDto(userToAdd);
+
+        }
+        /// <summary>
+        /// Confirms a user's email address.
+        /// </summary>
+        /// <param name="model">DTO containing the email and confirmation token.</param>
+        /// <returns>ActionResult indicating the result of the email confirmation process.</returns>
         [HttpPut("api/account/confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto model)
         {
@@ -178,6 +306,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Resends the email confirmation link to a user.
+        /// </summary>
+        /// <param name="email">Email address of the user.</param>
+        /// <returns>ActionResult indicating the result of the resend operation.</returns>
         [HttpPost("api/account/resend-email-confirmation-link/{email}")]
         public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
@@ -201,7 +334,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Handles the process for a user to reset their forgotten password.
+        /// </summary>
+        /// <param name="email">Email address of the user.</param>
+        /// <returns>ActionResult indicating the result of the forgot password process.</returns>
         [HttpPost("api/account/forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
@@ -223,6 +360,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Resets a user's password.
+        /// </summary>
+        /// <param name="model">DTO containing new password details and token.</param>
+        /// <returns>ActionResult indicating the result of the password reset process.</returns>
         [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
@@ -247,9 +389,40 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
+        {
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(accessToken);
+            if (!payload.Audience.Equals(_config["Google:ClientId"]))
+            {
+                return false;
+            }
+
+            if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+                return false;
+
+            if (payload.ExpirationTimeSeconds == null)
+                return false;
+
+            DateTime now = DateTime.Now.ToUniversalTime();
+            DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+
+            if (now > expiration) return false;
+
+
+            if (!payload.Subject.Equals(userId)) return false;
+
+            return true;
+
+        }
+
 
         #region Private Helper Methods
-        // Creates a UserDto from user information.
+        /// <summary>
+        /// Creates a UserDto from the provided user information.
+        /// </summary>
+        /// <param name="user">User object containing the user's information.</param>
+        /// <returns>A UserDto object containing username, email, and JWT token.</returns>
         private UserDto CreateApplicationUserDto(User user)
         {
             if (user == null) return null;
@@ -261,18 +434,37 @@ namespace WatchersWorld.Server.Controllers
             };
         }
 
-        // Checks if the email already exists in the database.
+        private async Task<bool> CheckProviderAsync(string email, string provider)
+        {
+            return await _userManager.Users.AnyAsync(u => u.Email == email && u.Provider.Equals(provider));
+        }
+
+        
+        /// <summary>
+        /// Asynchronously checks if the provided email already exists in the database.
+        /// </summary>
+        /// <param name="email">Email address to check.</param>
+        /// <returns>True if the email exists, otherwise false.</returns>
         private async Task<bool> CheckEmailExistsAsync(string email)
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
         }
 
-        // Checks if the username already exists in the database.
+        /// <summary>
+        /// Asynchronously checks if the provided username already exists in the database.
+        /// </summary>
+        /// <param name="username">Username to check.</param>
+        /// <returns>True if the username exists, otherwise false.</returns>
         private async Task<bool> CheckUsernameExistsAsync(string username)
         {
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
+        /// <summary>
+        /// Sends an email for account confirmation to the user.
+        /// </summary>
+        /// <param name="user">User object to whom the confirmation email will be sent.</param>
+        /// <returns>True if the email was sent successfully, otherwise false.</returns>
         private async Task<bool> SendConfirmEmailAsync(User user)
         {
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -289,6 +481,11 @@ namespace WatchersWorld.Server.Controllers
             return await _emailService.SendEmailAsync(emailSend);
         }
 
+        /// <summary>
+        /// Sends an email to the user with instructions on how to reset their password.
+        /// </summary>
+        /// <param name="user">User object to whom the password reset email will be sent.</param>
+        /// <returns>True if the email was sent successfully, otherwise false.</returns>
         private async Task<bool> SendForgotPasswordEmail(User user)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -306,4 +503,6 @@ namespace WatchersWorld.Server.Controllers
         }
         #endregion
     }
+
+
 }

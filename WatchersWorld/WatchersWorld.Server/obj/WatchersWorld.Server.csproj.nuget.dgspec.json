@@ -44,6 +44,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.66.0, )"
+            },
             "Mailjet.Api": {
               "target": "Package",
               "version": "[3.0.0, )"

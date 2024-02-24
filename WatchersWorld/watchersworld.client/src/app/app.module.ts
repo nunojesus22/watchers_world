@@ -15,6 +15,7 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { FormsModule } from '@angular/forms';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     ProfileComponent,
     EditProfileComponent,
+    AboutUsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

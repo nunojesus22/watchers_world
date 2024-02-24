@@ -2,6 +2,10 @@
 
 namespace WatchersWorld.Server.DTOs.Account
 {
+    /// <summary>
+    /// Data Transfer Object (DTO) for confirming email.
+    /// Used to transfer necessary data for email confirmation processes.
+    /// </summary>
     public class ConfirmEmailDto
     {
         [Required]
