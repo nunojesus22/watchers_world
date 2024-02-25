@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
 
@@ -37,7 +37,10 @@ export class EditProfileComponent {
         break;
       case 'birthdate':
         this.birthdateEditable = !this.birthdateEditable;
-        this.toggleFormControl('birthdate', this.birthdateEditable);
+        const control = this.profileForm.get('date');
+        if (control != null) {
+        this.birthdateEditable ? control.enable() : control.disable();
+        }
         break;
       default:
       // Handle default case or throw an error
@@ -53,12 +56,13 @@ export class EditProfileComponent {
   }
 
   toggleLock() {
-    this.profileLocked = !this.profileLocked;
+    const newLockStatus = !this.profileLocked;
   }
 
   ngOnInit(): void {
     this.initializeForm();
     this.setFormFields();
+    this.setImages();
   }
 
   ngOnDestroy(): void {
@@ -78,6 +82,28 @@ export class EditProfileComponent {
       }
     });
   }
+
+  setImages() {
+    this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (userData: Profile) => {
+        const coverPhotoElement = document.querySelector(".cover-photo");
+        const profilePhotoElement = document.querySelector(".profile-photo");
+
+        if (coverPhotoElement instanceof HTMLImageElement && profilePhotoElement instanceof HTMLImageElement) {
+          coverPhotoElement.src = userData.coverPhoto;
+          profilePhotoElement.src = userData.profilePhoto;
+        }
+      },
+      error => {
+        if (error.error.errors) {
+          this.errorMessages = error.error.errors;
+        } else {
+          this.errorMessages.push(error.error);
+        }
+      }
+    );
+  }
+
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
@@ -109,4 +135,7 @@ export class EditProfileComponent {
       }
     );
   }
+
+
+
 }

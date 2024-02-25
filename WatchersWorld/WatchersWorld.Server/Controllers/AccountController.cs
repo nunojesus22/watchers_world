@@ -202,7 +202,12 @@ namespace WatchersWorld.Server.Controllers
             var profileInfoToAdd = new ProfileInfo
             {
                 UserEmail = model.Email.ToLower(),
+                Description = "Insira aqui a sua descrição!",
+                Gender = 'M',
+                BirthDate = DateTime.Now,
                 ProfileStatus = AccountStatus.Public,
+                ProfilePhoto = "assets/img/joao-pfp.png",
+                CoverPhoto = "assets/img/pfp2.png"
             };
 
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
@@ -272,7 +277,12 @@ namespace WatchersWorld.Server.Controllers
             var profileInfoToAdd = new ProfileInfo
             {
                 UserEmail = model.Email.ToLower(),
+                Description = "Insira aqui a sua descrição!",
+                Gender = 'M',
+                BirthDate = DateTime.Now,
                 ProfileStatus = AccountStatus.Public,
+                ProfilePhoto = "assets/img/joao-pfp.png",
+                CoverPhoto = "assets/img/pfp2.png"
             };
 
             //fazer verificacoes

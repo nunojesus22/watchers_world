@@ -20,12 +20,9 @@ export class ProfileComponent implements OnInit {
   constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    //this.profileService.getProfile().subscribe({
-    //  next: (response: any) => this.message = response.value.message,
-    //  error: error => console.log(error)
-    //});
     this.initializeForm();
     this.setFormFields();
+    this.setImages();
   }
 
   ngOnDestroy(): void {
@@ -53,6 +50,27 @@ export class ProfileComponent implements OnInit {
       gender: [''],
       date: [''],
     });
+  }
+
+  setImages() {
+    this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (userData: Profile) => {
+        const coverPhotoElement = document.querySelector(".cover-photo");
+        const profilePhotoElement = document.querySelector(".profile-photo");
+
+        if (coverPhotoElement instanceof HTMLImageElement && profilePhotoElement instanceof HTMLImageElement) {
+          coverPhotoElement.src = userData.coverPhoto;
+          profilePhotoElement.src = userData.profilePhoto;
+        }
+      },
+      error => {
+        if (error.error.errors) {
+          this.errorMessages = error.error.errors;
+        } else {
+          this.errorMessages.push(error.error);
+        }
+      }
+    );
   }
 
   setFormFields() {

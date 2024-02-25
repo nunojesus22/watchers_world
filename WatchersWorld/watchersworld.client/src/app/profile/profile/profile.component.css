@@ -211,3 +211,77 @@ input[type="date"] {
   input[type="date"]:read-only {
     background: transparent;
   }
+
+
+/* Para telas de desktop grandes */
+@media (min-width: 1200px) {
+  /* Estilos específicos para desktop aqui */
+}
+
+/* Para tablets ou telas de tamanho médio */
+@media (max-width: 1199px) {
+  .profile-header,
+  .profile-info {
+    width: 100%; /* Faz com que ocupem toda a largura disponível */
+  }
+
+  .profile-photo {
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza a foto do perfil */
+  }
+
+  .user-name {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .side-divs {
+    position: static; /* Remove o posicionamento absoluto */
+    width: auto;
+    margin-top: 20px; /* Espaço acima das divs */
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .side-div-users,
+  .side-div-suggestions {
+    width: 48%; /* Ajusta a largura para caber lado a lado */
+    margin-bottom: 20px; /* Espaço abaixo das divs */
+    height: auto; /* Ajusta a altura automaticamente */
+  }
+}
+
+/* Para telefones celulares ou telas pequenas */
+@media (max-width: 767px) {
+  .profile-header,
+  .profile-info {
+    width: calc(100% - 60px); /* Ajusta a largura com base na margem */
+    margin-left: auto; /* Centraliza as divs horizontalmente */
+    margin-right: auto;
+  }
+
+  .profile-photo {
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza a foto do perfil */
+  }
+
+  .user-name {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .user-name-and-icons,
+  .user-details {
+    flex-direction: column; /* Empilha os elementos verticalmente */
+    align-items: center; /* Centraliza os elementos */
+    margin-top: 10px;
+  }
+
+  .user-icons {
+    margin-top: 10px;
+  }
+
+  .side-divs {
+    display: none; /* Oculta as divs laterais em telas pequenas */
+  }
+}

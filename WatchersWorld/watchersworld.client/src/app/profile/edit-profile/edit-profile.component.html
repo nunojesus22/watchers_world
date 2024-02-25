@@ -2,8 +2,8 @@
 <div class="main">
   <br /><br />
   <div class="profile-header">
-    <img src="assets/img/pfp2.png" class="cover-photo">
-    <img src="assets/img/joao-pfp.png" class="profile-photo">
+    <img src="" class="cover-photo">
+    <img src="" class="profile-photo">
   </div>
 
   <div class="profile-info">
@@ -28,7 +28,7 @@
       <div>
         <label for="hobby">Descrição:</label>
         <input formControlName="hobby" type="text" id="hobby" name="hobby" [readonly]="!hobbyEditable">
-        <button type="button" (click)="toggleEdit('hobby')">Editar</button>
+        <button type="button" class="editButton" (click)="toggleEdit('hobby')">Editar</button>
       </div>
       <div>
         <label>Gênero:</label>
@@ -36,18 +36,18 @@
         <label for="male">Masculino</label>
         <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
         <label for="female">Feminino</label>
-        <button type="button" (click)="toggleEdit('gender')">Editar</button>
+        <button type="button" class="editButton" (click)="toggleEdit('gender')">Editar</button>
       </div>
       <div>
         <label for="date">Data de nascimento:</label>
         <input formControlName="date" type="date" id="date" name="date" [readonly]="!birthdateEditable">
-        <button class="image-button" type="button" (click)="toggleEdit('birthdate')">Editar</button>
+        <button type="button" class="editButton" (click)="toggleEdit('birthdate')">Editar</button>
       </div>
     </form>
 
-    <div class="user-followers">
+    <!--<div class="user-followers">
       <p>Seguidores: 220 • A Seguir: 221</p>
-    </div>
+    </div>-->
     <div class="save-changes-button-row">
       <a class="save-changes-button" routerLink="/profile">Salvar alterações</a>
     </div>

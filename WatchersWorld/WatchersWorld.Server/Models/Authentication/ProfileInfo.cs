@@ -23,7 +23,7 @@ namespace WatchersWorld.Server.Models.Authentication
         /// The user's date of birth.
         /// This information can be used for age verification or displayed in user profiles for personalization.
         /// </summary>
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         // A brief description or bio of the user.
         // This could be a personal statement or any information the user wishes to share publicly.
@@ -33,11 +33,11 @@ namespace WatchersWorld.Server.Models.Authentication
 
         // URL or path to the user's profile photo.
         // This image is typically shown in the user's profile or next to user-generated content.
-        public string? ProfilePhoto { get; set; }
+        public string ProfilePhoto { get; set; }
 
         // URL or path to the user's cover photo.
         // This is often a larger image displayed at the top of the user's profile.
-        public string? CoverPhoto { get; set; }
+        public string CoverPhoto { get; set; }
 
         /// <summary>
         /// Enum representing the visibility status of the profile (e.g., Public, Private).
