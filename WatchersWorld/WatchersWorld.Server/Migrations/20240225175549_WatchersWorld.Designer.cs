@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240225165711_WatchersWorld")]
+    [Migration("20240225175549_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -163,7 +163,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("UserEmail")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CoverPhoto")

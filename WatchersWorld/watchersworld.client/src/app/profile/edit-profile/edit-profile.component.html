@@ -1,10 +1,11 @@
 
 <div class="main">
   <br /><br />
-  <div class="profile-header">
-    <img src="" class="cover-photo">
-    <img src="" class="profile-photo">
-  </div>
+        <div class="profile-header">
+          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
+          <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
+          <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
+        </div>
 
   <div class="profile-info">
     <div class="user-name-and-icons">
@@ -31,7 +32,7 @@
         <button type="button" class="editButton" (click)="toggleEdit('hobby')">Editar</button>
       </div>
       <div>
-        <label>Gênero:</label>
+        <label>Género:</label>
         <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'">
         <label for="male">Masculino</label>
         <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">

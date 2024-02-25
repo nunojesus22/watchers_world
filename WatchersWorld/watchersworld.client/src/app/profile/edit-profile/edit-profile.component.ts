@@ -22,7 +22,9 @@ export class EditProfileComponent {
   nameEditable = false; // Variable to control the editability of the name
   profileLocked = false;
   isDateEditable: boolean = false;
-
+  //fotos
+  coverPhoto: string = 'assets/img/pfp2.png';
+  profilePhoto: string = 'assets/img/joao-pfp.png';
   constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
 
   toggleEdit(field: string) {
@@ -42,6 +44,12 @@ export class EditProfileComponent {
         this.birthdateEditable ? control.enable() : control.disable();
         }
         break;
+      case 'coverPhoto':
+        this.openFileInput('coverPhoto');
+        break;
+      case 'profilePhoto':
+        this.openFileInput('profilePhoto');
+        break;
       default:
       // Handle default case or throw an error
     }
@@ -58,6 +66,39 @@ export class EditProfileComponent {
   toggleLock() {
     const newLockStatus = !this.profileLocked;
   }
+
+
+  openFileInput(target: string) {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
+
+    if (fileInput) {
+      // Set a data attribute to identify the target image in the changeImage function
+      fileInput.setAttribute('data-target', target);
+      fileInput.click();
+    } else {
+      console.error("File input element not found");
+    }
+  }
+
+  changeImage(event: any) {
+    const fileInput = event.target;
+    const target = fileInput.getAttribute('data-target');
+
+    if (target) {
+      const file = (fileInput.files as FileList)[0];
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        // Use a dynamic key to update the property
+        (this as any)[target] = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      console.error("Target not specified for changeImage");
+    }
+  }
+
 
   ngOnInit(): void {
     this.initializeForm();

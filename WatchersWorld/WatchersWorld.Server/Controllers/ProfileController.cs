@@ -91,6 +91,10 @@ namespace WatchersWorld.Server.Controllers
                 data.Description = model.Description.Trim();
                 data.Gender = model.Gender;
                 data.BirthDate = model.BirthDate;
+                data.CoverPhoto = model.CoverPhoto;
+                data.ProfilePhoto = model.ProfilePhoto;
+                data.ProfileStatus = model.ProfileStatus;
+                
 
                 var result = await _userManager.UpdateAsync(user);
 

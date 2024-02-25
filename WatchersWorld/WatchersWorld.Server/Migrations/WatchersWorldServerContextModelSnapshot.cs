@@ -160,7 +160,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("UserEmail")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CoverPhoto")
