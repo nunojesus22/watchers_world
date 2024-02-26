@@ -6,8 +6,9 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { AuthorizationGuard } from './guards/authorization.guard';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
-import { MoviePageComponent } from './movie-page/movie-page.component';
 import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './series-details/series-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,7 +26,8 @@ const routes: Routes = [
   { path: 'about-us', component: AboutUsComponent },
   { path: 'all-movies-page', component: AllMoviesPageComponent },
   { path: 'all-series-page', component: AllSeriesPageComponent},
-  { path: 'movie-page', component: MoviePageComponent},
+  { path: 'movie/:id', component: MovieDetailsComponent},
+  { path: 'serie/:id', component: SeriesDetailsComponent },
 
 
 ];

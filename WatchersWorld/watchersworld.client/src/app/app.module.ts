@@ -14,10 +14,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { MoviePageComponent } from './movie-page/movie-page.component';
 import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
 import { MovieApiServiceComponent } from './movie-api-service/movie-api-service.component';
 import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './series-details/series-details.component';
 
 
 
@@ -29,9 +30,10 @@ import { AllSeriesPageComponent } from './all-series-page/all-series-page.compon
     FooterComponent,
     ProfileComponent,
     AboutUsComponent,
-    MoviePageComponent,
     AllMoviesPageComponent,
     AllSeriesPageComponent,
+    MovieDetailsComponent,
+    SeriesDetailsComponent,
 
   ],
   imports: [
