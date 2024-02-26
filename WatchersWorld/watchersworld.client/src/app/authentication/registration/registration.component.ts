@@ -69,7 +69,7 @@ export class RegistrationComponent implements OnInit{
     if (this.registrationForm.valid) {
       this.authService.register(this.registrationForm.value).subscribe({
         next: (response) => {
-          console.log("Registro bem-sucedido");
+          this.router.navigateByUrl('/account/confirm-email');
         },
         error: error => {
           if (error.error.errors) {

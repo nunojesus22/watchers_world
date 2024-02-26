@@ -38,7 +38,7 @@ export class ResetPasswordComponent {
               this.token = params.get('token');
               this.email = params.get('email');
               if (this.token && this.email) {
-                this.initializeForm(this.email);
+                this.initializeForm();
               } else {
                 this.router.navigateByUrl("/account/login");
               }
@@ -49,9 +49,8 @@ export class ResetPasswordComponent {
     })
   }
 
-  initializeForm(email: string) {
+  initializeForm() {
     this.passwordForm = this.formBuilder.group({
-      email: [{ value: email, disable: true }],
       newPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}"), Validators.maxLength(12)]]
     })
   }

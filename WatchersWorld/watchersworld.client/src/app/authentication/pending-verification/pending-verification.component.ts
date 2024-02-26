@@ -19,14 +19,13 @@ export class PendingVerificationComponent implements OnInit{
   ) {
 
   }
-
-
   ngOnInit(): void {
     this.authService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
         if (user) {
           this.router.navigateByUrl('/home');
-        } else {
+        }
+        else {
           this.activatedRouter.queryParamMap.subscribe({
             next: (params: any) => {
               const confirmEmail: ConfirmEmail = {
@@ -36,7 +35,8 @@ export class PendingVerificationComponent implements OnInit{
 
               if (confirmEmail.email == undefined || confirmEmail.token == undefined) {
                 this.success = false;
-              } else {
+              }
+              else {
                 this.authService.confirmEmail(confirmEmail).subscribe({
                   next: (response: any) => {
                     this.router.navigateByUrl('/account/login');
@@ -65,6 +65,4 @@ export class PendingVerificationComponent implements OnInit{
   login() {
     this.router.navigateByUrl('/account/login');
   }
-
-
 }

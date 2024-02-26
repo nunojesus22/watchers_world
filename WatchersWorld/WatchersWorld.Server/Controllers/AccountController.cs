@@ -248,7 +248,7 @@ namespace WatchersWorld.Server.Controllers
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
-                if(!result.Succeeded)
+                if(result.Succeeded)
                 {
                     return Ok(new JsonResult(new { title = "Email Confirmed", message = "O teu email foi confirmado com sucesso! Consegues dar login agora." }));
                 }
@@ -310,23 +310,23 @@ namespace WatchersWorld.Server.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
-            if (!user.EmailConfirmed) return BadRequest(new { Message = "O email tem de ser confirmado primeiro!", Field = "Email" });
+            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Password" });
+            if (!user.EmailConfirmed) return BadRequest(new { Message = "O email tem de ser confirmado primeiro!", Field = "Password" });
             try
             {
                 var decodedTokenBytes = WebEncoders.Base64UrlDecode(model.Token);
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
-                if (!result.Succeeded)
+                if (result.Succeeded)
                 {
                     return Ok(new JsonResult(new { title = "Nova password confirmada", message = "A tua password foi alterada com sucesso! Consegues dar login agora." }));
                 }
-                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Email" });
+                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Password" });
             }
             catch
             {
-                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Email" });
+                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Password" });
             }
         }
 
