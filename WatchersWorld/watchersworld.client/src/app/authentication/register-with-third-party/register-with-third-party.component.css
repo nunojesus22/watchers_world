@@ -112,10 +112,10 @@ a {
   display: flex;
 }
 
-  .error-container span {
-    width: 100%;
-    padding: 5px 20px;
-  }
+.error-container span {
+  width: 100%;
+  padding: 5px 20px;
+}
 
 .error-message {
   font-size: 14px;

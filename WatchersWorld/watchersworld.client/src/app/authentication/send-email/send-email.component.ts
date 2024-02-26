@@ -65,7 +65,8 @@ export class SendEmailComponent implements OnInit{
             }
           }
         });
-      } else if (this.mode.includes('forgot-password')) {
+      }
+      else if (this.mode.includes('forgot-password')) {
         this.authService.forgotPassword(this.emailValue).subscribe({
           next: (response: any) => {
             this.router.navigateByUrl('/account/login');
@@ -90,6 +91,6 @@ export class SendEmailComponent implements OnInit{
   }
 
   cancel() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/account/login');
   }
 }

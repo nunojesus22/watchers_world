@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { take } from 'rxjs';
 import { User } from '../models/user';
-import { RegisterWithExternal } from '../../../../registerWithExternal';
+import { RegisterWithExternal } from '../models/registerWithExternal';
 
 @Component({
   selector: 'app-register-with-third-party',
@@ -27,6 +27,7 @@ export class RegisterWithThirdPartyComponent implements OnInit {
   constructor(private accountService: AuthenticationService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private ngZone: NgZone,
     private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -34,7 +35,6 @@ export class RegisterWithThirdPartyComponent implements OnInit {
       next: (user: User | null) => {
         if (user) {
           this.router.navigateByUrl('/');
-
         } else {
           this.activatedRoute.queryParamMap.subscribe({
             next: (params: any) => {
@@ -42,18 +42,9 @@ export class RegisterWithThirdPartyComponent implements OnInit {
               this.access_token = params.get('access_token');
               this.userId = params.get('userId');
               this.email = params.get('email');
-
-              console.log(this.provider);
-              console.log(this.access_token);
-              console.log(this.userId);
-              console.log("ola", this.email);
-
               if (this.provider && this.access_token && this.userId && this.email && (this.provider === 'google')) {
-
                 this.initializeForm();
-
               } else {
-
                 this.router.navigateByUrl('/account/register');
               }
             }
@@ -64,8 +55,8 @@ export class RegisterWithThirdPartyComponent implements OnInit {
         }
       }
     });
-
   }
+
   initializeForm() {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
@@ -75,45 +66,36 @@ export class RegisterWithThirdPartyComponent implements OnInit {
 
   register() {
     this.submitted = true;
-    this.errorMessages = [];
+    this.errorMessages = {};
+    this.submittedValues = {};
 
     if (this.registerForm.valid && this.userId && this.access_token && this.provider && this.email) {
       const userName = this.registerForm.get('username')?.value;
-      const model = new RegisterWithExternal(userName, this.userId, this.access_token, this.provider, this.email)
-      console.log(model);
+      const model = new RegisterWithExternal(userName, this.userId, this.access_token, this.provider, this.email);
       this.accountService.registerWithThirdParty(model).subscribe({
         next: _ => {
-          this.router.navigateByUrl('/')
-          console.log(_);
-        }
-
-        ,
+          this.router.navigateByUrl('/');
+        },
         error: error => {
-          if (error.error.errors) {
-            error.error.errors.forEach((value: any) => {
-              if (!this.errorMessages[value.field]) { //check if the error with this field already exists
-                this.errorMessages[value.field] = value.message;
-                //console.log(error.error);
-              }
-            });
+          this.ngZone.run(() => {
+            this.errorMessages[error.error.field] = error.error.message;
             this.saveSubmittedValues();
-          } else {
-            this.errorMessages[error.error.field] = error.error;
-            console.log(error.error);
-
-            this.saveSubmittedValues();
-          }
+          });
         }
       });
     }
-
   }
+
   isFieldModified(fieldName: string) {
     return this.registerForm.get(fieldName)!.value !== this.submittedValues[fieldName];
   }
   private saveSubmittedValues(): void {
     this.submittedValues["username"] = this.registerForm.get("username")!.value;
 
+  }
+
+  registerBack() {
+    this.router.navigateByUrl('/account/register');
   }
 
 }
