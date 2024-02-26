@@ -182,7 +182,7 @@ export class EditProfileComponent {
     const gender = this.profileForm.get('gender')?.value;
     const date = this.profileForm.get('date')?.value;
 
-    const data = new Profile(date, hobby, gender, "assets/img/joao-pfp.png", "assets/img/pfp2.png");
+    const data = new Profile(date, hobby, gender, "assets/img/joao-pfp.png", "assets/img/pfp2.png", "Public");
     
     console.log(data);
     console.log(this.profileForm.valid);

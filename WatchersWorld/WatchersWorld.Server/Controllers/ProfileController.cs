@@ -93,7 +93,7 @@ namespace WatchersWorld.Server.Controllers
                 data.BirthDate = model.BirthDate;
                 data.CoverPhoto = model.CoverPhoto;
                 data.ProfilePhoto = model.ProfilePhoto;
-                //data.ProfileStatus = model.ProfileStatus;
+                data.ProfileStatus = model.ProfileStatus;
 
                 _context.ProfileInfo.Update(data);
 

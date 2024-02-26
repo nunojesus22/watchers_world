@@ -6,7 +6,7 @@ export class Profile {
   gender: string | null;
   profilePhoto: string;
   coverPhoto: string;
-  profileStatus!: string;
+  profileStatus: string;
 
   constructor(
     birthDate: Date,
@@ -14,13 +14,13 @@ export class Profile {
     gender: string | null,
     profilePhoto: string,
     coverPhoto: string,
-    //profileStatus: string
+    profileStatus: string
   ) {
     this.birthDate = birthDate;
     this.description = description;
     this.gender = gender;
     this.profilePhoto = profilePhoto;
     this.coverPhoto = coverPhoto;
-    //this.profileStatus = profileStatus;
+    this.profileStatus = profileStatus;
   }
 }

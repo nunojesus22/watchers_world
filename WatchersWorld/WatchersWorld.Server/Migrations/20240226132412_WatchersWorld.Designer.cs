@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240225175549_WatchersWorld")]
+    [Migration("20240226132412_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -178,8 +178,8 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfileStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("ProfileStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserEmail");
 

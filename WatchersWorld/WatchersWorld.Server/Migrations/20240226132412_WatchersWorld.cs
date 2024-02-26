@@ -61,7 +61,7 @@ namespace WatchersWorld.Server.Migrations
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: true),
                     ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CoverPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProfileStatus = table.Column<int>(type: "int", nullable: false)
+                    ProfileStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

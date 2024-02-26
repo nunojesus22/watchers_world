@@ -43,6 +43,6 @@ namespace WatchersWorld.Server.Models.Authentication
         /// Enum representing the visibility status of the profile (e.g., Public, Private).
         /// It dictates the visibility or accessibility of the profile to other users on the platform.
         /// </summary>
-        public AccountStatus ProfileStatus { get; set; }
+        public string ProfileStatus { get; set; }
     }
 }

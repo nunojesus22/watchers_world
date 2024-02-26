@@ -205,7 +205,7 @@ namespace WatchersWorld.Server.Controllers
                 Description = "Insira aqui a sua descrição!",
                 Gender = 'M',
                 BirthDate = DateTime.Now,
-                ProfileStatus = AccountStatus.Public,
+                ProfileStatus = "Public",
                 ProfilePhoto = "assets/img/joao-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png"
             };
@@ -280,7 +280,7 @@ namespace WatchersWorld.Server.Controllers
                 Description = "Insira aqui a sua descrição!",
                 Gender = 'M',
                 BirthDate = DateTime.Now,
-                ProfileStatus = AccountStatus.Public,
+                ProfileStatus = "Public",
                 ProfilePhoto = "assets/img/joao-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png"
             };

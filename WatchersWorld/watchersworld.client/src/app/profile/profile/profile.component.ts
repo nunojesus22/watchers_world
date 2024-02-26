@@ -76,26 +76,28 @@ export class ProfileComponent implements OnInit {
   setFormFields() {
     const userName = document.querySelector("h1");
     this.profileForm.get('gender')?.disable();
-    this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (userData: Profile) => {
-        if (userName) { userName.textContent = userData.userName.toUpperCase(); }
-        this.profileForm.patchValue({
-          hobby: userData.description = userData.description || "Por definir",
-          gender: userData.gender = userData.gender || "Por definir",
-          date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
-        });
-      },
-      error => {
-        if (error.error.errors) {
-          this.errorMessages = error.error.errors;
-        } else {
-          this.errorMessages.push(error.error);
+    this.profileService.getUserData()
+      .pipe(takeUntil(this.unsubscribed$))
+      .subscribe({
+        next: (userData: Profile) => {
+          if (userName) { userName.textContent = userData.userName.toUpperCase(); }
+          this.profileForm.patchValue({
+            hobby: userData.description || "Por definir",
+            gender: userData.gender || "Por definir",
+            date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
+          });
+        },
+        error: (error) => {
+          console.error("Error while fetching user data:", error);
+          if (error.error && error.error.errors) {
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.message || 'An error occurred while fetching user data.');
+          }
         }
-      }
-    );
-
-
+      });
   }
+
 
 
 
