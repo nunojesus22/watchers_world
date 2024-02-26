@@ -1,29 +1,4 @@
-.session-container {
-  padding: 10px;
-  background-color: #f2f2f2; /* Cor de fundo da div */
-  border-radius: 5px;
-  display: flex;
-  align-items: center; /* Alinha verticalmente o conteúdo da div */
-  justify-content: space-between; /* Espaçamento entre o texto de boas-vindas e o botão */
-  height: 50px; /* Altura da div */
-  margin: 20px; /* Margem ao redor da div */
-}
 
-.logout-button {
-  padding: 10px 20px;
-  background-color: #f44336; /* Vermelho para indicar ação de logout */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease;
-}
-
-  .logout-button:hover {
-    background-color: #d32f2f; /* Cor um pouco mais escura ao passar o mouse */
-  }
 
 /* Ajustes responsivos, se necessário */
 @media (max-width: 768px) {
@@ -37,31 +12,8 @@
     font-size: 0.8rem;
     margin-top: 10px; /* Espaçamento acima do botão */
   }
-
 }
 
-.main-page {
-    height:400px;
-}
-
-.carousel-inner {
-  height: 700px;
-}
-
-  .carousel-inner .carousel-item img {
-    height: 700px;
-    object-fit: cover;
-  }
-
-.carousel-caption h2 {
-  color: #E50914;
-  font-weight: bold;
-  font-size: 30px;
-}
-
-.carousel-caption p {
-  color: #ffffff;
-}
 
 .rowposter {
   display: flex;
@@ -90,13 +42,25 @@
 .rowposter::-webkit-scrollbar {
   display: none;
 }
+
 .button-nav {
   font-size: 3.5em;
   background-color: transparent;
   border: none;
   color: dodgerblue;
 }
-
+.expand-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
 .row-container {
   display: flex;
   align-items: center;
@@ -112,7 +76,6 @@
 
 .row {
   margin-top: 5em;
-
 }
 
 
@@ -126,14 +89,6 @@
   align-items: center;
 }
 
-.poster-image-container {
-  flex: 1;
-}
-
-.carousel-caption {
-  flex: 2;
-}
-
-.seu-texto {
-  flex: 1;
+.flex-wrap {
+  flex-wrap: nowrap !important;
 }

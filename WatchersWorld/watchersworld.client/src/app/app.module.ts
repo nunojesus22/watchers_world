@@ -16,6 +16,11 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { FormsModule } from '@angular/forms';
 import { AboutUsComponent } from './about-us/about-us.component';
+import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
+import { MovieApiServiceComponent } from './movie-api-service/movie-api-service.component';
+import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './series-details/series-details.component';
 
 
 @NgModule({
@@ -27,13 +32,20 @@ import { AboutUsComponent } from './about-us/about-us.component';
     ProfileComponent,
     EditProfileComponent,
     AboutUsComponent,
+    AllMoviesPageComponent,
+    AllSeriesPageComponent,
+    MovieDetailsComponent,
+    SeriesDetailsComponent,
+
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule 
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    MovieApiServiceComponent,
+
   ],
   bootstrap: [AppComponent]
 })

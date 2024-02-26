@@ -6,6 +6,10 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { AuthorizationGuard } from './guards/authorization.guard';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { AboutUsComponent } from './about-us/about-us.component';
+import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
+import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './series-details/series-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -22,6 +26,11 @@ const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule)},
   { path: 'about-us', component: AboutUsComponent },
+  { path: 'all-movies-page', component: AllMoviesPageComponent },
+  { path: 'all-series-page', component: AllSeriesPageComponent},
+  { path: 'movie/:id', component: MovieDetailsComponent},
+  { path: 'serie/:id', component: SeriesDetailsComponent },
+
 
 ];
 

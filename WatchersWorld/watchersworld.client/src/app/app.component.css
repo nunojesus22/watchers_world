@@ -8,6 +8,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Use Viewport Height para garantir que o conteúdo preencha a altura da tela */
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(40, 40, 40, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
 .container {

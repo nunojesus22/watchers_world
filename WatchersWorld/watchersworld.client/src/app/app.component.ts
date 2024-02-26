@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthenticationService } from './authentication/services/authentication.service';
 
 @Component({
@@ -9,7 +9,10 @@ import { AuthenticationService } from './authentication/services/authentication.
 })
 export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient, private authService : AuthenticationService) {}
+  constructor(private http: HttpClient, private authService: AuthenticationService) {
+
+
+  }
 
   ngOnInit() {
     this.refreshUser();
@@ -28,4 +31,5 @@ export class AppComponent implements OnInit {
       this.authService.refreshUser(null).subscribe();
     }
   }
+
 }
