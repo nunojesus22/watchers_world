@@ -141,15 +141,20 @@ namespace WatchersWorld.Server.Controllers
             }
             else
             {
-                return BadRequest("Invalid PRovider");
+                return BadRequest("Invalid Provider");
             }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(
-                x => x.Provider == model.Provider &&
-                     x.Email == model.Email
-            );
+            if (await CheckProviderAsync(model.Email, "Credentials"))
+            {
+                return BadRequest(new { Message = "Email associado a uma conta com email e password!", Field = "ThirdPartyEmail" });
+            }
 
-            if (user == null) return Unauthorized("Unable to find your account");
+            var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "ThirdPartyEmail" });
+            }
+
             user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
 
             return CreateApplicationUserDto(user);
@@ -232,8 +237,9 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest("Failed to send email. Please contact admin");
             }
         }
-        [HttpPost("/api/account/register-with-third-party")]
 
+
+        [HttpPost("/api/account/register-with-third-party")]
         public async Task<ActionResult<UserDto>> RegisterWithThirdParty(RegisterWithExternalDto model)
         {
             if (model.Provider.Equals(SD.Google))
@@ -254,21 +260,18 @@ namespace WatchersWorld.Server.Controllers
             }
             else
             {
-                return BadRequest("Invalid PRovider");
+                return BadRequest("Invalid Provider");
             }
-
-            //var user = await _userManager.FindByEmailAsync(model.Email);
-            //if (user != null) return Unauthorized("Email Already Exist");
 
             if (await CheckEmailExistsAsync(model.Email))
             {
-                return BadRequest(new { Message = "Já existe uma conta associada a esse email!", Field = "Email" });
+                return BadRequest(new { Message = "Já existe uma conta associada a esse email. Volte atrás e escolha outro email!", Field = "ThirdPartyEmail" });
             }
 
             var userToAdd = new User
             {
                 UserName = model.Username.ToLower(),
-                EmailConfirmed = true,
+                EmailConfirmed = false,
                 Provider = model.Provider,
                 Email = model.Email.ToLower(),
             };
@@ -293,7 +296,6 @@ namespace WatchersWorld.Server.Controllers
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             return CreateApplicationUserDto(userToAdd);
-
         }
         /// <summary>
         /// Confirms a user's email address.
@@ -314,7 +316,7 @@ namespace WatchersWorld.Server.Controllers
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
-                if(!result.Succeeded)
+                if(result.Succeeded)
                 {
                     return Ok(new JsonResult(new { title = "Email Confirmed", message = "O teu email foi confirmado com sucesso! Consegues dar login agora." }));
                 }
@@ -390,23 +392,23 @@ namespace WatchersWorld.Server.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
-            if (!user.EmailConfirmed) return BadRequest(new { Message = "O email tem de ser confirmado primeiro!", Field = "Email" });
+            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Password" });
+            if (!user.EmailConfirmed) return BadRequest(new { Message = "O email tem de ser confirmado primeiro!", Field = "Password" });
             try
             {
                 var decodedTokenBytes = WebEncoders.Base64UrlDecode(model.Token);
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
-                if (!result.Succeeded)
+                if (result.Succeeded)
                 {
                     return Ok(new JsonResult(new { title = "Nova password confirmada", message = "A tua password foi alterada com sucesso! Consegues dar login agora." }));
                 }
-                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Email" });
+                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Password" });
             }
             catch
             {
-                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Email" });
+                return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Password" });
             }
         }
 

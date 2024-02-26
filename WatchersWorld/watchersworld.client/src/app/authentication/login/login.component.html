@@ -6,18 +6,21 @@
 
 
       <div class="input-with-icon"
-           [class.has-error]="submitted && (loginForm.get('email')?.errors || (errorMessages['Email'] && !isFieldModified('email')))">
+           [class.has-error]="(submitted && (loginForm.get('email')?.errors || (errorMessages['Email'] && !isFieldModified('email')))) || errorMessages['ThirdPartyEmail']">
         <i class="fa fa-envelope"></i>
         <input formControlName="email" type="email" placeholder="EMAIL"
                [class.is-invalid]="submitted && loginForm.get('email')?.errors" />
       </div>
 
-      <div class="error-container" *ngIf="submitted && (loginForm.get('email')?.errors || errorMessages['Email'])">
-        <span class="error-message" *ngIf="loginForm.get('email')?.hasError('required')">
+      <div class="error-container" *ngIf="(submitted && (loginForm.get('email')?.errors || errorMessages['Email'])) || errorMessages['ThirdPartyEmail']">
+        <span class="error-message" *ngIf="loginForm.get('email')?.hasError('required') && !errorMessages['ThirdPartyEmail']">
           O email é obrigatório!
         </span>
         <span class="error-message" *ngIf="!loginForm.get('email')?.errors && errorMessages['Email'] && !isFieldModified('email')">
           {{ errorMessages['Email'] }}
+        </span>
+        <span class="error-message" *ngIf="errorMessages['ThirdPartyEmail']">
+          {{ errorMessages['ThirdPartyEmail'] }}
         </span>
       </div>
 

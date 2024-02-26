@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, NgZone } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,6 +26,8 @@ export class RegistrationComponent implements OnInit{
     private formBuilder: FormBuilder,
     private router: Router,
     private _renderer2: Renderer2,
+    private ngZone: NgZone,
+
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.authService.user$.pipe(take(1)).subscribe({
@@ -49,7 +51,6 @@ export class RegistrationComponent implements OnInit{
     script1.async = 'true';
     script1.defer = 'true';
     this._renderer2.appendChild(this._document.body, script1);
-
   }
 
   initializeForm() {
@@ -68,12 +69,12 @@ export class RegistrationComponent implements OnInit{
     if (this.registrationForm.valid) {
       this.authService.register(this.registrationForm.value).subscribe({
         next: (response) => {
-          console.log("Registro bem-sucedido");
+          this.router.navigateByUrl('/account/confirm-email');
         },
         error: error => {
           if (error.error.errors) {
             error.error.errors.forEach((value: any) => {
-              if (!this.errorMessages[value.field]) { //check if the error with this field already exists
+              if (!this.errorMessages[value.field]) {
                 this.errorMessages[value.field] = value.message;
               }
             });
@@ -114,8 +115,10 @@ export class RegistrationComponent implements OnInit{
     };
   }
   private async googleCallBack(response: CredentialResponse) {
-    const decodedToken: any = jwtDecode(response.credential);
-    this.router.navigateByUrl(`/account/register/third-party/google?access_token=${response.credential}&userId=${decodedToken.sub}&email=${decodedToken.email}`);
+    this.ngZone.run(() => {
+      const decodedToken: any = jwtDecode(response.credential);
+      this.router.navigateByUrl(`/account/register/third-party/google?access_token=${response.credential}&userId=${decodedToken.sub}&email=${decodedToken.email}`);
+    });
   }
 
 }

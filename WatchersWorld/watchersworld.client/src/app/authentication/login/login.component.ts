@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Renderer2, ViewChild, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
@@ -28,6 +28,8 @@ export class LoginComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private _renderer2: Renderer2,
+    private ngZone: NgZone,
+
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.authService.user$.pipe(take(1)).subscribe({
@@ -95,13 +97,13 @@ export class LoginComponent {
             this.errorMessages[error.error.field] = error.error.message;
             this.saveSubmittedValues();
           }
-          
+
         }
       });
     }
   }
 
-   private initializeGoogleButton() {
+  private initializeGoogleButton() {
     (window as any).onGoogleLibraryLoad = () => {
       //@ts-ignore
       google.accounts.id.initialize({
@@ -117,23 +119,31 @@ export class LoginComponent {
       );
     };
   }
+
   private async googleCallBack(response: CredentialResponse) {
+    this.errorMessages = {};
+    this.submittedValues = {};
+
     const decodedToken: any = jwtDecode(response.credential);
-    this.authService.loginWithThirdParty(new LoginWithExternal(response.credential, decodedToken.sub, "google", decodedToken.email))//
-      .subscribe({
-        next: _ => {
+    this.authService.loginWithThirdParty(new LoginWithExternal(response.credential, decodedToken.sub, "google", decodedToken.email)).subscribe({
+      next: _ => {
+        this.ngZone.run(() => {
           if (this.returnUrl) {
-             this.router.navigateByUrl(this.returnUrl);
+            this.router.navigateByUrl(this.returnUrl);
           } else {
             this.router.navigateByUrl('/');
           }
-
-        }, error: error => {
-            console.log("hello");
-        }
-      });
-
+        });
+      },
+      error: error => {
+        this.ngZone.run(() => {
+          this.errorMessages[error.error.field] = error.error.message;
+          this.saveSubmittedValues();
+        });
+      }
+    });
   }
+
   isFieldModified(fieldName: string): boolean {
     return this.loginForm.get(fieldName)!.value !== this.submittedValues[fieldName];
   }
