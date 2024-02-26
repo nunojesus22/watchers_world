@@ -14425,19 +14425,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nunoj\\.nuget\\packages\\": {}
+    "C:\\Users\\dalia\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "projectUniqueName": "C:\\Users\\dalia\\OneDrive\\Documentos\\GitHub\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
       "projectName": "WatchersWorld.Server",
-      "projectPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-      "packagesPath": "C:\\Users\\nunoj\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+      "projectPath": "C:\\Users\\dalia\\OneDrive\\Documentos\\GitHub\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "packagesPath": "C:\\Users\\dalia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dalia\\OneDrive\\Documentos\\GitHub\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\nunoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\dalia\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

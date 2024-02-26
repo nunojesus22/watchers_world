@@ -1,24 +1,26 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../authentication/services/authentication.service';
 import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
-import { Meta, Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+
 
 interface MovieCategory {
   name: string;
   results: any[];
   activeIndex: number;
+  showAll: boolean;
+
 }
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-all-series-page',
+  templateUrl: './all-series-page.component.html',
+  styleUrl: './all-series-page.component.css'
 })
-export class HomeComponent {
+
+export class AllSeriesPageComponent {
   categories: MovieCategory[] = [];
 
-  constructor(public authService: AuthenticationService, private router: Router, private service: MovieApiServiceComponent, private title: Title, private meta: Meta) { }
+  constructor(private route: Router, private service: MovieApiServiceComponent) { }
 
   ngOnInit(): void {
     this.initCategories();
@@ -26,16 +28,12 @@ export class HomeComponent {
 
   initCategories() {
     this.categories = [
-      { name: 'Banner', results: [], activeIndex: 0 },
-      { name: 'Trending Movies', results: [], activeIndex: 0 },
-      { name: 'Top Rated Series', results: [], activeIndex: 0 },
-      { name: 'Action Movies', results: [], activeIndex: 0 },
-      { name: 'Adventure Movies', results: [], activeIndex: 0 },
-      { name: 'Comedy Movies', results: [], activeIndex: 0 },
-      { name: 'Animation Movies', results: [], activeIndex: 0 },
-      { name: 'Documentary Movies', results: [], activeIndex: 0 },
-      { name: 'ScienceFiction Movies', results: [], activeIndex: 0 },
-      { name: 'Thriller Movies', results: [], activeIndex: 0 },
+      { name: 'Trending Series', results: [], activeIndex: 0, showAll: false },
+      { name: 'Action and Adventure', results: [], activeIndex: 0, showAll: false },
+      { name: 'Drama', results: [], activeIndex: 0, showAll: false },
+      { name: 'Mystery', results: [], activeIndex: 0, showAll: false },
+      { name: 'Animation', results: [], activeIndex: 0, showAll: false },
+
     ];
 
     this.fetchMovies();
@@ -43,17 +41,14 @@ export class HomeComponent {
 
   fetchMovies() {
     const fetchMethods = [
-      this.service.bannerApiData(),
-      this.service.trendingMovieApiData(),
       this.service.fetchTopRatedSeries(),
-      this.service.fetchActionMovies(),
-      this.service.fetchAdventureMovies(),
-      this.service.fetchComedyMovies(),
-      this.service.fetchAnimationMovies(),
-      this.service.fetchDocumentaryMovies(),
-      this.service.fetchScienceFictionMovies(),
-      this.service.fetchThrillerMovies(),
-    ];
+      this.service.fetchActionAndAdvetureSeries(),
+      this.service.fetchDramaSeries(),
+      this.service.fetchMysterySeries(),
+      this.service.fetchAnimationSeries(),
+
+
+  ];
 
     fetchMethods.forEach((fetchMethod, index) => {
       fetchMethod.subscribe((result) => {
@@ -62,9 +57,6 @@ export class HomeComponent {
     });
   }
 
-  logout() {
-    this.authService.logout();
-  }
 
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
@@ -93,7 +85,17 @@ export class HomeComponent {
       category.activeIndex = newIndex < 0 ? Math.max(0, category.results.length - batchSize) : newIndex;
     }
   }
-
-
-
+  toggleShowAll(categoryName: string) { // Adicione este método
+    const category = this.categories.find(cat => cat.name === categoryName);
+    if (category) {
+      category.showAll = !category.showAll;
+    }
+  }
+  getRows(movies: any[]) {
+    const rows = [];
+    for (let i = 0; i < movies.length; i += 4) {
+      rows.push(movies.slice(i, i + 4));
+    }
+    return rows;
+  }
 }

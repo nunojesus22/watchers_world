@@ -1,0 +1,79 @@
+.movie-page-container {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  min-height: 100vh; /* Define a altura mínima para ocupar toda a tela verticalmente */
+  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(40,40,40,1) 50%, rgba(0,0,0,1) 100%);
+}
+
+.movie-page-box {
+  width: 80%;
+  max-width: 800px; /* Defina um tamanho máximo para a caixa */
+  background-color: #ffffff; /* Adicione uma cor de fundo se necessário */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adicione uma sombra para destacar a caixa */
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.movie-page-header {
+  color: black;
+  font-size: 48px;
+  font-family: Inter;
+  font-weight: 700;
+  word-wrap: break-word;
+  text-align: center; /* Centraliza o texto horizontalmente */
+  border-bottom: 2px solid black; /* Adiciona uma borda inferior preta */
+}
+
+.sinopse-text{
+  width: 100%;
+  color: black;
+  font-size: 25px;
+  font-family: Inter;
+  font-weight: 400;
+  word-wrap: break-word;
+  margin-top: 20px; /* Adiciona margem superior para separação */
+}
+
+.text-header {
+  color: black;
+  font-size: 30px;
+  font-family: Inter;
+  font-weight: 700;
+}
+
+.cast-container {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-around; /* Distribui igualmente os elementos na horizontal */
+  align-items: center; /* Alinha verticalmente ao centro */
+  flex-wrap: wrap; /* Permite que os elementos quebrem para a próxima linha */
+}
+
+.cast {
+  text-align: center; /* Centraliza o texto horizontalmente */
+  margin-bottom: 20px; /* Espaço entre cada criador */
+}
+
+  .cast img {
+    width: 100px; /* Define a largura da imagem */
+    height: 100px; /* Define a altura da imagem */
+  }
+
+  .cast p {
+    margin-top: 10px; /* Espaço entre a imagem e o texto */
+    font-size: 16px; /* Tamanho da fonte do nome do criador */
+  }
+
+.watching-time {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.watching-category {
+  font-size: 25px;
+  font-weight: 700;
+}

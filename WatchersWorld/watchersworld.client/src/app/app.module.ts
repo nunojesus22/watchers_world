@@ -14,6 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AboutUsComponent } from './about-us/about-us.component';
+import { MoviePageComponent } from './movie-page/movie-page.component';
+import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
+import { MovieApiServiceComponent } from './movie-api-service/movie-api-service.component';
+import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
 
 
 
@@ -25,6 +29,9 @@ import { AboutUsComponent } from './about-us/about-us.component';
     FooterComponent,
     ProfileComponent,
     AboutUsComponent,
+    MoviePageComponent,
+    AllMoviesPageComponent,
+    AllSeriesPageComponent,
 
   ],
   imports: [
@@ -32,7 +39,9 @@ import { AboutUsComponent } from './about-us/about-us.component';
     AppRoutingModule, FontAwesomeModule, ReactiveFormsModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    MovieApiServiceComponent,
+
   ],
   bootstrap: [AppComponent]
 })
