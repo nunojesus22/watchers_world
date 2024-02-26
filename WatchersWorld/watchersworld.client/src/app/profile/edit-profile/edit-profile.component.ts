@@ -148,10 +148,10 @@ export class EditProfileComponent {
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
-      hobby: [{ value: '', disabled: !this.hobbyEditable }],
+      hobby: [{ value: ''}],
       gender: [''],
-      date: [{ value: '', disabled: !this.birthdateEditable }],
-      name: [{ value: '', disabled: !this.nameEditable }]
+      date: [{ value: ''}],
+      name: [{ value: ''}]
     });
   }
 
@@ -160,7 +160,7 @@ export class EditProfileComponent {
     this.profileForm.get('gender')?.disable();
     this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
-        if (userName) { userName.textContent = userData.userName.toUpperCase(); }
+        if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
         this.profileForm.patchValue({
           hobby: userData.description = userData.description || "Por definir",
           gender: userData.gender = userData.gender || "Por definir",
@@ -177,6 +177,51 @@ export class EditProfileComponent {
     );
   }
 
+  updateFormFields() {
+    const hobby = this.profileForm.get('hobby')?.value;
+    const gender = this.profileForm.get('gender')?.value;
+    const date = this.profileForm.get('date')?.value;
+
+    const data = new Profile(date, hobby, gender, "assets/img/joao-pfp.png", "assets/img/pfp2.png");
+    
+    console.log(data);
+    console.log(this.profileForm.valid);
+    if (this.profileForm.valid) {
+      this.profileService.setUserData(data).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.setFormFields();
+          console.log(data);
+          console.log(response.value.message);
+        },
+        error: (error) => {
+          console.log(error);
+          if (error.error.errors) {
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.error);
+          }
+        }
+      },
+      );
+    }
+
+  }
+
+  updatePhotos() {
+    const coverphoto = document.querySelector(".cover-photo");
+    const profilephoto = document.querySelector(".profile-photo");
+
+  }
+
+
+  updateStatus() {
+    
+  }
+
+  saveButton() {
+    this.updateFormFields();
+  }
 
 
 }

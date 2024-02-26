@@ -1,11 +1,11 @@
 
 <div class="main">
   <br /><br />
-        <div class="profile-header">
-          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
-          <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
-          <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
-        </div>
+  <div class="profile-header">
+    <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
+    <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
+    <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
+  </div>
 
   <div class="profile-info">
     <div class="user-name-and-icons">
@@ -47,11 +47,13 @@
     </form>
 
     <!--<div class="user-followers">
-      <p>Seguidores: 220 • A Seguir: 221</p>
-    </div>-->
+    <p>Seguidores: 220 • A Seguir: 221</p>
+  </div>-->
     <div class="save-changes-button-row">
-      <a class="save-changes-button" routerLink="/profile">Salvar alterações</a>
+      <button class="save-changes-button" (click)="saveButton()" routerLink="/profile">Salvar alterações</button>
     </div>
+
+
   </div>
 
   <div class="side-divs">

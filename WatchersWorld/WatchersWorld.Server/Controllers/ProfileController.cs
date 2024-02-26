@@ -88,20 +88,24 @@ namespace WatchersWorld.Server.Controllers
 
             try
             {
-                data.Description = model.Description.Trim();
+                data.Description = model.Description;
                 data.Gender = model.Gender;
                 data.BirthDate = model.BirthDate;
                 data.CoverPhoto = model.CoverPhoto;
                 data.ProfilePhoto = model.ProfilePhoto;
-                data.ProfileStatus = model.ProfileStatus;
-                
+                //data.ProfileStatus = model.ProfileStatus;
 
-                var result = await _userManager.UpdateAsync(user);
+                _context.ProfileInfo.Update(data);
 
-                if (result.Succeeded)
+                var result = await _context.SaveChangesAsync();
+
+
+
+                if (result > 0)
                     return Ok(new JsonResult(new { title = "Perfil atualizado", 
                         message = "Os seus dados foram alterados com sucesso." }));
                 return BadRequest("Não foi possivel alterar os seus dados.Tente Novamente.");
+
             }
             catch (Exception)
             {
