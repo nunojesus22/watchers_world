@@ -20,11 +20,15 @@ export class EditProfileComponent {
   genderEditable = false;
   birthdateEditable = false;
   nameEditable = false; // Variable to control the editability of the name
-  profileLocked = false;
   isDateEditable: boolean = false;
   //fotos
-  coverPhoto: string = 'assets/img/pfp2.png';
-  profilePhoto: string = 'assets/img/joao-pfp.png';
+  coverPhoto: string = "";
+  profilePhoto: string = "";
+  profileLockedPhoto: string = 'assets/img/private.png';
+  profileUnlockedPhoto: string = 'assets/img/public.png';
+  isProfileLocked: boolean = false;
+  profileLocked: string = "Public";
+
   constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
 
   toggleEdit(field: string) {
@@ -64,9 +68,11 @@ export class EditProfileComponent {
   }
 
   toggleLock() {
-    const newLockStatus = !this.profileLocked;
+    this.isProfileLocked = !this.isProfileLocked;
+    console.log(this.isProfileLocked);
+    this.profileLocked= this.profileLocked === "Public" ? "Private" : "Public";
+    console.log(this.profileLocked);
   }
-
 
   openFileInput(target: string) {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
@@ -86,18 +92,24 @@ export class EditProfileComponent {
 
     if (target) {
       const file = (fileInput.files as FileList)[0];
+
+      // Use FileReader para obter a Data URL do arquivo selecionado
       const reader = new FileReader();
-
       reader.onload = (e: any) => {
-        // Use a dynamic key to update the property
-        (this as any)[target] = e.target.result;
+        // Verifique se o target foi 'profilePhoto' ou 'coverPhoto'
+        // e atualize a respectiva propriedade com a Data URL da imagem.
+        if (target === 'profilePhoto') {
+          this.profilePhoto = e.target.result;
+        } else if (target === 'coverPhoto') {
+          this.coverPhoto = e.target.result;
+        }
       };
-
       reader.readAsDataURL(file);
     } else {
       console.error("Target not specified for changeImage");
     }
   }
+
 
 
   ngOnInit(): void {
@@ -161,6 +173,12 @@ export class EditProfileComponent {
     this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
         if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
+        if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
+        if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
+
+        this.isProfileLocked = userData.profileStatus === 'Private';
+        this.profileLocked = this.isProfileLocked ? 'Private' : 'Public';
+
         this.profileForm.patchValue({
           hobby: userData.description = userData.description || "Por definir",
           gender: userData.gender = userData.gender || "Por definir",
@@ -181,9 +199,12 @@ export class EditProfileComponent {
     const hobby = this.profileForm.get('hobby')?.value;
     const gender = this.profileForm.get('gender')?.value;
     const date = this.profileForm.get('date')?.value;
+    const profilePhoto = this.profilePhoto;
+    const coverPhoto = this.coverPhoto;
+    const profileStatus = this.profileLocked;
 
-    const data = new Profile(date, hobby, gender, "assets/img/joao-pfp.png", "assets/img/pfp2.png", "Public");
-    
+    const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus);
+
     console.log(data);
     console.log(this.profileForm.valid);
     if (this.profileForm.valid) {
@@ -206,17 +227,6 @@ export class EditProfileComponent {
       );
     }
 
-  }
-
-  updatePhotos() {
-    const coverphoto = document.querySelector(".cover-photo");
-    const profilephoto = document.querySelector(".profile-photo");
-
-  }
-
-
-  updateStatus() {
-    
   }
 
   saveButton() {

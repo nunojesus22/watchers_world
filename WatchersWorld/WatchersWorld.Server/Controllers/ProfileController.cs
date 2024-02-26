@@ -99,8 +99,6 @@ namespace WatchersWorld.Server.Controllers
 
                 var result = await _context.SaveChangesAsync();
 
-
-
                 if (result > 0)
                     return Ok(new JsonResult(new { title = "Perfil atualizado", 
                         message = "Os seus dados foram alterados com sucesso." }));

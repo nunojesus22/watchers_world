@@ -1,11 +1,12 @@
 
 <div class="main">
   <br /><br />
-  <div class="profile-header">
-    <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
-    <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
-    <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
-  </div>
+        <div class="profile-header">
+          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
+          <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
+          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
+          <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
+        </div>
 
   <div class="profile-info">
     <div class="user-name-and-icons">
@@ -15,7 +16,7 @@
       <div class="button-container">
         <p> Modo do perfil: </p>
         <button class="lock-button" (click)="toggleLock()">
-          <img [src]="profileLocked ? 'assets/img/private.png' : 'assets/img/public.png'" alt="Lock Status">
+          <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
         </button>
         <button class="change-password-button">
           Alterar palavra-passe

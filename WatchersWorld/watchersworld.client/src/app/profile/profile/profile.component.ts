@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   message: string | undefined;
   errorMessages: any;
 
+
   constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
