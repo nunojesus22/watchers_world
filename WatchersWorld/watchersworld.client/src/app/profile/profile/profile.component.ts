@@ -81,7 +81,7 @@ export class ProfileComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribed$))
       .subscribe({
         next: (userData: Profile) => {
-          if (userName) { userName.textContent = userData.userName.toUpperCase(); }
+          if (userName) { userName.textContent = userData.userName; }
           this.profileForm.patchValue({
             hobby: userData.description || "Por definir",
             gender: userData.gender || "Por definir",

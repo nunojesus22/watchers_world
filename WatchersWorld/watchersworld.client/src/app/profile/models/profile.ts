@@ -1,6 +1,6 @@
 export class Profile {
   userEmail!: string;
-  userName!: string;
+  userName: string;
   birthDate: Date;
   description: string | null;
   gender: string | null;
@@ -9,6 +9,7 @@ export class Profile {
   profileStatus: string;
 
   constructor(
+    userName: string,
     birthDate: Date,
     description: string | null,
     gender: string | null,
@@ -16,6 +17,7 @@ export class Profile {
     coverPhoto: string,
     profileStatus: string
   ) {
+    this.userName = userName;
     this.birthDate = birthDate;
     this.description = description;
     this.gender = gender;

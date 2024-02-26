@@ -88,6 +88,7 @@ namespace WatchersWorld.Server.Controllers
 
             try
             {
+                user.UserName = model.UserName;
                 data.Description = model.Description;
                 data.Gender = model.Gender;
                 data.BirthDate = model.BirthDate;

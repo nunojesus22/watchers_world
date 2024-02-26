@@ -10,9 +10,10 @@
 
   <div class="profile-info">
     <div class="user-name-and-icons">
-      <div class="user-name">
+      <!--<div class="user-name">
         <h1>João Silva</h1>
-      </div>
+        <button type="button" class="editButton" (click)="toggleEdit('name')"></button>
+      </div>-->
       <div class="button-container">
         <p> Modo do perfil: </p>
         <button class="lock-button" (click)="toggleLock()">
@@ -28,9 +29,14 @@
     </div>
     <form [formGroup]="profileForm" class="user-details">
       <div>
+        <label for="name">Nome de Utilizador:</label>
+        <input formControlName="name" type="text" id="name" name="name" [readonly]="!userNameEditable">
+        <button type="button" class="editButton" (click)="toggleEdit('name')"></button>
+      </div>
+      <div>
         <label for="hobby">Descrição:</label>
         <input formControlName="hobby" type="text" id="hobby" name="hobby" [readonly]="!hobbyEditable">
-        <button type="button" class="editButton" (click)="toggleEdit('hobby')">Editar</button>
+        <button type="button" class="editButton" (click)="toggleEdit('hobby')"></button>
       </div>
       <div>
         <label>Género:</label>
@@ -38,12 +44,12 @@
         <label for="male">Masculino</label>
         <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
         <label for="female">Feminino</label>
-        <button type="button" class="editButton" (click)="toggleEdit('gender')">Editar</button>
+        <button type="button" class="editButton" (click)="toggleEdit('gender')"></button>
       </div>
       <div>
         <label for="date">Data de nascimento:</label>
         <input formControlName="date" type="date" id="date" name="date" [readonly]="!birthdateEditable">
-        <button type="button" class="editButton" (click)="toggleEdit('birthdate')">Editar</button>
+        <button type="button" class="editButton" (click)="toggleEdit('birthdate')"></button>
       </div>
     </form>
 

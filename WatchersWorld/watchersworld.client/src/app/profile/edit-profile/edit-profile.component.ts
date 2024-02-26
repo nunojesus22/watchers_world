@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
+import { User } from '../../authentication/models/user';
 
 @Component({
   selector: 'app-edit-profile',
@@ -16,12 +17,13 @@ export class EditProfileComponent {
 
   message: string | undefined;
   errorMessages: any;
+  userNameEditable = false;
   hobbyEditable = false;
   genderEditable = false;
   birthdateEditable = false;
   nameEditable = false; // Variable to control the editability of the name
   isDateEditable: boolean = false;
-  //fotos
+  userName: string = "NOME UTILIZADOR";
   coverPhoto: string = "";
   profilePhoto: string = "";
   profileLockedPhoto: string = 'assets/img/private.png';
@@ -33,6 +35,10 @@ export class EditProfileComponent {
 
   toggleEdit(field: string) {
     switch (field) {
+      case 'name':
+        this.userNameEditable = !this.userNameEditable;
+        this.toggleFormControl('name', this.userNameEditable);
+        break;
       case 'hobby':
         this.hobbyEditable = !this.hobbyEditable;
         this.toggleFormControl('hobby', this.hobbyEditable);
@@ -58,6 +64,8 @@ export class EditProfileComponent {
       // Handle default case or throw an error
     }
   }
+
+ 
 
   private toggleFormControl(controlName: string, isEditable: boolean) {
     if (isEditable) {
@@ -168,18 +176,22 @@ export class EditProfileComponent {
   }
 
   setFormFields() {
-    const userName = document.querySelector("h1");
+    //const userName = document.querySelector("h1");
     this.profileForm.get('gender')?.disable();
     this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
-        if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
+        //if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
         if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
         if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
+        if (userData.userName) {
+          this.userName = userData.userName.toUpperCase();
 
+        }
         this.isProfileLocked = userData.profileStatus === 'Private';
         this.profileLocked = this.isProfileLocked ? 'Private' : 'Public';
 
         this.profileForm.patchValue({
+          name: userData.userName = userData.userName,
           hobby: userData.description = userData.description || "Por definir",
           gender: userData.gender = userData.gender || "Por definir",
           date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
@@ -196,14 +208,15 @@ export class EditProfileComponent {
   }
 
   updateFormFields() {
+    const userName = this.profileForm.get('name')?.value;
     const hobby = this.profileForm.get('hobby')?.value;
     const gender = this.profileForm.get('gender')?.value;
     const date = this.profileForm.get('date')?.value;
     const profilePhoto = this.profilePhoto;
     const coverPhoto = this.coverPhoto;
     const profileStatus = this.profileLocked;
-
-    const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus);
+    
+    const data = new Profile(userName, date, hobby, gender, profilePhoto, coverPhoto, profileStatus);
 
     console.log(data);
     console.log(this.profileForm.valid);

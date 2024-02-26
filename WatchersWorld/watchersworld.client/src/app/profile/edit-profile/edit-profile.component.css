@@ -103,7 +103,7 @@
   margin-top: 15px;
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-left: 900px;
 }
 
 .lock-button img {
@@ -128,9 +128,16 @@
     height: auto; /* Maintain aspect ratio */
   }
 
-  .editButton {
-      margin-left: 20px;
-  }
+.editButton {
+  margin-left: 20px;
+  background-image: url('/assets/img/edit.png'); /* Adicione o caminho para a sua imagem aqui */
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none; /* Remove a borda do botão, se desejar */
+  width: 20px; /* Ajuste conforme o necessário */
+  height: 20px; /* Ajuste conforme o necessário */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
 
 .change-password-button {
   padding: 10px 20px;
