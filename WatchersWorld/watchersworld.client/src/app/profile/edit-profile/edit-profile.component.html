@@ -19,7 +19,7 @@
         <button class="lock-button" (click)="toggleLock()">
           <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
         </button>
-        <button class="change-password-button">
+        <button class="change-password-button" (click)="sendEmailChangePassword()">
           Alterar palavra-passe
         </button>
         <button class="delete-account-button">

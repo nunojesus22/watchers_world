@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
 import { User } from '../../authentication/models/user';
+import { AuthenticationService } from '../../authentication/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -31,7 +33,7 @@ export class EditProfileComponent {
   isProfileLocked: boolean = false;
   profileLocked: string = "Public";
 
-  constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
+  constructor(private profileService: ProfileService, private formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router) { }
 
   toggleEdit(field: string) {
     switch (field) {
@@ -245,6 +247,26 @@ export class EditProfileComponent {
   saveButton() {
     this.updateFormFields();
   }
+  
 
+  sendEmailChangePassword() {
+    this.authService.user$.pipe(take(1)).subscribe({
+      next: (user: User | null) => {
+        if (user) {
+          this.authService.forgotPassword(user.email!).subscribe({
+            next: (response: any) => {
+              this.authService.logout();
+              this.router.navigateByUrl('/account/login');
+            },
+            error: error => {
+              console.log(error);
+            }
+          });
+        }
+      }
+    });
+    
 
+    
+  }
 }
