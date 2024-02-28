@@ -41,36 +41,34 @@
         </div>
       </div>
     </div>
-    <div class = "side-divs"> 
-    <div class="col-12 col-lg-4">
-      <div class="card mb-3">
-        <div class="card-body side-div-users">
-          <h2>Outros Utilizadores</h2>
-          <ul class="item-list">
-            <li *ngFor="let userProfile of usersProfiles">
-              <img [src]="userProfile.profilePhoto">
-              <p>{{ userProfile.userName }}</p>
-            </li>
-          </ul>
-          <a href="#" class="expand-link">Expandir Utilizadores</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h2>Sugestões</h2>
-          <a href="#" class="expand-link">Expandir Sugestões</a>
-        </div>
-      </div>
-      
-    <!--<div class="user-followers">
-      <p>Seguidores: 220 • A Seguir: 221</p>
-    </div>-->
   </div>
 </div>
-  
 
-    
+<div class="col-12 col-lg-4 side-divs">
+  <div class="card mb-3">
+    <div class="card-body side-div-users">
+      <h2>Outros Utilizadores</h2>
+      <ul class="item-list">
+        <li *ngFor="let userProfile of usersProfiles">
+          <img [src]="userProfile.profilePhoto">
+          <p class="user-name">{{ userProfile.userName }}</p>
+        </li>
+      </ul>
+      <a href="#" class="expand-link">Expandir Utilizadores</a>
+    </div>
   </div>
+  <div class="card mb-3">
+    <div class="card-body side-div-suggestions">
+      <h2>Sugestões</h2>
+      <a href="#" class="expand-link">Expandir Sugestões</a>
+    </div>
+  </div>
+  <!--<div class="user-followers">
+    <p>Seguidores: 220 • A Seguir: 221</p>
+  </div>-->
 </div>
+
+
+
 
 

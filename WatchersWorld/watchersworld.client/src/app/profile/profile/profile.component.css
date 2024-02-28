@@ -76,8 +76,8 @@
 /* Estilos para as divs laterais */
 .side-divs {
   position: absolute; /* ou 'fixed' dependendo se quer que movam com a página ou não */
-  top: 0; /* Ajuste conforme necessário */
-  right: 0; /* Ajuste conforme necessário */
+  top: 130px; /* Ajuste conforme necessário */
+  right: 250px; /* Ajuste conforme necessário */
   display: flex;
   flex-direction: column;
   align-items: flex-end; /* Alinha as divs à direita */
@@ -126,4 +126,54 @@ input[type="text"],
 input[type="date"] {
   border: none; /* Remove as bordas */
   outline: none; /* Remove o contorno que aparece ao focar */
+}
+
+
+
+@media (max-width: 991px) { /* Para tablets e desktops menores */
+  .side-divs {
+    position: static; /* As divs se tornam parte do fluxo normal do documento */
+    margin-top: 20px; /* Espaçamento acima das divs laterais */
+  }
+}
+
+@media (max-width: 767px) { /* Para dispositivos móveis */
+  .side-divs {
+    display: none; /* Esconde as divs laterais em dispositivos móveis */
+  }
+}
+
+/* Estilizar botões ou links para "Expandir" */
+.side-div-users > .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+/* Estilizar botões ou links para "Expandir" */
+.side-div-suggestions > .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.user-name {
+  font-size: 1em; /* Define o tamanho da fonte */
+  padding-top:10px;
+  color: #333; /* Define a cor do texto */
+  font-weight: bold;
 }

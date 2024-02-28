@@ -16,7 +16,7 @@ export class EditProfileComponent {
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
-
+  usersProfiles: Profile[] | undefined;
   message: string | undefined;
   errorMessages: any;
   userNameEditable = false;
@@ -67,7 +67,17 @@ export class EditProfileComponent {
     }
   }
 
- 
+  getUserProfiles() {
+    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (profiles: Profile[]) => {
+        this.usersProfiles = profiles;
+      },
+      (error) => {
+        console.error("Error while fetching users' profiles:", error);
+        // Handle error as needed
+      }
+    );
+  }
 
   private toggleFormControl(controlName: string, isEditable: boolean) {
     if (isEditable) {

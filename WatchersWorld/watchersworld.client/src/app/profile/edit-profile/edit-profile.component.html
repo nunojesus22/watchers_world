@@ -11,17 +11,17 @@
           <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
           <div class="user-details">
             <div class="user-icons">
-    <p> Modo do perfil: </p>
-    <button class="lock-button" (click)="toggleLock()">
-      <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
-    </button>
-    <button class="change-password-button">
-      Alterar palavra-passe
-    </button>
-    <button class="delete-account-button">
-      Apagar conta
-    </button>
-  </div>
+              <p> Modo do perfil: </p>
+              <button class="lock-button" (click)="toggleLock()">
+                <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
+              </button>
+              <button class="change-password-button">
+                Alterar palavra-passe
+              </button>
+              <button class="delete-account-button">
+                Apagar conta
+              </button>
+            </div>
             <form [formGroup]="profileForm" class="user-details text-left">
               <div class="mb-3">
                 <label for="name">Nome de Utilizador:</label>
@@ -62,40 +62,35 @@
             </form>
           </div>
         </div>
-  <div class="profile-info">
-    <div class="user-name-and-icons">
-      <!--<div class="user-name">
-        <h1>João Silva</h1>
-        <button type="button" class="editButton" (click)="toggleEdit('name')"></button>
-      </div>-->
-      <div class="button-container">
-        <p> Modo do perfil: </p>
-        <button class="lock-button" (click)="toggleLock()">
-          <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
-        </button>
-        <button class="change-password-button" (click)="sendEmailChangePassword()">
-          Alterar palavra-passe
-        </button>
-        <button class="delete-account-button">
-          Apagar conta
-        </button>
-      </div>
-    </div>
-    <div class="col-12 col-lg-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h2>Outros Utilizadores</h2>
-          <!-- Lista de outros usuários -->
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h2>Sugestões</h2>
-          <!-- Lista de sugestões -->
-        </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<div class="col-12 col-lg-4 side-divs">
+  <div class="card mb-3">
+    <div class="card-body side-div-users">
+      <h2>Outros Utilizadores</h2>
+      <ul class="item-list">
+        <li *ngFor="let userProfile of usersProfiles">
+          <img [src]="userProfile.profilePhoto">
+          <p class="user-name">{{ userProfile.userName }}</p>
+        </li>
+      </ul>
+      <a href="#" class="expand-link">Expandir Utilizadores</a>
+    </div>
+  </div>
+  <div class="card mb-3">
+    <div class="card-body side-div-suggestions">
+      <h2>Sugestões</h2>
+      <a href="#" class="expand-link">Expandir Sugestões</a>
+    </div>
+  </div>
+  <!--<div class="user-followers">
+    <p>Seguidores: 220 • A Seguir: 221</p>
+  </div>-->
+</div>
+
 
 
