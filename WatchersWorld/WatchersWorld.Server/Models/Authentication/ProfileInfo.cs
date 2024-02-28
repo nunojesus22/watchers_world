@@ -19,6 +19,8 @@ namespace WatchersWorld.Server.Models.Authentication
         /// </summary>
         public string UserEmail { get; set; }
 
+        public string UserName { get; set; }
+
         /// <summary>
         /// The user's date of birth.
         /// This information can be used for age verification or displayed in user profiles for personalization.

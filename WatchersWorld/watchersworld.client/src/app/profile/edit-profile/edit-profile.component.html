@@ -62,6 +62,23 @@
             </form>
           </div>
         </div>
+  <div class="profile-info">
+    <div class="user-name-and-icons">
+      <!--<div class="user-name">
+        <h1>João Silva</h1>
+        <button type="button" class="editButton" (click)="toggleEdit('name')"></button>
+      </div>-->
+      <div class="button-container">
+        <p> Modo do perfil: </p>
+        <button class="lock-button" (click)="toggleLock()">
+          <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
+        </button>
+        <button class="change-password-button" (click)="sendEmailChangePassword()">
+          Alterar palavra-passe
+        </button>
+        <button class="delete-account-button">
+          Apagar conta
+        </button>
       </div>
     </div>
     <div class="col-12 col-lg-4">

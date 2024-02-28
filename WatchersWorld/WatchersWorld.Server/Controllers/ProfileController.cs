@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
@@ -31,6 +32,45 @@ namespace WatchersWorld.Server.Controllers
         {
             return Ok(new JsonResult(new { message = "Apenas para logados." }));
         }
+
+        [HttpGet("get-usersProfile")]
+        public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfile()
+        {
+            try
+            {
+                // Get the email of the currently logged-in user
+                var currentUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+                // Query all users from the database excluding the current user
+                var userProfiles = await _context.ProfileInfo
+                    .Where(profile => profile.UserEmail != currentUserEmail)
+                    .ToListAsync();
+
+                // Map the users to ProfileInfo with selected properties
+                var profilesList = userProfiles.Select(async profile =>
+                {
+                    var user = await _userManager.FindByEmailAsync(profile.UserEmail);
+                    return new ProfileInfo
+                    {
+                        UserName = user != null ? user.UserName : string.Empty,
+                        UserEmail = profile.UserEmail,
+                        ProfilePhoto = profile.ProfilePhoto
+                    };
+                });
+
+                return Ok(await Task.WhenAll(profilesList));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as appropriate for your application
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
+
+
 
         [HttpGet("get-user-info")]
         public async Task<ActionResult<ProfileInfoDto>> GetUser()

@@ -3,6 +3,8 @@ import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-profile',
@@ -10,6 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
+
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
@@ -17,6 +20,7 @@ export class ProfileComponent implements OnInit {
   message: string | undefined;
   errorMessages: any;
 
+  usersProfiles: Profile[] | undefined;
 
   constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
 
@@ -24,6 +28,7 @@ export class ProfileComponent implements OnInit {
     this.initializeForm();
     this.setFormFields();
     this.setImages();
+    this.getUserProfiles();
   }
 
   ngOnDestroy(): void {
@@ -99,7 +104,17 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
+  getUserProfiles() {
+    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (profiles: Profile[]) => {
+        this.usersProfiles = profiles;
+      },
+      (error) => {
+        console.error("Error while fetching users' profiles:", error);
+        // Handle error as needed
+      }
+    );
+  }
 
 
 }
