@@ -14,11 +14,12 @@ export class MovieDetailsComponent {
   getMovieVideoResult: any;
   getMovieCastResult: any;
   getMovieProviders: any;
+  showAll: boolean = true;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');
-
+    this.showAll = false;
     this.getMovie(getParamId);
     this.getVideo(getParamId);
     this.getMovieCast(getParamId);

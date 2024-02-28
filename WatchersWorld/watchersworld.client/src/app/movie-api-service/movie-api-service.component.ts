@@ -19,6 +19,10 @@ export class MovieApiServiceComponent {
 
   }
 
+  getSerieStreamingProvider(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${data}/watch/providers?api_key=${this.apikey}`)
+
+  }
 
   //bannerapidata
 
@@ -43,15 +47,28 @@ export class MovieApiServiceComponent {
   getMovieDetails(data: any): Observable<any> {
     return this.http.get(`${this.baseurl}/movie/${data}?api_key=${this.apikey}`)
   }
+  // getmoviedatails
+  getSerieDetails(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${data}?api_key=${this.apikey}`)
+  }
 
   // getMovieVideo
   getMovieVideo(data: any): Observable<any> {
     return this.http.get(`${this.baseurl}/movie/${data}/videos?api_key=${this.apikey}`)
   }
 
+  // getMovieVideo
+  getSerieVideo(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${data}/videos?api_key=${this.apikey}`)
+  }
+
   // getMovieCast
   getMovieCast(data: any): Observable<any> {
     return this.http.get(`${this.baseurl}/movie/${data}/credits?api_key=${this.apikey}`)
+  }
+
+  getSerieCast(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${data}/credits?api_key=${this.apikey}`)
   }
   // action 
   fetchActionMovies(): Observable<any> {

@@ -8,6 +8,7 @@ interface MovieCategory {
   name: string;
   results: any[];
   activeIndex: number;
+  media_type: string;
 }
 
 @Component({
@@ -26,16 +27,17 @@ export class HomeComponent {
 
   initCategories() {
     this.categories = [
-      { name: 'Banner', results: [], activeIndex: 0 },
-      { name: 'Trending Movies', results: [], activeIndex: 0 },
-      { name: 'Top Rated Series', results: [], activeIndex: 0 },
-      { name: 'Action Movies', results: [], activeIndex: 0 },
-      { name: 'Adventure Movies', results: [], activeIndex: 0 },
-      { name: 'Comedy Movies', results: [], activeIndex: 0 },
-      { name: 'Animation Movies', results: [], activeIndex: 0 },
-      { name: 'Documentary Movies', results: [], activeIndex: 0 },
-      { name: 'ScienceFiction Movies', results: [], activeIndex: 0 },
-      { name: 'Thriller Movies', results: [], activeIndex: 0 },
+      { name: 'Banner', results: [], activeIndex: 0, media_type: "movie"},
+      { name: 'Trending Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Top Rated Series', results: [], activeIndex: 0, media_type: "tv" },
+      { name: 'Action Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Adventure Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Comedy Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Animation Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Documentary Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'ScienceFiction Movies', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Thriller Movies', results: [], activeIndex: 0, media_type: "movie" },
+      
     ];
 
     this.fetchMovies();
@@ -68,6 +70,7 @@ export class HomeComponent {
 
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
+    console.log("category",category);
     return category ? category.results : [];
   }
 
