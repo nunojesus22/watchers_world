@@ -178,6 +178,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("ProfileStatus")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserEmail");
 
                     b.ToTable("ProfileInfo");

@@ -30,4 +30,8 @@ export class ProfileService {
     return this.http.put<Profile>(`${environment.appUrl}/api/profile/update-user-info`, model);
   }
 
+  getUserProfiles(): Observable<Profile[]> {
+    return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-usersProfile`);
+  }
+
 }

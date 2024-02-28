@@ -50,17 +50,9 @@
     <div class="side-div-users">
       <h2>Outros Utilizadores</h2>
       <ul class="item-list">
-        <li>
-          <img src="assets/img/diogo-pfp.png">
-          <p suggested-user-name>Diogo Carreira</p>
-        </li>
-        <li>
-          <img src="assets/img/edu-pfp.png">
-          <p suggested-user-name>Eduardo Silveiro</p>
-        </li>
-        <li>
-          <img src="assets/img/nuno-pfp.png">
-          <p suggested-user-name>Nuno Jesus</p>
+        <li *ngFor="let userProfile of usersProfiles">
+          <img [src]="userProfile.profilePhoto">
+          <p>{{ userProfile.userName }}</p>
         </li>
       </ul>
       <a href="#" class="expand-link">Expandir Utilizadores</a>

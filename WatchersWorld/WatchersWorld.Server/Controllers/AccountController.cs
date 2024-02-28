@@ -204,6 +204,8 @@ namespace WatchersWorld.Server.Controllers
                 Provider = "Credentials"
             };
 
+            
+
             var profileInfoToAdd = new ProfileInfo
             {
                 UserEmail = model.Email.ToLower(),
