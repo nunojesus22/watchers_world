@@ -1,77 +1,61 @@
 <!-- p *ngIf="message">{{message}}</!--p>-->
 
-<div class="main">
-  <br /><br />
-  <div class="profile-header">
-    <img src="" class="cover-photo">
-    <img src="" class="profile-photo">
-  </div>
-
-  <div class="profile-info">
-    <div class="user-name-and-icons">
-      <div class="user-name">
-        <h1>João Silva</h1>
-      </div>
-      <div class="user-icons">
-        <a routerLink="/" class="profile-icon">
-          <img src="assets/img/statistic.png" alt="Estatisticas">
-        </a>
-        <a routerLink="/" class="profile-icon">
-          <img src="assets/img/messenger.png" alt="Chat">
-        </a>
-        <a routerLink="/editProfile" (click)="getUserProfileInfo()" class="profile-icon">
-          <img src="assets/img/edit profile.png" alt="Editar perfil">
-        </a>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 col-lg-8">
+      <div class="card mb-3">
+        <img src="" class="card-img-top cover-photo" alt="Capa do perfil">
+        <div class="card-body text-center">
+          <img src="" class="rounded-circle mb-3 profile-photo" alt="Foto do perfil" style="width: 120px; height: 120px;">
+          <h1 class="card-title">João Silva</h1>
+          <div class="user-icons">
+            <a routerLink="/" class="profile-icon">
+              <img src="assets/img/statistic.png" alt="Estatisticas">
+            </a>
+            <a routerLink="/" class="profile-icon">
+              <img src="assets/img/messenger.png" alt="Chat">
+            </a>
+            <a routerLink="/editProfile" (click)="getUserProfileInfo()" class="profile-icon">
+              <img src="assets/img/edit profile.png" alt="Editar perfil">
+            </a>
+          </div>
+          <div class="user-details">
+            <form [formGroup]="profileForm" class="user-details">
+              <div>
+                <label for="hobby">Descrição:</label>
+                <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
+              </div>
+              <div>
+                <label>Género:</label>
+                <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'">
+                <label for="male">Masculino</label>
+                <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
+                <label for="female">Feminino</label>
+              </div>
+              <div>
+                <label for="birthdate">Data de nascimento:</label>
+                <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-    <form [formGroup]="profileForm" class="user-details">
-      <div>
-        <label for="hobby">Descrição:</label>
-        <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
+    <div class="col-12 col-lg-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2>Outros Utilizadores</h2>
+          <!-- Lista de outros usuários -->
+        </div>
       </div>
-      <div>
-        <label>Gênero:</label>
-        <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'" >
-        <label for="male">Masculino</label>
-        <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'" >
-        <label for="female">Feminino</label>
+      <div class="card">
+        <div class="card-body">
+          <h2>Sugestões</h2>
+          <!-- Lista de sugestões -->
+        </div>
       </div>
-      <div>
-        <label for="birthdate">Data de nascimento:</label>
-        <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
-      </div>
-    </form>
-    <!--<div class="user-followers">
-      <p>Seguidores: 220 • A Seguir: 221</p>
-    </div>-->
-  </div>
-
-  <div class="side-divs">
-    <div class="side-div-users">
-      <h2>Outros Utilizadores</h2>
-      <ul class="item-list">
-        <li>
-          <img src="assets/img/diogo-pfp.png">
-          <p suggested-user-name>Diogo Carreira</p>
-        </li>
-        <li>
-          <img src="assets/img/edu-pfp.png">
-          <p suggested-user-name>Eduardo Silveiro</p>
-        </li>
-        <li>
-          <img src="assets/img/nuno-pfp.png">
-          <p suggested-user-name>Nuno Jesus</p>
-        </li>
-      </ul>
-      <a href="#" class="expand-link">Expandir Utilizadores</a>
-    </div>
-
-    <div class="side-div-suggestions">
-      <h2>Sugestões</h2>
-      <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
-  <br />
-  <br />
 </div>
+
 

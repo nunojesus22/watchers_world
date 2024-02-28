@@ -1,94 +1,84 @@
+<!-- p *ngIf="message">{{message}}</!--p>-->
 
-<div class="main">
-  <br /><br />
-        <div class="profile-header">
-          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
-          <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
-          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)">
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 col-lg-8">
+      <div class="card mb-3">
+        <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">
+        <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
+        <div class="card-body text-center">
+          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">
           <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
+          <div class="user-details">
+            <div class="user-icons">
+    <p> Modo do perfil: </p>
+    <button class="lock-button" (click)="toggleLock()">
+      <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
+    </button>
+    <button class="change-password-button">
+      Alterar palavra-passe
+    </button>
+    <button class="delete-account-button">
+      Apagar conta
+    </button>
+  </div>
+            <form [formGroup]="profileForm" class="user-details text-left">
+              <div class="mb-3">
+                <label for="name">Nome de Utilizador:</label>
+                <div class="form-check form-check-inline">
+                  <input formControlName="name" type="text" id="name" name="name" class="form-control" [readonly]="!userNameEditable">
+                </div>
+                <button type="button" class="editButton ms-2" (click)="toggleEdit('name')"></button>
+              </div>
+              <div class="mb-3">
+                <label for="hobby">Descrição:</label>
+                <div class="form-check form-check-inline">
+                  <input formControlName="hobby" type="text" id="hobby" name="hobby" class="form-control" [readonly]="!hobbyEditable">
+                </div>
+                <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('hobby')"></button>
+              </div>
+              <div class="mb-3">
+                <label>Género:  </label>
+                <div class="form-check form-check-inline">
+                  <input formControlName="gender" type="radio" id="male" name="gender" value="M" class="form-check-input" [checked]="profileForm.controls['gender'].value === 'M'">
+                  <label class="form-check-label" for="male">Masculino</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input formControlName="gender" type="radio" id="female" name="gender" value="F" class="form-check-input" [checked]="profileForm.controls['gender'].value === 'F'">
+                  <label class="form-check-label" for="female">Feminino</label>
+                </div>
+                <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('gender')"></button>
+              </div>
+              <div class="mb-3">
+                <label for="birthdate">Data de nascimento:</label>
+                <div class="form-check form-check-inline">
+                  <input formControlName="date" type="date" id="birthdate" name="birthdate" class="form-control" [readonly]="!birthdateEditable">
+                </div>
+                <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('birthdate')"></button>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-primary" (click)="saveButton()" routerLink="/profile">Salvar alterações</button>
+              </div>
+            </form>
+          </div>
         </div>
-
-  <div class="profile-info">
-    <div class="user-name-and-icons">
-      <!--<div class="user-name">
-        <h1>João Silva</h1>
-        <button type="button" class="editButton" (click)="toggleEdit('name')"></button>
-      </div>-->
-      <div class="button-container">
-        <p> Modo do perfil: </p>
-        <button class="lock-button" (click)="toggleLock()">
-          <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
-        </button>
-        <button class="change-password-button">
-          Alterar palavra-passe
-        </button>
-        <button class="delete-account-button">
-          Apagar conta
-        </button>
       </div>
     </div>
-    <form [formGroup]="profileForm" class="user-details">
-      <div>
-        <label for="name">Nome de Utilizador:</label>
-        <input formControlName="name" type="text" id="name" name="name" [readonly]="!userNameEditable">
-        <button type="button" class="editButton" (click)="toggleEdit('name')"></button>
+    <div class="col-12 col-lg-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2>Outros Utilizadores</h2>
+          <!-- Lista de outros usuários -->
+        </div>
       </div>
-      <div>
-        <label for="hobby">Descrição:</label>
-        <input formControlName="hobby" type="text" id="hobby" name="hobby" [readonly]="!hobbyEditable">
-        <button type="button" class="editButton" (click)="toggleEdit('hobby')"></button>
+      <div class="card">
+        <div class="card-body">
+          <h2>Sugestões</h2>
+          <!-- Lista de sugestões -->
+        </div>
       </div>
-      <div>
-        <label>Género:</label>
-        <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'">
-        <label for="male">Masculino</label>
-        <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
-        <label for="female">Feminino</label>
-        <button type="button" class="editButton" (click)="toggleEdit('gender')"></button>
-      </div>
-      <div>
-        <label for="date">Data de nascimento:</label>
-        <input formControlName="date" type="date" id="date" name="date" [readonly]="!birthdateEditable">
-        <button type="button" class="editButton" (click)="toggleEdit('birthdate')"></button>
-      </div>
-    </form>
-
-    <!--<div class="user-followers">
-    <p>Seguidores: 220 • A Seguir: 221</p>
-  </div>-->
-    <div class="save-changes-button-row">
-      <button class="save-changes-button" (click)="saveButton()" routerLink="/profile">Salvar alterações</button>
-    </div>
-
-
-  </div>
-
-  <div class="side-divs">
-    <div class="side-div-users">
-      <h2>Outros Utilizadores</h2>
-      <ul class="item-list">
-        <li>
-          <img src="assets/img/diogo-pfp.png">
-          <p suggested-user-name>Diogo Carreira</p>
-        </li>
-        <li>
-          <img src="assets/img/edu-pfp.png">
-          <p suggested-user-name>Eduardo Silveiro</p>
-        </li>
-        <li>
-          <img src="assets/img/nuno-pfp.png">
-          <p suggested-user-name>Nuno Jesus</p>
-        </li>
-      </ul>
-      <a href="#" class="expand-link">Expandir Utilizadores</a>
-    </div>
-
-    <div class="side-div-suggestions">
-      <h2>Sugestões</h2>
-      <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
-  <br />
-  <br />
 </div>
+
 

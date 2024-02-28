@@ -1,94 +1,136 @@
-.main {
-  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(40,40,40,1) 50%, rgba(0,0,0,1) 100%);
-  font-family: Arial, sans-serif;
-  position: relative; /* Para posicionar as divs secundárias absolutamente em relação a esta */
-  padding-bottom: 50px;
-}
+/* Custom CSS para ajustar o layout com Bootstrap */
 
-.profile-header {
-  width: 75%;
-  height: 200px;
-  position: relative;
-  margin-left: 30px;
-}
-
+/* Ajusta a imagem de capa para cobrir toda a área disponível */
 .cover-photo {
-  width: 100%; /* Faz a imagem de capa ocupar toda a largura do cabeçalho */
-  height: 100%; /* Faz a imagem de capa ocupar toda a altura do cabeçalho */
-  object-fit: cover; /* Garante que a imagem cubra todo o espaço sem distorcer */
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 5; /* Garante que a foto de capa fique atrás da foto de perfil */
+  width: 100%;
+  height: 200px; /* Altura fixa para a imagem de capa */
+  object-fit: cover; /* Garante que a imagem cubra o espaço sem distorção */
+  position: relative;
+  z-index: 1;
 }
 
+
+/* Estiliza a foto do perfil */
 .profile-photo {
+  position: absolute;
+  left: 2%; /* Ajuste este valor conforme necessário */
+  top: 140px; /* Ajuste vertical para alinhar com o nome, se necessário */
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  border: 3px solid #fff;
+  z-index: 3;
+  left: 80px;
+}
+
+
+/* Ajusta o título do usuário para ficar à direita da foto do perfil */
+.card-title {
   position: absolute;
-  left: 30px;
-  bottom: -60px; /* A imagem de perfil se sobrepõe à div abaixo */
-  z-index: 10; /* Garante que a foto do perfil esteja acima das outras divs */
-  background-color: black;
+  left: 215px; /* Ajuste conforme a largura da sua foto do perfil */
+  top: 200px; /* Ajuste esta propriedade para alinhar verticalmente com a sua foto do perfil */
+  z-index: 3;
 }
 
-.profile-info {
-  background-color: white;
-  width: 75%;
-  padding-top: 60px; /* Espaço para a imagem do perfil se sobrepor */
-  box-sizing: border-box;
-  margin-left: 30px;
-  height: 400px;
-}
-
-
-.user-name-and-icons {
+/* Organizar os campos do formulário e botões */
+.user-details {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: -70px;
-}
-
-.user-name {
-  display: flex;
-  flex-direction: row;
+  flex-direction: column; /* Organiza os campos do formulário em coluna */
+  justify-content: flex-start; /* Alinha ao início do container */
   align-items: flex-start;
-  margin-left: 180px;
+  padding-top: 30px;
 }
 
 .user-icons {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: flex-end; /* Alinha os ícones à direita */
-  margin-bottom: 30px;
-  margin-top: 15px;
-  margin-right: 10px;
+  gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
+  position: absolute; /* Continua com posicionamento absoluto */
+  top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
+  left: 250px;
+  z-index: 2;
 }
 
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-/* -------------------------------------------------------------------- BOTÕES --------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-
-.custom-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4CAEFE;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  margin-bottom: 5px;
-  margin-right: 10px;
+/* Ajusta o posicionamento da área de informação do usuário */
+.profile-info {
+  display: flex;
+  flex-direction: row; /* Organiza o conteúdo em linha */
 }
 
-.custom-button:hover {
-    background-color: lightblue;
+/* Título e ícones do perfil */
+.user-name-and-icons {
+  margin-top: -60px; /* Ajusta o posicionamento com base na altura da foto do perfil */
+  padding-bottom: 30px; /* Espaço extra abaixo dos ícones */
 }
 
-.button-container p {
-  font-weight: bold;
+/* Ícones do perfil */
+.profile-icon img {
+  width: 30px; /* Tamanho fixo para os ícones */
+}
+
+/* Aumenta ligeiramente o ícone ao passar o mouse ou clicar */
+.profile-icon:hover, .profile-icon:active {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+/* Estilos para as divs laterais */
+.side-divs {
+  position: absolute; /* ou 'fixed' dependendo se quer que movam com a página ou não */
+  top: 0; /* Ajuste conforme necessário */
+  right: 0; /* Ajuste conforme necessário */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinha as divs à direita */
+  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
+  gap: 20px; /* Espaço entre as divs */
+}
+
+.side-div-users, .side-div-suggestions {
+  background-color: white;
+  width: 300px; /* Largura das divs laterais */
+  margin: 10px 0; /* Espaço superior e inferior entre as divs */
+  padding: 20px; /* Padding interno para o conteúdo das divs */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para dar profundidade */
+  border-radius: 10px; /* Borda arredondada */
+  box-sizing: border-box; /* Garante que padding e border estão incluídos na largura */
+}
+
+  /* Títulos para cada div lateral */
+  .side-div-users > h2, .side-div-suggestions > h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0 0 16px 0; /* Margem inferior */
+  }
+
+/* Ajuste a classe para os itens de usuário e sugestões */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+  .item-list > li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Espaço entre os itens */
+  }
+
+    .item-list > li > img {
+      width: 50px; /* Largura das imagens dos usuários */
+      height: 50px; /* Altura das imagens dos usuários */
+      border-radius: 50%; /* Torna as imagens redondas */
+      margin-right: 10px; /* Espaço entre a imagem e o texto */
+    }
+
+.editButton {
+  margin-left: 20px;
+  background-image: url('/assets/img/edit.png'); /* Adicione o caminho para a sua imagem aqui */
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none; /* Remove a borda do botão, se desejar */
+  width: 20px; /* Ajuste conforme o necessário */
+  height: 20px; /* Ajuste conforme o necessário */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
 }
 
 .lock-button {
@@ -100,10 +142,7 @@
 }
 
 .button-container {
-  margin-top: 15px;
-  display: flex;
-  align-items: center;
-  margin-left: 900px;
+ 
 }
 
 .lock-button img {
@@ -124,20 +163,9 @@
 }
 
   .lock-button img {
-    width: 30px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
+    width: 30px; /* Adjust the width as needed /
+    height: auto; / Maintain aspect ratio */
   }
-
-.editButton {
-  margin-left: 20px;
-  background-image: url('/assets/img/edit.png'); /* Adicione o caminho para a sua imagem aqui */
-  background-repeat: no-repeat;
-  background-size: contain;
-  border: none; /* Remove a borda do botão, se desejar */
-  width: 20px; /* Ajuste conforme o necessário */
-  height: 20px; /* Ajuste conforme o necessário */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
 
 .change-password-button {
   padding: 10px 20px;
@@ -149,6 +177,7 @@
   cursor: pointer;
   margin-bottom: 5px;
   margin-right: 10px;
+  width: 200px;
 }
 
 .delete-account-button {
@@ -161,280 +190,5 @@
   cursor: pointer;
   margin-bottom: 5px;
   margin-right: 10px;
-}
-
-.save-changes-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4CAEFE;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  margin-bottom: 5px;
-}
-
-.save-changes-button-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  margin-right: 20px;
-}
-
-.date-picker {
-  position: relative;
-  display: inline-block;
-}
-
-.date-input {
-  padding-right: 30px; /* Espaço para o ícone */
-}
-
-.date-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------------------------------------- */
-
-
-.user-details {
-  display: flex;
-  flex-direction: column; /* Arrange items vertically */
-  width: 75%;
-  margin-top:20px;
-}
-
-.profile-icon:hover, .profile-icon:active {
-  background-color: #f0f0f0; /* Cor de fundo quando passa o mouse por cima ou clica */
-  transform: scale(1.1); /* Aumenta ligeiramente o ícone quando passa o mouse por cima ou clica */
-}
-
-.user-details {
-  margin-left: 30px;
-}
-
-.suggested-user-name {
-  font-weight: bold;
-}
-
-.user-followers {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  font-weight: bold;
-}
-
-/* Estilos para as divs vazias do lado direito */
-.side-divs {
-  position: absolute;
-  top: 0;
-  right: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centraliza os filhos horizontalmente */
-  margin-top: 38px;
-  gap: 20px; /* Espaçamento entre as divs */
-}
-
-.side-div-users,
-.side-div-suggestions {
-  background-color: white;
-  width: 350px; /* ou 100% se estiver dentro de uma flex container com largura definida */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 20px;
-  margin-bottom: 40px; /* Ajuste ou remova se necessário para evitar sobreposição */
-  box-sizing: border-box;
-}
-
-.side-div-users {
-  height: calc(50% - 20px); /* 50% da altura do parent menos o gap */
-}
-
-.side-div-suggestions {
-  height: calc(50% - 20px); /* 50% da altura do parent menos o gap */
-}
-
-/* Adicione títulos para cada div lateral */
-.side-div-users > h2 {
-  margin-top: 0;
-  margin-bottom: 16px; /* Espaçamento abaixo do título */
-  font-size: 1.5em; /* Tamanho do título */
-  color: #333; /* Cor do texto */
-  text-align: left; /* Alinha o texto à esquerda */
-}
-
-/* Adicione títulos para cada div lateral */
-.side-div-suggestions > h2 {
-  margin-top: 0;
-  margin-bottom: 16px; /* Espaçamento abaixo do título */
-  font-size: 1.5em; /* Tamanho do título */
-  color: #333; /* Cor do texto */
-  text-align: left; /* Alinha o texto à esquerda */
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-users > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-suggestions > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-/* Ajuste a classe para os itens de usuário e sugestões */
-.item-list {
-  list-style: none; /* Remove os marcadores da lista */
-  padding: 0; /* Remove o padding padrão */
-  margin: 0; /* Remove a margem padrão */
-}
-
-  .item-list > li {
-    display: flex;
-    align-items: center; /* Centraliza os itens verticalmente */
-    margin-bottom: 10px; /* Espaçamento entre os itens */
-  }
-
-    .item-list > li > img {
-      width: 50px; /* Largura da imagem do perfil */
-      height: 50px; /* Altura da imagem do perfil */
-      border-radius: 50%; /* Arredonda a imagem para ficar circular */
-      margin-right: 10px; /* Espaçamento entre a imagem e o texto */
-    }
-
-
-input[type="text"],
-input[type="date"] {
-  border: none;
-  outline: none;
-  font-size: 16px;
-}
-
-  /* Se você também quer remover o fundo para parecer que não é um campo editável */
-  input[type="text"]:read-only,
-  input[type="date"]:read-only {
-    background: transparent;
-  }
-
-
-input[readonly] {
-  background-color: #f3f3f3; /* cor de fundo para campos somente leitura */
-  border: 1px solid #dcdcdc; /* borda para campos somente leitura */
-  cursor: not-allowed; /* cursor para indicar que o campo não é editável */
-}
-
-input:not([readonly]) {
-  background-color: #fff; /* cor de fundo para campos editáveis */
-  border: 1px solid #66afe9; /* borda para campos editáveis */
-  cursor: text; /* cursor de texto para indicar que o campo é editável */
-}
-
-.image-button {
-  cursor: pointer; /* cursor de ponteiro para os botões */
-}
-
-.bold-and-large {
-    margin-top:20px;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-
-/* Para telas de desktop grandes */
-@media (min-width: 1200px) {
-  /* Estilos específicos para desktop aqui */
-}
-
-/* Para tablets ou telas de tamanho médio */
-@media (max-width: 1199px) {
-  .profile-header,
-  .profile-info {
-    width: 100%; /* Faz com que ocupem toda a largura disponível */
-  }
-
-  .profile-photo {
-    left: 50%;
-    transform: translateX(-50%); /* Centraliza a foto do perfil */
-  }
-
-  .user-name {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  .side-divs {
-    position: static; /* Remove o posicionamento absoluto */
-    width: auto;
-    margin-top: 20px; /* Espaço acima das divs */
-    flex-direction: row;
-    justify-content: space-around;
-  }
-
-  .side-div-users,
-  .side-div-suggestions {
-    width: 48%; /* Ajusta a largura para caber lado a lado */
-    margin-bottom: 20px; /* Espaço abaixo das divs */
-    height: auto; /* Ajusta a altura automaticamente */
-  }
-}
-
-/* Para telefones celulares ou telas pequenas */
-@media (max-width: 767px) {
-  .profile-header,
-  .profile-info {
-    width: calc(100% - 60px); /* Ajusta a largura com base na margem */
-    margin-left: auto; /* Centraliza as divs horizontalmente */
-    margin-right: auto;
-  }
-
-  .profile-photo {
-    left: 50%;
-    transform: translateX(-50%); /* Centraliza a foto do perfil */
-  }
-
-  .user-name {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  .user-name-and-icons,
-  .user-details {
-    flex-direction: column; /* Empilha os elementos verticalmente */
-    align-items: center; /* Centraliza os elementos */
-    margin-top: 10px;
-  }
-
-  .user-icons {
-    margin-top: 10px;
-  }
-
-  .side-divs {
-    display: none; /* Oculta as divs laterais em telas pequenas */
-  }
+  width: 150px;
 }
