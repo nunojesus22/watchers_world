@@ -1,4 +1,3 @@
-<!-- p *ngIf="message">{{message}}</!--p>-->
 
 <div class="container mt-5">
   <div class="row">
@@ -56,8 +55,8 @@
                 </div>
                 <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('birthdate')"></button>
               </div>
-              <div class="text-center">
-                <button class="btn btn-primary" (click)="saveButton()" routerLink="/profile">Salvar alterações</button>
+              <div class="text-center" *ngIf="(authService.user$ | async) as user">
+                <button class="btn btn-primary" (click)="saveButton(user.username)" [routerLink]="['/profile/', user.username]">Salvar alterações</button>
               </div>
             </form>
           </div>
@@ -87,9 +86,9 @@
       <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
-  <!--<div class="user-followers">
+  <div class="user-followers">
     <p>Seguidores: 220 • A Seguir: 221</p>
-  </div>-->
+  </div>
 </div>
 
 

@@ -5,7 +5,7 @@ import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
 import { User } from '../../authentication/models/user';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -33,7 +33,20 @@ export class EditProfileComponent {
   isProfileLocked: boolean = false;
   profileLocked: string = "Public";
 
-  constructor(private profileService: ProfileService, private formBuilder: FormBuilder, private authService: AuthenticationService, private router: Router) { }
+  constructor(private profileService: ProfileService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const userName = params['username'];
+      this.getUserProfileInfo(userName);
+      this.setFormFields(userName);
+      this.setImages(userName);
+    });
+    this.initializeForm();
+    this.getUserProfiles();
+  }
 
   toggleEdit(field: string) {
     switch (field) {
@@ -130,21 +143,13 @@ export class EditProfileComponent {
     }
   }
 
-
-
-  ngOnInit(): void {
-    this.initializeForm();
-    this.setFormFields();
-    this.setImages();
-  }
-
   ngOnDestroy(): void {
     this.unsubscribed$.next();
     this.unsubscribed$.complete();
   }
 
-  getUserProfileInfo() {
-    this.profileService.getUserData().subscribe({
+  getUserProfileInfo(username:string) {
+    this.profileService.getUserData(username).subscribe({
       next: (response: Profile) => {
         console.log(response);
         return response;
@@ -156,8 +161,8 @@ export class EditProfileComponent {
     });
   }
 
-  setImages() {
-    this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
+  setImages(username: string) {
+    this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
         const coverPhotoElement = document.querySelector(".cover-photo");
         const profilePhotoElement = document.querySelector(".profile-photo");
@@ -187,10 +192,10 @@ export class EditProfileComponent {
     });
   }
 
-  setFormFields() {
+  setFormFields(username: string) {
     //const userName = document.querySelector("h1");
     this.profileForm.get('gender')?.disable();
-    this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
+    this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
         //if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
         if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
@@ -219,7 +224,7 @@ export class EditProfileComponent {
     );
   }
 
-  updateFormFields() {
+  updateFormFields(username: string) {
     const userName = this.profileForm.get('name')?.value;
     const hobby = this.profileForm.get('hobby')?.value;
     const gender = this.profileForm.get('gender')?.value;
@@ -236,7 +241,7 @@ export class EditProfileComponent {
       this.profileService.setUserData(data).subscribe({
         next: (response: any) => {
           console.log(response);
-          this.setFormFields();
+          this.setFormFields(username);
           console.log(data);
           console.log(response.value.message);
         },
@@ -254,11 +259,10 @@ export class EditProfileComponent {
 
   }
 
-  saveButton() {
-    this.updateFormFields();
+  saveButton(username: string) {
+    this.updateFormFields(username);
   }
   
-
   sendEmailChangePassword() {
     this.authService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {

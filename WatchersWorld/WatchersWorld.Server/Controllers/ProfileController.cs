@@ -68,22 +68,20 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-
-
-
-
-        [HttpGet("get-user-info")]
-        public async Task<ActionResult<ProfileInfoDto>> GetUser()
+        [HttpGet("get-user-info/{username}")]
+        public async Task<ActionResult<ProfileInfoDto>> GetUser(string username)
         {
+            //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //if (userIdClaim == null)
+            //{
+            //    return BadRequest("Não foi possível encontrar o utilizador");
+            //}
 
-            if (userIdClaim == null)
-            {
-                return BadRequest("Não foi possível encontrar o utilizador");
-            }
+            var user = await _userManager.Users
+                 .FirstOrDefaultAsync(u => u.NormalizedUserName == username.ToUpper());
 
-            var user = await _userManager.FindByIdAsync(userIdClaim);
+            Console.WriteLine(user);
 
             if (user == null)
             {
@@ -91,6 +89,8 @@ namespace WatchersWorld.Server.Controllers
             }
 
             var data = _context.ProfileInfo.FirstOrDefault(p => p.UserEmail == user.Email);
+            Console.WriteLine(data);
+
 
             ProfileInfoDto userProfileDto = new ProfileInfoDto
             {

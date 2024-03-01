@@ -4,6 +4,7 @@ import { Profile } from '../models/profile';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../../authentication/services/authentication.service';
 
 
 @Component({
@@ -22,12 +23,18 @@ export class ProfileComponent implements OnInit {
 
   usersProfiles: Profile[] | undefined;
 
-  constructor(private profileService: ProfileService, private formBuilder: FormBuilder) { }
+  constructor(private profileService: ProfileService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute, public authService: AuthenticationService,) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const userName = params['username']; 
+      this.getUserProfileInfo(userName);
+      this.setFormFields(userName);
+      this.setImages(userName);
+    });
     this.initializeForm();
-    this.setFormFields();
-    this.setImages();
     this.getUserProfiles();
   }
 
@@ -36,8 +43,8 @@ export class ProfileComponent implements OnInit {
     this.unsubscribed$.complete();
   }
 
-  getUserProfileInfo() {
-    this.profileService.getUserData().subscribe({
+  getUserProfileInfo(username: string) {
+    this.profileService.getUserData(username).subscribe({
       next: (response: Profile) => {
         console.log(response);
         return response;
@@ -58,8 +65,8 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  setImages() {
-    this.profileService.getUserData().pipe(takeUntil(this.unsubscribed$)).subscribe(
+  setImages(username: string) {
+    this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
         const coverPhotoElement = document.querySelector(".cover-photo");
         const profilePhotoElement = document.querySelector(".profile-photo");
@@ -79,10 +86,10 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  setFormFields() {
+  setFormFields(username: string) {
     const userName = document.querySelector("h1");
     this.profileForm.get('gender')?.disable();
-    this.profileService.getUserData()
+    this.profileService.getUserData(username)
       .pipe(takeUntil(this.unsubscribed$))
       .subscribe({
         next: (userData: Profile) => {

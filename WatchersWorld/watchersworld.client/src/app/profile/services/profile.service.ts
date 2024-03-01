@@ -22,8 +22,21 @@ export class ProfileService {
     }
   }
 
-  getUserData(): Observable<Profile> {
-    return this.http.get<Profile>(`${environment.appUrl}/api/profile/get-user-info`);
+  getHeaders() {
+    const jwt = this.getJWT();
+
+    // Set up the headers with the authentication token
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`
+    });
+
+    return headers;
+  }
+
+  getUserData(username: string): Observable<Profile> {
+    const headers = this.getHeaders();
+    return this.http.get<Profile>(`${environment.appUrl}/api/profile/get-user-info/${username}`, {headers});
   }
 
   setUserData(model: Profile) {
@@ -31,7 +44,8 @@ export class ProfileService {
   }
 
   getUserProfiles(): Observable<Profile[]> {
-    return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-usersProfile`);
+    const headers = this.getHeaders();
+    return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-usersProfile`, {headers});
   }
 
 }

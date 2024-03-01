@@ -6,7 +6,7 @@
     <span>Menu</span>
   </a>
 
-  <div class="search-bar">
+  <div class="search-bar" >
     <i class="fa fa-search search-icon"></i>
     <input type="text" id="searchInput" placeholder="Procurar..." class="search-input">
     <div id="searchSuggestions" class="search-suggestions"></div>
@@ -14,8 +14,7 @@
 
   <a [routerLink]="['/all-series-page']">Séries</a>
   <a [routerLink]="['/all-movies-page']">Filmes</a>
-  <img [routerLink]="['/profile']" src="assets/img/user.png" alt="User Icon" class="user-icon" />
-
+  <img *ngIf="(authService.user$ | async) as user" [routerLink]="['/profile/', user.username]" src="assets/img/user.png" alt="User Icon" class="user-icon" />
 
   <div id="sidebar" class="sidebar">
     <img class="wwimage"  src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />

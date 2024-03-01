@@ -22,8 +22,8 @@ const routes: Routes = [
     ]
   },
   { path: 'home', component: HomeComponent },
-  { path: 'profile/:id', component: ProfileComponent },
-  { path: 'editProfile', component: EditProfileComponent },
+  { path: 'profile/:username', component: ProfileComponent },
+  { path: 'editProfile/:username', component: EditProfileComponent },
   { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule)},
   { path: 'about-us', component: AboutUsComponent },
   { path: 'all-movies-page', component: AllMoviesPageComponent },
