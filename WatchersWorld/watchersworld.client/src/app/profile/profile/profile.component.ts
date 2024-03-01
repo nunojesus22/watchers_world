@@ -13,7 +13,7 @@ import { AuthenticationService } from '../../authentication/services/authenticat
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-
+  currentUsername: string | null = null;
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
+      this.currentUsername = params['username'];
       const userName = params['username']; 
       this.getUserProfileInfo(userName);
       this.setFormFields(userName);

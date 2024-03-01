@@ -139,3 +139,11 @@ nav {
   max-width: 50%;
   height: auto;
 }
+
+.active-link {
+  color: #4CAEFE !important;
+}
+
+.user-icon.active {
+  background-image: url('../../assets/img/user-selected.png');
+}

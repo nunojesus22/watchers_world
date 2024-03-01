@@ -7,6 +7,7 @@ import { AuthenticationService } from '../authentication/services/authentication
   styleUrl: './nav-menu.component.css'
 })
 export class NavMenuComponent {
+  isActive: boolean = false;
 
   constructor(public authService: AuthenticationService, private _eref: ElementRef) {}
   showMenu = false;

@@ -9,13 +9,19 @@
           <img src="" class="rounded-circle mb-3 profile-photo" alt="Foto do perfil" style="width: 120px; height: 120px;">
           <h1 class="card-title">João Silva</h1>
           <div class="user-icons" *ngIf="(authService.user$ | async) as user">
-            <a routerLink="/" class="profile-icon">
+            <a *ngIf="user.username === currentUsername"  routerLink="/" class="profile-icon">
               <img src="assets/img/statistic.png" alt="Estatisticas">
             </a>
-            <a routerLink="/" class="profile-icon">
+            <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
               <img src="assets/img/messenger.png" alt="Chat">
             </a>
-            <a [routerLink]="['/editProfile', user.username]" (click)="getUserProfileInfo(user.username)" class="profile-icon">
+            <button *ngIf="user.username !== currentUsername" class="follow-button">
+              Seguir
+            </button>
+            <button *ngIf="user.username !== currentUsername" class="send-message-button">
+              Enviar mensagem
+            </button>
+            <a *ngIf="user.username === currentUsername" [routerLink]="['/editProfile', user.username]" class="profile-icon">
               <img src="assets/img/edit profile.png" alt="Editar perfil">
             </a>
           </div>
@@ -37,6 +43,9 @@
                 <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
               </div>
             </form>
+            <div class="user-followers">
+              <p>Seguidores: 220 • A Seguir: 221</p>
+            </div>
           </div>
         </div>
       </div>
@@ -50,7 +59,7 @@
       <h2>Outros Utilizadores</h2>
       <ul class="item-list">
         <li *ngFor="let userProfile of usersProfiles">
-          <img [src]="userProfile.profilePhoto">
+          <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
           <p class="user-name">{{ userProfile.userName }}</p>
         </li>
       </ul>
@@ -63,9 +72,7 @@
       <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
-  <!--<div class="user-followers">
-    <p>Seguidores: 220 • A Seguir: 221</p>
-  </div>-->
+  
 </div>
 
 

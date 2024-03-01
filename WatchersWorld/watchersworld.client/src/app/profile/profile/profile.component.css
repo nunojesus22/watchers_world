@@ -46,7 +46,7 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:550px;
+  left:500px;
   z-index: 2;
 }
 
@@ -176,4 +176,29 @@ input[type="date"] {
   padding-top:10px;
   color: #333; /* Define a cor do texto */
   font-weight: bold;
+}
+
+.follow-button {
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  width: 100px;
+  height: 40px;
+}
+
+.send-message-button {
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  width: 200px;
+  height: 40px;
 }
