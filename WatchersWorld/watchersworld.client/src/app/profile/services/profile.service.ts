@@ -48,4 +48,17 @@ export class ProfileService {
     return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-usersProfile`, {headers});
   }
 
+  followUser(usernameToFollow: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(`${environment.appUrl}/api/profile/follow/${usernameToFollow}`, {}, { headers });
+  }
+
+  unfollowUser(usernameToUnfollow: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${environment.appUrl}/api/profile/unfollow/${usernameToUnfollow}`, { headers });
+  }
+
+
+
+
 }

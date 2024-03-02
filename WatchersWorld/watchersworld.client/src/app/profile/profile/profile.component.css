@@ -46,7 +46,7 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:500px;
+  left:400px;
   z-index: 2;
 }
 
@@ -178,7 +178,8 @@ input[type="date"] {
   font-weight: bold;
 }
 
-.follow-button {
+.follow-button,
+.unfollow-button{
   background-color: #4CAEFE;
   color: white;
   border: none;
@@ -186,7 +187,7 @@ input[type="date"] {
   cursor: pointer;
   margin-bottom: 5px;
   margin-right: 10px;
-  width: 100px;
+  width: 150px;
   height: 40px;
 }
 

@@ -46,5 +46,8 @@ namespace WatchersWorld.Server.Models.Authentication
         /// It dictates the visibility or accessibility of the profile to other users on the platform.
         /// </summary>
         public string ProfileStatus { get; set; }
+
+        public List<string> Followers { get; set; } = new List<string>();
+        public List<string> Following { get; set; } = new List<string>();
     }
 }

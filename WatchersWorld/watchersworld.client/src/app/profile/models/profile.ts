@@ -7,6 +7,8 @@ export class Profile {
   profilePhoto: string;
   coverPhoto: string;
   profileStatus: string;
+  followers: string[]; 
+  following: string[]; 
 
   constructor(
     userName: string,
@@ -15,7 +17,9 @@ export class Profile {
     gender: string | null,
     profilePhoto: string,
     coverPhoto: string,
-    profileStatus: string
+    profileStatus: string,
+    followers: string[] = [],
+    following: string[] = []
   ) {
     this.userName = userName;
     this.birthDate = birthDate;
@@ -24,5 +28,7 @@ export class Profile {
     this.profilePhoto = profilePhoto;
     this.coverPhoto = coverPhoto;
     this.profileStatus = profileStatus;
+    this.followers = followers;
+    this.following = following;
   }
 }

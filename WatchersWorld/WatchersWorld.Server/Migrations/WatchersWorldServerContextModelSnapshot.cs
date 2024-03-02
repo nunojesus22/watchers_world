@@ -169,6 +169,12 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Followers")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Following")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(1)");
 

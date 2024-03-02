@@ -9,14 +9,17 @@
           <img src="" class="rounded-circle mb-3 profile-photo" alt="Foto do perfil" style="width: 120px; height: 120px;">
           <h1 class="card-title">João Silva</h1>
           <div class="user-icons" *ngIf="(authService.user$ | async) as user">
-            <a *ngIf="user.username === currentUsername"  routerLink="/" class="profile-icon">
+            <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
               <img src="assets/img/statistic.png" alt="Estatisticas">
             </a>
             <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
               <img src="assets/img/messenger.png" alt="Chat">
             </a>
-            <button *ngIf="user.username !== currentUsername" class="follow-button">
+            <button *ngIf="!isFollowing && user.username !== currentUsername" class="follow-button" (click)="followUser()">
               Seguir
+            </button>
+            <button *ngIf="isFollowing && user.username !== currentUsername" class="unfollow-button" (click)="unfollowUser()">
+              Deixar de Seguir
             </button>
             <button *ngIf="user.username !== currentUsername" class="send-message-button">
               Enviar mensagem
@@ -44,7 +47,7 @@
               </div>
             </form>
             <div class="user-followers">
-              <p>Seguidores: 220 • A Seguir: 221</p>
+              <p>Seguidores: {{ followersCount }} • A Seguir: {{ followingCount }}</p>
             </div>
           </div>
         </div>
@@ -72,10 +75,4 @@
       <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
-  
 </div>
-
-
-
-
-

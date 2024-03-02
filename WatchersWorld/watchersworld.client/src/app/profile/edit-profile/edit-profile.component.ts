@@ -202,8 +202,8 @@ export class EditProfileComponent {
         if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
         if (userData.userName) {
           this.userName = userData.userName.toUpperCase();
-
         }
+
         this.isProfileLocked = userData.profileStatus === 'Private';
         this.profileLocked = this.isProfileLocked ? 'Private' : 'Public';
 

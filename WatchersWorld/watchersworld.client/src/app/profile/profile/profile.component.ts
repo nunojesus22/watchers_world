@@ -13,7 +13,12 @@ import { AuthenticationService } from '../../authentication/services/authenticat
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  currentUsername: string | null = null;
+
+  currentUsername: string | undefined; // Nome de usuário do perfil exibido
+  loggedUserName: string | null = null; // Nome de usuário do usuário logado
+  isFollowing: boolean = false;
+  loggedUserProfile: Profile | undefined;
+
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
@@ -22,6 +27,8 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] | undefined;
+  followersCount: number = 0;
+  followingCount: number = 0;
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
@@ -29,11 +36,21 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.currentUsername = params['username'];
-      const userName = params['username']; 
-      this.getUserProfileInfo(userName);
-      this.setFormFields(userName);
-      this.setImages(userName);
+      this.currentUsername = params['username']; // Nome de usuário do perfil exibido
+
+      this.authService.user$.subscribe(user => {
+        this.loggedUserName = user ? user.username : null; // Obtenha o nome de usuário do usuário logado
+        // Certifique-se de que currentUsername é uma string antes de chamar includes
+        if (typeof this.currentUsername === 'string' && this.loggedUserName && typeof this.isFollowing) {
+          this.isFollowing = this.loggedUserProfile?.following.includes(this.currentUsername) ?? false;
+        }
+      });
+
+      if (this.currentUsername) {
+        this.getUserProfileInfo(this.currentUsername);
+        this.setFormFields(this.currentUsername);
+        this.setImages(this.currentUsername);
+      }
     });
     this.initializeForm();
     this.getUserProfiles();
@@ -44,18 +61,22 @@ export class ProfileComponent implements OnInit {
     this.unsubscribed$.complete();
   }
 
-  getUserProfileInfo(username: string) {
-    this.profileService.getUserData(username).subscribe({
-      next: (response: Profile) => {
-        console.log(response);
-        return response;
-      },
-      error: (error) => {
-        console.log(error);
-        return error;
-      }
-    },
-    );
+  // A função getUserProfileInfo deve retornar uma Promise agora
+  getUserProfileInfo(username: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.profileService.getUserData(username).subscribe({
+        next: (userData: Profile) => {
+          if (this.loggedUserName !== null) {
+            this.isFollowing = userData.followers.includes(this.loggedUserName);
+          }
+          resolve();
+        },
+        error: (error) => {
+          console.error("Error while fetching user data:", error);
+          reject();
+        }
+      });
+    });
   }
 
   initializeForm() {
@@ -100,6 +121,8 @@ export class ProfileComponent implements OnInit {
             gender: userData.gender || "Por definir",
             date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
           });
+          this.followersCount = userData.followers.length;
+          this.followingCount = userData.following.length;
         },
         error: (error) => {
           console.error("Error while fetching user data:", error);
@@ -110,6 +133,42 @@ export class ProfileComponent implements OnInit {
           }
         }
       });
+  }
+
+  followUser(): void {
+    // Verifique se currentUsername é uma string antes de fazer a chamada
+    if (typeof this.currentUsername === 'string') {
+      // Aqui chamamos followUser com o nome de usuário do perfil exibido
+      this.profileService.followUser(this.currentUsername)
+        .subscribe({
+          next: () => {
+            this.isFollowing = true;
+            console.log('Usuário seguido com sucesso!');
+          },
+          error: (error) => {
+            console.error('Erro ao seguir usuário', error);
+          }
+        });
+    } else {
+      console.error('O nome de usuário do perfil não está definido.');
+    }
+  }
+
+  unfollowUser(): void {
+    if (typeof this.currentUsername === 'string') {
+      this.profileService.unfollowUser(this.currentUsername)
+        .subscribe({
+          next: () => {
+            this.isFollowing = false;
+            console.log('Usuário deixado de seguir com sucesso!');
+          },
+          error: (error) => {
+            console.error('Erro ao deixar de seguir usuário', error);
+          }
+        });
+    } else {
+      console.error('O nome de usuário do perfil não está definido.');
+    }
   }
 
   getUserProfiles() {
@@ -123,6 +182,4 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
-
-
 }
