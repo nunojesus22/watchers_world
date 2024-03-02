@@ -8,7 +8,10 @@
           <ng-template #defaultImage>
             <img src="../assets/img/55b4a4b5-217a-4408-8934-c611fc89c423.jpg" class="backdrop-image">
           </ng-template>
-          <img src="https://image.tmdb.org/t/p/original/{{ getMovieDetailResult.poster_path }}" class="poster-image">
+          <img *ngIf="getMovieDetailResult.poster_path; else defaultPoster" src="https://image.tmdb.org/t/p/original/{{ getMovieDetailResult.poster_path }}" class="poster-image">
+          <ng-template #defaultPoster>
+            <img src="../assets/img/default_media_pic.jpg" class="poster-image" alt="poster_picture">
+          </ng-template>
         </div>
 
         <!-- Movie Details -->

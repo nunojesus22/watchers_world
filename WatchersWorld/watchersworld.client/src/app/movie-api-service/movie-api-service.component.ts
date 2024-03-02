@@ -39,8 +39,13 @@ export class MovieApiServiceComponent {
   // searchmovive
   getSearchMovie(data: any): Observable<any> {
     console.log(data, 'movie#');
+    return this.http.get(`${this.baseurl}/search/movie?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}`);
+  }
 
-    return this.http.get(`${this.baseurl}/search/movie?api_key=${this.apikey}&query=${data.movieName}`);
+  getSearchSerie(data: any): Observable<any> {
+    console.log(data, 'serie#');
+
+    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}`);
   }
 
   // getmoviedatails
@@ -51,6 +56,12 @@ export class MovieApiServiceComponent {
   getSerieDetails(data: any): Observable<any> {
     return this.http.get(`${this.baseurl}/tv/${data}?api_key=${this.apikey}`)
   }
+
+  //Filmes e Series
+  getMultiDetails(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/search/multi?api_key=${this.apikey}&query=${data.movieName}`)
+  }
+
 
   // getMovieVideo
   getMovieVideo(data: any): Observable<any> {

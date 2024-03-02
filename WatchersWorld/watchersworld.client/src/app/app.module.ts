@@ -21,6 +21,7 @@ import { MovieApiServiceComponent } from './movie-api-service/movie-api-service.
 import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { SeriesDetailsComponent } from './series-details/series-details.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { SeriesDetailsComponent } from './series-details/series-details.componen
     AllSeriesPageComponent,
     MovieDetailsComponent,
     SeriesDetailsComponent,
+    SearchComponent,
 
   ],
   imports: [
