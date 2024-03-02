@@ -36,7 +36,6 @@ import { SeriesDetailsComponent } from './series-details/series-details.componen
     AllSeriesPageComponent,
     MovieDetailsComponent,
     SeriesDetailsComponent,
-
   ],
   imports: [
     BrowserModule, HttpClientModule,

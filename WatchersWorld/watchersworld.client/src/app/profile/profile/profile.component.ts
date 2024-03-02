@@ -27,6 +27,8 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] | undefined;
+  followers!: string[];
+  following!: string[];
   followersCount: number = 0;
   followingCount: number = 0;
 
@@ -68,6 +70,8 @@ export class ProfileComponent implements OnInit {
         next: (userData: Profile) => {
           if (this.loggedUserName !== null) {
             this.isFollowing = userData.followers.includes(this.loggedUserName);
+            this.followers = userData.followers;
+            this.following = userData.following;
           }
           resolve();
         },
@@ -178,7 +182,6 @@ export class ProfileComponent implements OnInit {
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
-        // Handle error as needed
       }
     );
   }

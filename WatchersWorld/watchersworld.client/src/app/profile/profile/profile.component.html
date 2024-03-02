@@ -46,9 +46,24 @@
                 <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
               </div>
             </form>
-            <div class="user-followers">
-              <p>Seguidores: {{ followersCount }} • A Seguir: {{ followingCount }}</p>
+            <br />
+            <!-- Lista de seguidores -->
+            <div *ngIf="followers.length > 0; else noFollowers">
+              <p>Seguidores: {{ followers.length }}</p>
+              <ul>
+                <li *ngFor="let follower of followers">{{ follower }}</li>
+              </ul>
             </div>
+            <ng-template #noFollowers><p>Não tem seguidores no momento.</p></ng-template>
+
+            <!-- Lista de seguindo -->
+            <div *ngIf="following.length > 0; else noFollowing">
+              <p>A Seguir: {{ following.length }}</p>
+              <ul>
+                <li *ngFor="let following of following">{{ following }}</li>
+              </ul>
+            </div>
+            <ng-template #noFollowing><p>Não está a seguir ninguém no momento.</p></ng-template>
           </div>
         </div>
       </div>
@@ -62,8 +77,8 @@
       <h2>Outros Utilizadores</h2>
       <ul class="item-list">
         <li *ngFor="let userProfile of usersProfiles">
-          <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-          <p class="user-name">{{ userProfile.userName }}</p>
+          <img [src]="userProfile.profilePhoto" [routerLink]="['/profile']">
+          <p class="user-name"></p>
         </li>
       </ul>
       <a href="#" class="expand-link">Expandir Utilizadores</a>

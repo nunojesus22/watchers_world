@@ -251,5 +251,7 @@ namespace WatchersWorld.Server.Controllers
                 return StatusCode(500, "Não foi possível deixar de seguir o usuário.");
             }
         }
+
+        
     }
 }

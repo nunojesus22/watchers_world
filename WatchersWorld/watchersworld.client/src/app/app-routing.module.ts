@@ -18,17 +18,17 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthorizationGuard],
     children: [
-      {path: 'profile', component: ProfileComponent}
+      { path: 'profile', component: ProfileComponent }
     ]
   },
   { path: 'home', component: HomeComponent },
   { path: 'profile/:username', component: ProfileComponent },
   { path: 'editProfile/:username', component: EditProfileComponent },
-  { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule)},
+  { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule) },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'all-movies-page', component: AllMoviesPageComponent },
-  { path: 'all-series-page', component: AllSeriesPageComponent},
-  { path: 'movie/:id', component: MovieDetailsComponent},
+  { path: 'all-series-page', component: AllSeriesPageComponent },
+  { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'serie/:id', component: SeriesDetailsComponent },
 
 
