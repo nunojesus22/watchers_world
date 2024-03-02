@@ -12,8 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240302145135_WatchersWorld")]
-    partial class WatchersWorld
+    [Migration("20240302164046_WatcherWorld")]
+    partial class WatcherWorld
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,7 +160,7 @@ namespace WatchersWorld.Server.Migrations
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.ProfileInfo", b =>
                 {
-                    b.Property<string>("UserEmail")
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("BirthDate")
@@ -187,7 +187,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("ProfileStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserEmail");
+                    b.HasKey("UserName");
 
                     b.ToTable("ProfileInfo");
                 });

@@ -201,14 +201,14 @@ export class EditProfileComponent {
         if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
         if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
         if (userData.userName) {
-          this.userName = userData.userName.toUpperCase();
+          this.userName = userData.userName;
         }
 
         this.isProfileLocked = userData.profileStatus === 'Private';
         this.profileLocked = this.isProfileLocked ? 'Private' : 'Public';
 
         this.profileForm.patchValue({
-          name: userData.userName = userData.userName,
+          name: userData.userName = userData.userName?.toLowerCase(),
           hobby: userData.description = userData.description || "Por definir",
           gender: userData.gender = userData.gender || "Por definir",
           date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
@@ -233,8 +233,8 @@ export class EditProfileComponent {
     const coverPhoto = this.coverPhoto;
     const profileStatus = this.profileLocked;
     
-    const data = new Profile(userName, date, hobby, gender, profilePhoto, coverPhoto, profileStatus);
-
+    const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus);
+    
     console.log(data);
     console.log(this.profileForm.valid);
     if (this.profileForm.valid) {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class WatchersWorld : Migration
+    public partial class WatcherWorld : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,7 +55,7 @@ namespace WatchersWorld.Server.Migrations
                 name: "ProfileInfo",
                 columns: table => new
                 {
-                    UserEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: true),
@@ -67,7 +67,7 @@ namespace WatchersWorld.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileInfo", x => x.UserEmail);
+                    table.PrimaryKey("PK_ProfileInfo", x => x.UserName);
                 });
 
             migrationBuilder.CreateTable(

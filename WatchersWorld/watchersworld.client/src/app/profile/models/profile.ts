@@ -1,6 +1,5 @@
 export class Profile {
-  userEmail!: string;
-  userName: string;
+  userName: string | undefined;
   birthDate: Date;
   description: string | null;
   gender: string | null;
@@ -11,7 +10,6 @@ export class Profile {
   following: string[]; 
 
   constructor(
-    userName: string,
     birthDate: Date,
     description: string | null,
     gender: string | null,
@@ -21,7 +19,6 @@ export class Profile {
     followers: string[] = [],
     following: string[] = []
   ) {
-    this.userName = userName;
     this.birthDate = birthDate;
     this.description = description;
     this.gender = gender;

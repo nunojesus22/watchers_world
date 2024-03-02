@@ -29,8 +29,8 @@ export class ProfileComponent implements OnInit {
   usersProfiles: Profile[] | undefined;
   followers!: string[];
   following!: string[];
-  followersCount: number = 0;
-  followingCount: number = 0;
+  followersCount: number | undefined;
+  followingCount: number | undefined;
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
@@ -72,6 +72,9 @@ export class ProfileComponent implements OnInit {
             this.isFollowing = userData.followers.includes(this.loggedUserName);
             this.followers = userData.followers;
             this.following = userData.following;
+            this.followersCount = userData.followers.length;
+            this.followingCount = userData.following.length;
+
           }
           resolve();
         },

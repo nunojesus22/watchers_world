@@ -17,7 +17,7 @@ namespace WatchersWorld.Server.Models.Authentication
         /// Email associated with the user's profile.
         /// Used as a unique identifier for the user's profile and for communication purposes.
         /// </summary>
-        public string UserEmail { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// The user's date of birth.

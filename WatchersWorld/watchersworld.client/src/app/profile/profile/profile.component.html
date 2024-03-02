@@ -77,8 +77,8 @@
       <h2>Outros Utilizadores</h2>
       <ul class="item-list">
         <li *ngFor="let userProfile of usersProfiles">
-          <img [src]="userProfile.profilePhoto" [routerLink]="['/profile']">
-          <p class="user-name"></p>
+          <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+          <p class="user-name">{{ userProfile.userName }}</p>
         </li>
       </ul>
       <a href="#" class="expand-link">Expandir Utilizadores</a>

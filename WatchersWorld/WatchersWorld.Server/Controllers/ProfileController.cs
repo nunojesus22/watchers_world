@@ -9,6 +9,7 @@ using System.Security.Claims;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
 using WatchersWorld.Server.Models.Authentication;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using User = WatchersWorld.Server.Models.Authentication.User; // Alias para o User do seu domínio
 
 namespace WatchersWorld.Server.Controllers
@@ -40,21 +41,27 @@ namespace WatchersWorld.Server.Controllers
         {
             try
             {
-                // Get the email of the currently logged-in user
-                var currentUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId == null)
+                {
+                    return BadRequest("Usuário não autenticado.");
+                }
 
+                var currentUser = await _userManager.FindByIdAsync(userId);
+
+                
                 // Query all users from the database excluding the current user
                 var userProfiles = await _context.ProfileInfo
-                    .Where(profile => profile.UserEmail != currentUserEmail)
+                    .Where(profile => profile.UserName != currentUser.UserName)
                     .ToListAsync();
 
                 // Map the users to ProfileInfo with selected properties
                 var profilesList = userProfiles.Select(async profile =>
                 {
-                    var user = await _userManager.FindByEmailAsync(profile.UserEmail);
+                    var user = await _userManager.FindByNameAsync(profile.UserName);
                     return new ProfileInfo
                     {
-                        UserEmail = profile.UserEmail,
+                        UserName = profile.UserName,
                         ProfilePhoto = profile.ProfilePhoto
                     };
                 });
@@ -73,18 +80,18 @@ namespace WatchersWorld.Server.Controllers
         public async Task<ActionResult<ProfileInfoDto>> GetUser(string username)
         {
             var user = await _userManager.Users
-                 .FirstOrDefaultAsync(u => u.NormalizedUserName == username.ToUpper());
+                 .FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user == null)
             {
                 return NotFound("Não foi possível encontrar o utilizador");
             }
 
-            var data = _context.ProfileInfo.FirstOrDefault(p => p.UserEmail == user.Email);
+            var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
 
             ProfileInfoDto userProfileDto = new ProfileInfoDto
             {
-                UserEmail = data.UserEmail,
+                UserName = data.UserName,
                 Description = data.Description,
                 BirthDate = data.BirthDate,
                 Gender = data.Gender,
@@ -115,7 +122,7 @@ namespace WatchersWorld.Server.Controllers
                 return NotFound("Não foi possível encontrar o utilizador");
             }
 
-            var data = _context.ProfileInfo.FirstOrDefault(p => p.UserEmail == user.Email);
+            var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
 
             try
             {
@@ -167,7 +174,7 @@ namespace WatchersWorld.Server.Controllers
             _logger.LogInformation($"Usuário '{currentUser.UserName}' tentando seguir '{userToFollow.UserName}'.");
 
             var currentUserProfile = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserEmail == currentUser.Email);
+                .FirstOrDefaultAsync(p => p.UserName == currentUser.UserName);
 
             if (currentUserProfile == null)
             {
@@ -181,7 +188,7 @@ namespace WatchersWorld.Server.Controllers
             }
 
             var userProfileToFollow = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserEmail == userToFollow.Email);
+                .FirstOrDefaultAsync(p => p.UserName == userToFollow.UserName);
 
             if (userProfileToFollow == null)
             {
@@ -223,9 +230,9 @@ namespace WatchersWorld.Server.Controllers
             }
 
             var currentUserProfile = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserEmail == currentUser.Email);
+                .FirstOrDefaultAsync(p => p.UserName == currentUser.UserName);
             var userProfileToUnfollow = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserEmail == userToUnfollow.Email);
+                .FirstOrDefaultAsync(p => p.UserName == userToUnfollow.UserName);
 
             if (currentUserProfile == null || userProfileToUnfollow == null)
             {
