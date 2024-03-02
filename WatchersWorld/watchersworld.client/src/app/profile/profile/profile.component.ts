@@ -115,7 +115,7 @@ export class ProfileComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribed$))
       .subscribe({
         next: (userData: Profile) => {
-          if (userName) { userName.textContent = userData.userName; }
+          if (userName) { userName.textContent = username; }
           this.profileForm.patchValue({
             hobby: userData.description || "Por definir",
             gender: userData.gender || "Por definir",

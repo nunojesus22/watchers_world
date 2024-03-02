@@ -54,7 +54,6 @@ namespace WatchersWorld.Server.Controllers
                     var user = await _userManager.FindByEmailAsync(profile.UserEmail);
                     return new ProfileInfo
                     {
-                        UserName = user != null ? user.UserName : string.Empty,
                         UserEmail = profile.UserEmail,
                         ProfilePhoto = profile.ProfilePhoto
                     };
@@ -86,7 +85,6 @@ namespace WatchersWorld.Server.Controllers
             ProfileInfoDto userProfileDto = new ProfileInfoDto
             {
                 UserEmail = data.UserEmail,
-                UserName = user.UserName,
                 Description = data.Description,
                 BirthDate = data.BirthDate,
                 Gender = data.Gender,
@@ -121,7 +119,6 @@ namespace WatchersWorld.Server.Controllers
 
             try
             {
-                user.UserName = model.UserName;
                 data.Description = model.Description;
                 data.Gender = model.Gender;
                 data.BirthDate = model.BirthDate;
@@ -191,10 +188,6 @@ namespace WatchersWorld.Server.Controllers
                 _logger.LogError("Perfil do usuário a seguir não foi encontrado.");
                 return StatusCode(500, "Erro interno do servidor.");
             }
-
-            // Inicializa as listas de Followers e Following se ainda não foram inicializadas.
-            userProfileToFollow.Followers ??= new List<string>();
-            currentUserProfile.Following ??= new List<string>();
 
             // Adicione o usuário atual à lista de seguidores do usuário alvo e vice-versa.
             userProfileToFollow.Followers.Add(currentUser.UserName);
