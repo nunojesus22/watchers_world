@@ -36,37 +36,22 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new JsonResult(new { message = "Apenas para logados." }));
         }
 
-        [HttpGet("get-usersProfile")]
+        [HttpGet("get-users-profiles")]
         public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfile()
         {
             try
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (userId == null)
-                {
-                    return BadRequest("Usuário não autenticado.");
-                }
-
-                var currentUser = await _userManager.FindByIdAsync(userId);
-
-                
-                // Query all users from the database excluding the current user
-                var userProfiles = await _context.ProfileInfo
-                    .Where(profile => profile.UserName != currentUser.UserName)
-                    .ToListAsync();
+                // Query all users from the database
+                var userProfiles = await _context.ProfileInfo.ToListAsync();
 
                 // Map the users to ProfileInfo with selected properties
-                var profilesList = userProfiles.Select(async profile =>
+                var profilesList = userProfiles.Select(profile => new ProfileInfo
                 {
-                    var user = await _userManager.FindByNameAsync(profile.UserName);
-                    return new ProfileInfo
-                    {
-                        UserName = profile.UserName,
-                        ProfilePhoto = profile.ProfilePhoto
-                    };
+                    UserName = profile.UserName,
+                    ProfilePhoto = profile.ProfilePhoto
                 });
 
-                return Ok(await Task.WhenAll(profilesList));
+                return Ok(profilesList);
             }
             catch (Exception ex)
             {

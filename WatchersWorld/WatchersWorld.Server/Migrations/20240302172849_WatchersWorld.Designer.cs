@@ -12,8 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240302164046_WatcherWorld")]
-    partial class WatcherWorld
+    [Migration("20240302172849_WatchersWorld")]
+    partial class WatchersWorld
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

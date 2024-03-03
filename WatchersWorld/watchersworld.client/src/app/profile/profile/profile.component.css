@@ -39,6 +39,7 @@
   justify-content: flex-start; /* Alinha ao início do container */
   align-items: flex-start;
   padding-top:30px;
+  gap:5px;
 }
 
 .user-icons {
@@ -202,4 +203,144 @@ input[type="date"] {
   margin-right: 10px;
   width: 200px;
   height: 40px;
+}
+
+.followers-following-container {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens lado a lado e distribui o espaço igualmente */
+  width:20rem;
+}
+
+.user-photo {
+  width: 50px; /* Tamanho desejado das imagens */
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-photo2 {
+  width: 50px; /* Tamanho desejado das imagens */
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.no-list-style {
+  list-style-type: none; /* Isso remove os pontos dos itens de lista */
+}
+
+  /* Para manter um espaçamento consistente entre os itens de lista */
+  .no-list-style li {
+    margin-bottom: 10px; /* Ajuste conforme necessário */
+  }
+
+.user-item {
+  display: flex;
+  align-items: center; /* Alinha verticalmente */
+  gap: 10px; /* Espaçamento entre a imagem e o texto */
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.favorites-section,
+.movies-section,
+.series-section,
+.medals-section {
+  padding: 10px;
+  margin-top: 20px; /* Espaço acima da seção */
+  margin-left:90px;
+  width:600px;
+}
+
+.favorites-section-content-expanded,
+.movies-section-content-expanded,
+.series-section-content-expanded,
+.medals-section-content-expanded {
+  height: 200px; /* Altura quando expandido */
+  /* suas outras propriedades como padding, margin, background-color, etc. */
+}
+
+.favorites-section-content-collapsed,
+.movies-section-content-collapsed,
+.series-section-content-collapsed,
+.medals-section-content-collapsed {
+  height: 0; /* Altura quando colapsado */
+  overflow: hidden; /* Esconde o conteúdo que excede a altura */
+  /* suas outras propriedades como padding, margin, background-color, etc. */
+}
+
+.favorites-section-header,
+.movies-section-header,
+.series-section-header,
+.medals-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espaça o título e o botão uniformemente */
+}
+
+.favorites-title,
+.movies-title,
+.series-title,
+.medals-title{
+  display: flex;
+  align-items: center;
+}
+
+.section-header h3 {
+  margin-right: 10px; /* Espaço entre o título e a seta */
+}
+
+.filter-button {
+  padding: 5px 10px; /* Ajuste conforme necessário */
+  background-color: #007bff; /* Cor do botão, pode ser alterada */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+  .filter-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.favorites-down-arrow,
+.movies-down-arrow,
+.series-down-arrow,
+.medals-down-arrow{
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  color: #4CAEFE;
+  margin-left:20px;
+}
+
+.favorites-right-arrow,
+.movies-right-arrow,
+.series-right-arrow,
+.medals-right-arrow {
+  cursor: pointer;
+  /* Estilos da seta para cima, você pode usar uma transformação para rotacionar a seta para baixo */
+  transform: rotate(180deg);
+}
+
+.favorites-section-content,
+.movies-section-content,
+.series-section-content,
+.medals-section-content,{
+    /* TODO */
+}
+
+.filter-favorites-button,
+.filter-movies-button,
+.filter-series-button,
+.filter-medals-button{
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  font-weight:bold;
 }

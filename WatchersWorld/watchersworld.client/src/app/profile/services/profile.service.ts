@@ -45,7 +45,7 @@ export class ProfileService {
 
   getUserProfiles(): Observable<Profile[]> {
     const headers = this.getHeaders();
-    return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-usersProfile`, {headers});
+    return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-users-profiles`, {headers});
   }
 
   followUser(usernameToFollow: string): Observable<any> {

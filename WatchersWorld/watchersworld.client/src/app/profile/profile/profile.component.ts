@@ -27,10 +27,17 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] | undefined;
-  followers!: string[];
-  following!: string[];
+  followers: string[] = [];
+  following: string[] = [];
   followersCount: number | undefined;
   followingCount: number | undefined;
+  canViewFollowers: boolean = false;
+
+  showFavorites: boolean = false;
+  showMovies: boolean = false;
+  showSeries: boolean = false;
+  showMedals: boolean = false;
+
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
@@ -38,7 +45,16 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.currentUsername = params['username']; // Nome de usuário do perfil exibido
+      if (typeof params['username'] === 'string') {
+        this.currentUsername = params['username'];
+
+        this.getUserProfileInfo(this.currentUsername).then(() => {
+          // Aqui você tem certeza de que as informações do perfil foram carregadas
+          if (this.loggedUserProfile) {
+            this.canViewFollowers = this.loggedUserProfile.profileStatus === 'Public' || this.isFollowing;
+          }
+        });
+      }
 
       this.authService.user$.subscribe(user => {
         this.loggedUserName = user ? user.username : null; // Obtenha o nome de usuário do usuário logado
@@ -47,6 +63,8 @@ export class ProfileComponent implements OnInit {
           this.isFollowing = this.loggedUserProfile?.following.includes(this.currentUsername) ?? false;
         }
       });
+
+
 
       if (this.currentUsername) {
         this.getUserProfileInfo(this.currentUsername);
@@ -74,7 +92,7 @@ export class ProfileComponent implements OnInit {
             this.following = userData.following;
             this.followersCount = userData.followers.length;
             this.followingCount = userData.following.length;
-
+            this.canViewFollowers = userData.profileStatus === 'Public' || this.isFollowing;
           }
           resolve();
         },
@@ -150,6 +168,7 @@ export class ProfileComponent implements OnInit {
         .subscribe({
           next: () => {
             this.isFollowing = true;
+            this.canViewFollowers = false;
             console.log('Usuário seguido com sucesso!');
           },
           error: (error) => {
@@ -187,5 +206,21 @@ export class ProfileComponent implements OnInit {
         console.error("Error while fetching users' profiles:", error);
       }
     );
+  }
+
+  toggleFavorites() {
+    this.showFavorites = !this.showFavorites;
+  }
+
+  toggleMovies() {
+    this.showMovies = !this.showMovies;
+  }
+
+  toggleSeries() {
+    this.showSeries = !this.showSeries;
+  }
+
+  toggleMedals() {
+    this.showMedals = !this.showMedals;
   }
 }
