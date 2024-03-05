@@ -1,7 +1,8 @@
   import { Component, OnInit } from '@angular/core';
   import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
   import { Meta, Title } from '@angular/platform-browser';
-  import { FormControl, FormGroup } from '@angular/forms';
+  import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { SearchServiceComponent } from '../search-service/search-service.component';
 
   @Component({
     selector: 'app-search',
@@ -10,24 +11,33 @@
   })
   export class SearchComponent implements OnInit {
     currentPage = 1;
-
-    constructor(private service: MovieApiServiceComponent, private title: Title, private meta: Meta) {
-      this.title.setTitle('Search movies - showtime');
-      this.meta.updateTag({ name: 'description', content: 'search here movies like avatar,war etc' });
-    }
-
-    ngOnInit(): void {
-    }
-
     searchResult: any;
     searchForm = new FormGroup({
-      'movieName': new FormControl(null),
+      'movieName': new FormControl(''),
       'type': new FormControl('movie'),
       'total_pages': new FormControl()
 
 
 
     });
+
+    constructor(private service: MovieApiServiceComponent, private title: Title, private meta: Meta, private formBuilder: FormBuilder, private searchService: SearchServiceComponent) {
+
+
+      this.searchForm = new FormGroup({
+        'movieName': new FormControl(''),
+        'type': new FormControl('movie'),
+        'total_pages': new FormControl()
+      });
+    }
+    ngOnInit() {
+      this.searchService.currentSearchQuery.subscribe(searchQuery => {
+        this.searchForm.controls['movieName'].setValue(searchQuery);
+        this.submitForm(1);  // Adicione esta linha para realizar a pesquisa imediatamente
+      });
+    }
+
+
 
     submitForm(page: number) {
       console.log(this.searchForm.value, 'searchform#');

@@ -8,7 +8,9 @@
 
   <div class="search-bar">
     <i class="fa fa-search search-icon"></i>
-    <input type="text" id="searchInput" placeholder="Procurar..." class="search-input">
+    <form (submit)="onSubmit()">
+      <input type="text" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Procurar..." class="search-input">
+    </form>
     <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 
@@ -18,7 +20,7 @@
 
 
   <div id="sidebar" class="sidebar">
-    <img class="wwimage"  src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />
+    <img class="wwimage" src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />
     <a href="#"> <i class="fas fa-envelope"></i> Mensagens</a>
     <a href="#"> <i class="fas fa-bell"></i> Notificações </a>
     <a href="#"> <i class="fas fa-user"></i> Perfil </a>
@@ -26,7 +28,7 @@
     <a [routerLink]="['/all-movies-page']"> <i class="fas fa-film"></i> Filmes </a>
     <a href="#"> <i class="fas fa-cog"></i> Definições </a>
     <a href="#"> <i class="fas fa-sign-out-alt"></i> Terminar Sessão </a>
-    <a  class="closebtn" (click)="closeNav()"><i class="fas fa-times"></i></a>
+    <a class="closebtn" (click)="closeNav()"><i class="fas fa-times"></i></a>
 
   </div>
 </nav>

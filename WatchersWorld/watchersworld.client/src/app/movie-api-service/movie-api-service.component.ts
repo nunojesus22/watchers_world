@@ -12,7 +12,7 @@ export class MovieApiServiceComponent {
   apikey = "8e5d555177cf6c9221bb24f57822ef0d";
 
 
-
+  
   //getStreamingProvider
   getStreamingProvider(data:any): Observable<any>  {
     return this.http.get(`${this.baseurl}/movie/${data}/watch/providers?api_key=${this.apikey}`)
@@ -141,4 +141,5 @@ export class MovieApiServiceComponent {
   fetchAnimationSeries(): Observable<any> {
     return this.http.get(`${this.baseurl}/discover/tv?api_key=${this.apikey}&with_genres=16`);
   }
+
 }

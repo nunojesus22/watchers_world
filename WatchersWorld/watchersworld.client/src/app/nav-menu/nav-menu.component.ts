@@ -1,5 +1,8 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { AuthenticationService } from '../authentication/services/authentication.service';
+import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
+import { Router } from '@angular/router';
+import { SearchServiceComponent } from '../search-service/search-service.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,8 +10,9 @@ import { AuthenticationService } from '../authentication/services/authentication
   styleUrl: './nav-menu.component.css'
 })
 export class NavMenuComponent {
+  searchQuery: any;
 
-  constructor(public authService: AuthenticationService, private _eref: ElementRef) {}
+  constructor(private service: MovieApiServiceComponent, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
   showMenu = false;
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) {
@@ -42,6 +46,16 @@ export class NavMenuComponent {
 
   }
 
+  onSubmit() {
+    if (this.searchQuery) {
+      this.searchService.changeSearchQuery(this.searchQuery);
+      this.router.navigate(['/search']);
+    }
+  }
+
+  onKeyup() {
+    console.log('one key up',this.searchQuery);
+  }
 }
 
 
