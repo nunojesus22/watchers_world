@@ -10,55 +10,83 @@ import { Meta, Title } from '@angular/platform-browser';
 })
 export class SeriesDetailsComponent {
   constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta) { }
-  getMovieDetailResult: any;
-  getMovieVideoResult: any;
+  getSerieDetailsResult: any;
+  getSerieVideoResult: any;
   getMovieCastResult: any;
+  getMovieProviders: any;
+  showAll: boolean = true;
+
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');
-
+    this.showAll = false;
     this.getMovie(getParamId);
     this.getVideo(getParamId);
-    this.getMovieCast(getParamId);
+    this.getSerieCast(getParamId);
+    this.getSerieProviders(getParamId);
   }
 
 
   getMovie(id: any) {
-    this.service.getMovieDetails(id).subscribe(async (result) => {
-      console.log(result, 'getmoviedetails#');
-      this.getMovieDetailResult = await result;
+    this.service.getSerieDetails(id).subscribe(async (result) => {
+      console.log(result, 'getseriedetails#');
+      this.getSerieDetailsResult = await result;
 
       // updatetags
-      this.title.setTitle(`${this.getMovieDetailResult.original_title} | ${this.getMovieDetailResult.tagline}`);
-      this.meta.updateTag({ name: 'title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ name: 'description', content: this.getMovieDetailResult.overview });
+      this.title.setTitle(`${this.getSerieDetailsResult.original_title} | ${this.getSerieDetailsResult.tagline}`);
+      this.meta.updateTag({ name: 'title', content: this.getSerieDetailsResult.original_title });
+      this.meta.updateTag({ name: 'description', content: this.getSerieDetailsResult.overview });
 
       // facebook
       this.meta.updateTag({ property: 'og:type', content: "website" });
       this.meta.updateTag({ property: 'og:url', content: `` });
-      this.meta.updateTag({ property: 'og:title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ property: 'og:description', content: this.getMovieDetailResult.overview });
-      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getMovieDetailResult.backdrop_path}` });
+      this.meta.updateTag({ property: 'og:title', content: this.getSerieDetailsResult.original_title });
+      this.meta.updateTag({ property: 'og:description', content: this.getSerieDetailsResult.overview });
+      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getSerieDetailsResult.backdrop_path}` });
 
     });
   }
 
   getVideo(id: any) {
-    this.service.getMovieVideo(id).subscribe((result) => {
-      console.log(result, 'getMovieVideo#');
+    this.service.getSerieVideo(id).subscribe((result) => {
+      console.log(result, 'getSerieVideo#');
       result.results.forEach((element: any) => {
         if (element.type == "Trailer") {
-          this.getMovieVideoResult = element.key;
+          this.getSerieVideoResult = element.key;
         }
       });
 
     });
   }
 
-  getMovieCast(id: any) {
-    this.service.getMovieCast(id).subscribe((result) => {
+  getSerieCast(id: any) {
+    this.service.getSerieCast(id).subscribe((result) => {
       console.log(result, 'movieCast#');
       this.getMovieCastResult = result.cast;
     });
+  }
+
+
+  getSerieProviders(id: any) {
+    this.service.getSerieStreamingProvider(id).subscribe((result) => {
+      console.log(result, 'serieProviders#');
+      this.getMovieProviders = result.results.PT;
+    });
+  }
+
+
+  public convertMinutesToHours(time: number): string {//Converte para horas o tempo do filme
+    const hours = Math.floor(time / 60);
+    const minutes = time % 60;
+    return `${hours}h ${minutes}min`;
+  }
+
+  public convertToPercentage(points: number): string { //Converte para percentagem o valor dos pontos dos users da API
+    const pointsPercentage = Math.round(points * 10); // Multiplicar por 10 para obter um número inteiro
+    return `${pointsPercentage}%`;
+  }
+
+  public formatCurrency(value: number): string {
+    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
 }

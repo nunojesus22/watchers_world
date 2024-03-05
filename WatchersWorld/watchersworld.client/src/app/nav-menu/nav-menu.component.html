@@ -8,7 +8,9 @@
 
   <div class="search-bar">
     <i class="fa fa-search search-icon"></i>
-    <input type="text" id="searchInput" placeholder="Procurar..." class="search-input">
+    <form (submit)="onSubmit()">
+      <input type="text" [(ngModel)]="searchQuery" name="searchQuery" placeholder="Procurar..." class="search-input">
+    </form>
     <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
   <a [routerLink]="['/all-series-page']" routerLinkActive="active-link">Séries</a>

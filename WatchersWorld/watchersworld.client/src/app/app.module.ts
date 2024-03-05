@@ -23,6 +23,8 @@ import { AllSeriesPageComponent } from './all-series-page/all-series-page.compon
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { SeriesDetailsComponent } from './series-details/series-details.component';
 import { LoadingComponent } from './loader/loading/loading.component';
+import { SearchComponent } from './search/search.component';
+import { SearchServiceComponent } from './search-service/search-service.component';
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import { LoadingComponent } from './loader/loading/loading.component';
     MovieDetailsComponent,
     SeriesDetailsComponent,
     LoadingComponent,
+    SearchComponent,
+    SearchServiceComponent,
 
   ],
   imports: [
@@ -49,6 +53,7 @@ import { LoadingComponent } from './loader/loading/loading.component';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MovieApiServiceComponent,
+    MovieApiServiceComponent, SearchServiceComponent
 
   ],
   bootstrap: [AppComponent]
