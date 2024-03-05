@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { LoadingInterceptor } from './interceptors/loading/loading-interceptor.service'
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { FormsModule } from '@angular/forms';
 import { AboutUsComponent } from './about-us/about-us.component';
@@ -21,6 +22,7 @@ import { MovieApiServiceComponent } from './movie-api-service/movie-api-service.
 import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { SeriesDetailsComponent } from './series-details/series-details.component';
+import { LoadingComponent } from './loader/loading/loading.component';
 
 
 @NgModule({
@@ -36,6 +38,8 @@ import { SeriesDetailsComponent } from './series-details/series-details.componen
     AllSeriesPageComponent,
     MovieDetailsComponent,
     SeriesDetailsComponent,
+    LoadingComponent,
+
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -43,6 +47,7 @@ import { SeriesDetailsComponent } from './series-details/series-details.componen
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MovieApiServiceComponent,
 
   ],
