@@ -33,6 +33,11 @@ export class EditProfileComponent {
   isProfileLocked: boolean = false;
   profileLocked: string = "Public";
 
+  showFavorites: boolean = false;
+  showMovies: boolean = false;
+  showSeries: boolean = false;
+  showMedals: boolean = false;
+
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) { }
@@ -282,5 +287,21 @@ export class EditProfileComponent {
     
 
     
+  }
+
+  toggleFavorites() {
+    this.showFavorites = !this.showFavorites;
+  }
+
+  toggleMovies() {
+    this.showMovies = !this.showMovies;
+  }
+
+  toggleSeries() {
+    this.showSeries = !this.showSeries;
+  }
+
+  toggleMedals() {
+    this.showMedals = !this.showMedals;
   }
 }
