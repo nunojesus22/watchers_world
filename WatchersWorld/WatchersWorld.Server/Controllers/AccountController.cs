@@ -275,7 +275,7 @@ namespace WatchersWorld.Server.Controllers
             var userToAdd = new User
             {
                 UserName = model.Username.ToLower(),
-                EmailConfirmed = false,
+                EmailConfirmed = true,
                 Provider = model.Provider,
                 Email = model.Email.ToLower(),
             };
