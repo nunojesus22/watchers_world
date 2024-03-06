@@ -22,13 +22,13 @@
               </button>
             </div>
             <form [formGroup]="profileForm" class="user-details text-left">
-              <div class="mb-3">
+              <!--<div class="mb-3">
                 <label for="name">Nome de Utilizador:</label>
                 <div class="form-check form-check-inline">
                   <input formControlName="name" type="text" id="name" name="name" class="form-control" [readonly]="!userNameEditable">
                 </div>
                 <button type="button" class="editButton ms-2" (click)="toggleEdit('name')"></button>
-              </div>
+              </div>-->
               <div class="mb-3">
                 <label for="hobby">Descrição:</label>
                 <div class="form-check form-check-inline">
@@ -59,6 +59,56 @@
                 <button class="btn btn-primary" (click)="saveButton(user.username)" [routerLink]="['/profile/', user.username]">Salvar alterações</button>
               </div>
             </form>
+            <div class="user-media">
+              <div class="favorites-section">
+                <div class="favorites-section-header">
+                  <div class="favorites-title">
+                    <h3>Favoritos:</h3>
+                    <span class="favorites-down-arrow" [ngClass]="showFavorites ? 'favorites-down-arrow' : 'favorites-right-arrow'" (click)="toggleFavorites()">&#9660;</span>
+                  </div>
+                  <button class="filter-favorites-button">Filtrar</button>
+                </div>
+                <div [ngClass]="showFavorites ? 'favorites-section-content-expanded' : 'favorites-section-content-collapsed'">
+                  <p> Favoritos Por Implementar</p>
+                </div>
+              </div>
+              <div class="movies-section">
+                <div class="movies-section-header">
+                  <div class="movies-title">
+                    <h3>Filmes:</h3>
+                    <span class="movies-down-arrow" [ngClass]="showMovies ? 'movies-down-arrow' : 'movies-right-arrow'" (click)="toggleMovies()">&#9660;</span>
+                  </div>
+                  <button class="filter-movies-button">Filtrar</button>
+                </div>
+                <div [ngClass]="showMovies ? 'movies-section-content-expanded' : 'movies-section-content-collapsed'">
+                  <p>Filmes Por Implementar</p>
+                </div>
+              </div>
+              <div class="series-section">
+                <div class="series-section-header">
+                  <div class="series-title">
+                    <h3>Séries:</h3>
+                    <span class="series-down-arrow" [ngClass]="showSeries ? 'series-down-arrow' : 'series-right-arrow'" (click)="toggleSeries()">&#9660;</span>
+                  </div>
+                  <button class="filter-series-button">Filtrar</button>
+                </div>
+                <div [ngClass]="showSeries ? 'series-section-content-expanded' : 'series-section-content-collapsed'">
+                  <p>Series Por Implementar</p>
+                </div>
+              </div>
+              <div class="medals-section">
+                <div class="medals-section-header">
+                  <div class="medals-title">
+                    <h3>Medalhas:</h3>
+                    <span class="medals-down-arrow" [ngClass]="showMedals ? 'medals-down-arrow' : 'medals-right-arrow'" (click)="toggleMedals()">&#9660;</span>
+                  </div>
+                  <button class="filter-medals-button">Filtrar</button>
+                </div>
+                <div [ngClass]="showMedals ? 'medals-section-content-expanded' : 'medals-section-content-collapsed'">
+                  <p>Medalhas Por Implementar</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -67,14 +117,16 @@
 </div>
 
 
-<div class="col-12 col-lg-4 side-divs">
+<!--<div class="col-12 col-lg-4 side-divs">
   <div class="card mb-3">
     <div class="card-body side-div-users">
       <h2>Outros Utilizadores</h2>
       <ul class="item-list">
         <li *ngFor="let userProfile of usersProfiles">
-          <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-          <p class="user-name">{{ userProfile.userName }}</p>
+          <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
+            <img class="user-photo2" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+            <p class="user-name">{{ userProfile.userName }}</p>
+          </div>
         </li>
       </ul>
       <a href="#" class="expand-link">Expandir Utilizadores</a>
@@ -86,7 +138,4 @@
       <a href="#" class="expand-link">Expandir Sugestões</a>
     </div>
   </div>
-</div>
-
-
-
+</div>-->
