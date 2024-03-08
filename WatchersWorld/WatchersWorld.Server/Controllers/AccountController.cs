@@ -283,7 +283,7 @@ namespace WatchersWorld.Server.Controllers
 
             var profileInfoToAdd = new ProfileInfo
             {
-                UserName = model.Username.ToLower(),
+                UserName = model.Username,
                 Description = "Por definir!",
                 Gender = 'M',
                 BirthDate = DateTime.Now,

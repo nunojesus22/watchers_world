@@ -8,7 +8,7 @@ namespace WatchersWorld.Server.Models
     public class Followers
     {
         [Key]
-        public string FollowersId { get; set; }
+        public Guid FollowersId { get; set; }
 
         [ForeignKey(nameof(User.Id))]
         public string WhosFollowing { get; set; }

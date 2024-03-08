@@ -169,13 +169,14 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Followers")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Followers")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Following")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Following")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("ProfilePhoto")
@@ -256,6 +257,23 @@ namespace WatchersWorld.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Followers", b =>
+                {
+                    b.Property<Guid>("FollowersId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WhosBeingFollowed")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WhosFollowing")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FollowersId");
+
+                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

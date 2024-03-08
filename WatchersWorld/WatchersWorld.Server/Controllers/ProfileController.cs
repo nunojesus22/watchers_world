@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using User = WatchersWorld.Server.Models.Authentication.User; // Alias para o User do seu domínio
 
@@ -23,14 +25,14 @@ namespace WatchersWorld.Server.Controllers
         private readonly WatchersWorldServerContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<ProfileController> _logger;
-        private readonly FollowersController _followersController;
+        private readonly IFollowersService _followersService;
 
-        public ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, FollowersController followersController)
+        public ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
-            _followersController = followersController;
+            _followersService = followersService;
         }
 
         [HttpGet("get-profile")]
@@ -137,6 +139,7 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("follow/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> FollowUser(string usernameAuthenticated, string usernameToFollow)
         {
@@ -146,13 +149,12 @@ namespace WatchersWorld.Server.Controllers
             var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
             var userIdToFollow = userToFollow.Id;
 
-            var result = await _followersController.Follow(userIdAuthenticated, userIdToFollow);
+            var result = await _followersService.Follow(userIdAuthenticated, userIdToFollow);
             switch (result)
             {
-                case BadRequestObjectResult badRequestResult:
-                    var errors = badRequestResult.Value;
-                    return BadRequest(errors);
-                case OkResult:
+                case false:
+                    return BadRequest("Não foi possível deixar de seguir o utilizador pretendido.");
+                case true:
                     var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
                     var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
 
@@ -164,17 +166,17 @@ namespace WatchersWorld.Server.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { message = "Você está agora seguindo " + usernameToFollow });
+                return Ok(new { message = "Você deixou de seguir " + usernameToFollow });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao adicionar um seguidor.");
-                return StatusCode(500, "Não foi possível seguir o usuário.");
+                _logger.LogError(ex, "Ocorreu um erro ao deixar de seguir um seguidor.");
+                return StatusCode(500, "Não foi possível deixar de seguir o usuário.");
             }
         }
 
 
-
+        [AllowAnonymous]
         [HttpDelete("unfollow/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> UnfollowUser(string usernameAuthenticated, string usernameToFollow)
         {
@@ -184,25 +186,24 @@ namespace WatchersWorld.Server.Controllers
             var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
             var userIdToFollow = userToFollow.Id;
 
-            var result = await _followersController.Unfollow(userIdAuthenticated, userIdToFollow);
+            var result = await _followersService.Unfollow(userIdAuthenticated, userIdToFollow);
             switch (result)
             {
-                case BadRequestObjectResult badRequestResult:
-                    var errors = badRequestResult.Value;
-                    return BadRequest(errors);
-                case OkResult:
+                case false:
+                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
+                case true:
                     var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
                     var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
 
-                    currentUserProfile.Following++;
-                    userProfileToFollow.Followers++;
+                    currentUserProfile.Following--;
+                    userProfileToFollow.Followers--;
                     break;
             }
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { message = "Você está agora seguindo " + usernameToFollow });
+                return Ok(new { message = "Você deixou de seguir " + usernameToFollow + " com sucesso." });
             }
             catch (Exception ex)
             {
@@ -210,7 +211,5 @@ namespace WatchersWorld.Server.Controllers
                 return StatusCode(500, "Não foi possível seguir o usuário.");
             }
         }
-
-
     }
 }
