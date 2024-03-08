@@ -36,37 +36,6 @@ namespace WatchersWorld.Server.Controllers
             _followersService = followersService;
         }
 
-        [HttpGet("get-profile")]
-        public IActionResult GetProfile()
-        {
-            return Ok(new JsonResult(new { message = "Apenas para logados." }));
-        }
-
-        [HttpGet("get-users-profiles")]
-        public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfile()
-        {
-            try
-            {
-                // Query all users from the database
-                var userProfiles = await _context.ProfileInfo.ToListAsync();
-
-                // Map the users to ProfileInfo with selected properties
-                var profilesList = userProfiles.Select(profile => new ProfileInfo
-                {
-                    UserName = profile.UserName,
-                    ProfilePhoto = profile.ProfilePhoto
-                });
-
-                return Ok(profilesList);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as appropriate for your application
-                _logger.LogError(ex, "Error while getting users' profiles");
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
         [HttpGet("get-user-info/{username}")]
         public async Task<ActionResult<ProfileInfoDto>> GetUser(string username)
         {
@@ -213,6 +182,31 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        [HttpGet("get-users-profiles")]
+        public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfile()
+        {
+            try
+            {
+                // Query all users from the database
+                var userProfiles = await _context.ProfileInfo.ToListAsync();
+
+                // Map the users to ProfileInfo with selected properties
+                var profilesList = userProfiles.Select(profile => new ProfileInfo
+                {
+                    UserName = profile.UserName,
+                    ProfilePhoto = profile.ProfilePhoto
+                });
+
+                return Ok(profilesList);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as appropriate for your application
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("get-followers/{username}")]
         public async Task<IActionResult> GetFollowers(string username)
@@ -261,6 +255,21 @@ namespace WatchersWorld.Server.Controllers
                 _logger.LogError(ex, "Error while getting users' profiles");
                 return StatusCode(500, "Internal server error");
             }
+        }
+
+        [Authorize]
+        [HttpGet("alreadyFollows/{usernameAuthenticated}/{usernameToFollow}")]
+        public async Task<IActionResult> IsFollowing(string usernameAuthenticated, string usernameToFollow)
+        {
+            var userAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
+            var userIdAuthenticated = userAuthenticated.Id;
+
+            var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
+            var userIdToFollow = userToFollow.Id;
+
+
+            var isFollowing = await _followersService.AlreadyFollow(userIdAuthenticated,userIdToFollow);
+            return Ok(isFollowing);
         }
     }
 }

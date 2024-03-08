@@ -47,107 +47,47 @@
               </div>
             </form>
           </div>
+          <br />
           <!-- Lista de seguidores -->
           <!-- Envolve as listas de seguidores e seguindo em um container flex -->
-          <div [ngClass]="{'expanded': expandedFollowers}" class="followers-container" *ngIf="showFollowers">
+          <div class="followers-container" *ngIf="showFollowers">
             <!-- Lista de seguidores -->
-            <div *ngIf="followers!.length > 0; else noFollowers">
+            <div *ngIf="followers.length > 0; else noFollowers">
               <div class="search-followers-container">
-                <br />
                 <p class="follows-text">Seguidores: {{ followers.length }}</p>
-                <button (click)="toggleFollowersScroll()">
-                  {{ expandedFollowers ? 'Fechar' : 'Ver todos os seguidores' }}
+                <button class="expand-followers-button" (click)="toggleFollowersScroll()">
+                  {{ expandedFollowers ? 'Fechar' : 'Expandir' }}
                 </button>
               </div>
               <br />
               <ul class="no-list-style">
-                <li *ngFor="let follower of followers">
-                  <ng-container *ngFor="let userProfile of usersProfiles">
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === follower">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                  </ng-container>
+                <li *ngFor="let follower of showAllFollowers ? followers : followers.slice(0, 6)">
+                  <div>
+                    <img [src]="follower.profilePhoto" [routerLink]="['/profile', follower.username]" class="user-photo">
+                    <p class="user-name">{{ follower.username }}</p>
+                  </div>
                 </li>
               </ul>
             </div>
             <ng-template #noFollowers><p>Não tem seguidores no momento.</p></ng-template>
           </div>
           <br />
-          <div [ngClass]="{'expanded': expandedFollowing}" class="following-container" *ngIf="showFollowing">
+          <div class="following-container" *ngIf="showFollowing">
             <!-- Lista de seguindo -->
-            <div *ngIf="following!.length > 0; else noFollowing">
-              <div class="search-following-container">
+            <div *ngIf="following.length > 0; else noFollowing">
+              <div class="following-count-container">
                 <p class="follows-text">A seguir: {{ following.length }}</p>
-                <button (click)="toggleFollowingScroll()">
-                  {{ expandedFollowing ? 'Fechar' : 'Ver todos os utilizadores a seguir' }}
+                <button class="expand-following-button" (click)="toggleFollowingScroll()">
+                  {{ expandedFollowing ? 'Fechar' : 'Expandir' }}
                 </button>
               </div>
               <br />
               <ul class="no-list-style">
-                <li *ngFor="let following of following">
-                  <ng-container *ngFor="let userProfile of usersProfiles">
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                    <div *ngIf="userProfile.userName === following">
-                      <img [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]" class="user-photo">
-                      <p class="user-name">{{ userProfile.userName }}</p>
-                    </div>
-                  </ng-container>
+                <li *ngFor="let follow of showAllFollowing ? following : following.slice(0, 6)">
+                  <div>
+                    <img [src]="follow.profilePhoto" [routerLink]="['/profile', follow.username]" class="user-photo">
+                    <p class="user-name">{{ follow.username }}</p>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -210,26 +150,42 @@
   </div>
 </div>
 
-  <!--<div class="col-12 col-lg-4 side-divs">
-    <div class="card mb-3">
-      <div class="card-body side-div-users">
-        <h2>Outros Utilizadores</h2>
-        <ul class="item-list">
-          <li *ngFor="let userProfile of usersProfiles">
-            <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
-              <img class="user-photo2" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-              <p class="user-name">{{ userProfile.userName }}</p>
-            </div>
-          </li>
-        </ul>
-        <a href="#" class="expand-link">Expandir Utilizadores</a>
-      </div>
+<div class="col-12 col-lg-4 side-divs">
+  <div class="card mb-3">
+    <div class="card-body side-div-users">
+      <h2>Outros Utilizadores</h2>
+      <ul class="item-list">
+        <!-- Utilize o operador ternário para decidir quantos usuários mostrar baseado na variável 'showFiveOtherUsers' -->
+        <li *ngFor="let userProfile of (showFiveOtherUsers ? usersProfiles : usersProfiles.slice(0, 3))">
+          <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
+            <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+            <span class="other-users-user-name">{{ userProfile.userName }}</span>
+          </div>
+        </li>
+      </ul>
+      <a (click)="toggleAllFiveOtherUsers(); $event.preventDefault()" class="expand-link">
+        {{ showFiveOtherUsers ? 'Mostrar Menos' : 'Expandir Utilizadores' }}
+      </a>
     </div>
-    <div class="card mb-3">
-      <div class="card-body side-div-suggestions">
-        <h2>Sugestões</h2>
-        <a href="#" class="expand-link">Expandir Sugestões</a>
+  </div>
+  <div class="card mb-3">
+    <div class="card-body side-div-suggestions">
+      <h2>Algumas Sugestões</h2>
+      <div class="contain p-4">
+        <div *ngFor="let category of categories.slice(0)" class="row">
+          <div class="rowposter mt-3 p-2">
+            <ng-container *ngFor="let movie of (showExpandedSuggestions ? category.results.slice(0, 4) : category.results.slice(0, 3)); let i = index">
+              <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="[category.media_type === 'movie' ? '/movie' : '/serie', movie.id]">
+            </ng-container>
+          </div>
+        </div>
       </div>
+      <a (click)="toggleExpandedSuggestions()" class="expand-link">
+        {{ showExpandedSuggestions ? 'Mostrar Menos' : 'Expandir Sugestões' }}
+      </a>
     </div>
-  </div>-->
+  </div>
+</div>
+
+
 

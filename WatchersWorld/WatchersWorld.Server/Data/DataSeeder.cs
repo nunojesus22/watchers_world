@@ -20,6 +20,7 @@ namespace WatchersWorld.Server.Data
             await CreateUserTest("userTest3", "test3@gmail.com", context, userManager);
             await CreateUserTest("userTest4", "test4@gmail.com", context, userManager);
             await CreateUserTest("userTest5", "test5@gmail.com", context, userManager);
+            await CreateUserTest("userTest6", "test6@gmail.com", context, userManager);
         }
 
         private static async Task<bool> CreateUserTest(string username, string email, WatchersWorldServerContext context, UserManager<User> userManager)

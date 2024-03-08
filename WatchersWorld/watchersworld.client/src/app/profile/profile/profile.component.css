@@ -1,4 +1,6 @@
-/* Custom CSS para ajustar o layout com Bootstrap */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- USER INFO -------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
 
 /* Ajusta a imagem de capa para cobrir toda a área disponível */
 .cover-photo {
@@ -74,112 +76,10 @@
   transform: scale(1.1);
 }
 
-
-
-.side-divs {
-  position: absolute; /* Faz com que o elemento fique fixo durante a rolagem, mas sem sair do fluxo normal do documento. */
-  top: 130px; /* Ajuste conforme necessário para determinar o ponto onde o elemento se torna fixo. */
-  right:250px;
-  align-self: flex-start; /* Se o elemento pai for um contêiner flexível, isso alinha ao topo do contêiner. */
-  height: fit-content; /* Faz com que o elemento tenha apenas a altura do seu conteúdo. */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Alinha as divs à direita */
-  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
-  gap: 20px; /* Espaço entre as divs */
-}
-
-.side-div-users, .side-div-suggestions {
-  background-color: white;
-  width: 300px; /* Largura das divs laterais */
-  margin: 10px 0; /* Espaço superior e inferior entre as divs */
-  padding: 20px; /* Padding interno para o conteúdo das divs */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para dar profundidade */
-  border-radius: 10px; /* Borda arredondada */
-  box-sizing: border-box; /* Garante que padding e border estão incluídos na largura */
-}
-
-  /* Títulos para cada div lateral */
-  .side-div-users > h2, .side-div-suggestions > h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin: 0 0 16px 0; /* Margem inferior */
-  }
-
-/* Ajuste a classe para os itens de usuário e sugestões */
-.item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-  .item-list > li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Espaço entre os itens */
-  }
-
-    .item-list > li > img {
-      width: 50px; /* Largura das imagens dos usuários */
-      height: 50px; /* Altura das imagens dos usuários */
-      border-radius: 50%; /* Torna as imagens redondas */
-      margin-right: 10px; /* Espaço entre a imagem e o texto */
-    }
-
 input[type="text"],
 input[type="date"] {
   border: none; /* Remove as bordas */
   outline: none; /* Remove o contorno que aparece ao focar */
-}
-
-
-
-@media (max-width: 991px) { /* Para tablets e desktops menores */
-  .side-divs {
-    position: static; /* As divs se tornam parte do fluxo normal do documento */
-    margin-top: 20px; /* Espaçamento acima das divs laterais */
-  }
-}
-
-@media (max-width: 767px) { /* Para dispositivos móveis */
-  .side-divs {
-    display: none; /* Esconde as divs laterais em dispositivos móveis */
-  }
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-users > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-suggestions > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-.user-name {
-  font-size: 1em; /* Define o tamanho da fonte */
-  padding-top:10px;
-  color: #333; /* Define a cor do texto */
-  font-weight: bold;
 }
 
 .follow-button,
@@ -208,29 +108,34 @@ input[type="date"] {
   height: 40px;
 }
 
-.no-scroll {
-  overflow: hidden; /* Isso vai remover a scrollbar */
-  max-height: none; /* Isso vai permitir que a div expanda conforme o conteúdo */
-}
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- FOLLOWS ---------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
 
-.expanded {
-  overflow: hidden; /* Esconde as barras de rolagem vertical e horizontal */
-  max-height: none; /* Remove qualquer altura máxima que possa ter sido definida */
-  height: auto; /* Permite que a div expanda para acomodar todo o conteúdo */
-}
-
-.followers-container {
-  display: flex;
-  flex-direction: row; /* Mantém os itens em uma linha. */
-  overflow-x: auto; /* Adiciona rolagem horizontal se necessário. */
-  white-space: nowrap; /* Impede que os itens se envolvam em linhas múltiplas. */
-}
-
+.followers-container,
 .following-container {
   display: flex;
-  flex-direction: row; /* Mantém os itens em uma linha. */
-  overflow-x: auto; /* Adiciona rolagem horizontal se necessário. */
-  white-space: nowrap; /* Impede que os itens se envolvam em linhas múltiplas. */
+  flex-wrap: wrap;
+  align-content: space-between;
+  max-width: calc(6 * (75px + 50px * 2)); /* 6 vezes a largura do item mais o espaço */
+}
+
+.no-list-style {
+  list-style: none;
+  padding-left: 50px; /* Remove qualquer padding */
+  margin: 0; /* Remove qualquer margem */
+}
+
+  .no-list-style li {
+    display: inline-block; /* Exibe itens inline com bloco */
+    margin-right: 50px; /* Espaço após cada item */
+    padding: 0; /* Sem padding interno */
+  }
+
+.user-name {
+  font-size: 1em; /* Define o tamanho da fonte */
+  padding-top: 10px;
+  color: #333; /* Define a cor do texto */
 }
 
 .user-photo {
@@ -239,48 +144,15 @@ input[type="date"] {
   border-radius: 50%;
 }
 
-.user-photo2 {
-  width: 75px; /* Tamanho desejado das imagens */
-  height: 75px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-  /* Ajusta o espaçamento entre os itens de lista se ainda for necessário */
-.no-list-style li {
-  display: flex; /* Isso permite que o conteúdo de cada item da lista se comporte como flexível. */
-  flex-direction: row; /* Organiza o conteúdo dos itens da lista em colunas. */
-  align-items: center; /* Centraliza o conteúdo dos itens da lista horizontalmente. */
-  margin-bottom: 10px; /* Ajuste conforme necessário */
-  gap: 40px;
-  padding: 0; /* Remove o padding padrão. */
-  margin: 0; /* Remove a margem padrão. */
-  width: 100%; /* Faz com que a lista ocupe toda a largura do contêiner pai. */
-}
-
-
-.followers-container {
-  scrollbar-color: #4CAEFE #f1f1f1; /* Define a cor do polegar e da trilha da barra de rolagem */
-  scrollbar-width: auto; /* Pode ser 'auto', 'thin', ou 'none' */
-}
-
-.following-container {
-  scrollbar-color: #4CAEFE #f1f1f1; /* Define a cor do polegar e da trilha da barra de rolagem */
-  scrollbar-width: auto; /* Pode ser 'auto', 'thin', ou 'none' */
-}
-
 .search-followers-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start; /* Isso alinhará o texto e a barra de pesquisa à esquerda do contêiner */
-  gap: 10px; /* Isso adicionará um pouco de espaço entre o texto dos seguidores e a barra de pesquisa */
 }
 
-.search-following-container {
+.following-count-container {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Isso alinhará o texto e a barra de pesquisa à esquerda do contêiner */
-  gap: 10px; /* Isso adicionará um pouco de espaço entre o texto dos seguidores e a barra de pesquisa */
+  flex-direction: row;
 }
 
 .follows-text {
@@ -288,28 +160,20 @@ input[type="date"] {
   flex-direction: row;
   justify-content: flex-start;
   font-weight: bold;
-  margin-right: 10px;
+  margin-right:300px;
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  position: relative;
-  border: 2px solid #4CAEFE; /* Define a espessura, estilo e cor da borda */
-  width:350px;
-}
-
-.search-input {
-  padding: 10px;
-  padding-left: 50px;
-  border-radius: 20px;
-  font-size: 18px;
-  font-family: 'Inter';
-  width: 300px;
-}
-
-.search-icon{
-    margin-left:10px;
+.expand-followers-button,
+.expand-following-button {
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 150px;
+  height: 40px;
+  font-weight: bold;
 }
 
 
@@ -416,4 +280,106 @@ input[type="date"] {
   width: 120px;
   height: 40px;
   font-weight:bold;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- OUTROS UTILIZADORES ---------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.side-divs {
+  position: absolute; /* Faz com que o elemento fique fixo durante a rolagem, mas sem sair do fluxo normal do documento. */
+  top: 130px; /* Ajuste conforme necessário para determinar o ponto onde o elemento se torna fixo. */
+  right: 250px;
+  align-self: flex-start; /* Se o elemento pai for um contêiner flexível, isso alinha ao topo do contêiner. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinha as divs à direita */
+  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
+  gap: 20px; /* Espaço entre as divs */
+}
+
+/* Títulos para cada div lateral */
+.side-div-users > h2, .side-div-suggestions > h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin: 0 0 16px 0; /* Margem inferior */
+}
+
+/* Estilizar botões ou links para "Expandir" */
+.side-div-users > .expand-link,
+.side-div-suggestions > .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.other-users-user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.side-div-users .item-list {
+  list-style: none; /* Remove o ponto padrão da lista */
+  padding: 0; /* Remove o padding padrão */
+}
+
+.side-div-users .user-item {
+  display: flex; /* Cria um layout flexível para alinhar itens horizontalmente */
+  align-items: center; /* Centraliza os itens verticalmente */
+  gap: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  margin-bottom: 20px; /* Adiciona espaço abaixo de cada item */
+}
+
+.other-users-user-name {
+  margin-left: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  white-space: nowrap; /* Impede que o nome quebre em várias linhas */
+  overflow: hidden; /* Esconde o texto que excede a área */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ SUGESTÕES ---------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.side-div-suggestions {
+    width:100%;
+}
+
+.rowposter {
+  display: flex;
+  flex-direction: column; /* Isso irá organizar as imagens em uma coluna */
+  align-items: center;
+  gap: 20px; /* Espaço entre as imagens */
+  padding-right: 0; /* Se houver padding, defina para 0 */
+  max-width:100px;
+  margin-left:45px;
+}
+
+.rowimg {
+  object-fit: contain;
+  width: 100%; /* Ocupa toda a largura disponível dentro do seu contêiner */
+  max-width: 100%; /* Adiciona um máximo de largura */
+  height: auto; /* Altura auto para manter a proporção da imagem */
+  transition: transform 450ms;
+}
+  .rowimg:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
+.largeposter {
+  max-height: 150px; /* reduzir para o tamanho desejado */
+}
+
+.p-4 {
+  padding: 1.5rem !important;
 }
