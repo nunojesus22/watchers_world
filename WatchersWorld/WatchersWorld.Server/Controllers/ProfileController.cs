@@ -22,12 +22,14 @@ namespace WatchersWorld.Server.Controllers
         private readonly WatchersWorldServerContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<ProfileController> _logger;
+        private readonly FollowersController _followersController;
 
-        public ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger)
+        public ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, FollowersController followersController)
         {
             _context = context;
             _userManager = userManager;
             _logger = logger;
+            _followersController = followersController;
         }
 
         [HttpGet("get-profile")]
@@ -134,9 +136,16 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-        [HttpPost("follow/{usernameToFollow}")]
-        public async Task<IActionResult> FollowUser(string usernameToFollow)
+        [HttpPost("follow/{usernameAuthenticated}/{usernameToFollow}")]
+        public async Task<IActionResult> FollowUser(string usernameAuthenticated, string usernameToFollow)
         {
+            var userObjectAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
+            var userIdAuthenticated = userObjectAuthenticated.Id;
+
+            var userObjectToFollow = await _userManager.FindByNameAsync(usernameToFollow);
+            var userIdToFollow = userObjectToFollow.Id;
+
+            /**
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
@@ -180,10 +189,12 @@ namespace WatchersWorld.Server.Controllers
                 _logger.LogError("Perfil do usuário a seguir não foi encontrado.");
                 return StatusCode(500, "Erro interno do servidor.");
             }
+            
 
             // Adicione o usuário atual à lista de seguidores do usuário alvo e vice-versa.
             userProfileToFollow.Followers.Add(currentUser.UserName);
             currentUserProfile.Following.Add(userToFollow.UserName);
+            */
 
             try
             {

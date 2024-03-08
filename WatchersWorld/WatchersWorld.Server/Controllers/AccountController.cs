@@ -215,8 +215,8 @@ namespace WatchersWorld.Server.Controllers
                 ProfileStatus = "Public",
                 ProfilePhoto = "assets/img/joao-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png",
-                Following = [],
-                Followers = []
+                Following = 0,
+                Followers = 0
             };
 
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
@@ -290,8 +290,8 @@ namespace WatchersWorld.Server.Controllers
                 ProfileStatus = "Public",
                 ProfilePhoto = "assets/img/joao-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png",
-                Following = [],
-                Followers = []
+                Following = 0,
+                Followers = 0
             };
 
             //fazer verificacoes
