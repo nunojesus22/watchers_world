@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using WatchersWorld.Server.Data;
+using WatchersWorld.Server.DTOs;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Services;
@@ -153,7 +154,7 @@ namespace WatchersWorld.Server.Controllers
             switch (result)
             {
                 case false:
-                    return BadRequest("Não foi possível deixar de seguir o utilizador pretendido.");
+                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
                 case true:
                     var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
                     var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
@@ -166,12 +167,12 @@ namespace WatchersWorld.Server.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { message = "Você deixou de seguir " + usernameToFollow });
+                return Ok(new { message = "Você agora segue " + usernameToFollow });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao deixar de seguir um seguidor.");
-                return StatusCode(500, "Não foi possível deixar de seguir o usuário.");
+                _logger.LogError(ex, "Ocorreu um erro ao seguir o utilizador.");
+                return StatusCode(500, "Não foi possível seguir o utilizador.");
             }
         }
 
@@ -190,7 +191,7 @@ namespace WatchersWorld.Server.Controllers
             switch (result)
             {
                 case false:
-                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
+                    return BadRequest("Não foi possível deixar de seguir o utilizador pretendido.");
                 case true:
                     var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
                     var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
@@ -207,8 +208,58 @@ namespace WatchersWorld.Server.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao adicionar um seguidor.");
-                return StatusCode(500, "Não foi possível seguir o usuário.");
+                _logger.LogError(ex, "Ocorreu um erro ao deixar de seguir o utilizador.");
+                return StatusCode(500, "Não foi possível deixar de seguir o utilizador.");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("get-followers/{username}")]
+        public async Task<IActionResult> GetFollowers(string username)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(username);
+                var result = await _followersService.GetFollowers(user.Id);
+
+                var allProfilesFollowers = _context.ProfileInfo.Where(p => result.Contains(p.UserId.ToString()))
+                                                                .Select(profile => new FollowerDto
+                                                                {
+                                                                    Username = profile.UserName,
+                                                                    ProfilePhoto = profile.ProfilePhoto
+                                                                });
+
+                return Ok(allProfilesFollowers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("get-whoFollow/{username}")]
+        public async Task<IActionResult> GetWhoFollow(string username)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(username);
+                var result = await _followersService.GetWhoFollow(user.Id);
+
+                var allProfilesFollowers = _context.ProfileInfo.Where(p => result.Contains(p.UserId.ToString()))
+                                                                .Select(profile => new FollowerDto
+                                                                {
+                                                                    Username = profile.UserName,
+                                                                    ProfilePhoto = profile.ProfilePhoto
+                                                                });
+
+                return Ok(allProfilesFollowers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
             }
         }
     }

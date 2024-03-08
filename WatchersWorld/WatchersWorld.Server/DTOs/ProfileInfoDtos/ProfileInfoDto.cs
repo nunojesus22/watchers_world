@@ -10,7 +10,6 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
         /// Email associated with the user's profile.
         /// Used as a unique identifier for the user's profile and for communication purposes.
         /// </summary>
-      
 
         public string UserName { get; set; }    
 

@@ -12,6 +12,9 @@ namespace WatchersWorld.Server.Models.Authentication
     /// </summary>
     public class ProfileInfo
     {
+        [ForeignKey(nameof(User.Id))]
+        public string UserId { get; set; }
+
         [Key, ForeignKey("User")]
         /// <summary>
         /// Email associated with the user's profile.

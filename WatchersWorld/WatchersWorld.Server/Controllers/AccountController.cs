@@ -204,10 +204,14 @@ namespace WatchersWorld.Server.Controllers
                 Provider = "Credentials"
             };
 
-            
+            var result = await _userManager.CreateAsync(userToAdd, model.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var user = await _userManager.FindByNameAsync(model.Username);
 
             var profileInfoToAdd = new ProfileInfo
             {
+                UserId = user.Id,
                 UserName = model.Username,
                 Description = "Por definir!",
                 Gender = 'M',
@@ -219,14 +223,10 @@ namespace WatchersWorld.Server.Controllers
                 Followers = 0
             };
 
-            var result = await _userManager.CreateAsync(userToAdd, model.Password);
-
             //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
-           
             try
             {
                 if(await SendConfirmEmailAsync(userToAdd))
@@ -281,8 +281,14 @@ namespace WatchersWorld.Server.Controllers
             };
 
 
+            var result = await _userManager.CreateAsync(userToAdd);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var user = await _userManager.FindByNameAsync(model.Username);
+
             var profileInfoToAdd = new ProfileInfo
             {
+                UserId = user.Id,
                 UserName = model.Username,
                 Description = "Por definir!",
                 Gender = 'M',
@@ -297,9 +303,6 @@ namespace WatchersWorld.Server.Controllers
             //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
-
-            var result = await _userManager.CreateAsync(userToAdd);
-            if (!result.Succeeded) return BadRequest(result.Errors);
 
             return CreateApplicationUserDto(userToAdd);
         }
