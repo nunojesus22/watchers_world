@@ -17,11 +17,25 @@
   <a [routerLink]="['/all-movies-page']" routerLinkActive="active-link">Filmes</a>
   <div routerLinkActive #rla="routerLinkActive">
     <ng-container *ngIf="(authService.user$ | async) as user; else notLoggedIn">
-      <img [routerLink]="['/profile/', user.username]"
-           [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
-           alt="User Icon"
-           class="user-icon" />
+      <ng-container *ngIf="user">
+        <!-- Check if the user is an admin -->
+        <ng-container *ngIf="user.roles && user.roles.includes('Admin')">
+          <img [routerLink]="['/admin']"
+               [src]="rla.isActive ? 'assets/img/admin-selected.png' : 'assets/img/admin.png'"
+               alt="Admin Icon"
+               class="admin-icon" />
+        </ng-container>
+
+        <!-- Check if the user is a regular user -->
+        <ng-container *ngIf="user.roles && user.roles.includes('User')">
+          <img [routerLink]="['/profile/', user.username]"
+               [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
+               alt="User Icon"
+               class="user-icon" />
+        </ng-container>
+      </ng-container>
     </ng-container>
+
     <ng-template #notLoggedIn>
       <img [routerLink]="['/account/login']"
            [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"

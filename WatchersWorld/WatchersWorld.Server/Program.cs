@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -124,5 +125,49 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var roles = new[] { "Admin", "Moderator", "User" };
+
+    foreach (var role in roles)
+    {
+        if(!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+    string email = "admin@admin.com";
+    string password = "Teste1234";
+
+    if(await userManager.FindByEmailAsync(email) == null)
+    {
+        var user = new User
+        {
+            Provider = "Credentials",
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true
+        };
+
+        await userManager.CreateAsync(user, password);
+
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+
+}
+
+
 
 app.Run();

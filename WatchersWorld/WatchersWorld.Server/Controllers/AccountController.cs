@@ -221,7 +221,12 @@ namespace WatchersWorld.Server.Controllers
 
             var result = await _userManager.CreateAsync(userToAdd, model.Password);
 
-            //fazer verificacoes
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(userToAdd, "user");
+            }
+
+            
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
@@ -294,11 +299,19 @@ namespace WatchersWorld.Server.Controllers
                 Followers = []
             };
 
+
+
             //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
             var result = await _userManager.CreateAsync(userToAdd);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(userToAdd, "user");
+            }
+
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             return CreateApplicationUserDto(userToAdd);
