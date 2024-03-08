@@ -33,11 +33,16 @@ export class ProfileComponent implements OnInit {
   followingCount: number | undefined;
   canViewFollowers: boolean = false;
 
+  showMediaDetails: boolean = true;
+  showFollowers: boolean = true;
+  showFollowing: boolean = true;
   showFavorites: boolean = false;
   showMovies: boolean = false;
   showSeries: boolean = false;
   showMedals: boolean = false;
 
+  expandedFollowers: boolean = false;
+  expandedFollowing: boolean = false;
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
@@ -72,8 +77,9 @@ export class ProfileComponent implements OnInit {
         this.setImages(this.currentUsername);
       }
     });
-    this.initializeForm();
     this.getUserProfiles();
+    this.initializeForm();
+
   }
 
   ngOnDestroy(): void {
@@ -107,7 +113,7 @@ export class ProfileComponent implements OnInit {
   initializeForm() {
     this.profileForm = this.formBuilder.group({
       hobby: [''],
-      gender: [''],
+      gender: ['', {disabled:true}],
       date: [''],
     });
   }
@@ -146,6 +152,7 @@ export class ProfileComponent implements OnInit {
             gender: userData.gender || "Por definir",
             date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
           });
+          this.profileForm.get('gender')?.disable();
           this.followersCount = userData.followers.length;
           this.followingCount = userData.following.length;
         },
@@ -206,6 +213,53 @@ export class ProfileComponent implements OnInit {
         console.error("Error while fetching users' profiles:", error);
       }
     );
+  }
+
+  toggleFollowersScroll(): void {
+    this.expandedFollowers = !this.expandedFollowers;
+    if (this.expandedFollowers) {
+      // Se os seguidores estão expandidos, contraia os seguindo e esconda a mídia
+      this.expandedFollowing = false;
+    }
+    this.toggleMediaAndFollowing();
+
+  }
+
+  toggleFollowingScroll(): void {
+    this.expandedFollowing = !this.expandedFollowing;
+    if (this.expandedFollowing) {
+      // Se seguindo está expandido, contraia os seguidores e esconda a mídia
+      this.expandedFollowers = false;
+     
+    }
+    this.toggleMediaAndFollowers();
+  }
+
+  toggleMediaDetails(): void {
+    this.showMediaDetails = !this.showMediaDetails;
+    if (this.showMediaDetails) {
+      // Se a mídia está visível, contraia os seguidores e seguindo
+      this.expandedFollowers = false;
+      this.expandedFollowing = false;
+    }
+  }
+
+  toggleFollowers() {
+    this.showFollowers = !this.showFollowers;
+}
+
+  toggleFollowing() {
+    this.showFollowing = !this.showFollowing;
+  }
+
+  toggleMediaAndFollowing() {
+    this.toggleMediaDetails();
+    this.toggleFollowing();
+  }
+
+  toggleMediaAndFollowers() {
+    this.toggleMediaDetails();
+    this.toggleFollowers();
   }
 
   toggleFavorites() {

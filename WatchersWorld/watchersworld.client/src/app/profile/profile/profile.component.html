@@ -46,21 +46,18 @@
                 <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
               </div>
             </form>
-            <br />
           </div>
           <!-- Lista de seguidores -->
           <!-- Envolve as listas de seguidores e seguindo em um container flex -->
-          <div class="followers-following-container">
+          <div [ngClass]="{'expanded': expandedFollowers}" class="followers-container" *ngIf="showFollowers">
             <!-- Lista de seguidores -->
             <div *ngIf="followers!.length > 0; else noFollowers">
               <div class="search-followers-container">
+                <br />
                 <p class="follows-text">Seguidores: {{ followers.length }}</p>
-                <div class="search-bar">
-                  <i class="fa fa-search search-icon"></i>
-                  <form>
-                    <input type="text" name="searchQuery" placeholder="Procurar..." class="search-input">
-                  </form>
-                </div>
+                <button (click)="toggleFollowersScroll()">
+                  {{ expandedFollowers ? 'Fechar' : 'Ver todos os seguidores' }}
+                </button>
               </div>
               <br />
               <ul class="no-list-style">
@@ -104,18 +101,15 @@
             </div>
             <ng-template #noFollowers><p>Não tem seguidores no momento.</p></ng-template>
           </div>
-          <br /><br />
-          <div class="followers-following-container">
+          <br />
+          <div [ngClass]="{'expanded': expandedFollowing}" class="following-container" *ngIf="showFollowing">
             <!-- Lista de seguindo -->
             <div *ngIf="following!.length > 0; else noFollowing">
               <div class="search-following-container">
                 <p class="follows-text">A seguir: {{ following.length }}</p>
-                <div class="search-bar">
-                  <i class="fa fa-search search-icon"></i>
-                  <form>
-                    <input type="text" name="searchQuery" placeholder="Procurar..." class="search-input">
-                  </form>
-                </div>
+                <button (click)="toggleFollowingScroll()">
+                  {{ expandedFollowing ? 'Fechar' : 'Ver todos os utilizadores a seguir' }}
+                </button>
               </div>
               <br />
               <ul class="no-list-style">
@@ -159,10 +153,8 @@
             </div>
             <ng-template #noFollowing><p>Não está a seguir ninguém no momento.</p></ng-template>
           </div>
-
-
           <!-- Seção de Favoritos -->
-          <div class="user-media">
+          <div class="user-media" *ngIf="showMediaDetails">
             <div class="favorites-section">
               <div class="favorites-section-header">
                 <div class="favorites-title">

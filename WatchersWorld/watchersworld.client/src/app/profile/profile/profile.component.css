@@ -47,7 +47,7 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:650px;
+  left:450px;
   z-index: 2;
 }
 
@@ -208,14 +208,30 @@ input[type="date"] {
   height: 40px;
 }
 
-.followers-following-container {
+.no-scroll {
+  overflow: hidden; /* Isso vai remover a scrollbar */
+  max-height: none; /* Isso vai permitir que a div expanda conforme o conteúdo */
+}
+
+.expanded {
+  overflow: hidden; /* Esconde as barras de rolagem vertical e horizontal */
+  max-height: none; /* Remove qualquer altura máxima que possa ter sido definida */
+  height: auto; /* Permite que a div expanda para acomodar todo o conteúdo */
+}
+
+.followers-container {
   display: flex;
   flex-direction: row; /* Mantém os itens em uma linha. */
   overflow-x: auto; /* Adiciona rolagem horizontal se necessário. */
   white-space: nowrap; /* Impede que os itens se envolvam em linhas múltiplas. */
 }
 
-
+.following-container {
+  display: flex;
+  flex-direction: row; /* Mantém os itens em uma linha. */
+  overflow-x: auto; /* Adiciona rolagem horizontal se necessário. */
+  white-space: nowrap; /* Impede que os itens se envolvam em linhas múltiplas. */
+}
 
 .user-photo {
   width: 75px; /* Tamanho desejado das imagens */
@@ -243,7 +259,12 @@ input[type="date"] {
 }
 
 
-.followers-following-container {
+.followers-container {
+  scrollbar-color: #4CAEFE #f1f1f1; /* Define a cor do polegar e da trilha da barra de rolagem */
+  scrollbar-width: auto; /* Pode ser 'auto', 'thin', ou 'none' */
+}
+
+.following-container {
   scrollbar-color: #4CAEFE #f1f1f1; /* Define a cor do polegar e da trilha da barra de rolagem */
   scrollbar-width: auto; /* Pode ser 'auto', 'thin', ou 'none' */
 }
