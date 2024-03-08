@@ -2,6 +2,7 @@
 using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -139,62 +140,26 @@ namespace WatchersWorld.Server.Controllers
         [HttpPost("follow/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> FollowUser(string usernameAuthenticated, string usernameToFollow)
         {
-            var userObjectAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
-            var userIdAuthenticated = userObjectAuthenticated.Id;
-
-            var userObjectToFollow = await _userManager.FindByNameAsync(usernameToFollow);
-            var userIdToFollow = userObjectToFollow.Id;
-
-            /**
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-            {
-                return BadRequest("Usuário não autenticado.");
-            }
-
-            _logger.LogInformation($"ID do usuário logado: {userId}");
-
-            var currentUser = await _userManager.FindByIdAsync(userId);
-
-            _logger.LogInformation($"Nome de usuário logado: {currentUser.UserName}");
+            var userAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
+            var userIdAuthenticated = userAuthenticated.Id;
 
             var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
+            var userIdToFollow = userToFollow.Id;
 
-            if (userToFollow == null)
+            var result = await _followersController.Follow(userIdAuthenticated, userIdToFollow);
+            switch (result)
             {
-                return NotFound("Usuário a seguir não encontrado.");
+                case BadRequestObjectResult badRequestResult:
+                    var errors = badRequestResult.Value;
+                    return BadRequest(errors);
+                case OkResult:
+                    var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                    var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+
+                    currentUserProfile.Following++;
+                    userProfileToFollow.Followers++;
+                    break;
             }
-
-            _logger.LogInformation($"Usuário '{currentUser.UserName}' tentando seguir '{userToFollow.UserName}'.");
-
-            var currentUserProfile = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserName == currentUser.UserName);
-
-            if (currentUserProfile == null)
-            {
-                _logger.LogError("Perfil do usuário atual não foi encontrado.");
-                return StatusCode(500, "Erro interno do servidor.");
-            }
-
-            if (currentUserProfile.Following.Contains(userToFollow.UserName))
-            {
-                return BadRequest("Você já segue este usuário.");
-            }
-
-            var userProfileToFollow = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserName == userToFollow.UserName);
-
-            if (userProfileToFollow == null)
-            {
-                _logger.LogError("Perfil do usuário a seguir não foi encontrado.");
-                return StatusCode(500, "Erro interno do servidor.");
-            }
-            
-
-            // Adicione o usuário atual à lista de seguidores do usuário alvo e vice-versa.
-            userProfileToFollow.Followers.Add(currentUser.UserName);
-            currentUserProfile.Following.Add(userToFollow.UserName);
-            */
 
             try
             {
@@ -208,53 +173,44 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-        [HttpDelete("unfollow/{usernameToUnfollow}")]
-        public async Task<IActionResult> UnfollowUser(string usernameToUnfollow)
+
+
+        [HttpDelete("unfollow/{usernameAuthenticated}/{usernameToFollow}")]
+        public async Task<IActionResult> UnfollowUser(string usernameAuthenticated, string usernameToFollow)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
+            var userAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
+            var userIdAuthenticated = userAuthenticated.Id;
+
+            var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
+            var userIdToFollow = userToFollow.Id;
+
+            var result = await _followersController.Unfollow(userIdAuthenticated, userIdToFollow);
+            switch (result)
             {
-                return BadRequest("Usuário não autenticado.");
+                case BadRequestObjectResult badRequestResult:
+                    var errors = badRequestResult.Value;
+                    return BadRequest(errors);
+                case OkResult:
+                    var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                    var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+
+                    currentUserProfile.Following++;
+                    userProfileToFollow.Followers++;
+                    break;
             }
-
-            var currentUser = await _userManager.FindByIdAsync(userId);
-            var userToUnfollow = await _userManager.FindByNameAsync(usernameToUnfollow);
-
-            if (userToUnfollow == null)
-            {
-                return NotFound("Usuário a deixar de seguir não encontrado.");
-            }
-
-            var currentUserProfile = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserName == currentUser.UserName);
-            var userProfileToUnfollow = await _context.ProfileInfo
-                .FirstOrDefaultAsync(p => p.UserName == userToUnfollow.UserName);
-
-            if (currentUserProfile == null || userProfileToUnfollow == null)
-            {
-                return StatusCode(500, "Erro interno do servidor.");
-            }
-
-            if (!currentUserProfile.Following.Contains(userToUnfollow.UserName))
-            {
-                return BadRequest("Você não segue este usuário.");
-            }
-
-            currentUserProfile.Following.Remove(userToUnfollow.UserName);
-            userProfileToUnfollow.Followers.Remove(currentUser.UserName);
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { message = "Você deixou de seguir " + usernameToUnfollow });
+                return Ok(new { message = "Você está agora seguindo " + usernameToFollow });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ocorreu um erro ao remover um seguidor.");
-                return StatusCode(500, "Não foi possível deixar de seguir o usuário.");
+                _logger.LogError(ex, "Ocorreu um erro ao adicionar um seguidor.");
+                return StatusCode(500, "Não foi possível seguir o usuário.");
             }
         }
 
-        
+
     }
 }
