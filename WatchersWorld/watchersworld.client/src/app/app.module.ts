@@ -25,6 +25,7 @@ import { SeriesDetailsComponent } from './series-details/series-details.componen
 import { LoadingComponent } from './loader/loading/loading.component';
 import { SearchComponent } from './search/search.component';
 import { SearchServiceComponent } from './search-service/search-service.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { SearchServiceComponent } from './search-service/search-service.componen
     LoadingComponent,
     SearchComponent,
     SearchServiceComponent,
+    AdminComponent,
 
   ],
   imports: [
