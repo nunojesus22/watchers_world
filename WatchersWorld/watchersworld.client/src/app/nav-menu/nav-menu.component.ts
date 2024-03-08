@@ -12,8 +12,19 @@ import { SearchServiceComponent } from '../search-service/search-service.compone
 export class NavMenuComponent {
   isActive: boolean = false;
   searchQuery: any;
+  userRole: string | undefined;
 
-  constructor(private service: MovieApiServiceComponent, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+
+  constructor(private service: MovieApiServiceComponent, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {
+    const username = this.authService.getLoggedInUserName();
+    if (username) {
+      this.authService.getUserRole(username).subscribe(role => {
+        this.userRole = role[0]; // assuming a user can only have one role
+      });
+    }
+  }
+
+
   showMenu = false;
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) {

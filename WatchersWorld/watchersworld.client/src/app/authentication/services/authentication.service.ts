@@ -31,6 +31,11 @@ export class AuthenticationService {
   }
 
 
+  getUserRole(username: string) {
+    return this.http.get<string[]>(`${environment.appUrl}/api/account/get-user-role/${username}`);
+  }
+
+
   refreshUser(jwt: string | null) {
     if (jwt === null) {
       this.userSource.next(null);
