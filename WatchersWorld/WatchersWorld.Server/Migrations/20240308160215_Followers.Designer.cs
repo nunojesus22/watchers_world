@@ -12,8 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240302172849_WatchersWorld")]
-    partial class WatchersWorld
+    [Migration("20240308160215_Followers")]
+    partial class Followers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,19 +172,23 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Followers")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Followers")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Following")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Following")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserName");
@@ -259,6 +263,23 @@ namespace WatchersWorld.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Followers", b =>
+                {
+                    b.Property<Guid>("FollowersId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WhosBeingFollowed")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WhosFollowing")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FollowersId");
+
+                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
