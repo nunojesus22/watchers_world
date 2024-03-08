@@ -47,7 +47,7 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:400px;
+  left:650px;
   z-index: 2;
 }
 
@@ -74,11 +74,14 @@
   transform: scale(1.1);
 }
 
-/* Estilos para as divs laterais */
+
+
 .side-divs {
-  position: absolute; /* ou 'fixed' dependendo se quer que movam com a página ou não */
-  top: 130px; /* Ajuste conforme necessário */
-  right: 250px; /* Ajuste conforme necessário */
+  position: absolute; /* Faz com que o elemento fique fixo durante a rolagem, mas sem sair do fluxo normal do documento. */
+  top: 130px; /* Ajuste conforme necessário para determinar o ponto onde o elemento se torna fixo. */
+  right:250px;
+  align-self: flex-start; /* Se o elemento pai for um contêiner flexível, isso alinha ao topo do contêiner. */
+  height: fit-content; /* Faz com que o elemento tenha apenas a altura do seu conteúdo. */
   display: flex;
   flex-direction: column;
   align-items: flex-end; /* Alinha as divs à direita */
@@ -207,38 +210,87 @@ input[type="date"] {
 
 .followers-following-container {
   display: flex;
-  justify-content: space-between; /* Alinha os itens lado a lado e distribui o espaço igualmente */
-  width:20rem;
+  flex-direction: row; /* Mantém os itens em uma linha. */
+  overflow-x: auto; /* Adiciona rolagem horizontal se necessário. */
+  white-space: nowrap; /* Impede que os itens se envolvam em linhas múltiplas. */
 }
 
+
+
 .user-photo {
-  width: 50px; /* Tamanho desejado das imagens */
-  height: 50px;
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
   border-radius: 50%;
-  object-fit: cover;
 }
 
 .user-photo2 {
-  width: 50px; /* Tamanho desejado das imagens */
-  height: 50px;
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.no-list-style {
-  list-style-type: none; /* Isso remove os pontos dos itens de lista */
+  /* Ajusta o espaçamento entre os itens de lista se ainda for necessário */
+.no-list-style li {
+  display: flex; /* Isso permite que o conteúdo de cada item da lista se comporte como flexível. */
+  flex-direction: row; /* Organiza o conteúdo dos itens da lista em colunas. */
+  align-items: center; /* Centraliza o conteúdo dos itens da lista horizontalmente. */
+  margin-bottom: 10px; /* Ajuste conforme necessário */
+  gap: 40px;
+  padding: 0; /* Remove o padding padrão. */
+  margin: 0; /* Remove a margem padrão. */
+  width: 100%; /* Faz com que a lista ocupe toda a largura do contêiner pai. */
 }
 
-  /* Para manter um espaçamento consistente entre os itens de lista */
-  .no-list-style li {
-    margin-bottom: 10px; /* Ajuste conforme necessário */
-  }
 
-.user-item {
+.followers-following-container {
+  scrollbar-color: #4CAEFE #f1f1f1; /* Define a cor do polegar e da trilha da barra de rolagem */
+  scrollbar-width: auto; /* Pode ser 'auto', 'thin', ou 'none' */
+}
+
+.search-followers-container {
   display: flex;
-  align-items: center; /* Alinha verticalmente */
-  gap: 10px; /* Espaçamento entre a imagem e o texto */
+  flex-direction: column;
+  justify-content: flex-start; /* Isso alinhará o texto e a barra de pesquisa à esquerda do contêiner */
+  gap: 10px; /* Isso adicionará um pouco de espaço entre o texto dos seguidores e a barra de pesquisa */
 }
+
+.search-following-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Isso alinhará o texto e a barra de pesquisa à esquerda do contêiner */
+  gap: 10px; /* Isso adicionará um pouco de espaço entre o texto dos seguidores e a barra de pesquisa */
+}
+
+.follows-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border: 2px solid #4CAEFE; /* Define a espessura, estilo e cor da borda */
+  width:350px;
+}
+
+.search-input {
+  padding: 10px;
+  padding-left: 50px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: 'Inter';
+  width: 300px;
+}
+
+.search-icon{
+    margin-left:10px;
+}
+
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
 /* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
@@ -320,13 +372,13 @@ input[type="date"] {
 .medals-right-arrow {
   cursor: pointer;
   /* Estilos da seta para cima, você pode usar uma transformação para rotacionar a seta para baixo */
-  transform: rotate(180deg);
+  transform: rotate(270deg);
 }
 
 .favorites-section-content,
 .movies-section-content,
 .series-section-content,
-.medals-section-content,{
+.medals-section-content{
     /* TODO */
 }
 

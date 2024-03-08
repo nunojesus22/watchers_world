@@ -14425,19 +14425,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nunoj\\.nuget\\packages\\": {}
+    "C:\\Users\\johnn\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "projectUniqueName": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
       "projectName": "WatchersWorld.Server",
-      "projectPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-      "packagesPath": "C:\\Users\\nunoj\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+      "projectPath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "packagesPath": "C:\\Users\\johnn\\.nuget\\packages\\",
+      "outputPath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\nunoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\johnn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

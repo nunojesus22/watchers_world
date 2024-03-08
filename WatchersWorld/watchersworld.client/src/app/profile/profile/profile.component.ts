@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute, public authService: AuthenticationService,) { }
+    private route: ActivatedRoute, public authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
