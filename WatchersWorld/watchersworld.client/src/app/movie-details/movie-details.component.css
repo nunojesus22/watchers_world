@@ -42,7 +42,7 @@ a {
   flex-direction: row;
   font-size:15px;
   color:black;
-  
+
 }
 .genre-p {
   color: black;
@@ -158,4 +158,22 @@ a {
   flex: 1 1 auto;
   color: var(--bs-card-color);
   padding: 0;
+}
+
+.columQuizes{
+
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #232323;
+  padding: 10px!important;
+
+}
+
+.titlesQuizes{
+
+  background-color: #D9D9D9;
+  border-style: solid;
+  border-radius: 15px;
+  border-color: #000000
+
 }

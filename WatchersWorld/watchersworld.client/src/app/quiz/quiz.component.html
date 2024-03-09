@@ -1,0 +1,377 @@
+<div class="modalcoisa">
+
+  <div class="text-center">
+    <div class="row justify-content-end">
+      <div class="col-2">
+        <button type="button" (click)="closeModal()" class="btn btn-primary botaosair">Fechar Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-left: 80px;margin-right: 80px;">
+
+
+    <div style="text-align: center">
+
+      <h1>Quiz Sobre o Filme</h1>
+
+      <hr class="solid" style="border-width: 3px; border-style: double">
+
+    </div>
+
+    <!--------------------------------------------------------------------->
+
+    <div [ngStyle]="question1">
+
+      <div >Este filme pertence a que categoria(s)?</div>
+
+      <hr class="solid">
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center" >
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option11.checked"  value="" id="question1option1">
+              <label class="form-check-label" for="question1option1">
+                Terror
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option12.checked"  value="" id="question1option2">
+              <label class="form-check-label" for="question1option2">
+                Comedy
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option13.checked"  value="" id="question1option3">
+              <label class="form-check-label" for="question1option3">
+                Action
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option14.checked" value="" id="question1option4">
+              <label class="form-check-label" for="question1option4">
+                Adventure
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option15.checked" value="" id="question1option5">
+              <label class="form-check-label" for="question1option5">
+                cocoxixi
+              </label>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+<!------------------->
+    <div [ngStyle]="question2">
+
+      <div >Atores que fizeram parte do elenco.</div>
+
+      <hr class="solid">
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center" >
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option21.checked" value="" id="question2option1">
+              <label class="form-check-label" for="question2option1">
+                Terror
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option22.checked" value="" id="question2option2">
+              <label class="form-check-label" for="question2option2">
+                Comedy
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option23.checked" value="" id="question2option3">
+              <label class="form-check-label" for="question2option3">
+                Action
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option24.checked" value="" id="question2option4">
+              <label class="form-check-label" for="question2option4">
+                Adventure
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option25.checked" value="" id="question2option5">
+              <label class="form-check-label" for="question2option5">
+                cocoxixi
+              </label>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <!------------------->
+    <div [ngStyle]="question3">
+
+      <div >Em que ano saiu o filme?</div>
+
+      <hr class="solid">
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center" >
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option31.checked" value="" id="question3option1">
+              <label class="form-check-label" for="question3option1">
+                Terror
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option32.checked" value="" id="question3option2">
+              <label class="form-check-label" for="question3option2">
+                Comedy
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option33.checked" value="" id="question3option3">
+              <label class="form-check-label" for="question3option3">
+                Action
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option34.checked" value="" id="question3option4">
+              <label class="form-check-label" for="question3option4">
+                Adventure
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option35.checked" value="" id="question3option5">
+              <label class="form-check-label" for="question3option5">
+                cocoxixi
+              </label>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <!------------------->
+    <div [ngStyle]="question4">
+
+      <div >Nome de personagens deste filme.</div>
+
+      <hr class="solid">
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center" >
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option41.checked" value="" id="question4option1">
+              <label class="form-check-label" for="question4option1">
+                Terror
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option42.checked" value="" id="question4option2">
+              <label class="form-check-label" for="question4option2">
+                Comedy
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option43.checked" value="" id="question4option3">
+              <label class="form-check-label" for="question4option3">
+                Action
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option44.checked" value="" id="question4option4">
+              <label class="form-check-label" for="question4option4">
+                Adventure
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option45.checked" value="" id="question4option5">
+              <label class="form-check-label" for="question4option5">
+                cocoxixi
+              </label>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+    <!------------------->
+    <div [ngStyle]="question5">
+
+      <div >Realizador(es) deste filme.</div>
+
+      <hr class="solid">
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center" >
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option51.checked" value="" id="question5option1">
+              <label class="form-check-label" for="question5option1">
+                Terror
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option52.checked" value="" id="question5option2">
+              <label class="form-check-label" for="question5option2">
+                Comedy
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option53.checked" value="" id="question5option3">
+              <label class="form-check-label" for="question5option3">
+                Action
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option54.checked"value="" id="question5option4">
+              <label class="form-check-label" for="question5option4">
+                Adventure
+              </label>
+            </div>
+
+          </div>
+          <div class="col">
+
+            <div class="form-check form-check-reverse quizBotoes text-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="option55.checked" value="" id="question5option5">
+              <label class="form-check-label" for="question5option5">
+                cocoxixi
+              </label>
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <div class="row justify-content-end">
+        <div class="col-2">
+          <button type="button" (click)="printCheckboxValues()" class="btn btn-primary botaosair">Acabar Quiz!</button>
+        </div>
+      </div>
+    </div>
+<!--------------------------------------------------------------------->
+    <hr class="solid">
+
+    <div>
+
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item itemscena"><a #num0 class="page-link itemspaginacao disabled" (click)="questionPrevNext(-1)">Anterior</a></li>
+          <li class="page-item itemscoiso"><a #num1 class="page-link itemspaginacao disabled" (click)="questionNum(1)">1</a></li>
+          <li class="page-item itemscoiso"><a #num2 class="page-link itemspaginacao" (click)="questionNum(2)">2</a></li>
+          <li class="page-item itemscoiso"><a #num3 class="page-link itemspaginacao" (click)="questionNum(3)">3</a></li>
+          <li class="page-item itemscoiso"><a #num4 class="page-link itemspaginacao" (click)="questionNum(4)">4</a></li>
+          <li class="page-item itemscoiso"><a #num5 class="page-link itemspaginacao" (click)="questionNum(5)">5</a></li>
+          <li class="page-item itemscena"><a #num6 class="page-link itemspaginacao" (click)="questionPrevNext(1)">Proximo</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+  </div>
+
+</div>

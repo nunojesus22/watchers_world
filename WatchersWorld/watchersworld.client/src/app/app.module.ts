@@ -1,6 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +26,8 @@ import { SeriesDetailsComponent } from './series-details/series-details.componen
 import { LoadingComponent } from './loader/loading/loading.component';
 import { SearchComponent } from './search/search.component';
 import { SearchServiceComponent } from './search-service/search-service.component';
+import { QuizComponent } from './quiz/quiz.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 @NgModule({
@@ -43,17 +46,19 @@ import { SearchServiceComponent } from './search-service/search-service.componen
     LoadingComponent,
     SearchComponent,
     SearchServiceComponent,
+    QuizComponent,
 
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule 
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MovieApiServiceComponent,
-    MovieApiServiceComponent, SearchServiceComponent
+    MovieApiServiceComponent, SearchServiceComponent, provideAnimationsAsync('noop')
 
   ],
   bootstrap: [AppComponent]

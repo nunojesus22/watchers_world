@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm
 
-  
+
 ];
 
 @NgModule({

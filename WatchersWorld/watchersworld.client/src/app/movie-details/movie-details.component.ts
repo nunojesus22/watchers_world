@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+
 import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import {QuizComponent} from '../quiz/quiz.component';
 
 @Component({
   selector: 'app-movie-details',
@@ -9,7 +12,7 @@ import { Meta, Title } from '@angular/platform-browser';
   styleUrl: './movie-details.component.css'
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, public dialog: MatDialog) { }
   getMovieDetailResult: any;
   getMovieVideoResult: any;
   getMovieCastResult: any;
@@ -89,6 +92,12 @@ export class MovieDetailsComponent {
 
   public formatCurrency(value: number): string {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+
+  openModal(): void { //Abrir Quiz
+    this.dialog.open(QuizComponent,{
+      width: '80%'
+    });
   }
 
 

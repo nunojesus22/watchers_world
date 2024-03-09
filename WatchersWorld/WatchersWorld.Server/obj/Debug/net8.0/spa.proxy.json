@@ -3,7 +3,7 @@
 "ServerUrl": "https://localhost:4200",
 "RedirectUrl": "",
 "LaunchCommand": "npm start",
-"WorkingDirectory": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\..\\watchersworld.client",
+"WorkingDirectory": "/home/dominiac/RiderProjects/watchers_world/WatchersWorld/WatchersWorld.Server/../watchersworld.client",
 "MaxTimeoutInSeconds": "120",
 "KeepRunning": "false"
 }

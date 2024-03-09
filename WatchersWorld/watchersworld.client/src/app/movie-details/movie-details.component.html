@@ -15,11 +15,11 @@
         </div>
 
         <!-- Movie Details -->
-        <div class="col-lg-10 mt-5 p-4">
+        <div class="col-lg-9 mt-5 p-4">
           <div class="d-flex justify-content-between align-items-center">
             <h1 class="mt-2 mb-2">{{getMovieDetailResult.title}}</h1>
 
-            <div class="buttons-container" style="margin-right:-15%;">
+            <div class="buttons-container" > <!--style="margin-right:-15%;" -->
               <button class="expand-button">{{ showAll ? 'Remover como Visto' : 'Adicionar como Visto' }}</button>
               <button class="expand-button">{{ showAll ? 'Remover como Visto' : 'Ver Mais Tarde' }}</button>
             </div>
@@ -99,6 +99,23 @@
             </div>
           </div>
         </div>
+
+        <!-- Coluna Botôes dos quizes-->
+        <div class="col-lg-2 mt-5 p-2 columQuizes">
+
+          <h2> Quizes </h2>
+
+          <h6 class="titlesQuizes">  Quiz 1: sobre o Filme:  </h6>
+
+          <button class="expand-button" (click)="openModal()">Iniciar Quiz</button>
+
+          <h6 class="titlesQuizes">  Quem seria neste filme?   </h6>
+
+          <button class="expand-button" (click)="openModal()">Iniciar Quiz</button>
+
+
+        </div>asd
+
       </div>
     </div>
   </div>
