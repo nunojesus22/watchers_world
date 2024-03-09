@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
+
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +47,7 @@ export class MovieApiServiceComponent {
   getSearchSerie(data: any): Observable<any> {
     console.log(data, 'serie#');
 
-    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}`);
+    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}`);
   }
 
   // getmoviedatails
@@ -140,6 +142,14 @@ export class MovieApiServiceComponent {
   }
   fetchAnimationSeries(): Observable<any> {
     return this.http.get(`${this.baseurl}/discover/tv?api_key=${this.apikey}&with_genres=16`);
+  }
+
+
+
+  //MARCAR COMO VISTO
+
+  markMediaAsWatched(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/mark-watched`, {mediaId, type });
   }
 
 }

@@ -27,6 +27,7 @@
 .settings.panel.with_counts {
   list-style-type: none;
   padding: 0;
+  cursor: pointer; /* Faz com que o cursor seja um ponteiro quando passa sobre os itens de gênero */
 }
 
   .settings.panel.with_counts li {
@@ -54,6 +55,36 @@
       .settings.panel.with_counts li.selected a {
         font-weight: bold;
       }
+
+.genre_tab {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+  .genre_tab i {
+    width: 24px; /* Define uma largura fixa para todos os ícones */
+    text-align: center; /* Certifica-se de que os ícones menores também estejam centralizados em seu espaço */
+    margin-right: 8px; /* Espaço entre o ícone e o texto */
+  }
+
+  .genre_tab a {
+    flex-grow: 1;
+    text-decoration: none;
+    color: #000000;
+    display: flex;
+    align-items: center; /* Isso garante que o texto dentro do link esteja alinhado com o ícone */
+  }
+  .genre_tab:hover {
+    background-color: #f0f0f0; /* Muda a cor de fundo quando o mouse passa por cima */
+  }
+
+.settings.panel.with_counts li {
+  border-bottom: 1px solid #dddddd;
+}
+
+
+
 button {
   background-color: dodgerblue;
   color: #ffffff;

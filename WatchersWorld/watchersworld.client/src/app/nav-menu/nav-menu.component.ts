@@ -49,8 +49,8 @@ export class NavMenuComponent {
 
   onSubmit() {
     if (this.searchQuery) {
-      this.searchService.changeSearchQuery(this.searchQuery);
-      this.router.navigate(['/search']);
+      // Isso garante que a pesquisa é comunicada através de parâmetros de consulta
+      this.router.navigate(['/search'], { queryParams: { title: this.searchQuery } });
     }
   }
 

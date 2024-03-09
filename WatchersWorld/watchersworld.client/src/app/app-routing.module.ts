@@ -11,6 +11,7 @@ import { AllSeriesPageComponent } from './all-series-page/all-series-page.compon
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { SeriesDetailsComponent } from './series-details/series-details.component';
 import { SearchComponent } from './search/search.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'all-series-page', component: AllSeriesPageComponent },
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'serie/:id', component: SeriesDetailsComponent },
+  { path: 'admin', component: AdminComponent },
 
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm

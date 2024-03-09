@@ -20,6 +20,17 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router : Router) { }
 
+  getLoggedInUserName(): string | null {
+    const user = this.getStoredUser();
+    return user ? user.username : null;
+  }
+
+  private getStoredUser(): User | null {
+    const key = localStorage.getItem(environment.userKey);
+    return key ? JSON.parse(key) : null;
+  }
+
+
   refreshUser(jwt: string | null) {
     if (jwt === null) {
       this.userSource.next(null);

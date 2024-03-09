@@ -28,6 +28,7 @@ import { SearchComponent } from './search/search.component';
 import { SearchServiceComponent } from './search-service/search-service.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { AdminComponent } from './admin/admin.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     SearchComponent,
     SearchServiceComponent,
     QuizComponent,
+    AdminComponent,
 
   ],
   imports: [
