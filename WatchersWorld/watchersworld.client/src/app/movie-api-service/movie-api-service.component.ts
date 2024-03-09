@@ -45,7 +45,7 @@ export class MovieApiServiceComponent {
   getSearchSerie(data: any): Observable<any> {
     console.log(data, 'serie#');
 
-    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}`);
+    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}`);
   }
 
   // getmoviedatails

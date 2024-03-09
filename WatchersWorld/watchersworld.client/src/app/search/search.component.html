@@ -1,6 +1,6 @@
 <div class="white_container mt-5 p-5">
   <div class="row">
-    <form [formGroup]="searchForm" (ngSubmit)="submitForm(1)">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="d-flex">
         <input type="text" class="form-control flex-grow-1" formControlName="movieName" placeholder="Procurar Filmes ou Series Aqui...">
         <button type="submit" class="btn btn-md ml-2">Procurar</button>
@@ -12,17 +12,16 @@
         <h6 class="background_color light_blue">Resultados da Pesquisa</h6>
         <div id="search_menu_scroller" class="">
           <ul class="settings panel with_counts scroller">
-            <li [class.selected]="searchForm.value.type === 'movie'" (click)="searchForm.controls['type'].setValue('movie'); submitForm(1)">
+            <li [class.selected]="searchForm.value.type === 'movie'" (click)="changeType('movie')" class="genre_tab">
+              <i class="fa-solid fa-film"></i>
               <a id="movie" class="search_tab" title="Filmes" alt="Filmes">Filmes</a>
-              <span> </span>
             </li>
-            <li [class.selected]="searchForm.value.type === 'serie'" (click)="searchForm.controls['type'].setValue('serie'); submitForm(1)">
+            <li [class.selected]="searchForm.value.type === 'serie'" (click)="changeType('serie')" class="genre_tab">
+              <i class="fa-solid fa-tv"></i>
               <a id="serie" class="search_tab" title="Series" alt="Series">Series</a>
-              <span> </span>
             </li>
             <li>
               <a id="utilizadores" class="search_tab" title="Utilizadores" alt="Utilizadores">Utilizadores</a>
-              <span> </span>
             </li>
           </ul>
         </div>
@@ -30,6 +29,27 @@
       <div>
         <i class="fas fa-info-circle"></i>
         <span> Dica: O utilizador pode pesquisar pelo nome original do filme, mesmo que esse nao seja do mesmo idioma da pagina. Exemplo: '기생충' (Parasite).</span>
+      </div>
+
+      <br>
+
+      <div class="settings_panel no_margin shadow-sm bg-white rounded">
+        <h6 class="background_color light_blue">Categorias</h6>
+        <div id="search_menu_scroller" class="">
+          <ul class="settings panel with_counts scroller">
+            <!-- Mostra os gêneros de filmes quando o tipo é 'movie' -->
+            <ng-container *ngIf="searchForm.value.type === 'movie'">
+              <li *ngFor="let genre of genresMovies" [class.selected]="selectedGenreId === genre.id" class="genre_tab">
+                <a class="search_tab" (click)="filterByGenre(genre.id)" id="{{genre.id}}" title="Gêneros">{{genre.name}}</a>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="searchForm.value.type === 'serie'">
+              <li *ngFor="let genre of genresSeries" [class.selected]="selectedGenreId === genre.id" class="genre_tab">
+                <a class="search_tab" (click)="filterByGenre(genre.id)" id="{{genre.id}}" title="Gêneros">{{genre.name}}</a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
       </div>
 
     </div>
@@ -59,10 +79,11 @@
           </div>
         </div>
         <div class="mt-3 d-flex justify-content-center">
-          <button class="btn btn-md" *ngIf="currentPage > 1" (click)="previousPage()">&lt;</button>
-          <button class="btn btn-md" *ngFor="let page of displayPages" [class.active]="page === currentPage" (click)="submitForm(page)">{{page}}</button>
-          <button class="btn btn-md" *ngIf="currentPage < totalPagesArray.length" (click)="nextPage()">&gt;</button>
+          <button class="btn btn-md" *ngIf="currentPage > 1" (click)="updateSearch(currentPage - 1)">&lt;</button>
+          <button class="btn btn-md" *ngFor="let page of displayPages" [class.active]="page === currentPage" (click)="updateSearch(page)">{{ page }}</button>
+          <button class="btn btn-md" *ngIf="currentPage < totalPagesArray.length" (click)="updateSearch(currentPage + 1)">&gt;</button>
         </div>
+
 
       </div>
     </div>
