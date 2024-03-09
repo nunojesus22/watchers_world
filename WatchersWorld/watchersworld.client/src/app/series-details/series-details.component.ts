@@ -15,6 +15,8 @@ export class SeriesDetailsComponent {
   getMovieCastResult: any;
   getMovieProviders: any;
   showAll: boolean = true;
+  type: string = "serie";
+
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -88,5 +90,21 @@ export class SeriesDetailsComponent {
 
   public formatCurrency(value: number): string {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+
+  markAsWatched() {
+    let getParamId = this.router.snapshot.paramMap.get('id'); // Obter o ID do filme atual
+    const type = "serie"; // Ou dinamicamente determinado com base no contexto
+    console.log("paramId", getParamId)
+    if (getParamId) {
+      this.service.markMediaAsWatched(+getParamId, type).subscribe({
+        next: (result) => {
+          console.log('Serie marcada como assistida', result);
+        },
+        error: (error) => {
+          console.error('Erro ao marcar Serie como assistido', error);
+        }
+      });
+    }
   }
 }

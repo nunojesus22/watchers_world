@@ -15,6 +15,7 @@ export class MovieDetailsComponent {
   getMovieCastResult: any;
   getMovieProviders: any;
   showAll: boolean = true;
+  type: string = "movie";
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -91,5 +92,21 @@ export class MovieDetailsComponent {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
 
+
+  markAsWatched() {
+    let getParamId = this.router.snapshot.paramMap.get('id'); // Obter o ID do filme atual
+    const type = "movie"; // Ou dinamicamente determinado com base no contexto
+    console.log("paramId", getParamId)
+    if (getParamId) {
+      this.service.markMediaAsWatched(+getParamId, type).subscribe({
+        next: (result) => {
+          console.log('Filme marcado como assistido', result);
+        },
+        error: (error) => {
+          console.error('Erro ao marcar filme como assistido', error);
+        }
+      });
+    }
+  }
 
 }
