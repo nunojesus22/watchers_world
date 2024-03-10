@@ -16,6 +16,7 @@ export class SeriesDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "serie";
+  isWatched: boolean = false; // Adicione esta linha
 
 
   ngOnInit(): void {
@@ -26,6 +27,20 @@ export class SeriesDetailsComponent {
     this.getVideo(getParamId);
     this.getSerieCast(getParamId);
     this.getSerieProviders(getParamId);
+    this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
+
+  }
+
+  checkIfWatched(mediaId: any) {
+    // Supondo que você tenha uma propriedade `isWatched` neste componente
+    this.service.checkIfWatched(mediaId, this.type).subscribe({
+      next: (response: any) => {
+        this.isWatched = response.isWatched;
+      },
+      error: (error) => {
+        console.error('Erro ao verificar se a mídia foi assistida', error);
+      }
+    });
   }
 
 
@@ -94,17 +109,31 @@ export class SeriesDetailsComponent {
 
   markAsWatched() {
     let getParamId = this.router.snapshot.paramMap.get('id'); // Obter o ID do filme atual
-    const type = "serie"; // Ou dinamicamente determinado com base no contexto
     console.log("paramId", getParamId)
     if (getParamId) {
-      this.service.markMediaAsWatched(+getParamId, type).subscribe({
-        next: (result) => {
-          console.log('Serie marcada como assistida', result);
-        },
-        error: (error) => {
-          console.error('Erro ao marcar Serie como assistido', error);
-        }
-      });
+      if (!this.isWatched) {
+        // Se o filme não estiver marcado como visto, marque-o como visto
+        this.service.markMediaAsWatched(+getParamId, this.type).subscribe({
+          next: (result) => {
+            console.log('Filme marcado como assistido', result);
+            this.isWatched = true; // Atualiza o estado
+          },
+          error: (error) => {
+            console.error('Erro ao marcar filme como assistido', error);
+          }
+        });
+      } else {
+        // Se o filme já estiver marcado como visto, remova o visto
+        this.service.unmarkMediaAsWatched(+getParamId, this.type).subscribe({
+          next: (result) => {
+            console.log('Filme removido como assistido', result);
+            this.isWatched = false; // Atualiza o estado
+          },
+          error: (error) => {
+            console.error('Erro ao remover filme como assistido', error);
+          }
+        });
+      }
     }
   }
 }

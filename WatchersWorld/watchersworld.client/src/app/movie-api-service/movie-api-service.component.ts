@@ -152,4 +152,24 @@ export class MovieApiServiceComponent {
     return this.http.post(`${environment.appUrl}/api/media/mark-watched`, {mediaId, type });
   }
 
+
+  unmarkMediaAsWatched(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/unmark-watched`, { mediaId, type });
+  }
+
+  checkIfWatched(mediaId: number, mediaType: string): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/media/is-watched/${mediaId}/${mediaType}`);
+  }
+
+  checkIfWatchedLater(mediaId: number, mediaType: string): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`);
+  }
+
+  markMediaToWatchLater(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/mark-to-watch-later`, { mediaId, type });
+  }
+
+  unmarkMediaToWatchLater(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/unmark-to-watch-later`, { mediaId, type });
+  }
 }

@@ -16,6 +16,8 @@ export class MovieDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "movie";
+  isWatched: boolean = false; // Adicione esta linha
+  isToWatchLater: boolean = false; // Adicione esta linha
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -25,8 +27,36 @@ export class MovieDetailsComponent {
     this.getVideo(getParamId);
     this.getMovieCast(getParamId);
     this.getProviders(getParamId);
+    this.getMovie(getParamId);
+
+    this.checkIfWatchedLater(getParamId);
+    this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
   }
 
+
+  checkIfWatched(mediaId: any) {
+    // Supondo que você tenha uma propriedade `isWatched` neste componente
+    this.service.checkIfWatched(mediaId,this.type).subscribe({
+      next: (response: any) => {
+        this.isWatched = response.isWatched;
+      },
+      error: (error) => {
+        console.error('Erro ao verificar se a mídia foi assistida', error);
+      }
+    });
+  }
+
+  checkIfWatchedLater(mediaId: any) {
+    // Supondo que você tenha uma propriedade `isWatched` neste componente
+    this.service.checkIfWatchedLater(mediaId, this.type).subscribe({
+      next: (response: any) => {
+        this.isToWatchLater = response.isToWatchLater;
+      },
+      error: (error) => {
+        console.error('Erro ao verificar se a mídia foi assistida', error);
+      }
+    });
+  }
 
   getMovie(id: any) {
     this.service.getMovieDetails(id).subscribe(async (result) => {
@@ -92,21 +122,64 @@ export class MovieDetailsComponent {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
 
+  markToWatchLater() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      if (!this.isToWatchLater) {
+        this.service.markMediaToWatchLater(+mediaId, this.type).subscribe({
+          next: (result) => {
+            console.log('Media marcada para assistir mais tarde', result);
+            this.isToWatchLater = true;
+            this.isWatched = false;
+},
+          error: (error) => {
+            console.error('Erro ao marcar media para assistir mais tarde', error);
+          }
+        });
+      } else {
+        this.service.unmarkMediaToWatchLater(+mediaId, this.type).subscribe({
+          next: (result) => {
+            console.log('Media removida de assistir mais tarde', result);
+            this.isToWatchLater = false; // Atualiza o estado
+          },
+          error: (error) => {
+            console.error('Erro ao remover media de assistir mais tarde', error);
+          }
+        });
+      }
+    }
+  }
 
   markAsWatched() {
     let getParamId = this.router.snapshot.paramMap.get('id'); // Obter o ID do filme atual
-    const type = "movie"; // Ou dinamicamente determinado com base no contexto
     console.log("paramId", getParamId)
     if (getParamId) {
-      this.service.markMediaAsWatched(+getParamId, type).subscribe({
-        next: (result) => {
-          console.log('Filme marcado como assistido', result);
-        },
-        error: (error) => {
-          console.error('Erro ao marcar filme como assistido', error);
-        }
-      });
+      if (!this.isWatched) {
+        // Se o filme não estiver marcado como visto, marque-o como visto
+        this.service.markMediaAsWatched(+getParamId, this.type).subscribe({
+          next: (result) => {
+            console.log('Filme marcado como assistido', result);
+            this.isWatched = true;
+            this.isToWatchLater = false; 
+          },
+          error: (error) => {
+            console.error('Erro ao marcar filme como assistido', error);
+          }
+        });
+      } else {
+        // Se o filme já estiver marcado como visto, remova o visto
+        this.service.unmarkMediaAsWatched(+getParamId, this.type).subscribe({
+          next: (result) => {
+            console.log('Filme removido como assistido', result);
+            this.isWatched = false; // Atualiza o estado
+          },
+          error: (error) => {
+            console.error('Erro ao remover filme como assistido', error);
+          }
+        });
+      }
     }
   }
 
 }
+
