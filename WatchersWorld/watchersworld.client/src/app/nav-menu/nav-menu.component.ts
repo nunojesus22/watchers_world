@@ -13,7 +13,11 @@ export class NavMenuComponent {
   isActive: boolean = false;
   searchQuery: any;
 
+
+
   constructor(private service: MovieApiServiceComponent, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+  
+
   showMenu = false;
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) {
@@ -57,6 +61,24 @@ export class NavMenuComponent {
   onKeyup() {
     console.log('one key up',this.searchQuery);
   }
+
+  navigateBasedOnRole(username: string) {
+    this.authService.getUserRole(username).subscribe((roles: string[]) => {
+      if (roles.includes('Admin')) {
+        this.router.navigate(['/admin']);
+      } else if (roles.includes('User')) {
+        this.router.navigate(['/profile', username]);
+      } else {
+        // Handle case for users without Admin or User roles or redirect to a default route
+        this.router.navigate(['/home']);
+      }
+    }, error => {
+      console.error('Error fetching user role', error);
+      this.router.navigate(['/home']); // Fallback in case of an error
+    });
+  }
+
+
 }
 
 
