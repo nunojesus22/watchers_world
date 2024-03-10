@@ -223,14 +223,7 @@ namespace WatchersWorld.Server.Controllers
                 Followers = 0
             };
 
-            var result = await _userManager.CreateAsync(userToAdd, model.Password);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(userToAdd, "user");
-            }
-
-            
+            //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
@@ -307,20 +300,9 @@ namespace WatchersWorld.Server.Controllers
                 Followers = 0
             };
 
-
-
             //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
-
-            var result = await _userManager.CreateAsync(userToAdd);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(userToAdd, "user");
-            }
-
-            if (!result.Succeeded) return BadRequest(result.Errors);
 
             return CreateApplicationUserDto(userToAdd);
         }
@@ -438,20 +420,6 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Password" });
             }
         }
-
-        [HttpGet("api/account/getUserRole/{username}")]
-        public async Task<ActionResult<string[]>> GetUserRole(string username)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
-            {
-                return NotFound("User not found");
-            }
-
-            var roles = await _userManager.GetRolesAsync(user);
-            return Ok(roles.ToArray());
-        }
-
 
         private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
         {
