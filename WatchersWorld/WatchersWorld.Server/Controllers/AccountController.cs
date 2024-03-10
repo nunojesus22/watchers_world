@@ -199,7 +199,7 @@ namespace WatchersWorld.Server.Controllers
 
             var userToAdd = new User
             {
-                UserName = model.Username,
+                UserName = model.Username.ToLower(),
                 Email = model.Email.ToLower(),
                 Provider = "Credentials"
             };

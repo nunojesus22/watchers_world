@@ -12,6 +12,8 @@ namespace WatchersWorld.Server.Services
         Task<bool> Unfollow(string followerId, string followingId);
         Task<List<string>> GetFollowers(string whosBeingFollowedId);
         Task<List<string>> GetWhoFollow(string whosFollowingId);
+        Task<bool> AlreadyFollow(string followerId, string followingId);
+
     }
 
     public class FollowersService: IFollowersService
@@ -92,7 +94,7 @@ namespace WatchersWorld.Server.Services
             return whoFollowId;
         }
 
-        private async Task<bool> AlreadyFollow(string followerId, string followingId)
+        public async Task<bool> AlreadyFollow(string followerId, string followingId)
         {
             var followsId = await GetFollowId(followerId, followingId);
             return followsId != null;

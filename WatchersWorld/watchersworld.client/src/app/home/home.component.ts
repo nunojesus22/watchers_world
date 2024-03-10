@@ -70,7 +70,7 @@ export class HomeComponent {
 
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
-    console.log("category",category);
+    //console.log("category",category);
     return category ? category.results : [];
   }
 

@@ -227,6 +227,7 @@
   margin-bottom: 5px;
   margin-right: 10px;
   width: 200px;
+  font-weight:bold;
 }
 
 .delete-account-button {
@@ -240,6 +241,7 @@
   margin-bottom: 5px;
   margin-right: 10px;
   width: 150px;
+  font-weight:bold;
 }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
