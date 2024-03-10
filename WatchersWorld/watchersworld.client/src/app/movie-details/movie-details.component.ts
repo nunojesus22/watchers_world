@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
@@ -9,7 +9,8 @@ import { Meta, Title } from '@angular/platform-browser';
   styleUrl: './movie-details.component.css'
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta , private changeDetectorRef: ChangeDetectorRef,
+) { }
   getMovieDetailResult: any;
   getMovieVideoResult: any;
   getMovieCastResult: any;
@@ -28,9 +29,9 @@ export class MovieDetailsComponent {
     this.getMovieCast(getParamId);
     this.getProviders(getParamId);
     this.getMovie(getParamId);
+    this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
 
     this.checkIfWatchedLater(getParamId);
-    this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
   }
 
 
@@ -39,6 +40,7 @@ export class MovieDetailsComponent {
     this.service.checkIfWatched(mediaId,this.type).subscribe({
       next: (response: any) => {
         this.isWatched = response.isWatched;
+        console.log("esta visto?",this.isWatched)
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -51,6 +53,8 @@ export class MovieDetailsComponent {
     this.service.checkIfWatchedLater(mediaId, this.type).subscribe({
       next: (response: any) => {
         this.isToWatchLater = response.isToWatchLater;
+        console.log("nao esta visto?", this.isToWatchLater)
+// Aqui você atualiza com base na resposta
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -128,10 +132,10 @@ export class MovieDetailsComponent {
       if (!this.isToWatchLater) {
         this.service.markMediaToWatchLater(+mediaId, this.type).subscribe({
           next: (result) => {
-            console.log('Media marcada para assistir mais tarde', result);
-            this.isToWatchLater = true;
-            this.isWatched = false;
-},
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+          },
           error: (error) => {
             console.error('Erro ao marcar media para assistir mais tarde', error);
           }
@@ -139,11 +143,12 @@ export class MovieDetailsComponent {
       } else {
         this.service.unmarkMediaToWatchLater(+mediaId, this.type).subscribe({
           next: (result) => {
-            console.log('Media removida de assistir mais tarde', result);
-            this.isToWatchLater = false; // Atualiza o estado
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
           },
           error: (error) => {
-            console.error('Erro ao remover media de assistir mais tarde', error);
+            console.error('Erro ao desmarcar media de assistir mais tarde', error);
           }
         });
       }
@@ -151,35 +156,34 @@ export class MovieDetailsComponent {
   }
 
   markAsWatched() {
-    let getParamId = this.router.snapshot.paramMap.get('id'); // Obter o ID do filme atual
-    console.log("paramId", getParamId)
-    if (getParamId) {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
       if (!this.isWatched) {
-        // Se o filme não estiver marcado como visto, marque-o como visto
-        this.service.markMediaAsWatched(+getParamId, this.type).subscribe({
+        this.service.markMediaAsWatched(+mediaId, this.type).subscribe({
           next: (result) => {
-            console.log('Filme marcado como assistido', result);
-            this.isWatched = true;
-            this.isToWatchLater = false; 
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
           },
           error: (error) => {
             console.error('Erro ao marcar filme como assistido', error);
           }
         });
       } else {
-        // Se o filme já estiver marcado como visto, remova o visto
-        this.service.unmarkMediaAsWatched(+getParamId, this.type).subscribe({
+        this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
           next: (result) => {
-            console.log('Filme removido como assistido', result);
-            this.isWatched = false; // Atualiza o estado
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
           },
           error: (error) => {
-            console.error('Erro ao remover filme como assistido', error);
+            console.error('Erro ao desmarcar filme como assistido', error);
           }
         });
       }
     }
   }
+
 
 }
 

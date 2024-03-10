@@ -55,8 +55,9 @@ namespace WatchersWorld.Server.Controllers
                 userMedia.IdListMedia = request.Type == "movie" ? 1 : 2; // Update if already exists
             }
             _context.SaveChanges();
+            bool isToWatchLater = false;
 
-            return Ok(new { message = "Media marked as watched successfully." });
+            return Ok(new { isWatched = true, isToWatchLater = isToWatchLater });
         }
 
 
@@ -126,8 +127,9 @@ namespace WatchersWorld.Server.Controllers
                 userMedia.IdListMedia = request.Type == "movie" ? 4 : 3; // Update if already exists
             }
             _context.SaveChanges();
+            bool isWatched = false;
 
-            return Ok(new { message = "Media marked to watch later successfully." });
+            return Ok(new { isToWatchLater = true, isWatched = isWatched });
         }
 
         [Authorize]
