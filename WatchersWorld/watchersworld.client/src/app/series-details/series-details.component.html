@@ -22,8 +22,8 @@
             <h1 class="mt-2 mb-2">{{getSerieDetailsResult.name}}</h1>
 
             <div class="buttons-container" style="margin-right:-15%;">
-              <button class="expand-button" (click)="markAsWatched()">{{ isWatched  ? 'Remover como Visto' : 'Adicionar como Visto' }}</button>
-              <button class="expand-button">{{ showAll ? 'Remover como Visto' : 'Ver Mais Tarde' }}</button>
+              <button class="expand-button" *ngIf="!isToWatchLater" (click)="markAsWatched()">{{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}</button>
+              <button class="expand-button" *ngIf="!isWatched" (click)="markToWatchLater()">{{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}</button>
             </div>
           </div>
 
