@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
@@ -49,6 +51,33 @@ namespace WatchersWorld.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MediaInfoModel",
+                columns: table => new
+                {
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdMedia = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaInfoModel", x => x.IdTableMedia);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MediaListModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ListName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaListModel", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,6 +205,38 @@ namespace WatchersWorld.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserMedia",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false),
+                    IdListMedia = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMedia", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserMedia_MediaListModel_IdListMedia",
+                        column: x => x.IdListMedia,
+                        principalTable: "MediaListModel",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "MediaListModel",
+                columns: new[] { "Id", "ListName" },
+                values: new object[,]
+                {
+                    { 1, "Filmes" },
+                    { 2, "Séries" },
+                    { 3, "Ver Mais Tarde Series" },
+                    { 4, "Ver Mais Tarde Filmes" },
+                    { 5, "Favoritos" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -214,6 +275,11 @@ namespace WatchersWorld.Server.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserMedia_IdListMedia",
+                table: "UserMedia",
+                column: "IdListMedia");
         }
 
         /// <inheritdoc />
@@ -235,13 +301,22 @@ namespace WatchersWorld.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "MediaInfoModel");
+
+            migrationBuilder.DropTable(
                 name: "ProfileInfo");
+
+            migrationBuilder.DropTable(
+                name: "UserMedia");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "MediaListModel");
         }
     }
 }

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
+
 
 @Injectable({
   providedIn: 'root'
@@ -142,4 +144,32 @@ export class MovieApiServiceComponent {
     return this.http.get(`${this.baseurl}/discover/tv?api_key=${this.apikey}&with_genres=16`);
   }
 
+
+
+  //MARCAR COMO VISTO
+
+  markMediaAsWatched(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/mark-watched`, {mediaId, type });
+  }
+
+
+  unmarkMediaAsWatched(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/unmark-watched`, { mediaId, type });
+  }
+
+  checkIfWatched(mediaId: number, mediaType: string): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/media/is-watched/${mediaId}/${mediaType}`);
+  }
+
+  checkIfWatchedLater(mediaId: number, mediaType: string): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`);
+  }
+
+  markMediaToWatchLater(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/mark-to-watch-later`, { mediaId, type });
+  }
+
+  unmarkMediaToWatchLater(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/unmark-to-watch-later`, { mediaId, type });
+  }
 }
