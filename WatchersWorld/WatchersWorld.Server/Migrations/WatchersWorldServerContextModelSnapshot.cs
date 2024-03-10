@@ -277,6 +277,8 @@ namespace WatchersWorld.Server.Migrations
                     b.HasKey("FollowersId");
 
                     b.ToTable("Followers");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>
                 {
                     b.Property<int>("IdTableMedia")
@@ -360,6 +362,8 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasIndex("IdListMedia");
 
+                    b.HasIndex("IdTableMedia");
+
                     b.ToTable("UserMedia");
                 });
 
@@ -419,6 +423,14 @@ namespace WatchersWorld.Server.Migrations
                     b.HasOne("WatchersWorld.Server.Models.Media.MediaListModel", "MediaListModel")
                         .WithMany()
                         .HasForeignKey("IdListMedia");
+
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfoModel")
+                        .WithMany()
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaInfoModel");
 
                     b.Navigation("MediaListModel");
                 });

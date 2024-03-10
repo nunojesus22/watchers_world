@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
+import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
 
 @Component({
   selector: 'app-movie-details',
@@ -118,8 +118,12 @@ export class MovieDetailsComponent {
     return `${pointsPercentage}%`;
   }
 
-  public formatCurrency(value: number): string {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  public formatCurrency(value?: number): string {
+    if (value) { // Verifica se o valor não é null ou undefined
+      return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    } else {
+      return '-'; // Retorna um placeholder ou vazio se o valor for null ou undefined
+    }
   }
 
   markToWatchLater() {

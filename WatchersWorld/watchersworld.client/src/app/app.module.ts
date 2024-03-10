@@ -17,14 +17,14 @@ import { LoadingInterceptor } from './interceptors/loading/loading-interceptor.s
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { FormsModule } from '@angular/forms';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
-import { MovieApiServiceComponent } from './movie-api-service/movie-api-service.component';
-import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
-import { MovieDetailsComponent } from './movie-details/movie-details.component';
-import { SeriesDetailsComponent } from './series-details/series-details.component';
+import { AllMoviesPageComponent } from './media/movies/all-movies-page/all-movies-page.component';
+import { MovieApiServiceComponent } from './media/api/movie-api-service/movie-api-service.component';
+import { AllSeriesPageComponent } from './media/series/all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './media/movies/movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './media/series/series-details/series-details.component';
 import { LoadingComponent } from './loader/loading/loading.component';
-import { SearchComponent } from './search/search.component';
-import { SearchServiceComponent } from './search-service/search-service.component';
+import { SearchComponent } from './media/search/search.component';
+import { SearchServiceComponent } from './media/search-service/search-service.component';
 import { AdminComponent } from './admin/admin.component';
 
 

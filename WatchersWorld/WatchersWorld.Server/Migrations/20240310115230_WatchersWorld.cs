@@ -54,6 +54,19 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Followers",
+                columns: table => new
+                {
+                    FollowersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WhosFollowing = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WhosBeingFollowed = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Followers", x => x.FollowersId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MediaInfoModel",
                 columns: table => new
                 {
@@ -85,14 +98,15 @@ namespace WatchersWorld.Server.Migrations
                 columns: table => new
                 {
                     UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(1)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CoverPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Followers = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Following = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Followers = table.Column<int>(type: "int", nullable: false),
+                    Following = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,6 +233,12 @@ namespace WatchersWorld.Server.Migrations
                 {
                     table.PrimaryKey("PK_UserMedia", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_UserMedia_MediaInfoModel_IdTableMedia",
+                        column: x => x.IdTableMedia,
+                        principalTable: "MediaInfoModel",
+                        principalColumn: "IdTableMedia",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_UserMedia_MediaListModel_IdListMedia",
                         column: x => x.IdListMedia,
                         principalTable: "MediaListModel",
@@ -280,6 +300,11 @@ namespace WatchersWorld.Server.Migrations
                 name: "IX_UserMedia_IdListMedia",
                 table: "UserMedia",
                 column: "IdListMedia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserMedia_IdTableMedia",
+                table: "UserMedia",
+                column: "IdTableMedia");
         }
 
         /// <inheritdoc />
@@ -301,7 +326,7 @@ namespace WatchersWorld.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "MediaInfoModel");
+                name: "Followers");
 
             migrationBuilder.DropTable(
                 name: "ProfileInfo");
@@ -314,6 +339,9 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "MediaInfoModel");
 
             migrationBuilder.DropTable(
                 name: "MediaListModel");

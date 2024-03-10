@@ -182,13 +182,15 @@ input[type="date"] {
 /* --------------------------------------------------------------------------------------------------------------------------- */
 
 .favorites-section,
-.movies-section,
-.series-section,
+.watched-movies-section,
+.to-watch-movies-section,
+.watched-series-section,
+.to-watch-series-section,
 .medals-section {
   padding: 10px;
   margin-top: 20px; /* Espaço acima da seção */
-  margin-left:90px;
-  width:600px;
+  margin-left: 20px;
+  width: 600px;
 }
 
 .favorites-section-content-expanded,
@@ -209,8 +211,10 @@ input[type="date"] {
 }
 
 .favorites-section-header,
-.movies-section-header,
-.series-section-header,
+.movies-watched-section-header,
+.movies-to-watch-section-header,
+.series-watched-section-header,
+.series-to-watch-section-header,
 .medals-section-header {
   display: flex;
   align-items: center;
@@ -218,9 +222,11 @@ input[type="date"] {
 }
 
 .favorites-title,
-.movies-title,
-.series-title,
-.medals-title{
+.movies-watched-title,
+.movies-to-watch-title,
+.series-watched-title,
+.series-to-watch-title,
+.medals-title {
   display: flex;
   align-items: center;
 }
@@ -267,10 +273,12 @@ input[type="date"] {
     /* TODO */
 }
 
-.filter-favorites-button,
-.filter-movies-button,
-.filter-series-button,
-.filter-medals-button{
+.expand-favorites-button,
+.expand-watched-movies-button,
+.expand-to-watch-movies-button,
+.expand-watched-series-button,
+.expand-to-watch-series-button,
+.expand-medals-button {
   font-size: 16px;
   background-color: #4CAEFE;
   color: white;
@@ -279,7 +287,39 @@ input[type="date"] {
   cursor: pointer;
   width: 120px;
   height: 40px;
-  font-weight:bold;
+  font-weight: bold;
+}
+
+
+.rowposter-user-media {
+  display: flex;
+  flex-direction: row; /* Isso irá organizar as imagens em uma coluna */
+  align-items: center;
+  gap: 20px; /* Espaço entre as imagens */
+  padding-right: 0; /* Se houver padding, defina para 0 */
+  max-width: 100px;
+  margin-left: 45px;
+}
+
+.rowimg {
+  object-fit: contain;
+  width: 100%; /* Ocupa toda a largura disponível dentro do seu contêiner */
+  max-width: 100%; /* Adiciona um máximo de largura */
+  height: auto; /* Altura auto para manter a proporção da imagem */
+  transition: transform 450ms;
+}
+
+  .rowimg:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
+.largeposter {
+  max-height: 150px; /* reduzir para o tamanho desejado */
+}
+
+.p-4 {
+  padding: 1.5rem !important;
 }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
@@ -383,3 +423,5 @@ input[type="date"] {
 .p-4 {
   padding: 1.5rem !important;
 }
+
+

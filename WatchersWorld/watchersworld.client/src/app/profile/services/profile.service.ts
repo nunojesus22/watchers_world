@@ -6,6 +6,7 @@ import { User } from '../../authentication/models/user';
 import { environment } from '../../../environments/environment.development';
 import { Profile } from '../models/profile';
 import { FollowerProfile } from '../models/follower-profile';
+import { UserMedia } from '../models/user-media';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,15 @@ export class ProfileService {
     return this.http.get<boolean>(`${environment.appUrl}/api/profile/alreadyFollows/${usernameAuthenticated}/${usernameToFollow}`, { headers });
   }
 
+  getUserWatchedMedia(username: string): Observable<UserMedia[]> {
+    const headers = this.getHeaders();
+    return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-media-watched-list/${username}`, { headers });
+  }
+
+  getUserWatchLaterMedia(username: string): Observable<UserMedia[]> {
+    const headers = this.getHeaders();
+    return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-watch-later-list/${username}`, { headers });
+  }
 
 
 }

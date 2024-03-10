@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
+import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
 
 @Component({
   selector: 'app-series-details',

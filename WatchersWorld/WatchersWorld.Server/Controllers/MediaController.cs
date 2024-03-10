@@ -59,9 +59,6 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "Media marked as watched successfully." });
         }
 
-
-
-
         [Authorize]
         [HttpGet("/api/media/is-watched/{mediaId}/{mediaType}")]
         public IActionResult IsMediaWatched(int mediaId, string mediaType)
@@ -172,6 +169,50 @@ namespace WatchersWorld.Server.Controllers
             _context.SaveChanges();
 
             return Ok(new { message = "Media removido da lista de assistidos com sucesso." });
+        }
+
+        [Authorize]
+        [HttpGet("/api/media/get-media-watched-list/{username}")]
+        public async Task<ActionResult<IEnumerable<UserMediaDto>>> GetWatchedMedia(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("Utilizador não encontrado.");
+            }
+
+            var watchedMedia = await _context.UserMedia
+                .Where(um => um.UserId == user.Id && (um.IdListMedia == 1 || um.IdListMedia == 2)) // 1 para filmes, 2 para séries
+                .Select(um => new UserMediaDto
+                {
+                    MediaId = um.MediaInfoModel.IdMedia,
+                    Type = um.MediaInfoModel.Type,
+                })
+                .ToListAsync();
+
+            return Ok(watchedMedia);
+        }
+
+        [Authorize]
+        [HttpGet("/api/media/get-watch-later-list/{username}")]
+        public async Task<ActionResult<IEnumerable<UserMediaDto>>> GetWatchLaterMedia(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("Utilizador não encontrado.");
+            }
+
+            var watchLaterMedia = await _context.UserMedia
+                .Where(um => um.UserId == user.Id && (um.IdListMedia == 3 || um.IdListMedia == 4)) // 3 para filmes para assistir mais tarde, 4 para séries
+                .Select(um => new UserMediaDto
+                {
+                    MediaId = um.MediaInfoModel.IdMedia,
+                    Type = um.MediaInfoModel.Type,
+                })
+                .ToListAsync();
+
+            return Ok(watchLaterMedia);
         }
     }
 

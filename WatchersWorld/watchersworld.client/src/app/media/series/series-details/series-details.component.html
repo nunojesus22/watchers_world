@@ -4,13 +4,13 @@
       <div class="row  position-relative">
         <!-- Backdrop -->
         <div style="position: relative; width: 100%;">
-          <img *ngIf="getSerieDetailsResult.backdrop_path; else defaultImage" src="https://image.tmdb.org/t/p/original/{{ getSerieDetailsResult.backdrop_path }}" class="backdrop-image">
+          <img *ngIf="getSerieDetailsResult?.backdrop_path" src="https://image.tmdb.org/t/p/original/{{ getSerieDetailsResult.backdrop_path }}" class="backdrop-image" alt="Backdrop Image">
           <ng-template #defaultImage>
-            <img src="../assets/img/55b4a4b5-217a-4408-8934-c611fc89c423.jpg" class="backdrop-image">
+            <img src="../assets/img/55b4a4b5-217a-4408-8934-c611fc89c423.jpg" class="backdrop-image" alt="Default Backdrop Image">
           </ng-template>
-          <img *ngIf="getSerieDetailsResult.poster_path; else defaultPoster" src="https://image.tmdb.org/t/p/original/{{ getSerieDetailsResult.poster_path }}" class="poster-image">
+          <img *ngIf="getSerieDetailsResult?.poster_path" src="https://image.tmdb.org/t/p/original/{{ getSerieDetailsResult.poster_path }}" class="poster-image" alt="Poster Image">
           <ng-template #defaultPoster>
-            <img src="../assets/img/default_media_pic.jpg" class="poster-image" alt="poster_picture">
+            <img src="../assets/img/default_media_pic.jpg" class="poster-image" alt="Default Poster Image">
           </ng-template>
         </div>
 
@@ -19,7 +19,7 @@
         <!-- Movie Details -->
         <div class="col-lg-10 mt-5 p-4">
           <div class="d-flex justify-content-between align-items-center">
-            <h1 class="mt-2 mb-2">{{getSerieDetailsResult.name}}</h1>
+            <h1 class="mt-2 mb-2">{{getSerieDetailsResult?.name}}</h1>
 
             <div class="buttons-container" style="margin-right:-15%;">
               <button class="expand-button" (click)="markAsWatched()">{{ isWatched  ? 'Remover como Visto' : 'Adicionar como Visto' }}</button>
@@ -31,32 +31,32 @@
 
           <div class="container">
             <div class="row">
-              <h6 class="mt-2 mb-2">Nome Original: <strong>{{getSerieDetailsResult.original_name}}</strong></h6>
+              <h6 class="mt-2 mb-2">Nome Original: <strong>{{getSerieDetailsResult?.original_name}}</strong></h6>
               <div class="  category-div">
-                <p class="genre-p" *ngFor="let genre of getSerieDetailsResult.genres; let last = last">
+                <p class="genre-p" *ngFor="let genre of getSerieDetailsResult?.genres; let last = last">
                   {{ genre.name }}<span *ngIf="!last">,</span>
                 </p>
               </div>
               <div class="col-md-6">
                 <div>
                   <p class="manual-text mt-2 mb-1">Numero de Episodios:</p>
-                  <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult.number_of_episodes}}</p>
+                  <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult?.number_of_episodes}}</p>
 
                   <p class="manual-text mt-2 mb-1">Tempo Medio dos Episodios:</p>
-                  <p class="movie-details mt-1 mb-2">{{convertMinutesToHours(getSerieDetailsResult.episode_run_time)}}</p>
+                  <p class="movie-details mt-1 mb-2">{{convertMinutesToHours(getSerieDetailsResult?.episode_run_time)}}</p>
 
                   <p class="manual-text mt-2 mb-1">Numero de Temporadas:</p>
-                  <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult.number_of_seasons}}</p>
+                  <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult?.number_of_seasons}}</p>
 
 
                   <p class="manual-text mt-2 mb-1">Ultimo Episodio Lançado:</p>
-                  <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult.last_episode_to_air.air_date}}</p>
+                  <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult?.last_episode_to_air.air_date}}</p>
 
                   <p class="manual-text mt-2 mb-1">Classificação Geral dos Utilizadores:</p>
-                  <p class="movie-details mt-1 mb-2">{{convertToPercentage(getSerieDetailsResult.vote_average)}}</p>
+                  <p class="movie-details mt-1 mb-2">{{convertToPercentage(getSerieDetailsResult?.vote_average)}}</p>
 
                   <p class="manual-text mt-2 mb-1">Sinopse:</p>
-                  <p class="movie-details-sinopse mt-1 mb-2">{{getSerieDetailsResult.overview}}</p>
+                  <p class="movie-details-sinopse mt-1 mb-2">{{getSerieDetailsResult?.overview}}</p>
                 </div>
               </div>
 
@@ -64,7 +64,7 @@
 
 
                 <p class="manual-text mt-2 mb-1">Estado:</p>
-                <p class="movie-details mt-1 mb-2">{{ getSerieDetailsResult.in_production ? 'Em produção' : 'Finalizado' }}</p>
+                <p class="movie-details mt-1 mb-2">{{ getSerieDetailsResult?.in_production ? 'Em produção' : 'Finalizado' }}</p>
 
 
               </div>
@@ -79,8 +79,8 @@
           <div class="mt-3 mb-3 genre-p" *ngIf="getMovieProviders?.flatrate?.length">
             Onde Ver:
             <p class="ps" *ngFor="let provider of getMovieProviders.flatrate; let last = last">
-              <img src="https://image.tmdb.org/t/p/original/{{  provider.logo_path }}" class="provider-logo">
-              {{ provider.provider_name }}
+              <img src="https://image.tmdb.org/t/p/original/{{  provider?.logo_path }}" class="provider-logo">
+              {{ provider?.provider_name }}
             </p>
           </div>
           <div *ngIf="!getMovieProviders?.flatrate?.length">
@@ -88,7 +88,7 @@
             Ainda não existem provedores de streaming disponíveis.
           </div>
 
-          <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getSerieVideoResult}}"
+          <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getSerieVideoResult?}}"
           target="_blank">watch trailer</a>-->
 
           <div class="container">
@@ -96,14 +96,15 @@
             <div class="d-flex flex-row flex-nowrap overflow-auto">
               <div class="card text-center flex-shrink-0" *ngFor="let c of getMovieCastResult">
                 <div class="actor-image-container">
-                  <img class="img-fluid actor-image" *ngIf="c.profile_path; else defaultImage" src="https://image.tmdb.org/t/p/original/{{ c.profile_path}}">
+                  <img class="img-fluid actor-image" *ngIf="c.profile_path; else defaultImage" src="https://image.tmdb.org/t/p/original/{{ c?.profile_path}}">
                   <ng-template #defaultImage>
                     <img class="img-fluid actor-image default-image" src="../assets/img/vecteezy_simple-user-default-icon_24983914.png">
                   </ng-template>
                 </div>
                 <div class="card-body">
-                  <h3 class="text-black">{{c.original_name}}</h3>
-                  <p class="text-black">{{c.character}}</p>
+                  <h3 class="text-black">{{c?.original_name}}</h3>
+                  <p class="text-black">{{c?.character}}</p>
+                  <p class="text-black">{{c?.character}}</p>
                 </div>
               </div>
             </div>

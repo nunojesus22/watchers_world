@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { Meta, Title } from '@angular/platform-browser';
 
 interface MovieCategory {
