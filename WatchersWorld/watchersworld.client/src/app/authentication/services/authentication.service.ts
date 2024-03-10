@@ -32,7 +32,7 @@ export class AuthenticationService {
 
 
   getUserRole(username: string) {
-    return this.http.get<string[]>(`${environment.appUrl}/api/account/get-user-role/${username}`);
+    return this.http.get<string[]>(`${environment.appUrl}/api/account/getUserRole/${username}`);
   }
 
 

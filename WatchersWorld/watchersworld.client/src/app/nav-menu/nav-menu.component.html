@@ -17,10 +17,12 @@
   <a [routerLink]="['/all-movies-page']" routerLinkActive="active-link">Filmes</a>
   <div routerLinkActive #rla="routerLinkActive">
     <ng-container *ngIf="(authService.user$ | async) as user; else notLoggedIn">
-      <img [routerLink]="userRole === 'admin' ? ['/admin'] : ['/profile/', user.username]"
+      <img (click)="navigateBasedOnRole(user.username)"
            [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
            alt="User Icon"
            class="user-icon" />
+
+
     </ng-container>
 
     <ng-template #notLoggedIn>

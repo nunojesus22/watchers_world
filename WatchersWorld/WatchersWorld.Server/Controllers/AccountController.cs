@@ -431,12 +431,17 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-        [HttpGet("get-user-role/{username}")]
-        public async Task<IActionResult> GetUserRole(string username)
+        [HttpGet("api/account/getUserRole/{username}")]
+        public async Task<ActionResult<string[]>> GetUserRole(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
             var roles = await _userManager.GetRolesAsync(user);
-            return Ok(roles);
+            return Ok(roles.ToArray());
         }
 
 
