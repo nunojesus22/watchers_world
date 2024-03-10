@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, firstValueFrom, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { FollowerProfile } from '../models/follower-profile';
-import { MovieApiServiceComponent } from '../../movie-api-service/movie-api-service.component';
+import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movie-api-service.component';
+import { UserMedia } from '../models/user-media';
 
 interface MovieCategory {
   name: string;
@@ -41,16 +42,34 @@ export class ProfileComponent implements OnInit {
 
   canViewFollowers: boolean = false;
 
-  showMediaDetails: boolean = true;
   showFollowers: boolean = true;
   showFollowing: boolean = true;
   showFavorites: boolean = false;
-  showMovies: boolean = false;
-  showSeries: boolean = false;
+
+
+  showMoviesWatched: boolean = true;
+  showAllMoviesWatched: boolean = false;
+
+  showMoviesToWatch: boolean = true;
+  showAllMoviesToWatch: boolean = false;
+
+  showSeriesWatched: boolean = true;
+  showAllSeriesWatched: boolean = false;
+
+  showSeriesToWatch: boolean = true;
+  showAllSeriesToWatch: boolean = false;
+
   showMedals: boolean = false;
 
   expandedFollowers: boolean = false;
   expandedFollowing: boolean = false;
+
+  expandedMoviesWatchList: boolean = false;
+  expandedMoviesToWatchList: boolean = false;
+
+  expandedSeriesWatchList: boolean = false;
+  expandedSeriesToWatchList: boolean = false;
+
 
   followers: FollowerProfile[] = [];
   following: FollowerProfile[] = [];
@@ -61,6 +80,11 @@ export class ProfileComponent implements OnInit {
   showExpandedSuggestions = false;
 
   categories: MovieCategory[] = [];
+  watchedMovies: any[] = [];
+  watchedSeries: any[] = [];
+  watchLaterMovies: any[] = [];
+  watchLaterSeries: any[] = [];
+  getMovieDetailResult: any;
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
@@ -68,6 +92,7 @@ export class ProfileComponent implements OnInit {
     private service: MovieApiServiceComponent) { }
 
   ngOnInit(): void {
+
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
@@ -96,7 +121,12 @@ export class ProfileComponent implements OnInit {
         this.setImages(this.currentUsername);
         this.getFollowersList();
         this.getFollowingList();
+        this.getWatchedMedia(this.currentUsername);
+        this.getWatchLaterMedia(this.currentUsername);
+
       }
+
+
     });
     this.getUserProfiles();
     this.initializeForm();
@@ -307,9 +337,149 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  toggleMediaDetails(): void {
-    this.showMediaDetails = !this.showMediaDetails;
+  /*----------------------------------------------------------------  MEDIA JÁ VISTA ---------------------------------------------------------------- */
+
+  async getWatchedMedia(username: string): Promise<void> {
+    try {
+      const media = await firstValueFrom(this.profileService.getUserWatchedMedia(username));
+      this.watchedMovies = media.filter(m => m.type === 'movie');
+      this.watchedSeries = media.filter(m => m.type === 'serie');
+
+      await this.fetchWatchedMediaDetails();
+    } catch (error) {
+      console.error('Erro ao buscar mídia assistida para usuário', username, error);
+    }
   }
+
+  async fetchWatchedMediaDetails(): Promise<void> {
+    // Buscar detalhes dos filmes
+    for (const movie of this.watchedMovies) {
+      try {
+        const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+        movie.details = details; // Aqui você pode querer criar uma nova propriedade para guardar os detalhes
+      } catch (error) {
+        console.error('Erro ao buscar detalhes do filme', error);
+      }
+    }
+
+    // Buscar detalhes das séries
+    for (const series of this.watchedSeries) {
+      try {
+        const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+        series.details = details; // Similarmente aqui
+      } catch (error) {
+        console.error('Erro ao buscar detalhes da série', error);
+      }
+    }
+  }
+
+  /*----------------------------------------------------------------  MEDIA A VER ---------------------------------------------------------------- */
+
+  async getWatchLaterMedia(username: string): Promise<void> {
+    try {
+      const media = await firstValueFrom(this.profileService.getUserWatchLaterMedia(username));
+      this.watchLaterMovies = media.filter(m => m.type === 'movie');
+      this.watchLaterSeries = media.filter(m => m.type === 'serie');
+
+      await this.fetchWatchLaterMediaDetails();
+    } catch (error) {
+      console.error('Erro ao buscar mídia para ver mais tarde para o usuário', username, error);
+    }
+  }
+
+  async fetchWatchLaterMediaDetails(): Promise<void> {
+    // Buscar detalhes dos filmes para ver mais tarde
+    for (const movie of this.watchLaterMovies) {
+      try {
+        const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+        movie.details = details; // Aqui você pode querer criar uma nova propriedade para guardar os detalhes
+      } catch (error) {
+        console.error('Erro ao buscar detalhes do filme para ver mais tarde', error);
+      }
+    }
+
+    // Buscar detalhes das séries para ver mais tarde
+    for (const series of this.watchLaterSeries) {
+      try {
+        const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+        series.details = details; // Similarmente aqui
+      } catch (error) {
+        console.error('Erro ao buscar detalhes da série para ver mais tarde', error);
+      }
+    }
+  }
+
+  /*----------------------------------------------------------------  Filmes já vistos ---------------------------------------------------------------- */
+
+  toggleMoviesWatchedList(): void {
+    this.showMoviesWatched = !this.showMoviesWatched;
+  }
+
+  toggleMoviesWatchedListDisplay(): void {
+    this.showAllMoviesWatched = !this.showAllMoviesWatched;
+  }
+
+  toggleWatchedMoviesScroll(): void {
+    this.expandedMoviesWatchList = !this.expandedMoviesWatchList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleSeriesWatchedList();
+  }
+
+  /*----------------------------------------------------------------  Filmes a ver -------------------------------------------------------------------- */
+
+  toggleMoviesToWatchList(): void {
+    this.showMoviesToWatch = !this.showMoviesToWatch;
+  }
+
+  toggleMoviesToWatchListDisplay(): void {
+    this.showAllMoviesToWatch = !this.showAllMoviesToWatch;
+  }
+
+  toggleToWatchMoviesScroll(): void {
+    this.expandedMoviesToWatchList = !this.expandedMoviesToWatchList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleSeriesWatchedList();
+    this.toggleMoviesWatchedList();
+  }
+
+  /*----------------------------------------------------------------  Séries já vistas ---------------------------------------------------------------- */
+
+  toggleSeriesWatchedList(): void {
+    this.showSeriesWatched = !this.showSeriesWatched;
+  }
+
+  toggleSeriesWatchedListDisplay(): void {
+    this.showAllSeriesWatched = !this.showAllSeriesWatched;
+  }
+
+  toggleWatchedSeriesScroll(): void {
+    this.expandedSeriesWatchList = !this.expandedSeriesWatchList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleMoviesWatchedList();
+  }
+
+  /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
+
+  togglSeriesToWatchList(): void {
+    this.showSeriesToWatch = !this.showSeriesToWatch;
+  }
+
+  toggleSeriesToWatchListDisplay(): void {
+    this.showAllSeriesToWatch = !this.showAllSeriesToWatch;
+  }
+
+  toggleToWatchSeriesScroll(): void {
+    this.expandedSeriesToWatchList = !this.expandedSeriesToWatchList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleSeriesWatchedList();
+    this.toggleMoviesWatchedList();
+  }
+
+  /* Seguidores */
 
   toggleFollowers() {
     this.showFollowers = !this.showFollowers;
@@ -319,6 +489,14 @@ export class ProfileComponent implements OnInit {
     this.showAllFollowers = !this.showAllFollowers;
   }
 
+  toggleFollowersScroll(): void {
+    this.expandedFollowers = !this.expandedFollowers;
+    this.toggleFollowersDisplay();
+    this.toggleMoviesWatchedListDisplay();
+    this.toggleSeriesWatchedListDisplay();
+  }
+
+  /* A seguir */
 
   toggleFollowing() {
     this.showFollowing = !this.showFollowing;
@@ -328,42 +506,12 @@ export class ProfileComponent implements OnInit {
     this.showAllFollowing = !this.showAllFollowing;
   }
 
-  toggleMediaAndFollowing() {
-    this.toggleMediaDetails();
-    this.toggleFollowing();
-  }
-
-  toggleMediaAndFollowers() {
-    this.toggleMediaDetails();
-    this.toggleFollowers();
-  }
-
-  toggleFollowersScroll(): void {
-    this.expandedFollowers = !this.expandedFollowers;
-    this.toggleMediaAndFollowing();
-    this.toggleFollowersDisplay();
-  }
-
   toggleFollowingScroll(): void {
     this.expandedFollowing = !this.expandedFollowing;
-    this.toggleMediaAndFollowers();
     this.toggleFollowingDisplay();
-  }
-
-  toggleFavorites() {
-    this.showFavorites = !this.showFavorites;
-  }
-
-  toggleMovies() {
-    this.showMovies = !this.showMovies;
-  }
-
-  toggleSeries() {
-    this.showSeries = !this.showSeries;
-  }
-
-  toggleMedals() {
-    this.showMedals = !this.showMedals;
+    this.toggleFollowers();
+    this.toggleMoviesWatchedList();
+    this.toggleSeriesWatchedList();
   }
 
   toggleAllFiveOtherUsers(): void {

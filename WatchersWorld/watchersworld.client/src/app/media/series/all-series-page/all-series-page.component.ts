@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { Router } from '@angular/router';
-
+import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
 
 
 interface MovieCategory {
   name: string;
   results: any[];
   activeIndex: number;
-  showAll: boolean; 
+  showAll: boolean;
 
 }
+
 @Component({
-  selector: 'app-all-movies-page',
-  templateUrl: './all-movies-page.component.html',
-  styleUrl: './all-movies-page.component.css'
+  selector: 'app-all-series-page',
+  templateUrl: './all-series-page.component.html',
+  styleUrl: './all-series-page.component.css'
 })
-export class AllMoviesPageComponent {
+
+export class AllSeriesPageComponent {
   categories: MovieCategory[] = [];
 
   constructor(private route: Router, private service: MovieApiServiceComponent) { }
@@ -27,14 +28,12 @@ export class AllMoviesPageComponent {
 
   initCategories() {
     this.categories = [
-      { name: 'Trending Movies', results: [], activeIndex: 0, showAll:false },
-      { name: 'Action Movies', results: [], activeIndex: 0 ,showAll: false },
-      { name: 'Adventure Movies', results: [], activeIndex: 0, showAll: false },
-      { name: 'Comedy Movies', results: [], activeIndex: 0, showAll: false },
-      { name: 'Animation Movies', results: [], activeIndex: 0, showAll: false },
-      { name: 'Documentary Movies', results: [], activeIndex: 0, showAll: false },
-      { name: 'ScienceFiction Movies', results: [], activeIndex: 0, showAll: false },
-      { name: 'Thriller Movies', results: [], activeIndex: 0, showAll: false },
+      { name: 'Trending Series', results: [], activeIndex: 0, showAll: false },
+      { name: 'Action and Adventure', results: [], activeIndex: 0, showAll: false },
+      { name: 'Drama', results: [], activeIndex: 0, showAll: false },
+      { name: 'Mystery', results: [], activeIndex: 0, showAll: false },
+      { name: 'Animation', results: [], activeIndex: 0, showAll: false },
+
     ];
 
     this.fetchMovies();
@@ -42,15 +41,14 @@ export class AllMoviesPageComponent {
 
   fetchMovies() {
     const fetchMethods = [
-      this.service.trendingMovieApiData(),
-      this.service.fetchActionMovies(),
-      this.service.fetchAdventureMovies(),
-      this.service.fetchComedyMovies(),
-      this.service.fetchAnimationMovies(),
-      this.service.fetchDocumentaryMovies(),
-      this.service.fetchScienceFictionMovies(),
-      this.service.fetchThrillerMovies(),
-    ];
+      this.service.fetchTopRatedSeries(),
+      this.service.fetchActionAndAdvetureSeries(),
+      this.service.fetchDramaSeries(),
+      this.service.fetchMysterySeries(),
+      this.service.fetchAnimationSeries(),
+
+
+  ];
 
     fetchMethods.forEach((fetchMethod, index) => {
       fetchMethod.subscribe((result) => {
@@ -100,6 +98,4 @@ export class AllMoviesPageComponent {
     }
     return rows;
   }
-
 }
-

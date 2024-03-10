@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { Router } from '@angular/router';
-import { SearchServiceComponent } from '../search-service/search-service.component';
+import { SearchServiceComponent } from '../media/search-service/search-service.component';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 
 @Component({
   selector: 'app-nav-menu',

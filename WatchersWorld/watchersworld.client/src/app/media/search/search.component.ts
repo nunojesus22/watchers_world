@@ -1,9 +1,9 @@
   import { Component, OnInit } from '@angular/core';
-  import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
   import { Meta, Title } from '@angular/platform-browser';
   import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SearchServiceComponent } from '../search-service/search-service.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MovieApiServiceComponent } from '../api/movie-api-service/movie-api-service.component';
 
   @Component({
     selector: 'app-search',

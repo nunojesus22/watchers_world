@@ -51,7 +51,7 @@
     <div class="rowposter mt-3 p-2">
       <button (click)="prevCategory(category.name)" class="button-nav"><</button>
       <ng-container *ngFor="let movie of category.results.slice(category.activeIndex, category.activeIndex + 4); let i = index">
-        <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="[category.media_type === 'movie' ? '/movie' : '/serie', movie.id]">
+        <img *ngIf="movie.poster_path" src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="[category.media_type === 'movie' ? '/movie' : '/serie', movie.id]">
       </ng-container>
       <button (click)="nextCategory(category.name)" class="button-nav">></button>
     </div>
