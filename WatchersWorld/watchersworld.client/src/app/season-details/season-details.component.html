@@ -37,7 +37,7 @@
                 <ng-container *ngIf="season.vote_average && season.vote_average > 0">
                   <p>Classificação Geral dos Utilizadores: {{ season.vote_average }}</p>
                 </ng-container>
-                <a [routerLink]="['/serie', getSerieDetailsResult?.id, season.season_number]" class="btn btn-primary shadow-sm">Ver detalhes da temporada</a>
+                <a [routerLink]="['/serie', getSerieDetailsResult?.id, 'season', season.season_number]" class="btn btn-primary shadow-sm">Ver detalhes da temporada</a>
               </div>
             </div>
           </div>

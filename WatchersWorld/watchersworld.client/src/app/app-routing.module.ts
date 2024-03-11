@@ -13,6 +13,7 @@ import { SeriesDetailsComponent } from './media/series/series-details/series-det
 import { SearchComponent } from './media/search/search.component';
 import { AdminComponent } from './admin/admin.component';
 import { SeasonDetailsComponent } from './season-details/season-details.component';
+import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm
   { path: 'serie/:id/season', component: SeasonDetailsComponent },
+  { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent }
 
   
 ];
