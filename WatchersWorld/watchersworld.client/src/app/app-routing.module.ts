@@ -6,11 +6,11 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { AuthorizationGuard } from './guards/authorization.guard';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
-import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
-import { MovieDetailsComponent } from './movie-details/movie-details.component';
-import { SeriesDetailsComponent } from './series-details/series-details.component';
-import { SearchComponent } from './search/search.component';
+import { AllMoviesPageComponent } from './media/movies/all-movies-page/all-movies-page.component';
+import { AllSeriesPageComponent } from './media/series/all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './media/movies/movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './media/series/series-details/series-details.component';
+import { SearchComponent } from './media/search/search.component';
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [

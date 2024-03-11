@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { Meta, Title } from '@angular/platform-browser';
 
 interface MovieCategory {
@@ -70,7 +70,7 @@ export class HomeComponent {
 
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
-    console.log("category",category);
+    //console.log("category",category);
     return category ? category.results : [];
   }
 

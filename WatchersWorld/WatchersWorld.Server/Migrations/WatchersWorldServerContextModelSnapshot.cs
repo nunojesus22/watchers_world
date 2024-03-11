@@ -169,19 +169,23 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Followers")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Followers")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Following")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Following")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserName");
@@ -258,152 +262,168 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Followers", b =>
                 {
-                    b.Property<int>("IdTableMedia")
+                    b.Property<Guid>("FollowersId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTableMedia"));
-
-                    b.Property<int>("IdMedia")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("WhosBeingFollowed")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdTableMedia");
-
-                    b.ToTable("MediaInfoModel");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaListModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ListName")
+                    b.Property<string>("WhosFollowing")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("FollowersId");
 
-                    b.ToTable("MediaListModel");
+                    b.ToTable("Followers");
+                    modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>
+                        {
+                            b.Property<int>("IdTableMedia")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ListName = "Filmes"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ListName = "Séries"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ListName = "Ver Mais Tarde Series"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ListName = "Ver Mais Tarde Filmes"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ListName = "Favoritos"
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTableMedia"));
+
+                            b.Property<int>("IdMedia")
+                                .HasColumnType("int");
+
+                            b.Property<string>("Type")
+                                .HasColumnType("nvarchar(max)");
+
+                            b.HasKey("IdTableMedia");
+
+                            b.ToTable("MediaInfoModel");
                         });
-                });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaListModel", b =>
+                        {
+                            b.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("IdListMedia")
-                        .HasColumnType("int");
+                            b.Property<string>("ListName")
+                                .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdTableMedia")
-                        .HasColumnType("int");
+                            b.HasKey("Id");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                            b.ToTable("MediaListModel");
 
-                    b.HasKey("Id");
+                            b.HasData(
+                                new
+                                {
+                                    Id = 1,
+                                    ListName = "Filmes"
+                                },
+                                new
+                                {
+                                    Id = 2,
+                                    ListName = "Séries"
+                                },
+                                new
+                                {
+                                    Id = 3,
+                                    ListName = "Ver Mais Tarde Series"
+                                },
+                                new
+                                {
+                                    Id = 4,
+                                    ListName = "Ver Mais Tarde Filmes"
+                                },
+                                new
+                                {
+                                    Id = 5,
+                                    ListName = "Favoritos"
+                                });
+                        });
 
-                    b.HasIndex("IdListMedia");
+                    modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
+                        {
+                            b.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
 
-                    b.ToTable("UserMedia");
-                });
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b.Property<int?>("IdListMedia")
+                                .HasColumnType("int");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b.Property<int>("IdTableMedia")
+                                .HasColumnType("int");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b.Property<string>("UserId")
+                                .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                            b.HasKey("Id");
 
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b.HasIndex("IdListMedia");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                            b.ToTable("UserMedia");
+                        });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Media.MediaListModel", "MediaListModel")
-                        .WithMany()
-                        .HasForeignKey("IdListMedia");
+                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                        {
+                            b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                                .WithMany()
+                                .HasForeignKey("RoleId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
 
-                    b.Navigation("MediaListModel");
-                });
+                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                        {
+                            b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                        {
+                            b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                        {
+                            b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                                .WithMany()
+                                .HasForeignKey("RoleId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                        {
+                            b.HasOne("WatchersWorld.Server.Models.Authentication.User", null)
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
+                        {
+                            b.HasOne("WatchersWorld.Server.Models.Media.MediaListModel", "MediaListModel")
+                                .WithMany()
+                                .HasForeignKey("IdListMedia");
+
+                            b.Navigation("MediaListModel");
+                        });
 #pragma warning restore 612, 618
+                });
         }
     }
 }

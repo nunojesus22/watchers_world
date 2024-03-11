@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WatchersWorld.Server.Models;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Media;
 
@@ -8,8 +9,9 @@ namespace WatchersWorld.Server.Data
 {
     public class WatchersWorldServerContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
+        public new DbSet<User> Users { get; set; }
         public DbSet<ProfileInfo> ProfileInfo { get; set; }
+        public DbSet<Followers> Followers { get; set; }
         public DbSet<MediaInfoModel> MediaInfoModel{ get; set; }
         public DbSet<MediaListModel> MediaListModel { get; set; }
         public DbSet<UserMedia> UserMedia{ get; set; }

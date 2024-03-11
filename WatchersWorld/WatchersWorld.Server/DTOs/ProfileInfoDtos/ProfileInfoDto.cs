@@ -10,7 +10,6 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
         /// Email associated with the user's profile.
         /// Used as a unique identifier for the user's profile and for communication purposes.
         /// </summary>
-      
 
         public string UserName { get; set; }    
 
@@ -22,9 +21,9 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 
         // A brief description or bio of the user.
         // This could be a personal statement or any information the user wishes to share publicly.
-        public string? Description { get; set; }
+        public string Description { get; set; }
 
-        public char? Gender { get; set; }
+        public char Gender { get; set; }
 
         // URL or path to the user's profile photo.
         // This image is typically shown in the user's profile or next to user-generated content.
@@ -40,7 +39,7 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
         /// </summary>
         public string ProfileStatus { get; set; }
 
-        public List<string> Followers { get; set; } = new List<string>();
-        public List<string> Following { get; set; } = new List<string>();
+        public int Followers { get; set; } 
+        public int Following { get; set; }
     }
 }

@@ -1,14 +1,14 @@
 
-<div class="container mt-5">
-  <div class="row">
+<div class="container mt-5" *ngIf="(authService.user$ | async) as user">
+  <div class="row" *ngIf="user.username === currentUsername">
     <div class="col-12 col-lg-8">
       <div class="card mb-3">
         <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">
         <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
-        <div class="card-body text-center">
+        <div class="card-body text-center" >
           <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">
           <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
-          <div class="user-details">
+          <div class="user-details" >
             <div class="user-icons">
               <p> Modo do perfil: </p>
               <button class="lock-button" (click)="toggleLock()">
@@ -22,13 +22,6 @@
               </button>
             </div>
             <form [formGroup]="profileForm" class="user-details text-left">
-              <!--<div class="mb-3">
-                <label for="name">Nome de Utilizador:</label>
-                <div class="form-check form-check-inline">
-                  <input formControlName="name" type="text" id="name" name="name" class="form-control" [readonly]="!userNameEditable">
-                </div>
-                <button type="button" class="editButton ms-2" (click)="toggleEdit('name')"></button>
-              </div>-->
               <div class="mb-3">
                 <label for="hobby">Descrição:</label>
                 <div class="form-check form-check-inline">
@@ -59,7 +52,7 @@
                 <button class="btn btn-primary" (click)="saveButton(user.username)" [routerLink]="['/profile/', user.username]">Salvar alterações</button>
               </div>
             </form>
-            <div class="user-media">
+            <!--<div class="user-media">
               <div class="favorites-section">
                 <div class="favorites-section-header">
                   <div class="favorites-title">
@@ -108,7 +101,7 @@
                   <p>Medalhas Por Implementar</p>
                 </div>
               </div>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>

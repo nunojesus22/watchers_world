@@ -199,15 +199,19 @@ namespace WatchersWorld.Server.Controllers
 
             var userToAdd = new User
             {
-                UserName = model.Username,
+                UserName = model.Username.ToLower(),
                 Email = model.Email.ToLower(),
                 Provider = "Credentials"
             };
 
-            
+            var result = await _userManager.CreateAsync(userToAdd, model.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var user = await _userManager.FindByNameAsync(model.Username);
 
             var profileInfoToAdd = new ProfileInfo
             {
+                UserId = user.Id,
                 UserName = model.Username,
                 Description = "Por definir!",
                 Gender = 'M',
@@ -215,18 +219,14 @@ namespace WatchersWorld.Server.Controllers
                 ProfileStatus = "Public",
                 ProfilePhoto = "assets/img/joao-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png",
-                Following = [],
-                Followers = []
+                Following = 0,
+                Followers = 0
             };
-
-            var result = await _userManager.CreateAsync(userToAdd, model.Password);
 
             //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
-           
             try
             {
                 if(await SendConfirmEmailAsync(userToAdd))
@@ -281,25 +281,28 @@ namespace WatchersWorld.Server.Controllers
             };
 
 
+            var result = await _userManager.CreateAsync(userToAdd);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var user = await _userManager.FindByNameAsync(model.Username);
+
             var profileInfoToAdd = new ProfileInfo
             {
-                UserName = model.Username.ToLower(),
+                UserId = user.Id,
+                UserName = model.Username,
                 Description = "Por definir!",
                 Gender = 'M',
                 BirthDate = DateTime.Now,
                 ProfileStatus = "Public",
                 ProfilePhoto = "assets/img/joao-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png",
-                Following = [],
-                Followers = []
+                Following = 0,
+                Followers = 0
             };
 
             //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
-
-            var result = await _userManager.CreateAsync(userToAdd);
-            if (!result.Succeeded) return BadRequest(result.Errors);
 
             return CreateApplicationUserDto(userToAdd);
         }

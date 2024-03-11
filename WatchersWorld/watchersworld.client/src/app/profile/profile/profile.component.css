@@ -1,4 +1,6 @@
-/* Custom CSS para ajustar o layout com Bootstrap */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- USER INFO -------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
 
 /* Ajusta a imagem de capa para cobrir toda a área disponível */
 .cover-photo {
@@ -47,7 +49,7 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:400px;
+  left:450px;
   z-index: 2;
 }
 
@@ -74,109 +76,10 @@
   transform: scale(1.1);
 }
 
-/* Estilos para as divs laterais */
-.side-divs {
-  position: absolute; /* ou 'fixed' dependendo se quer que movam com a página ou não */
-  top: 130px; /* Ajuste conforme necessário */
-  right: 250px; /* Ajuste conforme necessário */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Alinha as divs à direita */
-  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
-  gap: 20px; /* Espaço entre as divs */
-}
-
-.side-div-users, .side-div-suggestions {
-  background-color: white;
-  width: 300px; /* Largura das divs laterais */
-  margin: 10px 0; /* Espaço superior e inferior entre as divs */
-  padding: 20px; /* Padding interno para o conteúdo das divs */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para dar profundidade */
-  border-radius: 10px; /* Borda arredondada */
-  box-sizing: border-box; /* Garante que padding e border estão incluídos na largura */
-}
-
-  /* Títulos para cada div lateral */
-  .side-div-users > h2, .side-div-suggestions > h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin: 0 0 16px 0; /* Margem inferior */
-  }
-
-/* Ajuste a classe para os itens de usuário e sugestões */
-.item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-  .item-list > li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Espaço entre os itens */
-  }
-
-    .item-list > li > img {
-      width: 50px; /* Largura das imagens dos usuários */
-      height: 50px; /* Altura das imagens dos usuários */
-      border-radius: 50%; /* Torna as imagens redondas */
-      margin-right: 10px; /* Espaço entre a imagem e o texto */
-    }
-
 input[type="text"],
 input[type="date"] {
   border: none; /* Remove as bordas */
   outline: none; /* Remove o contorno que aparece ao focar */
-}
-
-
-
-@media (max-width: 991px) { /* Para tablets e desktops menores */
-  .side-divs {
-    position: static; /* As divs se tornam parte do fluxo normal do documento */
-    margin-top: 20px; /* Espaçamento acima das divs laterais */
-  }
-}
-
-@media (max-width: 767px) { /* Para dispositivos móveis */
-  .side-divs {
-    display: none; /* Esconde as divs laterais em dispositivos móveis */
-  }
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-users > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-suggestions > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-.user-name {
-  font-size: 1em; /* Define o tamanho da fonte */
-  padding-top:10px;
-  color: #333; /* Define a cor do texto */
-  font-weight: bold;
 }
 
 .follow-button,
@@ -205,53 +108,89 @@ input[type="date"] {
   height: 40px;
 }
 
-.followers-following-container {
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- FOLLOWS ---------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.followers-container,
+.following-container {
   display: flex;
-  justify-content: space-between; /* Alinha os itens lado a lado e distribui o espaço igualmente */
-  width:20rem;
-}
-
-.user-photo {
-  width: 50px; /* Tamanho desejado das imagens */
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.user-photo2 {
-  width: 50px; /* Tamanho desejado das imagens */
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
+  flex-wrap: wrap;
+  align-content: space-between;
+  max-width: calc(6 * (75px + 50px * 2)); /* 6 vezes a largura do item mais o espaço */
 }
 
 .no-list-style {
-  list-style-type: none; /* Isso remove os pontos dos itens de lista */
+  list-style: none;
+  padding-left: 50px; /* Remove qualquer padding */
+  margin: 0; /* Remove qualquer margem */
 }
 
-  /* Para manter um espaçamento consistente entre os itens de lista */
   .no-list-style li {
-    margin-bottom: 10px; /* Ajuste conforme necessário */
+    display: inline-block; /* Exibe itens inline com bloco */
+    margin-right: 50px; /* Espaço após cada item */
+    padding: 0; /* Sem padding interno */
   }
 
-.user-item {
-  display: flex;
-  align-items: center; /* Alinha verticalmente */
-  gap: 10px; /* Espaçamento entre a imagem e o texto */
+.user-name {
+  font-size: 1em; /* Define o tamanho da fonte */
+  padding-top: 10px;
+  color: #333; /* Define a cor do texto */
 }
+
+.user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
+  border-radius: 50%;
+}
+
+.search-followers-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start; /* Isso alinhará o texto e a barra de pesquisa à esquerda do contêiner */
+}
+
+.following-count-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.follows-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-weight: bold;
+  margin-right:300px;
+}
+
+.expand-followers-button,
+.expand-following-button {
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 150px;
+  height: 40px;
+  font-weight: bold;
+}
+
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
 /* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
 /* --------------------------------------------------------------------------------------------------------------------------- */
 
 .favorites-section,
-.movies-section,
-.series-section,
+.watched-movies-section,
+.to-watch-movies-section,
+.watched-series-section,
+.to-watch-series-section,
 .medals-section {
   padding: 10px;
   margin-top: 20px; /* Espaço acima da seção */
-  margin-left:90px;
-  width:600px;
+  margin-left: 20px;
+  width: 600px;
 }
 
 .favorites-section-content-expanded,
@@ -272,8 +211,10 @@ input[type="date"] {
 }
 
 .favorites-section-header,
-.movies-section-header,
-.series-section-header,
+.movies-watched-section-header,
+.movies-to-watch-section-header,
+.series-watched-section-header,
+.series-to-watch-section-header,
 .medals-section-header {
   display: flex;
   align-items: center;
@@ -281,9 +222,11 @@ input[type="date"] {
 }
 
 .favorites-title,
-.movies-title,
-.series-title,
-.medals-title{
+.movies-watched-title,
+.movies-to-watch-title,
+.series-watched-title,
+.series-to-watch-title,
+.medals-title {
   display: flex;
   align-items: center;
 }
@@ -320,20 +263,22 @@ input[type="date"] {
 .medals-right-arrow {
   cursor: pointer;
   /* Estilos da seta para cima, você pode usar uma transformação para rotacionar a seta para baixo */
-  transform: rotate(180deg);
+  transform: rotate(270deg);
 }
 
 .favorites-section-content,
 .movies-section-content,
 .series-section-content,
-.medals-section-content,{
+.medals-section-content{
     /* TODO */
 }
 
-.filter-favorites-button,
-.filter-movies-button,
-.filter-series-button,
-.filter-medals-button{
+.expand-favorites-button,
+.expand-watched-movies-button,
+.expand-to-watch-movies-button,
+.expand-watched-series-button,
+.expand-to-watch-series-button,
+.expand-medals-button {
   font-size: 16px;
   background-color: #4CAEFE;
   color: white;
@@ -342,5 +287,141 @@ input[type="date"] {
   cursor: pointer;
   width: 120px;
   height: 40px;
-  font-weight:bold;
+  font-weight: bold;
 }
+
+
+.rowposter-user-media {
+  display: flex;
+  flex-direction: row; /* Isso irá organizar as imagens em uma coluna */
+  align-items: center;
+  gap: 20px; /* Espaço entre as imagens */
+  padding-right: 0; /* Se houver padding, defina para 0 */
+  max-width: 100px;
+  margin-left: 45px;
+}
+
+.rowimg {
+  object-fit: contain;
+  width: 100%; /* Ocupa toda a largura disponível dentro do seu contêiner */
+  max-width: 100%; /* Adiciona um máximo de largura */
+  height: auto; /* Altura auto para manter a proporção da imagem */
+  transition: transform 450ms;
+}
+
+  .rowimg:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
+.largeposter {
+  max-height: 150px; /* reduzir para o tamanho desejado */
+}
+
+.p-4 {
+  padding: 1.5rem !important;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- OUTROS UTILIZADORES ---------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.side-divs {
+  position: absolute; /* Faz com que o elemento fique fixo durante a rolagem, mas sem sair do fluxo normal do documento. */
+  top: 130px; /* Ajuste conforme necessário para determinar o ponto onde o elemento se torna fixo. */
+  right: 250px;
+  align-self: flex-start; /* Se o elemento pai for um contêiner flexível, isso alinha ao topo do contêiner. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinha as divs à direita */
+  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
+  gap: 20px; /* Espaço entre as divs */
+}
+
+/* Títulos para cada div lateral */
+.side-div-users > h2, .side-div-suggestions > h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin: 0 0 16px 0; /* Margem inferior */
+}
+
+/* Estilizar botões ou links para "Expandir" */
+.side-div-users > .expand-link,
+.side-div-suggestions > .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.other-users-user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.side-div-users .item-list {
+  list-style: none; /* Remove o ponto padrão da lista */
+  padding: 0; /* Remove o padding padrão */
+}
+
+.side-div-users .user-item {
+  display: flex; /* Cria um layout flexível para alinhar itens horizontalmente */
+  align-items: center; /* Centraliza os itens verticalmente */
+  gap: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  margin-bottom: 20px; /* Adiciona espaço abaixo de cada item */
+}
+
+.other-users-user-name {
+  margin-left: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  white-space: nowrap; /* Impede que o nome quebre em várias linhas */
+  overflow: hidden; /* Esconde o texto que excede a área */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ SUGESTÕES ---------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.side-div-suggestions {
+    width:100%;
+}
+
+.rowposter {
+  display: flex;
+  flex-direction: column; /* Isso irá organizar as imagens em uma coluna */
+  align-items: center;
+  gap: 20px; /* Espaço entre as imagens */
+  padding-right: 0; /* Se houver padding, defina para 0 */
+  max-width:100px;
+  margin-left:45px;
+}
+
+.rowimg {
+  object-fit: contain;
+  width: 100%; /* Ocupa toda a largura disponível dentro do seu contêiner */
+  max-width: 100%; /* Adiciona um máximo de largura */
+  height: auto; /* Altura auto para manter a proporção da imagem */
+  transition: transform 450ms;
+}
+  .rowimg:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
+.largeposter {
+  max-height: 150px; /* reduzir para o tamanho desejado */
+}
+
+.p-4 {
+  padding: 1.5rem !important;
+}
+
+
