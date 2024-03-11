@@ -57,6 +57,10 @@ export class NavMenuComponent {
   onKeyup() {
     console.log('one key up',this.searchQuery);
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }
 
 

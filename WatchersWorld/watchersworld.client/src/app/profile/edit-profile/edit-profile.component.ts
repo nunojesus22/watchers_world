@@ -6,6 +6,7 @@ import { ProfileService } from '../services/profile.service';
 import { User } from '../../authentication/models/user';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-profile',

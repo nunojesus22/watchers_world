@@ -36,11 +36,13 @@
     <img class="wwimage" src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />
     <a href="#"> <i class="fas fa-envelope"></i> Mensagens</a>
     <a href="#"> <i class="fas fa-bell"></i> Notificações </a>
-    <a href="#"> <i class="fas fa-user"></i> Perfil </a>
+    <ng-container *ngIf="(authService.user$ | async) as user; else notLoggedIn">
+      <a [routerLink]="['/profile/', user.username]" > <i class="fas fa-user"></i> Perfil </a>
+    </ng-container>
     <a [routerLink]="['/all-series-page']"> <i class="fas fa-tv"></i> Séries </a>
     <a [routerLink]="['/all-movies-page']"> <i class="fas fa-film"></i> Filmes </a>
     <a href="#"> <i class="fas fa-cog"></i> Definições </a>
-    <a href="#"> <i class="fas fa-sign-out-alt"></i> Terminar Sessão </a>
+    <a (click)="logout()"> <i class="fas fa-sign-out-alt"></i> Terminar Sessão </a>
     <a class="closebtn" (click)="closeNav()"><i class="fas fa-times"></i></a>
 
   </div>

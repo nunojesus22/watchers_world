@@ -1,3 +1,9 @@
+.container {
+  width: 100%; /* Isso fará a div esticar pela largura total da página */
+  margin: 0; /* Remove margens padrão */
+  max-width: none; /* Override do Bootstrap se necessário */
+}
+
 /* --------------------------------------------------------------------------------------------------------------------------- */
 /* -------------------------------------------------------- USER INFO -------------------------------------------------------- */
 /* --------------------------------------------------------------------------------------------------------------------------- */
@@ -8,7 +14,6 @@
   height: 200px; /* Altura fixa para a imagem de capa */
   object-fit: cover; /* Garante que a imagem cubra o espaço sem distorção */
   position: relative;
-  z-index: 1;
 }
 
 
@@ -21,7 +26,6 @@
   height: 120px;
   border-radius: 50%;
   border: 3px solid #fff;
-  z-index: 3;
   left:80px;
 }
 
@@ -49,7 +53,16 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:450px;
+  left:650px;
+  z-index: 2;
+}
+
+.action-icons {
+  display: flex;
+  gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
+  position: absolute; /* Continua com posicionamento absoluto */
+  top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
+  left: 450px;
   z-index: 2;
 }
 
@@ -80,10 +93,16 @@ input[type="text"],
 input[type="date"] {
   border: none; /* Remove as bordas */
   outline: none; /* Remove o contorno que aparece ao focar */
+
 }
 
+input[type="text"] {
+  width: 600px;
+}
+
+
 .follow-button,
-.unfollow-button{
+.unfollow-button {
   background-color: #4CAEFE;
   color: white;
   border: none;
@@ -171,7 +190,7 @@ input[type="date"] {
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  width: 150px;
+  width: 120px;
   height: 40px;
   font-weight: bold;
 }
@@ -190,7 +209,7 @@ input[type="date"] {
   padding: 10px;
   margin-top: 20px; /* Espaço acima da seção */
   margin-left: 20px;
-  width: 600px;
+  width: 750px;
 }
 
 .favorites-section-content-expanded,
@@ -198,7 +217,6 @@ input[type="date"] {
 .series-section-content-expanded,
 .medals-section-content-expanded {
   height: 200px; /* Altura quando expandido */
-  /* suas outras propriedades como padding, margin, background-color, etc. */
 }
 
 .favorites-section-content-collapsed,
@@ -207,7 +225,6 @@ input[type="date"] {
 .medals-section-content-collapsed {
   height: 0; /* Altura quando colapsado */
   overflow: hidden; /* Esconde o conteúdo que excede a altura */
-  /* suas outras propriedades como padding, margin, background-color, etc. */
 }
 
 .favorites-section-header,
@@ -219,6 +236,13 @@ input[type="date"] {
   display: flex;
   align-items: center;
   justify-content: space-between; /* Espaça o título e o botão uniformemente */
+}
+
+.movies-watched-title h3 {
+  white-space: nowrap; /* Impede a quebra do título em múltiplas linhas */
+  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse o contêiner */
+  text-overflow: ellipsis; /* Adiciona "..." ao final do texto se for muito longo */
+  flex-grow: 1; /* Permite que o título ocupe o espaço disponível */
 }
 
 .favorites-title,
@@ -279,6 +303,12 @@ input[type="date"] {
 .expand-watched-series-button,
 .expand-to-watch-series-button,
 .expand-medals-button {
+  white-space: nowrap; /* Evita que o texto do botão quebre em linhas */
+  overflow: hidden; /* Esconde qualquer texto que exceda o tamanho do botão */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  max-width: 100%; /* Evita que o botão seja maior que o contêiner */
+  margin-right: 50px; 
+  margin-top: 10px; /* Espaço acima do botão */
   font-size: 16px;
   background-color: #4CAEFE;
   color: white;
@@ -290,15 +320,30 @@ input[type="date"] {
   font-weight: bold;
 }
 
+.user-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os itens na vertical */
+}
 
 .rowposter-user-media {
   display: flex;
-  flex-direction: row; /* Isso irá organizar as imagens em uma coluna */
-  align-items: center;
-  gap: 20px; /* Espaço entre as imagens */
-  padding-right: 0; /* Se houver padding, defina para 0 */
-  max-width: 100px;
-  margin-left: 45px;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* ou 'space-around' se você quer que fique distribuído uniformemente */
+  padding: 0;
+  margin: 0 -5px; /* Ajuste negativo para compensar o padding nos itens individuais */
+}
+
+  .rowposter-user-media img {
+    padding: 0 5px; /* Adiciona um pouco de espaço em torno de cada imagem */
+    flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
+    max-width: calc(16.66% - 10px); /* Reduz o tamanho para contar com o padding */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-top:10px;
+  }
+
+.expanded .rowposter-user-media {
+  justify-content: space-around; /* Isso centralizará os itens igualmente */
 }
 
 .rowimg {
@@ -322,19 +367,40 @@ input[type="date"] {
   padding: 1.5rem !important;
 }
 
+@media (max-width: 1200px) {
+  .rowposter-user-media img {
+    max-width: calc(25% - 10px); /* Mostra 4 imagens por linha em telas menores */
+  }
+}
+
+@media (max-width: 992px) {
+  .rowposter-user-media img {
+    max-width: calc(33.33% - 10px); /* Mostra 3 imagens por linha em telas ainda menores */
+  }
+}
+
+@media (max-width: 768px) {
+  .rowposter-user-media img {
+    max-width: calc(50% - 10px); /* Mostra 2 imagens por linha em telas de tablet */
+  }
+}
+
+@media (max-width: 576px) {
+  .rowposter-user-media img {
+    max-width: 100%; /* Mostra 1 imagem por linha em telas de celular */
+    padding: 0 10px; /* Ajuste o padding conforme necessário */
+  }
+}
+
+
 /* --------------------------------------------------------------------------------------------------------------------------- */
 /* -------------------------------------------------------- OUTROS UTILIZADORES ---------------------------------------------- */
 /* --------------------------------------------------------------------------------------------------------------------------- */
 
 .side-divs {
-  position: absolute; /* Faz com que o elemento fique fixo durante a rolagem, mas sem sair do fluxo normal do documento. */
-  top: 130px; /* Ajuste conforme necessário para determinar o ponto onde o elemento se torna fixo. */
-  right: 250px;
-  align-self: flex-start; /* Se o elemento pai for um contêiner flexível, isso alinha ao topo do contêiner. */
   display: flex;
   flex-direction: column;
   align-items: flex-end; /* Alinha as divs à direita */
-  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
   gap: 20px; /* Espaço entre as divs */
 }
 
@@ -400,8 +466,15 @@ input[type="date"] {
   align-items: center;
   gap: 20px; /* Espaço entre as imagens */
   padding-right: 0; /* Se houver padding, defina para 0 */
-  max-width:100px;
-  margin-left:45px;
+  max-width: 150px;
+  margin-left: 5px;
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+.rowposter img {
+  padding: 0 5px; /* Adiciona um pouco de espaço em torno de cada imagem */
+  flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
+  margin-top: 10px;
 }
 
 .rowimg {
@@ -415,13 +488,5 @@ input[type="date"] {
     transform: scale(1.09);
     cursor: pointer;
   }
-
-.largeposter {
-  max-height: 150px; /* reduzir para o tamanho desejado */
-}
-
-.p-4 {
-  padding: 1.5rem !important;
-}
 
 

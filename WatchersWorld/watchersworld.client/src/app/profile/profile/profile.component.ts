@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 import { FollowerProfile } from '../models/follower-profile';
 import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movie-api-service.component';
 import { UserMedia } from '../models/user-media';
+import { Title } from '@angular/platform-browser';
 
 interface MovieCategory {
   name: string;
@@ -89,7 +90,7 @@ export class ProfileComponent implements OnInit {
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
-    private service: MovieApiServiceComponent) { }
+    private service: MovieApiServiceComponent, private title: Title) { }
 
   ngOnInit(): void {
 
@@ -135,7 +136,6 @@ export class ProfileComponent implements OnInit {
     ];
 
     this.fetchTrending();
-
   }
 
   fetchTrending() {
@@ -342,8 +342,8 @@ export class ProfileComponent implements OnInit {
   async getWatchedMedia(username: string): Promise<void> {
     try {
       const media = await firstValueFrom(this.profileService.getUserWatchedMedia(username));
-      this.watchedMovies = media.filter(m => m.type === 'movie');
-      this.watchedSeries = media.filter(m => m.type === 'serie');
+      this.watchedMovies = media.filter(m => m.type === 'movie').reverse();
+      this.watchedSeries = media.filter(m => m.type === 'serie').reverse();
 
       await this.fetchWatchedMediaDetails();
     } catch (error) {
@@ -378,8 +378,8 @@ export class ProfileComponent implements OnInit {
   async getWatchLaterMedia(username: string): Promise<void> {
     try {
       const media = await firstValueFrom(this.profileService.getUserWatchLaterMedia(username));
-      this.watchLaterMovies = media.filter(m => m.type === 'movie');
-      this.watchLaterSeries = media.filter(m => m.type === 'serie');
+      this.watchLaterMovies = media.filter(m => m.type === 'movie').reverse();
+      this.watchLaterSeries = media.filter(m => m.type === 'serie').reverse();
 
       await this.fetchWatchLaterMediaDetails();
     } catch (error) {
@@ -424,6 +424,8 @@ export class ProfileComponent implements OnInit {
     this.toggleFollowers();
     this.toggleFollowing();
     this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
   }
 
   /*----------------------------------------------------------------  Filmes a ver -------------------------------------------------------------------- */
@@ -442,6 +444,7 @@ export class ProfileComponent implements OnInit {
     this.toggleFollowing();
     this.toggleSeriesWatchedList();
     this.toggleMoviesWatchedList();
+    this.toggleSeriesToWatchList();
   }
 
   /*----------------------------------------------------------------  Séries já vistas ---------------------------------------------------------------- */
@@ -459,11 +462,13 @@ export class ProfileComponent implements OnInit {
     this.toggleFollowers();
     this.toggleFollowing();
     this.toggleMoviesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
   }
 
   /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
 
-  togglSeriesToWatchList(): void {
+  toggleSeriesToWatchList(): void {
     this.showSeriesToWatch = !this.showSeriesToWatch;
   }
 
@@ -475,8 +480,10 @@ export class ProfileComponent implements OnInit {
     this.expandedSeriesToWatchList = !this.expandedSeriesToWatchList;
     this.toggleFollowers();
     this.toggleFollowing();
-    this.toggleSeriesWatchedList();
     this.toggleMoviesWatchedList();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
   }
 
   /* Seguidores */
@@ -494,6 +501,8 @@ export class ProfileComponent implements OnInit {
     this.toggleFollowersDisplay();
     this.toggleMoviesWatchedListDisplay();
     this.toggleSeriesWatchedListDisplay();
+    this.toggleSeriesToWatchListDisplay();
+    this.toggleMoviesToWatchListDisplay();
   }
 
   /* A seguir */
@@ -512,6 +521,8 @@ export class ProfileComponent implements OnInit {
     this.toggleFollowers();
     this.toggleMoviesWatchedList();
     this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
   }
 
   toggleAllFiveOtherUsers(): void {
