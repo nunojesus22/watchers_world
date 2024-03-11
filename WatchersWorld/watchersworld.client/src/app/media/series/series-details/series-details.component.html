@@ -72,6 +72,12 @@
 
           </div>
 
+          <div>
+            <!-- O botão abaixo navega para a página de detalhes da temporada -->
+            <button [routerLink]="['/serie', getSerieDetailsResult?.id, 'season']" class="btn btn-primary">
+              Ver Todas as Temporadas
+            </button>
+          </div>
 
 
 
@@ -103,7 +109,6 @@
                 </div>
                 <div class="card-body">
                   <h3 class="text-black">{{c?.original_name}}</h3>
-                  <p class="text-black">{{c?.character}}</p>
                   <p class="text-black">{{c?.character}}</p>
                 </div>
               </div>
