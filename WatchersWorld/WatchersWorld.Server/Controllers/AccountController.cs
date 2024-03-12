@@ -34,10 +34,13 @@ namespace WatchersWorld.Server.Controllers
         private readonly EmailService _emailService;
         private readonly IConfiguration _config;
 
+        private readonly ILogger<AccountController> _logger;
+
+
         private WatchersWorldServerContext _context;
 
         // Constructor for dependency injection.
-        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context)
+        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
         /// <summary>
         /// Constructor for AccountController.
         /// </summary>
@@ -53,6 +56,8 @@ namespace WatchersWorld.Server.Controllers
             _emailService = emailService;
             _config = config;
             _context = context;
+            _logger = logger;
+
         }
 
         /// <summary>
@@ -449,21 +454,52 @@ namespace WatchersWorld.Server.Controllers
         //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
         public async Task<IActionResult> DeleteUserByUsername(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            // Start a transaction
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                return NotFound("User not found.");
-            }
+                try
+                {
+                    // Find the user's profile info
+                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+                    if (profileInfo != null)
+                    {
+                        // Delete the profile info
+                        _context.ProfileInfo.Remove(profileInfo);
+                        await _context.SaveChangesAsync();
+                    }
 
-            var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded)
-            {
-                // Handle any errors
-                return BadRequest(result.Errors);
-            }
+                    // Find the user by username
+                    var user = await _userManager.FindByNameAsync(username);
+                    if (user == null)
+                    {
+                        return NotFound("User not found.");
+                    }
 
-            return Ok(new { message = "User successfully deleted." }); // This will be JSON
+                    // Delete the user
+                    var result = await _userManager.DeleteAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        // If the user wasn't deleted successfully, return the errors
+                        return BadRequest(result.Errors);
+                    }
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+
+                    return Ok("User and profile info successfully deleted.");
+                }
+                catch (Exception ex)
+                {
+                    // If there was an exception, rollback the transaction
+                    await transaction.RollbackAsync();
+
+                    // Log the exception and return a generic error message
+                    _logger.LogError(ex, "An error occurred while deleting user and profile info.");
+                    return StatusCode(500, "An error occurred while deleting the user and profile info.");
+                }
+            }
         }
+
 
 
         private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
