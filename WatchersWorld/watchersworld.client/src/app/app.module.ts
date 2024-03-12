@@ -26,6 +26,8 @@ import { LoadingComponent } from './loader/loading/loading.component';
 import { SearchComponent } from './media/search/search.component';
 import { SearchServiceComponent } from './media/search-service/search-service.component';
 import { AdminComponent } from './admin/admin.component';
+import { SeasonDetailsComponent } from './season-details/season-details.component';
+import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
 
 
 @NgModule({
@@ -45,6 +47,8 @@ import { AdminComponent } from './admin/admin.component';
     SearchComponent,
     SearchServiceComponent,
     AdminComponent,
+    SeasonDetailsComponent,
+    SeasonDetailsInfoComponent,
 
   ],
   imports: [

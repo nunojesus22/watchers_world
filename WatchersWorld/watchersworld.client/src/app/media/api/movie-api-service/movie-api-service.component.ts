@@ -26,6 +26,11 @@ export class MovieApiServiceComponent {
 
   }
 
+
+  getSerieSeasonInfo(seriesId: any, seasonNumber: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${seriesId}/season/${seasonNumber}?api_key=${this.apikey}`);
+  }
+
   //bannerapidata
 
   bannerApiData(): Observable<any> {
