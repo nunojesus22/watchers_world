@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class WatchersWorld : Migration
+    public partial class watchersworld : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

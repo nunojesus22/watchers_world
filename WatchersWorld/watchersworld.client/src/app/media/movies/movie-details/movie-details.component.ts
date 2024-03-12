@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { QuizComponent } from '../../../quiz/quiz.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-movie-details',
@@ -9,7 +11,7 @@ import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-
   styleUrl: './movie-details.component.css' 
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, public dialog: MatDialog) { }
   getMovieDetailResult: any;
   getMovieVideoResult: any;
   getMovieCastResult: any;
@@ -185,6 +187,12 @@ export class MovieDetailsComponent {
         });
       }
     }
+  }
+
+  openModal(): void { //Abrir Quiz
+    this.dialog.open(QuizComponent, {
+      width: '80%'
+    });
   }
 
 
