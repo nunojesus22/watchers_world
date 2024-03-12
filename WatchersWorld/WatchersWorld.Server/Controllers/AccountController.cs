@@ -462,7 +462,7 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return Ok("User successfully deleted.");
+            return Ok(new { message = "User successfully deleted." }); // This will be JSON
         }
 
 

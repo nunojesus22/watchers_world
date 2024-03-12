@@ -60,8 +60,10 @@ export class ProfileService {
 
   deleteUserByUsername(username: string): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.delete(`${environment.appUrl}/api/users/${encodeURIComponent(username)}`, { headers });
+    return this.http.delete(`${environment.appUrl}/api/users/${encodeURIComponent(username)}`,
+      { headers, responseType: 'text' }); // Expecting a text response
   }
+
 
 
 
