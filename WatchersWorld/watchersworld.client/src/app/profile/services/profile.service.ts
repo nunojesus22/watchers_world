@@ -58,6 +58,12 @@ export class ProfileService {
     return this.http.delete<any>(`${environment.appUrl}/api/profile/unfollow/${usernameToUnfollow}`, { headers });
   }
 
+  deleteUserByUsername(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete(`${environment.appUrl}/api/users/${encodeURIComponent(username)}`, { headers });
+  }
+
+
 
 
 

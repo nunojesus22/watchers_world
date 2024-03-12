@@ -445,6 +445,27 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        [HttpDelete("api/users/{username}")]
+        //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
+        public async Task<IActionResult> DeleteUserByUsername(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                // Handle any errors
+                return BadRequest(result.Errors);
+            }
+
+            return Ok("User successfully deleted.");
+        }
+
+
         private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
         {
 

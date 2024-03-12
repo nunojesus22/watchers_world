@@ -9,17 +9,17 @@
   <div class="user-list">
     <h4>Utilizadores:</h4>
     <div class="user" *ngFor="let userProfile of usersProfiles">
-      <!-- admin.component.html -->
       <div class="user-info">
         <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
         <p class="name">{{ userProfile.userName }}</p>
       </div>
       <div class="actions">
-        <button class="delete">Apagar conta</button>
+        <button class="delete" (click)="deleteAccount(userProfile.userName)">Apagar conta</button>
         <button class="ban" (click)="showBanPopup()">Banir conta</button>
         <button class="unban">Remover ban</button>
       </div>
     </div>
+
   </div>
   <!-- Ban Popup -->
   <div *ngIf="isBanPopupVisible" class="ban-popup">

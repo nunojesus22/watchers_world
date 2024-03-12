@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240309223011_WatchersWorld")]
+    [Migration("20240312193630_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
