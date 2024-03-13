@@ -105,16 +105,10 @@ namespace WatchersWorld.Server.Migrations
                     ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CoverPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240310115230_WatchersWorld.cs
                     Followers = table.Column<int>(type: "int", nullable: false),
-                    Following = table.Column<int>(type: "int", nullable: false)
-========
-                    Followers = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Following = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartBanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BannedWithoutTimeSet = table.Column<bool>(type: "bit", nullable: false)
->>>>>>>> Admin:WatchersWorld/WatchersWorld.Server/Migrations/20240313201837_WatchersWorld.cs
+                    Following = table.Column<int>(type: "int", nullable: false),
+                    StartBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

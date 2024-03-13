@@ -103,5 +103,8 @@ export class ProfileService {
     return this.http.post<any>(url, {}, { headers });
   }
 
+  getUserRole(username: string) {
+    return this.http.get<string[]>(`${environment.appUrl}/api/account/getUserRole/${username}`);  }
+
 
 }

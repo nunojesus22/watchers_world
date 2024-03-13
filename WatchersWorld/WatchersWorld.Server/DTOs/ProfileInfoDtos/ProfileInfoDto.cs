@@ -41,8 +41,6 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 
         public int Followers { get; set; } 
         public int Following { get; set; }
-        public List<string> Followers { get; set; } = new List<string>();
-        public List<string> Following { get; set; } = new List<string>();
 
 
         public DateTime StartBanDate { get; set; }

@@ -229,6 +229,12 @@ namespace WatchersWorld.Server.Controllers
             };
 
             //fazer verificacoes
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(userToAdd, "user");
+            }
+
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
@@ -287,6 +293,12 @@ namespace WatchersWorld.Server.Controllers
 
 
             var result = await _userManager.CreateAsync(userToAdd);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(userToAdd, "user");
+            }
+
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             var user = await _userManager.FindByNameAsync(model.Username);
