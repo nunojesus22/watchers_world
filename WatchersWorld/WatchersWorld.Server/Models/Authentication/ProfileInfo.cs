@@ -47,5 +47,10 @@ namespace WatchersWorld.Server.Models.Authentication
 
         public List<string> Followers { get; set; } = new List<string>();
         public List<string> Following { get; set; } = new List<string>();
+
+        public DateTime StartBanDate { get; set; }
+
+        public DateTime EndBanDate { get; set;}
+
     }
 }

@@ -15,7 +15,7 @@
       </div>
       <div class="actions">
         <button class="delete" (click)="deleteAccount(userProfile.userName)">Apagar conta</button>
-        <button class="ban" (click)="showBanPopup()">Banir conta</button>
+        <button class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
         <button class="unban">Remover ban</button>
       </div>
     </div>
@@ -26,8 +26,13 @@
     <div class="popup-content">
       <button class="close-popup" (click)="hideBanPopup()">X</button>
       <h4>Selecione o tipo de ban:</h4>
-      <button class="banPerm" (click)="banPerm()">Banir permanentemente</button>
-      <button class="banTemp" (click)="banTemp()">Banir temporariamente</button>
+      <div class="ban-buttons-container">
+        <button class="banPerm" (click)="banPerm(selectedUserForBan)">Banir permanentemente</button>
+        <button class="banTemp" (click)="banTemp(selectedUserForBan)">Banir temporariamente</button>
+      </div>
+      <div class="ban-duration-container">
+        <input type="number" [(ngModel)]="banDuration" placeholder="Duration in days" min="1" class="ban-duration-input">
+      </div>
     </div>
   </div>
 </div>

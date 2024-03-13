@@ -64,9 +64,17 @@ export class ProfileService {
       { headers, responseType: 'text' }); // Expecting a text response
   }
 
+  banUserPermanently(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(`${environment.appUrl}/api/account/ban-user-permanently/${encodeURIComponent(username)}`, {}, { headers });
+  }
 
-
-
+  BanUserTemporarily(username: string, banDurationInDays: number): Observable<any> {
+    const headers = this.getHeaders();
+    // Append the ban duration as a query parameter
+    const url = `${environment.appUrl}/api/account/ban-user-temporarily/${encodeURIComponent(username)}?banDurationInDays=${banDurationInDays}`;
+    return this.http.post<any>(url, {}, { headers });
+  }
 
 
 }

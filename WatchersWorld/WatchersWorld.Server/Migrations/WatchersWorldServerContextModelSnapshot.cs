@@ -160,6 +160,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("BannedWithoutTimeSet")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -168,6 +171,9 @@ namespace WatchersWorld.Server.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndBanDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Followers")
                         .HasColumnType("nvarchar(max)");
@@ -183,6 +189,9 @@ namespace WatchersWorld.Server.Migrations
 
                     b.Property<string>("ProfileStatus")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartBanDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("UserName");
 
