@@ -34,10 +34,13 @@ namespace WatchersWorld.Server.Controllers
         private readonly EmailService _emailService;
         private readonly IConfiguration _config;
 
+        private readonly ILogger<AccountController> _logger;
+
+
         private WatchersWorldServerContext _context;
 
         // Constructor for dependency injection.
-        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context)
+        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
         /// <summary>
         /// Constructor for AccountController.
         /// </summary>
@@ -53,6 +56,8 @@ namespace WatchersWorld.Server.Controllers
             _emailService = emailService;
             _config = config;
             _context = context;
+            _logger = logger;
+
         }
 
         /// <summary>
@@ -420,6 +425,127 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { Message = "Token Inválido. Tente novamente.", Field = "Password" });
             }
         }
+
+        [HttpGet("api/account/getUserRole/{username}")]
+        public async Task<ActionResult<string[]>> GetUserRole(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(roles.ToArray());
+        }
+
+
+        [HttpDelete("api/users/{username}")]
+        //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
+        public async Task<IActionResult> DeleteUserByUsername(string username)
+        {
+            // Start a transaction
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Find the user's profile info
+                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+                    if (profileInfo != null)
+                    {
+                        // Delete the profile info
+                        _context.ProfileInfo.Remove(profileInfo);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // Find the user by username
+                    var user = await _userManager.FindByNameAsync(username);
+                    if (user == null)
+                    {
+                        return NotFound("User not found.");
+                    }
+
+                    // Delete the user
+                    var result = await _userManager.DeleteAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        // If the user wasn't deleted successfully, return the errors
+                        return BadRequest(result.Errors);
+                    }
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+
+                    return Ok("User and profile info successfully deleted.");
+                }
+                catch (Exception ex)
+                {
+                    // If there was an exception, rollback the transaction
+                    await transaction.RollbackAsync();
+
+                    // Log the exception and return a generic error message
+                    _logger.LogError(ex, "An error occurred while deleting user and profile info.");
+                    return StatusCode(500, "An error occurred while deleting the user and profile info.");
+                }
+            }
+        }
+
+        [HttpPost("api/account/ban-user-permanently/{username}")]
+        //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
+        public async Task<IActionResult> BanUserPermanently(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Retrieve the user's profile info
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
+
+            // Set ban-related properties in the profile info DTO
+            profileInfo.StartBanDate = DateTime.UtcNow; // Set the start ban date
+            profileInfo.EndBanDate = DateTime.MaxValue; // Set the end ban date to a large value, indicating permanent ban
+
+            // Update the user's profile info in the database
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            return Ok("User banned permanently.");
+        }
+
+
+        [HttpPost("api/account/ban-user-temporarily/{username}")]
+        //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
+        public async Task<IActionResult> BanUserTemporarily(string username, [FromQuery] int banDurationInDays)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
+
+            profileInfo.StartBanDate = DateTime.UtcNow;
+            profileInfo.EndBanDate = DateTime.UtcNow.AddDays(banDurationInDays);
+
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            return Ok($"User banned temporarily for {banDurationInDays} days.");
+        }
+
+
+
 
         private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
         {

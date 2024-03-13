@@ -12,7 +12,11 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
+<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240310115230_WatchersWorld.Designer.cs
     [Migration("20240310115230_WatchersWorld")]
+========
+    [Migration("20240313201837_WatchersWorld")]
+>>>>>>>> Admin:WatchersWorld/WatchersWorld.Server/Migrations/20240313201837_WatchersWorld.Designer.cs
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -163,6 +167,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("BannedWithoutTimeSet")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -172,8 +179,16 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240310115230_WatchersWorld.Designer.cs
                     b.Property<int>("Followers")
                         .HasColumnType("int");
+========
+                    b.Property<DateTime>("EndBanDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Followers")
+                        .HasColumnType("nvarchar(max)");
+>>>>>>>> Admin:WatchersWorld/WatchersWorld.Server/Migrations/20240313201837_WatchersWorld.Designer.cs
 
                     b.Property<int>("Following")
                         .HasColumnType("int");
@@ -188,8 +203,13 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("ProfileStatus")
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240310115230_WatchersWorld.Designer.cs
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
+========
+                    b.Property<DateTime>("StartBanDate")
+                        .HasColumnType("datetime2");
+>>>>>>>> Admin:WatchersWorld/WatchersWorld.Server/Migrations/20240313201837_WatchersWorld.Designer.cs
 
                     b.HasKey("UserName");
 
