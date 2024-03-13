@@ -113,11 +113,11 @@ namespace WatchersWorld.Server.Data
             
 
             modelBuilder.Entity<QuizQuestions>().HasData(
-            new QuizQuestions { Id = 1, name = "Este filme pertence a que categoria(s)?", type = 1 },
+            new QuizQuestions { Id = 1, name = "Este filme pertence a que categoria(s)?", type = 0 },
             new QuizQuestions { Id = 2, name = "Atores que fizeram parte do elenco.", type = 1 },
-            new QuizQuestions { Id = 3, name = "Em que ano saiu o filme?", type = 1 },
-            new QuizQuestions { Id = 4, name = "Nome de personagens deste filme.", type = 1 },
-            new QuizQuestions { Id = 5, name = "Realizador(es) deste filme.", type = 1 }
+            new QuizQuestions { Id = 3, name = "Em que ano saiu o filme?", type = 2 },
+            new QuizQuestions { Id = 4, name = "Nome de personagens deste filme.", type = 3 },
+            new QuizQuestions { Id = 5, name = "Realizador(es) deste filme.", type = 4 }
              );
 
         }

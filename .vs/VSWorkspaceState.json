@@ -2,9 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\WatchersWorld",
+    "\\WatchersWorld\\watchersworld.client\\src",
+    "\\WatchersWorld\\watchersworld.client\\src\\app",
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\quiz",
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\quiz\\quiz-api-service",
     "\\WatchersWorld\\WatchersWorld.Server",
-    "\\WatchersWorld\\WatchersWorld.Server\\Services"
+    "\\WatchersWorld\\WatchersWorld.Server\\DTOs",
+    "\\WatchersWorld\\WatchersWorld.Server\\Models\\Authentication",
+    "\\WatchersWorld\\WatchersWorld.Server\\Models\\Media"
   ],
-  "SelectedNode": "\\WatchersWorld\\WatchersWorld.sln",
+  "SelectedNode": "\\WatchersWorld\\WatchersWorld.Server",
   "PreviewInSolutionExplorer": false
 }

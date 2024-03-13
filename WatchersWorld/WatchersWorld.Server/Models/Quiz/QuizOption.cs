@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WatchersWorld.Server.Models.Quiz
 {
@@ -13,6 +14,10 @@ namespace WatchersWorld.Server.Models.Quiz
 
         public bool selected { get; set; }
 
+        public int IdQuizQuestion { get; set; }
+
+        [ForeignKey("IdQuizQuestions")]
+        public virtual QuizQuestion QuizQuestion { get; set; }
 
     }
 
