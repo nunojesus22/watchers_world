@@ -10,5 +10,7 @@
 
         public bool selected { get; set; }
 
+        public int IdQuizQuestion { get; set; }
+
     }
 }

@@ -8,7 +8,7 @@ namespace WatchersWorld.Server.DTOs.Quiz
 
         public int Id { get; set; }
         public int IdQuizQuestions { get; set; }
-        public int IdQuizOption { get; set; }
+        public int IdQuizQuestionsGroup { get; set; }
 
     }
 }

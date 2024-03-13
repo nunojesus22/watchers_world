@@ -23,6 +23,7 @@ namespace WatchersWorld.Server.Data
         public DbSet<QuizYears> QuizYears { get; set; }
         public DbSet<QuizCategorys> QuizCategorys { get; set; }
         public DbSet<QuizNames> QuizNames { get; set; }
+        public DbSet<QuizMedia> QuizMedia { get; set; }
 
 
 

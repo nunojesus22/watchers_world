@@ -20,18 +20,24 @@ export class QuizApiService {
     return this.http.get(`${this.baseurl}/movie/${data}?api_key=${this.apikey}`)
   }
 
+  //-----------------
+
+  
+
   //Nosso server
-  requestQuiz(mediaId: number, type: string): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/quiz/request-quiz`, { mediaId, type });
+  requestQuiz(media: any, mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/quiz/request-quiz`, { media, mediaId, type });
   }
 
   verifyQuiz(mediaId: number, type: string): Observable<any> {
     return this.http.post(`${environment.appUrl}/api/quiz/Verify-quiz`, { mediaId, type });
   }
 
-  resetQuiz(mediaId: number, type: string): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/quiz/reset-quiz`, { mediaId, type });
+  resetQuiz(media : any, mediaId: any): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/quiz/reset-quiz`, {media, mediaId });
   }
+
+  
 
   
 }

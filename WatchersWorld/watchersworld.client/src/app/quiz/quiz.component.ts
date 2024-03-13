@@ -1,5 +1,8 @@
 import { Component,ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { QuizApiService } from '../quiz/quiz-api-service/quiz-api.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-quiz',
@@ -8,7 +11,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class QuizComponent {
 
-  constructor(private dialogRef: MatDialogRef<QuizComponent>) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public idmedia: any, private service: QuizApiService,private dialogRef: MatDialogRef<QuizComponent>) {}
 
   question1: any = {};
   question2: any = {
@@ -122,5 +125,17 @@ export class QuizComponent {
   printCheckboxValues(): void {
     console.log('Checkbox values:', this.option11, this.option21, this.option31);
   }
+
+  /*
+  ResetQuiz(): void {
+    this.service.resetQuiz(media , this.idmedia,).subscribe(async (result) => {
+
+
+
+
+    });
+  }
+  */
+
 
 }

@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using System.Security.Claims;
 using WatchersWorld.Server.Data;
+using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.DTOs.Quiz;
 using WatchersWorld.Server.Models.Quiz;
 
 namespace WatchersWorld.Server.Controllers
 {
+    
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -26,7 +28,7 @@ namespace WatchersWorld.Server.Controllers
 
         [Authorize]
         [HttpPost("/api/quiz/request-quiz/{mediaId}")]
-        public async Task<IActionResult> RequestQuiz(int mediaId)
+        public async Task<IActionResult> RequestQuiz([FromBody] QuizMediaDto movieData, int mediaId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized(); // Se utilizador nao estiver logado return erro
@@ -37,7 +39,7 @@ namespace WatchersWorld.Server.Controllers
             // Se não existir ou nao estiver respondido criar um
             if (existQuiz == null || existQuiz.Done == false)
             {
-                await Task.Run(() => CreateNewQuiz(mediaId, userId));
+                await Task.Run(() => CreateNewQuiz(movieData,mediaId, userId));
             }
 
 
@@ -45,12 +47,16 @@ namespace WatchersWorld.Server.Controllers
             .Where(q => q.UserId == userId && q.MediaId == mediaId)
             .ToListAsync();
 
+            var QuestionList = new List<object>();
+            var OptionList = new List<object>();
+
             foreach (var QuizGroup in questionGroup) // Selecionar e Question --5
             {
                 var Question = await _context.QuizQuestion
                     .Where(q => q.IdQuizQuestionsGroup == QuizGroup.Id)
                     .ToListAsync();
 
+                QuestionList.Add(new { Question });
 
                 foreach (var QuizQuestion in Question) // Options --5
                 {
@@ -59,33 +65,65 @@ namespace WatchersWorld.Server.Controllers
                     .Where(q => q.IdQuizQuestion == QuizQuestion.Id)
                     .ToListAsync();
 
+                    QuestionList.Add(new { Option });
+
                 }
             }
 
             var Questions = _context.QuizQuestions.ToListAsync(); // Selecionar todos?
 
-            return Ok(questionGroup);
+            var Result = new { group = questionGroup, question = QuestionList, option = OptionList, questions = Questions };
+
+            return Ok(Result);
 
         }
 
         [Authorize]
         [HttpPost("/api/quiz/Verify-quiz/{mediaId}")]
-        public async Task<IActionResult> VerifyQuiz(int mediaId, List<QuizOptionDto> Option)
+        public async Task<IActionResult> VerifyQuiz([FromBody] QuizMediaDto movieData, int mediaId, [FromBody] List<QuizOptionDto> Option)
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized(); // Se utilizador nao estiver logado return erro
 
-            // Comparar com o da base de dados
+            var questionGroup = await _context.QuizQuestionsGroup // Selecionar QuizGroup
+            .Where(q => q.UserId == userId && q.MediaId == mediaId)
+            .FirstOrDefaultAsync();
 
-            await Task.Run(() => RequestQuiz(mediaId));
+            var Question = await _context.QuizQuestion
+            .Where(q => q.IdQuizQuestionsGroup == questionGroup.Id)
+            .ToListAsync();
+
+
+            foreach (var QuizQuestion in Question) // Options --5
+            {
+
+                var OptionLocal = await _context.QuizOption
+                .Where(q => q.IdQuizQuestion == QuizQuestion.Id)
+                .ToListAsync();
+
+                foreach (var option in OptionLocal)
+                {
+                    var matchingOption = Option.FirstOrDefault(o => o.Id == option.Id);
+
+                    if (matchingOption != null)
+                    {
+                        option.selected = matchingOption.selected; // copiar selected do client para o servidor
+                    }
+                }
+
+            }
+            
+            questionGroup.Done = true;
+
+            await Task.Run(() => RequestQuiz( movieData, mediaId));
 
             return Ok();
 
         }
 
         //Criar novo quiz
-        public async Task<IActionResult> CreateNewQuiz(int mediaId, string userId)
+        public async Task<IActionResult> CreateNewQuiz([FromBody] QuizMediaDto movieData, int mediaId, string userId)
         {
 
             // Se quiz existir remover
@@ -115,24 +153,24 @@ namespace WatchersWorld.Server.Controllers
                 switch (Questions.type)
                 {
                     case 0:
-                        await Task.Run(() => GenerateGoodOptions(NewQuizQuestion.Id, Questions.Id));
-                        await Task.Run(() => GenerateBadOptions(NewQuizQuestion.Id, 1));
+                        await Task.Run(() => GenerateGoodOptions(movieData, NewQuizQuestion.Id, Questions.Id));
+                        await Task.Run(() => GenerateBadOptions(movieData,NewQuizQuestion.Id, 1));
                         break;
                     case 1:
-                        await Task.Run(() => GenerateGoodOptions(NewQuizQuestion.Id, Questions.Id));
-                        await Task.Run(() => GenerateBadOptions(NewQuizQuestion.Id, 1));
+                        await Task.Run(() => GenerateGoodOptions(movieData, NewQuizQuestion.Id, Questions.Id));
+                        await Task.Run(() => GenerateBadOptions(movieData,NewQuizQuestion.Id, 1));
                         break;
                     case 2:
-                        await Task.Run(() => GenerateGoodOptions(NewQuizQuestion.Id, Questions.Id));
-                        await Task.Run(() => GenerateBadOptions(NewQuizQuestion.Id, 1));
+                        await Task.Run(() => GenerateGoodOptions(movieData, NewQuizQuestion.Id, Questions.Id));
+                        await Task.Run(() => GenerateBadOptions(movieData,NewQuizQuestion.Id, 1));
                         break;
                     case 3:
-                        await Task.Run(() => GenerateGoodOptions(NewQuizQuestion.Id, Questions.Id));
-                        await Task.Run(() => GenerateBadOptions(NewQuizQuestion.Id, 2));
+                        await Task.Run(() => GenerateGoodOptions(movieData, NewQuizQuestion.Id, Questions.Id));
+                        await Task.Run(() => GenerateBadOptions(movieData, NewQuizQuestion.Id, 2));
                         break;
                     case 4:
-                        await Task.Run(() => GenerateGoodOptions(NewQuizQuestion.Id, Questions.Id));
-                        await Task.Run(() => GenerateBadOptions(NewQuizQuestion.Id, 3));
+                        await Task.Run(() => GenerateGoodOptions(movieData, NewQuizQuestion.Id, Questions.Id));
+                        await Task.Run(() => GenerateBadOptions(movieData,NewQuizQuestion.Id, 3));
                         break;
                 }
 
@@ -146,7 +184,7 @@ namespace WatchersWorld.Server.Controllers
 
 
         // Gerar opções falsas
-        public async Task<IActionResult> GenerateBadOptions(int IdQuestion, int type)
+        public async Task<IActionResult> GenerateBadOptions([FromBody] QuizMediaDto movieData, int IdQuestion, int type)
         {
             List<string> randomNames = null;
 
@@ -157,6 +195,7 @@ namespace WatchersWorld.Server.Controllers
                 case 1:
 
                     randomNames = await _context.QuizNames
+                                    .Where(x => !x.name.Contains(movieData.person) && !x.name.Contains(movieData.actor) && !x.name.Contains(movieData.real))
                                     .OrderBy(x => Guid.NewGuid()) // Shuffle as rows
                                     .Select(x => x.name) // Selecionar só 'name'
                                     .Take(5) // Apanhar as primeiras 5
@@ -165,6 +204,7 @@ namespace WatchersWorld.Server.Controllers
                 case 2:
 
                     randomNames = await _context.QuizCategorys
+                                    .Where(x => !x.name.Contains(movieData.category))
                                     .OrderBy(x => Guid.NewGuid()) 
                                     .Select(x => x.name) 
                                     .Take(5) 
@@ -173,6 +213,7 @@ namespace WatchersWorld.Server.Controllers
                 case 3:
      
                     randomNames = await _context.QuizYears
+                                    .Where(x => !x.name.Contains(movieData.year))
                                     .OrderBy(x => Guid.NewGuid()) 
                                     .Select(x => x.name) 
                                     .Take(5) 
@@ -200,57 +241,60 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
-
+        
         // Gerar opção verdadeira
-        public async Task<IActionResult> GenerateGoodOptions(int IdQuestion, int IdType)
+        public async Task<IActionResult> GenerateGoodOptions([FromBody] QuizMediaDto movieData, int IdQuestion, int IdType)
         {
+
+            string API;
 
             switch (IdType)
             {
                 case 0:
 
                     // "Este filme pertence a que categoria(s)?", type = 0
-                    // Usar a API para ir buscar a cena que quero
-                        // Apanhar do campo um categoria random
+                    API = movieData.category;
+
 
                     break;
                 case 1:
 
                     // "Atores que fizeram parte do elenco.", type = 1
-                    // Usar a API para ir buscar a cena que quero
-                        // Apanhar do campo um nome random
+                    API = movieData.actor;
+
 
                     break;
                 case 2:
 
                     // "Em que ano saiu o filme?", type = 2
-                    // Usar a API para ir buscar a cena que quero
-                        // Apanhar do campo um ano random
+                    API = movieData.year;
+
 
                     break;
                 case 3:
 
                     // "Nome de personagens deste filme.", type = 3
-                    // Usar a API para ir buscar a cena que quero
-                        // Apanhar do campo um nome random
+                    API = movieData.person;
 
                     break;
                 case 4:
 
                     // "Realizador(es) deste filme.", type = 4 
-                    // Usar a API para ir buscar a cena que quero
-                        // Apanhar do campo um nome random
+                    API = movieData.real;
 
                     break;
                 }
-            /*
+            
             var NewOption = new QuizOption { name = API.name, answer = true, selected = false, IdQuizQuestion = IdQuestion };
             _context.QuizOption.Add(NewOption);
             _context.SaveChanges();
-            */
+            
+
+        
             return Ok();
 
         }
+        
 
     // Remover Quiz
     public async Task<IActionResult> RemoverQuiz(int mediaId)
@@ -298,17 +342,19 @@ namespace WatchersWorld.Server.Controllers
         //Reset Quiz
         [Authorize]
         [HttpPost("/api/quiz/reset-quiz/{mediaId}")]
-        public async Task<IActionResult> ResetQuiz(int mediaId)
+        public async Task<IActionResult> ResetQuiz([FromBody] QuizMediaDto movieData, int mediaId)
         {
 
             await Task.Run(() => RemoverQuiz(mediaId));
 
-            await Task.Run(() => RequestQuiz(mediaId));
+            await Task.Run(() => RequestQuiz(movieData, mediaId));
 
             return Ok();
 
         }
 
     }
+
+
 
 }

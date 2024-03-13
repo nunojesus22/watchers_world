@@ -4,12 +4,9 @@
     "\\WatchersWorld",
     "\\WatchersWorld\\watchersworld.client\\src",
     "\\WatchersWorld\\watchersworld.client\\src\\app",
-    "\\WatchersWorld\\watchersworld.client\\src\\app\\quiz",
     "\\WatchersWorld\\watchersworld.client\\src\\app\\quiz\\quiz-api-service",
     "\\WatchersWorld\\WatchersWorld.Server",
-    "\\WatchersWorld\\WatchersWorld.Server\\DTOs",
-    "\\WatchersWorld\\WatchersWorld.Server\\Models\\Authentication",
-    "\\WatchersWorld\\WatchersWorld.Server\\Models\\Media"
+    "\\WatchersWorld\\WatchersWorld.Server\\Models\\Quiz"
   ],
   "SelectedNode": "\\WatchersWorld\\WatchersWorld.Server",
   "PreviewInSolutionExplorer": false

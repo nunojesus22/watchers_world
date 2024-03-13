@@ -7,9 +7,11 @@ namespace WatchersWorld.Server.DTOs.Quiz
     {
         public int Id { get; set; }
 
-        public bool Done { get; set; }
+        public string UserId { get; set; }
 
-        public int IdQuizQuestions { get; set; }
+        public int MediaId { get; set; }
+
+        public bool Done { get; set; }
 
     }
 }

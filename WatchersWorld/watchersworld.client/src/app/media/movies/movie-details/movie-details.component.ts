@@ -191,7 +191,10 @@ export class MovieDetailsComponent {
 
   openModal(): void { //Abrir Quiz
     this.dialog.open(QuizComponent, {
-      width: '80%'
+      width: '80%',
+      data: {
+        key: this.router.snapshot.paramMap.get('id'),
+      }
     });
   }
 
