@@ -21,7 +21,7 @@ builder.Services.AddScoped<IFollowersService, FollowersService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WatchersWorldServerContextConnection"));
 });
 
 builder.Services.AddControllers();
@@ -105,8 +105,8 @@ app.UseStaticFiles();
 app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
 
@@ -114,11 +114,12 @@ if (app.Environment.IsDevelopment())
     {
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<WatchersWorldServerContext>();
-        var userManager = services.GetRequiredService<UserManager<User>>();
+        context.Database.EnsureCreated();
+    var userManager = services.GetRequiredService<UserManager<User>>();
 
         DataSeeder.SeedData(context, userManager).Wait();
     }
-}
+//}
 
 app.UseHttpsRedirection();
 

@@ -1975,9 +1975,10 @@ D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\Watche
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.WatchersWorld.Server.props
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\staticwebassets.pack.json
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\scopedcss\bundle\WatchersWorld.Server.styles.css
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.csproj.CopyComplete
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\refint\WatchersWorld.Server.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.pdb
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.AspNetCore.Owin.dll
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\Watchers.9D81176E.Up2Date
