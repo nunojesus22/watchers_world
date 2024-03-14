@@ -1,8 +1,10 @@
-import { Component,ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { QuizApiService } from '../quiz/quiz-api-service/quiz-api.service';
+import { QuizMediaDto } from '../quiz/models/QuizMediaDto';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
+import { ReplaySubject, firstValueFrom, forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-quiz',
@@ -73,6 +75,14 @@ export class QuizComponent {
 
   lastOption: number = 1;
 
+  isLoggedIn: ReplaySubject<boolean> = new ReplaySubject(1);
+
+  ngOnInit(): void {
+
+    this.userLogged().then((logged) => { this.isLoggedIn.next(logged) });
+
+  }
+
   closeModal() {
     this.dialogRef.close();
   }
@@ -126,16 +136,26 @@ export class QuizComponent {
     console.log('Checkbox values:', this.option11, this.option21, this.option31);
   }
 
-  /*
-  ResetQuiz(): void {
-    this.service.resetQuiz(media , this.idmedia,).subscribe(async (result) => {
 
+  userLogged(): Promise<boolean> {
 
+    return firstValueFrom(this.service.isLogged());
 
+  }
 
+  
+  QuizRequest(): void {
+
+    this.service.constructQuizMediaDto(this.idmedia).subscribe((quizMediaDto: QuizMediaDto) => {
+      console.log('Constructed QuizMediaDto:', quizMediaDto);
+   
+    
+      this.service.requestQuiz(quizMediaDto, this.idmedia).subscribe((result: any) => {
+        
+        console.log('Quiz request result:', result);
+       
+      });
     });
   }
-  */
-
-
+  
 }

@@ -1,4 +1,4 @@
-<div class="modalcoisa">
+<div  *ngIf="isLoggedIn | async; else notLoggedInDiv" class="modalcoisa">
 
   <div class="text-center">
     <div class="row justify-content-end">
@@ -349,7 +349,7 @@
     <div class="text-center">
       <div class="row justify-content-end">
         <div class="col-2">
-          <button type="button" (click)="printCheckboxValues()" class="btn btn-primary botaosair">Acabar Quiz!</button>
+          <button type="button" (click)="QuizRequest()" class="btn btn-primary botaosair">Acabar Quiz!</button>
         </div>
       </div>
     </div>
@@ -375,3 +375,10 @@
   </div>
 
 </div>
+
+<ng-template #notLoggedInDiv>
+  <div class="modalcoisa" style="text-align:center">
+    <h4>Para poder fazer um quiz terá de fazer login!</h4>
+  </div>
+</ng-template>
+

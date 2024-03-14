@@ -13,6 +13,7 @@
     <Folder Include="src\app\guards\" />
     <Folder Include="src\app\interceptors\" />
     <Folder Include="src\app\profile\services\" />
+    <Folder Include="src\app\quiz\models\" />
     <Folder Include="src\assets\img\icons\" />
   </ItemGroup>
   <ItemGroup>

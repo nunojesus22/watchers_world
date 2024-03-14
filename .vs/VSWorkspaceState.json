@@ -2,12 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\WatchersWorld",
+    "\\WatchersWorld\\watchersworld.client",
     "\\WatchersWorld\\watchersworld.client\\src",
     "\\WatchersWorld\\watchersworld.client\\src\\app",
-    "\\WatchersWorld\\watchersworld.client\\src\\app\\quiz\\quiz-api-service",
-    "\\WatchersWorld\\WatchersWorld.Server",
-    "\\WatchersWorld\\WatchersWorld.Server\\Models\\Quiz"
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\media",
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\media\\api",
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\media\\api\\movie-api-service",
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\media\\movies",
+    "\\WatchersWorld\\watchersworld.client\\src\\app\\media\\movies\\movie-details"
   ],
-  "SelectedNode": "\\WatchersWorld\\WatchersWorld.Server",
+  "SelectedNode": "\\WatchersWorld\\WatchersWorld.sln",
   "PreviewInSolutionExplorer": false
 }

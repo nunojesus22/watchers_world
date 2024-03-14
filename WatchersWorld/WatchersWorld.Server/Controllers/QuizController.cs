@@ -12,7 +12,7 @@ using WatchersWorld.Server.Models.Quiz;
 namespace WatchersWorld.Server.Controllers
 {
     
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
 
@@ -78,51 +78,48 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
+        // Verificar as respostas
         [Authorize]
         [HttpPost("/api/quiz/Verify-quiz/{mediaId}")]
-        public async Task<IActionResult> VerifyQuiz([FromBody] QuizMediaDto movieData, int mediaId, [FromBody] List<QuizOptionDto> Option)
+        public async Task<IActionResult> VerifyQuiz([FromBody] QuizDataDto quizData, int mediaId)
         {
-
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized(); // Se utilizador nao estiver logado return erro
 
-            var questionGroup = await _context.QuizQuestionsGroup // Selecionar QuizGroup
-            .Where(q => q.UserId == userId && q.MediaId == mediaId)
-            .FirstOrDefaultAsync();
+            var questionGroup = await _context.QuizQuestionsGroup
+                .Where(q => q.UserId == userId && q.MediaId == mediaId)
+                .FirstOrDefaultAsync();
 
             var Question = await _context.QuizQuestion
-            .Where(q => q.IdQuizQuestionsGroup == questionGroup.Id)
-            .ToListAsync();
-
-
-            foreach (var QuizQuestion in Question) // Options --5
-            {
-
-                var OptionLocal = await _context.QuizOption
-                .Where(q => q.IdQuizQuestion == QuizQuestion.Id)
+                .Where(q => q.IdQuizQuestionsGroup == questionGroup.Id)
                 .ToListAsync();
+
+            foreach (var QuizQuestion in Question)
+            {
+                var OptionLocal = await _context.QuizOption
+                    .Where(q => q.IdQuizQuestion == QuizQuestion.Id)
+                    .ToListAsync();
 
                 foreach (var option in OptionLocal)
                 {
-                    var matchingOption = Option.FirstOrDefault(o => o.Id == option.Id);
-
+                    var matchingOption = quizData.Options.FirstOrDefault(o => o.Id == option.Id);
                     if (matchingOption != null)
                     {
                         option.selected = matchingOption.selected; // copiar selected do client para o servidor
                     }
                 }
-
             }
-            
+
             questionGroup.Done = true;
 
-            await Task.Run(() => RequestQuiz( movieData, mediaId));
+            await Task.Run(() => RequestQuiz(quizData.MovieData, mediaId));
 
             return Ok();
-
         }
 
         //Criar novo quiz
+        [Authorize]
+        [HttpPost("/api/quiz/Verify-quiz/coiso")]
         public async Task<IActionResult> CreateNewQuiz([FromBody] QuizMediaDto movieData, int mediaId, string userId)
         {
 
@@ -184,6 +181,8 @@ namespace WatchersWorld.Server.Controllers
 
 
         // Gerar opções falsas
+        [Authorize]
+        [HttpPost("/api/quiz/Verify-quiz/generateBad")]
         public async Task<IActionResult> GenerateBadOptions([FromBody] QuizMediaDto movieData, int IdQuestion, int type)
         {
             List<string> randomNames = null;
@@ -241,63 +240,54 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
-        
+
         // Gerar opção verdadeira
+        [Authorize]
+        [HttpPost("/api/quiz/Verify-quiz/GenerateGood")]
         public async Task<IActionResult> GenerateGoodOptions([FromBody] QuizMediaDto movieData, int IdQuestion, int IdType)
         {
 
-            string API;
+            string API = null;
 
             switch (IdType)
             {
                 case 0:
-
                     // "Este filme pertence a que categoria(s)?", type = 0
                     API = movieData.category;
-
-
                     break;
                 case 1:
-
                     // "Atores que fizeram parte do elenco.", type = 1
                     API = movieData.actor;
-
-
                     break;
                 case 2:
-
                     // "Em que ano saiu o filme?", type = 2
                     API = movieData.year;
-
-
                     break;
                 case 3:
-
                     // "Nome de personagens deste filme.", type = 3
                     API = movieData.person;
-
                     break;
                 case 4:
-
                     // "Realizador(es) deste filme.", type = 4 
                     API = movieData.real;
-
                     break;
                 }
             
-            var NewOption = new QuizOption { name = API.name, answer = true, selected = false, IdQuizQuestion = IdQuestion };
+            var NewOption = new QuizOption { name = API, answer = true, selected = false, IdQuizQuestion = IdQuestion };
             _context.QuizOption.Add(NewOption);
             _context.SaveChanges();
-            
 
-        
+            await _context.SaveChangesAsync();
+
             return Ok();
 
         }
-        
 
-    // Remover Quiz
-    public async Task<IActionResult> RemoverQuiz(int mediaId)
+
+        // Remover Quiz
+        [Authorize]
+        [HttpPost("/api/quiz/Verify-quiz/Remove")]
+        public async Task<IActionResult> RemoverQuiz(int mediaId)
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -353,8 +343,25 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
+        
+        // Saber se utilizador esta logged
+        [HttpPost("/api/quiz/isLogged/")]
+        public IActionResult isLogged()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Ok(0); ; 
+            }
+            else {
+                return Ok(1);
+            }
+
+        }
+        
+
     }
 
-
+    
 
 }
