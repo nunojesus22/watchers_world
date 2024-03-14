@@ -50,6 +50,7 @@ export class AuthenticationService {
   }
 
   register(model: Register) {
+    console.log(environment.appUrl);
     return this.http.post(`${environment.appUrl}/api/account/register`, model);
   }
 
