@@ -1,4 +1,5 @@
-﻿using Mailjet.Client.Resources;
+﻿using Castle.Core.Logging;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -19,7 +20,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace WatchersWorld_Teste
 {
     [Collection("Database collection")]
-    public class AccountControllerTests : IClassFixture<IntegrationTestsFixture>, IAsyncLifetime
+    public class AccountControllerTests : IClassFixture<IntegrationTestsFixture>
     {
         private readonly WatchersWorldServerContext _context;
         private readonly AccountController _accountController;

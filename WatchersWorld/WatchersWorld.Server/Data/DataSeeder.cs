@@ -15,56 +15,47 @@ namespace WatchersWorld.Server.Data
 
         private static async Task SeedTestUser(WatchersWorldServerContext context, UserManager<User> userManager)
         {
-            await CreateUserTest("userTest1", "test1@gmail.com", context, userManager);
-            await CreateUserTest("userTest2", "test2@gmail.com", context, userManager);
-            await CreateUserTest("userTest3", "test3@gmail.com", context, userManager);
-            await CreateUserTest("userTest4", "test4@gmail.com", context, userManager);
-            await CreateUserTest("userTest5", "test5@gmail.com", context, userManager);
-            await CreateUserTest("userTest6", "test6@gmail.com", context, userManager);
+            await AddUserWithProfileAsync(context, userManager, "usertest1@gmail.com", "UserTest1", "google", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, "usertest2@gmail.com", "UserTest2", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, "usertest3@gmail.com", "UserTest3", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, "usertest4@gmail.com", "UserTest4", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, "usertest5@gmail.com", "UserTest5", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, "usertest6@gmail.com", "UserTest6", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, "usertest6@gmail.com", "UserTest7", "Credentials", true, "Private");
         }
 
-        private static async Task<bool> CreateUserTest(string username, string email, WatchersWorldServerContext context, UserManager<User> userManager)
+        private static async Task AddUserWithProfileAsync(WatchersWorldServerContext context, UserManager<User> userManager, string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
         {
-            var userTest = new User
+            var user = new WatchersWorld.Server.Models.Authentication.User
             {
-                UserName = username,
                 Email = email,
-                EmailConfirmed = true,
-                Provider = "Credentials"
+                UserName = userName,
+                Provider = provider,
+                EmailConfirmed = emailConfirmed,
             };
 
-            var result = await userManager.CreateAsync(userTest, username);
-            if(result.Succeeded)
+            var result = await userManager.CreateAsync(user, user.UserName);
+            if (!result.Succeeded)
             {
-                var user = await userManager.FindByNameAsync(username);
-                var profileInfoTest1 = new ProfileInfo
-                {
-                    UserId = user.Id,
-                    UserName = userTest.UserName,
-                    Description = "Por definir!",
-                    Gender = 'M',
-                    BirthDate = DateTime.Now,
-                    ProfileStatus = "Public",
-                    ProfilePhoto = "assets/img/joao-pfp.png",
-                    CoverPhoto = "assets/img/pfp2.png",
-                    Following = 0,
-                    Followers = 0
-                };
-                
-                try
-                {
-                    context.ProfileInfo.Add(profileInfoTest1);
-                    await context.SaveChangesAsync();
-                } catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    return false;
-                }
-
-                return true;
+                throw new Exception("Failed to create user: " + result.Errors.FirstOrDefault()?.Description);
             }
 
-            return false;
+            var userProfile = new ProfileInfo
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Description = "Description for " + userName,
+                Gender = 'M',
+                BirthDate = DateTime.Now.AddYears(-20),
+                ProfileStatus = profileStatus,
+                ProfilePhoto = "assets/img/pfp2.png",
+                CoverPhoto = "assets/img/pfp2.png",
+                Following = 0,
+                Followers = 0
+            };
+
+            context.ProfileInfo.Add(userProfile);
+            await context.SaveChangesAsync();
         }
 
     }
