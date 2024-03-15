@@ -169,7 +169,7 @@ export class MovieApiServiceComponent {
 
   checkIfWatchedLater(mediaId: number, mediaType: string): Observable<any> {
     return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`);
-  }
+  } 
 
   markMediaToWatchLater(mediaId: number, type: string): Observable<any> {
     return this.http.post(`${environment.appUrl}/api/media/mark-to-watch-later`, { mediaId, type });

@@ -19,13 +19,13 @@ export class MovieDetailsComponent {
   type: string = "movie";
   isWatched: boolean = false; // Adicione esta linha
   isToWatchLater: boolean = false; // Adicione esta linha
-  currentUser: string = '';
-
+  currentUser: string | null = null;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');
     this.showAll = false;
+    this.getMovie(getParamId);
     this.getVideo(getParamId);
     this.getMovieCast(getParamId);
     this.getProviders(getParamId);
@@ -33,10 +33,17 @@ export class MovieDetailsComponent {
 
     this.checkIfWatchedLater(getParamId);
 
-    this.fetchComments(); // Carrega os comentários
 
-    //this.currentUser = this.auth.getCurrentUserName();
+    this.auth.user$.subscribe(user => {
+      this.currentUser = user ? user.username.toLowerCase() : null;
+      this.fetchComments(); // Carrega os comentários
+    });
+    console.log("user", this.currentUser);
 
+  }
+  canDeleteComment(commentUserName: string): boolean {
+    if (!this.currentUser) return false;
+    return this.currentUser.toLowerCase() === commentUserName.toLowerCase();
   }
 
 
@@ -67,8 +74,25 @@ export class MovieDetailsComponent {
     });
   }
 
+  getMovie(id: any) {
+    this.service.getMovieDetails(id).subscribe(async (result) => {
+      console.log(result, 'getmoviedetails#');
+      this.getMovieDetailResult = await result;
 
- 
+      // updatetags
+      this.title.setTitle(`${this.getMovieDetailResult.original_title} | ${this.getMovieDetailResult.tagline}`);
+      this.meta.updateTag({ name: 'title', content: this.getMovieDetailResult.original_title });
+      this.meta.updateTag({ name: 'description', content: this.getMovieDetailResult.overview });
+
+      // facebook
+      this.meta.updateTag({ property: 'og:type', content: "website" });
+      this.meta.updateTag({ property: 'og:url', content: `` });
+      this.meta.updateTag({ property: 'og:title', content: this.getMovieDetailResult.original_title });
+      this.meta.updateTag({ property: 'og:description', content: this.getMovieDetailResult.overview });
+      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getMovieDetailResult.backdrop_path}` });
+
+    });
+  }
 
   getVideo(id: any) {
     this.service.getMovieVideo(id).subscribe((result) => {

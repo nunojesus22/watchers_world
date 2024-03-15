@@ -124,17 +124,21 @@
                   <strong>{{ comment.userName }}</strong> <span class="text-muted">em {{ comment.createdAt | date }}</span>
                 </div>
               </div>
-              <button *ngIf="currentUser === comment.userName" class="btn btn-danger btn-sm" (click)="deleteComment(comment.id)">Excluir</button>
+              <!-- Chame o método canDeleteComment para verificar se o botão deve ser exibido -->
+              <button *ngIf="canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" style="background-color:red">
+                Apagar Comentário
+              </button>
+
 
               <p class="comment-text mt-2">{{ comment.text }}</p>
             </div>
-            <div *ngIf="comments.length === 0" class="text-muted">
-              Ainda não há comentários. Seja o primeiro a comentar!
+              <div *ngIf="comments.length === 0" class="text-muted">
+                Ainda não há comentários. Seja o primeiro a comentar!
+              </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

@@ -17,5 +17,6 @@ namespace WatchersWorld.Server.Models.Media
 
         public string Type { get; set; }
 
+        public ICollection<Comment> Comments { get; set; }
     }
 }
