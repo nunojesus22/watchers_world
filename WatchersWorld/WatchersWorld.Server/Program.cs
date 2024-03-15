@@ -115,8 +115,12 @@ if (app.Environment.IsDevelopment())
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<WatchersWorldServerContext>();
         var userManager = services.GetRequiredService<UserManager<User>>();
+        if (!context.ProfileInfo.Any())
+        {
+            DataSeeder.SeedData(context, userManager).Wait();
+        }
 
-        DataSeeder.SeedData(context, userManager).Wait();
+        
     }
 }
 

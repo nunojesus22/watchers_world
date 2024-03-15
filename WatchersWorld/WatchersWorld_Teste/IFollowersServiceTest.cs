@@ -11,7 +11,7 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld_Teste
 {
-    public class IFollowersServiceTest : IClassFixture<IntegrationTestsFixture>, IAsyncLifetime
+    public class IFollowersServiceTest : IClassFixture<IntegrationTestsFixture>
     {
         private readonly WatchersWorldServerContext _context;
         private readonly FollowersService _service;
@@ -24,16 +24,6 @@ namespace WatchersWorld_Teste
             _context = fixture.Context;
             _userManager = fixture.UserManager;
             _service = new FollowersService(_context);
-        }
-
-        public async Task InitializeAsync()
-        {
-            await _fixture.SeedDatabaseForFollowersTestAsync();
-        }
-
-        public Task DisposeAsync()
-        {
-            return Task.CompletedTask;
         }
 
         [Fact]
@@ -59,42 +49,43 @@ namespace WatchersWorld_Teste
         }
 
         [Fact]
-        public async Task Follow_FollowSomeoneThatNotFollow_ShouldReturnTrue()
+        public async Task Follow_FollowSomeoneThatIsPending_ShouldReturnFalse()
+        {
+            var user3 = await _userManager.FindByNameAsync("UserTest3");
+
+            var user6 = await _userManager.FindByNameAsync("UserTest6");
+
+            var result = await _service.Follow(user3!.Id, user6!.Id);
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task Follow_FollowSomeoneThatNotFollowAndThatHavePublicProfile_ShouldReturnTrueAndShouldNotBePending()
         {
             var user1 = await _userManager.FindByNameAsync("UserTest1");
 
             var user4 = await _userManager.FindByNameAsync("UserTest4");
 
             var result = await _service.Follow(user1!.Id, user4!.Id);
-
             Assert.True(result);
+
+            var isPending = await _service.FollowIsPending(user1!.Id, user4.Id);
+            Assert.False(isPending);
         }
 
-        /* [Fact] 
-        public async Task Follow_AfterFollowSomeoneThatNotFollowUpdateFollowingNumber_ShouldBeTrue()
+        [Fact]
+        public async Task Follow_FollowSomeoneThatNotFollowAndHavePrivateProfile_ShouldReturnTrueAndMustBePending()
         {
             var user1 = await _userManager.FindByNameAsync("UserTest1");
-            var user1Id = user1!.Id;
 
-            var user4 = await _userManager.FindByNameAsync("UserTest4");
-            var user4Id = user4!.Id;
+            var user5 = await _userManager.FindByNameAsync("UserTest5");
 
-            var followersNumberOfUser1NBefore = _context.ProfileInfo.Where(p => p.UserId == user1Id)
-                                                    .Select(p => p.Following)
-                                                    .SingleOrDefault();
-
-            Assert.Equal(2, followersNumberOfUser1NBefore);
-
-            var result = await _service.Follow(user1Id, user4Id);
+            var result = await _service.Follow(user1!.Id, user5!.Id);
             Assert.True(result);
 
-            var followersNumberOfUser1After = _context.ProfileInfo.Where(p => p.UserId == user1Id)
-                                                    .Select(p => p.Following)
-                                                    .SingleOrDefault();
-
-            Assert.Equal(3, followersNumberOfUser1After);
-
-        } */
+            var isPending = await _service.FollowIsPending(user1!.Id, user5.Id);
+            Assert.True(isPending);
+        }
 
         [Fact]
         public async Task Unfollow_UnfollowYourself_ShouldReturnFalse()
@@ -109,13 +100,25 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task Unfollow_UnfollowSomeoneThatNotFollow_ShouldReturnFalse()
         {
-            var user1 = await _userManager.FindByNameAsync("UserTest1");
+            var user3 = await _userManager.FindByNameAsync("UserTest3");
+
+            var user4 = await _userManager.FindByNameAsync("UserTest4");
+
+            var result = await _service.Unfollow(user3!.Id, user4!.Id);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task Unfollow_UnfollowSomeoneThatFollowIsPending_ShouldReturnTrue()
+        {
+            var user3= await _userManager.FindByNameAsync("UserTest3");
 
             var user6 = await _userManager.FindByNameAsync("UserTest6");
 
-            var result = await _service.Unfollow(user1!.Id, user6!.Id);
+            var result = await _service.Unfollow(user3!.Id, user6!.Id);
 
-            Assert.False(result);
+            Assert.True(result);
         }
 
         [Fact]
@@ -182,5 +185,51 @@ namespace WatchersWorld_Teste
 
             Assert.True(alreadyFollow);
         }
+
+        [Fact]
+        public async Task AcceptFollowSend_AcceptFollowSendWhenIsPending_ShouldReturnTrue()
+        {
+            var user6 = await _userManager.FindByNameAsync("UserTest6");
+            var user1 = await _userManager.FindByNameAsync("UserTest3");
+
+            var result = await _service.AcceptFollowSend(user6!.Id, user1!.Id);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task RejectFollowSend_RejectFollowSendWhenIsPending_ShouldReturnTrue()
+        {
+            var user6 = await _userManager.FindByNameAsync("UserTest6");
+            var user4 = await _userManager.FindByNameAsync("UserTest4");
+
+            var result = await _service.AcceptFollowSend(user6!.Id, user4!.Id);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public async Task GetPendingsSend_GetPendingsSendReturnsListWithCorrectLenghtAndCorrectId_ShouldBeTrue()
+        {
+            var user7 = await _userManager.FindByNameAsync("UserTest7");
+            var user3 = await _userManager.FindByNameAsync("UserTest3");
+            var user4 = await _userManager.FindByNameAsync("UserTest4");
+
+            var result = await _service.GetPendingsSend(user7!.Id);
+
+            var listContainsUser3 = result.Contains(user3!.Id);
+            var listContainsUser4 = result.Contains(user4!.Id);
+
+            Assert.True(listContainsUser3);
+            Assert.True(listContainsUser4);
+            Assert.Equal(4, result.Count);
+        }
+        /*
+
+        
+
+        
+
+        
+
+        */
     }
 }
