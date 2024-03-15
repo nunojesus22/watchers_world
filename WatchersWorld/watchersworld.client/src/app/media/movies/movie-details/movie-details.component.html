@@ -111,27 +111,46 @@
             <!-- Lista de Comentários -->
 
 
-          <div class="comment-list">
-            <div *ngFor="let comment of comments" class="comment mb-4 p-3 bg-light rounded">
-              <div class="d-flex align-items-center">
-                <!-- Foto do perfil do usuário -->
-                <img *ngIf="comment.profilePhoto; else defaultProfile" [src]="comment.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
-                <ng-template #defaultProfile>
-                  <img src="../assets/img/default_user.jpg" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
-                </ng-template>
-                <!-- Nome do usuário e data do comentário -->
-                <div class="ml-3">
-                  <strong>{{ comment.userName }}</strong> <span class="text-muted">em {{ comment.createdAt | date }}</span>
+            <div class="comment-list">
+              <div *ngFor="let comment of comments" class="comment mb-4 p-3 bg-light rounded">
+                <div class="d-flex align-items-center">
+                  <!-- Foto do perfil do usuário -->
+                  <img *ngIf="comment.profilePhoto; else defaultProfile" [src]="comment.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
+                  <ng-template #defaultProfile>
+                    <img src="../assets/img/default_user.jpg" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
+                  </ng-template>
+                  <!-- Nome do usuário e data do comentário -->
+                  <div class="ml-3">
+                    <strong>{{ comment.userName }}</strong> <span class="text-muted">em {{ comment.createdAt | date }}</span>
+                  </div>
+
+                  <!-- Botões de curtir e descurtir -->
+                  <div class="like-dislike-buttons">
+                    <button *ngIf="!comment.hasLiked && !comment.hasDisliked" (click)="toggleLikeComment(comment.id)" class="btn">
+                      Curtir {{comment.likesCount}}
+                    </button>
+                    <button *ngIf="comment.hasLiked" (click)="toggleLikeComment(comment.id)" class="btn active">
+                      Remover Curtir {{comment.likesCount}}
+                    </button>
+
+                    <button *ngIf="!comment.hasDisliked && !comment.hasLiked" (click)="toggleDislikeComment(comment.id)" class="btn">
+                      Descurtir {{comment.dislikesCount}}
+                    </button>
+                    <button *ngIf="comment.hasDisliked" (click)="toggleDislikeComment(comment.id)" class="btn active">
+                      Remover Descurtir {{comment.dislikesCount}}
+                    </button>
+                  </div>
+                  <!-- Opcionalmente, mostre a contagem de likes e dislikes se disponível -->
+                  <div>Likes: {{ comment.likesCount }}, Dislikes: {{ comment.dislikesCount }}</div>
                 </div>
+                <!-- Chame o método canDeleteComment para verificar se o botão deve ser exibido -->
+                <button *ngIf="canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" style="background-color:red">
+                  Apagar Comentário
+                </button>
+
+
+                <p class="comment-text mt-2">{{ comment.text }}</p>
               </div>
-              <!-- Chame o método canDeleteComment para verificar se o botão deve ser exibido -->
-              <button *ngIf="canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" style="background-color:red">
-                Apagar Comentário
-              </button>
-
-
-              <p class="comment-text mt-2">{{ comment.text }}</p>
-            </div>
               <div *ngIf="comments.length === 0" class="text-muted">
                 Ainda não há comentários. Seja o primeiro a comentar!
               </div>

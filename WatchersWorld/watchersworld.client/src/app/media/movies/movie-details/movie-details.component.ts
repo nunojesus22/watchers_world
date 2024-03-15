@@ -258,5 +258,100 @@ export class MovieDetailsComponent {
       }
     });
   }
+
+
+  likeComment(commentId: number): void {
+    this.service.likeComment(commentId).subscribe({
+      next: () => {
+        // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
+        this.fetchComments();
+      },
+      error: (error) => console.error('Erro ao curtir o comentário', error)
+    });
+  }
+
+
+  dislikeComment(commentId: number): void {
+    this.service.dislikeComment(commentId).subscribe({
+      next: () => {
+        // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
+        this.fetchComments();
+      },
+      error: (error) => console.error('Erro ao curtir o comentário', error)
+    });
+  }
+
+  removeLike(commentId: number): void {
+    this.service.removeLikeFromComment(commentId).subscribe(() => {
+      // Atualize a interface do usuário aqui
+      const comment = this.comments.find(c => c.id === commentId);
+      if (comment) {
+        comment.likesCount--;
+        comment.hasLiked = false;
+      }
+    });
+  }
+
+  removeDislike(commentId: number): void {
+    this.service.removeDislikeFromComment(commentId).subscribe(() => {
+      // Atualize a interface do usuário aqui
+      const comment = this.comments.find(c => c.id === commentId);
+      if (comment) {
+        comment.dislikesCount--;
+        comment.hasDisliked = false;
+      }
+    });
+  }
+
+  toggleLikeComment(commentId: number): void {
+    const comment = this.comments.find(c => c.id === commentId);
+    if (comment) {
+      if (comment.hasLiked) {
+        // O usuário já curtiu este comentário, então vamos remover o like
+        this.service.removeLikeFromComment(commentId).subscribe(() => {
+          comment.hasLiked = false;
+          comment.likesCount--;
+        });
+      } else {
+        // O usuário ainda não curtiu este comentário, então vamos adicionar o like
+        this.service.likeComment(commentId).subscribe(() => {
+          comment.hasLiked = true;
+          comment.likesCount++;
+          // Se já deu dislike antes, remover essa ação
+          if (comment.hasDisliked) {
+            comment.hasDisliked = false;
+            comment.dislikesCount--;
+          }
+        });
+      }
+    }
+  }
+
+  toggleDislikeComment(commentId: number): void {
+    const comment = this.comments.find(c => c.id === commentId);
+    if (comment) {
+      if (comment.hasDisliked) {
+        // O usuário já descurtiu este comentário, então vamos remover o dislike
+        this.service.removeDislikeFromComment(commentId).subscribe(() => {
+          comment.hasDisliked = false;
+          comment.dislikesCount--;
+        });
+      } else {
+        // O usuário ainda não descurtiu este comentário, então vamos adicionar o dislike
+        this.service.dislikeComment(commentId).subscribe(() => {
+          comment.hasDisliked = true;
+          comment.dislikesCount++;
+          // Se já deu like antes, remover essa ação
+          if (comment.hasLiked) {
+            comment.hasLiked = false;
+            comment.likesCount--;
+          }
+        });
+      }
+    }
+  }
+
+
+
 }
 

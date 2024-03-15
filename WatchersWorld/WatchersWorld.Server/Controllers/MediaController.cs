@@ -9,6 +9,7 @@ using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Media;
+using static WatchersWorld.Server.Controllers.MediaController;
 
 namespace WatchersWorld.Server.Controllers
 {
@@ -217,22 +218,6 @@ namespace WatchersWorld.Server.Controllers
             return Ok(watchLaterMedia);
         }
 
-        public class CommentDto
-        {
-            public int Id { get; set; }
-            public string UserName { get; set; }
-            public int MediaId { get; set; }
-            public string Text { get; set; }
-            public DateTime CreatedAt { get; set; }
-            public string ProfilePhoto { get; set; } // Inclui a URL da foto do perfil
-
-        }
-
-        public class CreateCommentDto
-        {
-            public int MediaId { get; set; }
-            public string Text { get; set; }
-        }
         [HttpPost("/api/media/add-comment")]
         public IActionResult AddComment([FromBody] CreateCommentDto request)
         {
@@ -252,7 +237,6 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Comentário adicionado com sucesso." });
         }
-
         [HttpGet("/api/media/get-comments/{mediaId}")]
         public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
         {
@@ -269,7 +253,10 @@ namespace WatchersWorld.Server.Controllers
                     MediaId = cp.comment.MediaId,
                     Text = cp.comment.Text,
                     CreatedAt = cp.comment.CreatedAt,
-                    ProfilePhoto = cp.profile.ProfilePhoto // Inclui a foto do perfil
+                    ProfilePhoto = cp.profile.ProfilePhoto, // Inclui a foto do perfil
+                    LikesCount = cp.comment.Likes.Count, // Contagem d0e likes
+                    DislikesCount = cp.comment.Dislikes.Count // Contagem de dislikes
+
                 })
                 .ToList();
 
@@ -301,7 +288,99 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        [Authorize]
+        [HttpPost("/api/media/like-comment/{commentId}")]
+        public IActionResult LikeComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var existingLike = _context.CommentLikes.FirstOrDefault(cl => cl.CommentId == commentId && cl.UserId == userId);
+            if (existingLike != null)
+            {
+                return BadRequest(new { message = "Você já curtiu este comentário." });
+            }
+
+            var like = new CommentLike
+            {
+                CommentId = commentId,
+                UserId = userId
+            };
+
+            _context.CommentLikes.Add(like);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário curtido com sucesso." });
+        }
+        [Authorize]
+        [HttpPost("/api/media/dislike-comment/{commentId}")]
+        public IActionResult DisLikeComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var existingDisLike = _context.CommentDislikes.FirstOrDefault(cl => cl.CommentId == commentId && cl.UserId == userId);
+            if (existingDisLike != null)
+            {
+                return BadRequest(new { message = "Você já deu dislike este comentário." });
+            }
+
+            var dislike = new CommentDislike
+            {
+                CommentId = commentId,
+                UserId = userId
+            };
+
+            _context.CommentDislikes.Add(dislike);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário curtido com sucesso." });
+        }
+
+        [Authorize]
+        [HttpDelete("/api/media/remove-like/{commentId}")]
+        public IActionResult RemoveLikeFromComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var like = _context.CommentLikes.FirstOrDefault(cl => cl.CommentId == commentId && cl.UserId == userId);
+            if (like == null)
+            {
+                return NotFound(new { message = "Like não encontrado." });
+            }
+
+            _context.CommentLikes.Remove(like);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Like removido com sucesso." });
+        }
+
+        [Authorize]
+        [HttpDelete("/api/media/remove-dislike/{commentId}")]
+        public IActionResult RemoveDislikeFromComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var dislike = _context.CommentDislikes.FirstOrDefault(cd => cd.CommentId == commentId && cd.UserId == userId);
+            if (dislike == null)
+            {
+                return NotFound(new { message = "Dislike não encontrado." });
+            }
+
+            _context.CommentDislikes.Remove(dislike);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Dislike removido com sucesso." });
+        }
+
+
+
+
     }
+
+
 
 
 }

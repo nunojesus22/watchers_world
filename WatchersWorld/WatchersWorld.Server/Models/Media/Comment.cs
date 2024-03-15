@@ -18,6 +18,9 @@ namespace WatchersWorld.Server.Models.Media
         // Esta é a parte importante: garantir que a chave estrangeira esteja configurada corretamente
         [ForeignKey("IdTableMedia")]
         public MediaInfoModel Media { get; set; }
+
+        public ICollection<CommentLike> Likes { get; set; }
+        public ICollection<CommentDislike> Dislikes { get; set; }
     }
 
 }

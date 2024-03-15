@@ -202,4 +202,23 @@ export class MovieApiServiceComponent {
     return this.http.delete(`${environment.appUrl}/api/media/delete-comment/${commentId}`);
   }
 
+
+  likeComment(commentId: number): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/like-comment/${commentId}`, {});
+  }
+
+  dislikeComment(commentId: number): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/dislike-comment/${commentId}`, {});
+  }
+
+
+  removeLikeFromComment(commentId: number): Observable<any> {
+    return this.http.delete(`${environment.appUrl}/api/media/remove-like/${commentId}`);
+  }
+
+  removeDislikeFromComment(commentId: number): Observable<any> {
+    return this.http.delete(`${environment.appUrl}/api/media/remove-dislike/${commentId}`);
+  }
+
+
 }
