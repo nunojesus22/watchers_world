@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240315113759_WatchersWorld")]
+    [Migration("20240315221501_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -271,11 +271,14 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Followers", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Followers.Followers", b =>
                 {
                     b.Property<Guid>("FollowersId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
 
                     b.Property<string>("WhosBeingFollowed")
                         .HasColumnType("nvarchar(max)");

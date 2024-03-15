@@ -46,7 +46,7 @@ namespace WatchersWorld_Teste
 
         public async Task InitializeAsync()
         {
-            await _fixture.SeedDatabaseForAccountTestAsync();
+            // await _fixture.SeedDatabaseForAccountTestAsync();
         }
 
         public Task DisposeAsync()

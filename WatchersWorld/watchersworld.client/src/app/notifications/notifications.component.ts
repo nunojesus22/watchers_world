@@ -4,6 +4,7 @@ import { ProfileService } from '../profile/services/profile.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { Profile } from '../profile/models/profile';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FollowerProfile } from '../profile/models/follower-profile';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class NotificationsComponent {
   loggedUserName: string | null = null;
   selectedUserForBan: string | null = null;
   banDuration: number | undefined;
+  pendingFollowRequests: FollowerProfile[] = [];
 
   constructor(private profileService: ProfileService, public authService: AuthenticationService, private route: ActivatedRoute) { }
 
@@ -28,11 +30,8 @@ export class NotificationsComponent {
         this.currentUsername = params['username'];
       }
     });
-    this.getUserProfiles();
-
     this.loggedUserName = this.authService.getLoggedInUserName();
-    // Fetch user profiles
-    this.getUserProfiles();
+    this.getPendingFollowRequests();
   }
 
   ngOnDestroy() {
@@ -40,16 +39,51 @@ export class NotificationsComponent {
     this.unsubscribed$.complete();
   }
 
-  getUserProfiles() {
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        // Filter out the logged-in user from the profiles
-        this.usersProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
-      },
-      (error) => {
-        console.error("Error while fetching users' profiles:", error);
-      }
-    );
+  getPendingFollowRequests() {
+    if (this.loggedUserName) {
+      this.profileService.getPendingFollowRequests(this.loggedUserName)
+        .pipe(takeUntil(this.unsubscribed$))
+        .subscribe({
+          next: (profiles: FollowerProfile[]) => {
+            this.pendingFollowRequests = profiles;
+          },
+          error: (error) => {
+            console.error('Error fetching pending follow requests:', error);
+          }
+        });
+    }
+  }
+
+  acceptFollowRequest(usernameWhoSend: string) {
+    if (this.loggedUserName) {
+      this.profileService.acceptFollowRequest(this.loggedUserName, usernameWhoSend)
+        .subscribe({
+          next: () => {
+            // Remove the accepted user from the pendingFollowRequests list
+            this.pendingFollowRequests = this.pendingFollowRequests.filter(profile => profile.username !== usernameWhoSend);
+            // Additional UI feedback or actions can be done here
+          },
+          error: (error) => {
+            console.error('Error accepting follow request:', error);
+          }
+        });
+    }
+  }
+
+  rejectFollowRequest(usernameWhoSend: string) {
+    if (this.loggedUserName) {
+      this.profileService.rejectFollowRequest(this.loggedUserName, usernameWhoSend)
+        .subscribe({
+          next: () => {
+            // Remove the rejected user from the pendingFollowRequests list
+            this.pendingFollowRequests = this.pendingFollowRequests.filter(profile => profile.username !== usernameWhoSend);
+            // Additional UI feedback or actions can be done here
+          },
+          error: (error) => {
+            console.error('Error rejecting follow request:', error);
+          }
+        });
+    }
   }
 
 

@@ -59,7 +59,8 @@ namespace WatchersWorld.Server.Migrations
                 {
                     FollowersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WhosFollowing = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WhosBeingFollowed = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    WhosBeingFollowed = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

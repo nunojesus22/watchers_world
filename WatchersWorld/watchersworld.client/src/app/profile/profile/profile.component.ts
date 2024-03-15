@@ -41,7 +41,10 @@ export class ProfileComponent implements OnInit {
   followersCount: number | undefined;
   followingCount: number | undefined;
 
-  canViewFollowers: boolean = false;
+  canViewData: boolean = false;
+  isFollowRequestApproved: boolean = false;
+  isProfilePublic: string | undefined;
+  followRequestSent: boolean = false;
 
   showFollowers: boolean = true;
   showFollowing: boolean = true;
@@ -98,12 +101,12 @@ export class ProfileComponent implements OnInit {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
 
-        this.getUserProfileInfo(this.currentUsername).then(() => {
-          // Aqui você tem certeza de que as informações do perfil foram carregadas
-          if (this.loggedUserProfile) {
-            this.canViewFollowers = this.loggedUserProfile.profileStatus === 'Public' || this.isFollowing;
-          }
-        });
+        //this.getUserProfileInfo(this.currentUsername).then(() => {
+        //  // Aqui você tem certeza de que as informações do perfil foram carregadas
+        //  if (this.loggedUserProfile) {
+        //    this.canViewFollowers = this.loggedUserProfile.profileStatus === 'Public' || this.isFollowing;
+        //  }
+        //});
       }
 
       this.authService.user$.subscribe(user => {
@@ -155,21 +158,33 @@ export class ProfileComponent implements OnInit {
     this.unsubscribed$.complete();
   }
 
-  // A função getUserProfileInfo deve retornar uma Promise agora
   getUserProfileInfo(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.profileService.getUserData(username).subscribe({
         next: (userData: Profile) => {
-          if (this.loggedUserName !== null) {
-            this.followersCount = userData.followers;
-            this.followingCount = userData.following;
-            this.canViewFollowers = userData.profileStatus === 'Public' || this.isFollowing;
+          this.isProfilePublic = userData.profileStatus;
+          this.followersCount = userData.followers;
+          this.followingCount = userData.following;
+
+          if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
+            this.profileService.alreadyFollows(this.loggedUserName, username)
+              .subscribe(isFollowing => {
+                this.canViewData = isFollowing; 
+                resolve();
+              }, error => {
+                console.error('Erro ao verificar o status de seguimento', error);
+                this.canViewData = false;
+                reject(error);
+              });
+          } else {
+           
+            this.canViewData = true;
+            resolve();
           }
-          resolve();
         },
         error: (error) => {
           console.error("Error while fetching user data:", error);
-          reject();
+          reject(error);
         }
       });
     });
@@ -242,22 +257,30 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+
+
+  requestToFollow(): void {
+    this.followRequestSent = true;
+  }
+
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
-      this.profileService.followUser(this.loggedUserName, this.currentUsername)
-        .subscribe({
-          next: (response) => {
-            this.isFollowing = true;
-            console.log(this.isFollowing);
-            // this.getFollowers(this.currentUsername);
+      this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
+        next: (response) => {
+          if (this.isProfilePublic === 'Private') {
+            console.log('Pedido enviado. Aguardando aprovação.');
+            this.followRequestSent = true;
+          } else {
             console.log('Usuário seguido com sucesso!', response.message);
-          },
-          error: (error) => {
-            console.error('Erro ao seguir usuário', error);
+            this.isFollowing = true;
           }
-        });
+        },
+        error: (error) => {
+          console.error('Erro ao enviar pedido para seguir', error);
+        }
+      });
     } else {
-      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
+      console.error('Nome de usuário atual ou nome de usuário logado está indefinido.');
     }
   }
 

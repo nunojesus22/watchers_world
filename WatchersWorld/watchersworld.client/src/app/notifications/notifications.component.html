@@ -1,17 +1,19 @@
 <div class="title-panel" *ngIf="loggedUserName === currentUsername">
     <h3 class="title-center">Notificações</h3>
     <hr class="divider">
+    <div *ngIf= pendingFollowRequests.length >
     <div class="user-list">
       <h4>Tem um ou mais pedidos para seguir:</h4>
-      <div class="user" *ngFor="let userProfile of usersProfiles">
+      <div *ngFor="let request of pendingFollowRequests" class="user">
         <div class="user-info">
-          <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-          <p class="name">{{ userProfile.userName }}</p>
+          <img class="avatar" [src]="request.profilePhoto" [routerLink]="['/profile', request.username]">
+          <p class="name">{{ request.username }}</p>
           <div class="actions">
-            <button class="accept-follow-request">Aceitar</button>
-            <button class="recuse-follow-request">Recusar</button>
+            <button (click)="acceptFollowRequest(request.username)" class="accept-follow-request">Aceitar</button>
+            <button (click)="rejectFollowRequest(request.username)" class="recuse-follow-request">Recusar</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>

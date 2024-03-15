@@ -21,13 +21,37 @@
               </a>
             </div>
             <div class="action-icons">
-              <button *ngIf="!isFollowing && user.username !== currentUsername" class="follow-button" (click)="followUser()">
+              <!-- Se o perfil for público, mostra 'Seguir' e permite seguir diretamente -->
+              <button *ngIf="!isFollowing && !followRequestSent && user.username !== currentUsername && isProfilePublic === 'Public'"
+                      (click)="followUser()"
+                      class="follow-button">
                 Seguir
               </button>
-              <button *ngIf="isFollowing && user.username !== currentUsername" class="unfollow-button" (click)="unfollowUser()">
+
+              <!-- Se o perfil for privado e não houver pedido enviado, mostra 'Pedir para Seguir' -->
+              <button *ngIf="!isFollowing && !followRequestSent && user.username !== currentUsername && isProfilePublic === 'Private'"
+                      (click)="followUser()"
+                      class="follow-button">
+                Pedir para Seguir
+              </button>
+
+              <!-- Se um pedido de seguimento tiver sido enviado, mostra 'Pedido Enviado' e desabilita o botão -->
+              <button *ngIf="!isFollowing && followRequestSent && user.username !== currentUsername"
+                      disabled
+                      class="follow-button">
+                Pedido Enviado
+              </button>
+
+              <!-- 'Deixar de Seguir' se o usuário estiver seguindo -->
+              <button *ngIf="isFollowing && user.username !== currentUsername"
+                      (click)="unfollowUser()"
+                      class="unfollow-button">
                 Deixar de Seguir
               </button>
-              <button *ngIf="user.username !== currentUsername" class="send-message-button">
+
+              <!-- Botão para enviar mensagem -->
+              <button *ngIf="user.username !== currentUsername"
+                      class="send-message-button">
                 Enviar mensagem
               </button>
             </div>
@@ -52,135 +76,135 @@
             </form>
             <br />
           </div>
-          <!-- Lista de seguidores -->
-          <!-- Envolve as listas de seguidores e seguindo em um container flex -->
-          <div class="followers-container" *ngIf="showFollowers">
+          <div *ngIf="canViewData">
             <!-- Lista de seguidores -->
-            <div *ngIf="followers.length > 0; else noFollowers">
-              <div class="search-followers-container">
-                <p class="follows-text">Seguidores: {{ followers.length }}</p>
-                <button class="expand-followers-button" (click)="toggleFollowersScroll()">
-                  {{ expandedFollowers ? 'Fechar' : 'Expandir' }}
-                </button>
+            <!-- Envolve as listas de seguidores e seguindo em um container flex -->
+            <div class="followers-container" *ngIf="showFollowers">
+              <!-- Lista de seguidores -->
+              <div *ngIf="followers.length > 0; else noFollowers">
+                <div class="search-followers-container">
+                  <p class="follows-text">Seguidores: {{ followers.length }}</p>
+                  <button class="expand-followers-button" (click)="toggleFollowersScroll()">
+                    {{ expandedFollowers ? 'Fechar' : 'Expandir' }}
+                  </button>
+                </div>
+                <br />
+                <ul class="no-list-style">
+                  <li *ngFor="let follower of showAllFollowers ? followers : followers.slice(0, 6)">
+                    <div>
+                      <img [src]="follower.profilePhoto" [routerLink]="['/profile', follower.username]" class="user-photo">
+                      <p class="user-name">{{ follower.username }}</p>
+                    </div>
+                  </li>
+                </ul>
               </div>
-              <br />
-              <ul class="no-list-style">
-                <li *ngFor="let follower of showAllFollowers ? followers : followers.slice(0, 6)">
-                  <div>
-                    <img [src]="follower.profilePhoto" [routerLink]="['/profile', follower.username]" class="user-photo">
-                    <p class="user-name">{{ follower.username }}</p>
+              <ng-template #noFollowers><p>Não tem seguidores no momento.</p></ng-template>
+            </div>
+            <br />
+            <div class="following-container" *ngIf="showFollowing">
+              <!-- Lista de seguindo -->
+              <div *ngIf="following.length > 0; else noFollowing">
+                <div class="following-count-container">
+                  <p class="follows-text">A seguir: {{ following.length }}</p>
+                  <button class="expand-following-button" (click)="toggleFollowingScroll()">
+                    {{ expandedFollowing ? 'Fechar' : 'Expandir' }}
+                  </button>
+                </div>
+                <br />
+                <ul class="no-list-style">
+                  <li *ngFor="let follow of showAllFollowing ? following : following.slice(0, 6)">
+                    <div>
+                      <img [src]="follow.profilePhoto" [routerLink]="['/profile', follow.username]" class="user-photo">
+                      <p class="user-name">{{ follow.username }}</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <ng-template #noFollowing><p>Não está a seguir ninguém no momento.</p></ng-template>
+            </div>
+
+            <div class="user-media">
+
+              <div class="watched-movies-section" *ngIf="showMoviesWatched">
+                <div class="movies-watched-section-header">
+                  <div class="movies-watched-title">
+                    <h3>Filmes visualizados:</h3>
                   </div>
-                </li>
-              </ul>
-            </div>
-            <ng-template #noFollowers><p>Não tem seguidores no momento.</p></ng-template>
-          </div>
-          <br />
-          <div class="following-container" *ngIf="showFollowing">
-            <!-- Lista de seguindo -->
-            <div *ngIf="following.length > 0; else noFollowing">
-              <div class="following-count-container">
-                <p class="follows-text">A seguir: {{ following.length }}</p>
-                <button class="expand-following-button" (click)="toggleFollowingScroll()">
-                  {{ expandedFollowing ? 'Fechar' : 'Expandir' }}
-                </button>
+                  <button *ngIf="watchedMovies.length > 0" (click)="toggleWatchedMoviesScroll(); $event.preventDefault()" class="expand-watched-movies-button">
+                    {{ expandedMoviesWatchList ? 'Fechar' : 'Expandir' }}
+                  </button>
+                </div>
+                <div *ngIf="watchedMovies.length > 0; else noWatchedMoviesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let movie of expandedMoviesWatchList ? watchedMovies : watchedMovies.slice(0, 6)">
+                    <img *ngIf="movie.details" src="https://image.tmdb.org/t/p/original/{{ movie.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
+                  </ng-container>
+                </div>
+                <ng-template #noWatchedMoviesTemplate>
+                  <p class="text-center">Ainda não adicionou filmes como visualizados.</p>
+                </ng-template>
               </div>
-              <br />
-              <ul class="no-list-style">
-                <li *ngFor="let follow of showAllFollowing ? following : following.slice(0, 6)">
-                  <div>
-                    <img [src]="follow.profilePhoto" [routerLink]="['/profile', follow.username]" class="user-photo">
-                    <p class="user-name">{{ follow.username }}</p>
+
+              <div class="to-watch-movies-section" *ngIf="showMoviesToWatch">
+                <div class="movies-to-watch-section-header">
+                  <div class="movies-to-watch-title">
+                    <h3>Filmes a ver:</h3>
                   </div>
-                </li>
-              </ul>
-            </div>
-            <ng-template #noFollowing><p>Não está a seguir ninguém no momento.</p></ng-template>
-          </div>
-
-          <div class="user-media">
-
-            <div class="watched-movies-section" *ngIf="showMoviesWatched">
-              <div class="movies-watched-section-header">
-                <div class="movies-watched-title">
-                  <h3>Filmes visualizados:</h3>
+                  <button *ngIf="watchLaterMovies.length > 0" (click)="toggleToWatchMoviesScroll(); $event.preventDefault()" class="expand-to-watch-movies-button">
+                    {{ expandedMoviesToWatchList ? 'Fechar' : 'Expandir' }}
+                  </button>
                 </div>
-                <button *ngIf="watchedMovies.length > 0" (click)="toggleWatchedMoviesScroll(); $event.preventDefault()" class="expand-watched-movies-button">
-                  {{ expandedMoviesWatchList ? 'Fechar' : 'Expandir' }}
-                </button>
-              </div>
-              <div *ngIf="watchedMovies.length > 0; else noWatchedMoviesTemplate" class="rowposter-user-media">
-                <ng-container *ngFor="let movie of expandedMoviesWatchList ? watchedMovies : watchedMovies.slice(0, 6)">
-                  <img *ngIf="movie.details" src="https://image.tmdb.org/t/p/original/{{ movie.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
-                </ng-container>
-              </div>
-              <ng-template #noWatchedMoviesTemplate>
-                <p class="text-center">Você ainda não adicionou filmes como visualizados.</p>
-              </ng-template>
-            </div>
-
-            <div class="to-watch-movies-section" *ngIf="showMoviesToWatch">
-              <div class="movies-to-watch-section-header">
-                <div class="movies-to-watch-title">
-                  <h3>Filmes a ver:</h3>
+                <div *ngIf="watchLaterMovies.length > 0; else noToWatchMoviesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let movie of expandedMoviesToWatchList ? watchLaterMovies : watchLaterMovies.slice(0, 6)">
+                    <img *ngIf="movie.details" src="https://image.tmdb.org/t/p/original/{{ movie.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
+                  </ng-container>
                 </div>
-                <button *ngIf="watchLaterMovies.length > 0" (click)="toggleToWatchMoviesScroll(); $event.preventDefault()" class="expand-to-watch-movies-button">
-                  {{ expandedMoviesToWatchList ? 'Fechar' : 'Expandir' }}
-                </button>
+                <ng-template #noToWatchMoviesTemplate>
+                  <p class="text-center">Ainda não adicionou filmes para ver mais tarde.</p>
+                </ng-template>
               </div>
-              <div *ngIf="watchLaterMovies.length > 0; else noToWatchMoviesTemplate" class="rowposter-user-media">
-                <ng-container *ngFor="let movie of expandedMoviesToWatchList ? watchLaterMovies : watchLaterMovies.slice(0, 6)">
-                  <img *ngIf="movie.details" src="https://image.tmdb.org/t/p/original/{{ movie.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
-                </ng-container>
-              </div>
-              <ng-template #noToWatchMoviesTemplate>
-                <p class="text-center">Você ainda não adicionou filmes para ver mais tarde.</p>
-              </ng-template>
-            </div>
 
-            <div class="watched-series-section" *ngIf="showSeriesWatched">
-              <div class="series-watched-section-header">
-                <div class="series-watched-title">
-                  <h3>Séries visualizadas:</h3>
+              <div class="watched-series-section" *ngIf="showSeriesWatched">
+                <div class="series-watched-section-header">
+                  <div class="series-watched-title">
+                    <h3>Séries visualizadas:</h3>
+                  </div>
+                  <button *ngIf="watchedSeries.length > 0" (click)="toggleWatchedSeriesScroll(); $event.preventDefault()" class="expand-watched-series-button">
+                    {{ expandedSeriesWatchList ? 'Fechar' : 'Expandir' }}
+                  </button>
                 </div>
-                <button *ngIf="watchedSeries.length > 0" (click)="toggleWatchedSeriesScroll(); $event.preventDefault()" class="expand-watched-series-button">
-                  {{ expandedSeriesWatchList ? 'Fechar' : 'Expandir' }}
-                </button>
-              </div>
-              <div *ngIf="watchedSeries.length > 0; else noWatchedSeriesTemplate" class="rowposter-user-media">
-                <ng-container *ngFor="let series of expandedSeriesWatchList ? watchedSeries : watchedSeries.slice(0, 6)">
-                  <img *ngIf="series.details" src="https://image.tmdb.org/t/p/original/{{ series.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
-                </ng-container>
-              </div>
-              <ng-template #noWatchedSeriesTemplate>
-                <p class="text-center">Você ainda não adicionou séries como visualizadas.</p>
-              </ng-template>
-            </div>
-
-            <div class="to-watch-series-section" *ngIf="showSeriesToWatch">
-              <div class="series-to-watch-section-header">
-                <div class="series-to-watch-title">
-                  <h3>Séries a ver:</h3>
+                <div *ngIf="watchedSeries.length > 0; else noWatchedSeriesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let series of expandedSeriesWatchList ? watchedSeries : watchedSeries.slice(0, 6)">
+                    <img *ngIf="series.details" src="https://image.tmdb.org/t/p/original/{{ series.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
+                  </ng-container>
                 </div>
-                <!-- O botão só será exibido se houver séries na lista -->
-                <button *ngIf="watchLaterSeries.length > 0" (click)="toggleToWatchSeriesScroll(); $event.preventDefault()" class="expand-to-watch-series-button">
-                  {{ expandedSeriesToWatchList ? 'Fechar' : 'Expandir' }}
-                </button>
+                <ng-template #noWatchedSeriesTemplate>
+                  <p class="text-center">Ainda não adicionou séries como visualizadas.</p>
+                </ng-template>
               </div>
-              <div *ngIf="watchLaterSeries.length > 0; else noToWatchSeriesTemplate" class="rowposter-user-media">
-                <ng-container *ngFor="let series of expandedSeriesToWatchList ? watchLaterSeries : watchLaterSeries.slice(0, 5)">
-                  <img *ngIf="series.details" src="https://image.tmdb.org/t/p/original/{{ series.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
-                </ng-container>
-              </div>
-              <ng-template #noToWatchSeriesTemplate>
-                <p class="text-center">Você ainda não adicionou séries para ver mais tarde.</p>
-              </ng-template>
-            </div>
 
+              <div class="to-watch-series-section" *ngIf="showSeriesToWatch">
+                <div class="series-to-watch-section-header">
+                  <div class="series-to-watch-title">
+                    <h3>Séries a ver:</h3>
+                  </div>
+                  <!-- O botão só será exibido se houver séries na lista -->
+                  <button *ngIf="watchLaterSeries.length > 0" (click)="toggleToWatchSeriesScroll(); $event.preventDefault()" class="expand-to-watch-series-button">
+                    {{ expandedSeriesToWatchList ? 'Fechar' : 'Expandir' }}
+                  </button>
+                </div>
+                <div *ngIf="watchLaterSeries.length > 0; else noToWatchSeriesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let series of expandedSeriesToWatchList ? watchLaterSeries : watchLaterSeries.slice(0, 5)">
+                    <img *ngIf="series.details" src="https://image.tmdb.org/t/p/original/{{ series.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
+                  </ng-container>
+                </div>
+                <ng-template #noToWatchSeriesTemplate>
+                  <p class="text-center">Ainda não adicionou séries para ver mais tarde.</p>
+                </ng-template>
+              </div>
+            </div>
           </div>
         </div>
-
-      </div>
+        </div>
     </div>
     <div class="col-lg-4 side-divs">
       <div class="card mb-3">
