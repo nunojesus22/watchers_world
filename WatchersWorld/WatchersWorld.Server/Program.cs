@@ -21,7 +21,7 @@ builder.Services.AddScoped<IFollowersService, FollowersService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WatchersWorldServerContextConnection"));
 });
 
 builder.Services.AddControllers();
@@ -53,24 +53,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
-        {
-            //validar o token baseado na key dada no development.json JWT:Key
-            ValidateIssuerSigningKey = true,
-            //o issuer signing key baseada na JWT:Key
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-            //o issuer é o link do projeto api 
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            ValidateIssuer = true,
-            ValidateAudience = false,
-        };
+                                            {
+                                                //validar o token baseado na key dada no development.json JWT:Key
+                                                ValidateIssuerSigningKey = true,
+                                                //o issuer signing key baseada na JWT:Key
+                                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+                                                //o issuer é o link do projeto api 
+                                                ValidIssuer = builder.Configuration["JWT:Issuer"],
+                                                ValidateIssuer = true,
+                                                ValidateAudience = false,
+                                            };
     });
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
-        builder.AllowAnyOrigin()
+    {
+        builder.WithOrigins("https://watchersworldfrontend.azurewebsites.net").
+        AllowAnyOrigin()
                .AllowAnyMethod()
-               .AllowAnyHeader());
+               .AllowAnyHeader();
+    });
 });
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -105,8 +108,8 @@ app.UseStaticFiles();
 app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
 
@@ -114,11 +117,12 @@ if (app.Environment.IsDevelopment())
     {
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<WatchersWorldServerContext>();
+        context.Database.EnsureCreated();
         var userManager = services.GetRequiredService<UserManager<User>>();
 
         DataSeeder.SeedData(context, userManager).Wait();
     }
-}
+//}
 
 using (var scope = app.Services.CreateScope())
 {

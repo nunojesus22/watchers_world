@@ -12,13 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240311115514_Updated.Designer.cs
-    [Migration("20240311115514_Updated")]
-    partial class Updated
-========
-    [Migration("20240313190541_WatchersWorld")]
-    partial class WatchersWorld
->>>>>>>> WWJ-185-Azure:WatchersWorld/WatchersWorld.Server/Migrations/20240313190541_WatchersWorld.Designer.cs
+    [Migration("20240313194031_WatchersWorldAzure")]
+    partial class WatchersWorldAzure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
