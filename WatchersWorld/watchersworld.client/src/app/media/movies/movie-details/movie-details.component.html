@@ -79,7 +79,7 @@
           </div>
 
           <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getMovieVideoResult?}}"
-          target="_blank">watch trailer</a>-->
+  target="_blank">watch trailer</a>-->
 
           <div class="container">
             <h2 class="text-black">Top Cast</h2>
@@ -98,6 +98,41 @@
               </div>
             </div>
           </div>
+          <!-- Seção de Comentários -->
+          <div class="comments-section mt-5">
+            <h2 class="mb-4">Comentários</h2>
+
+            <!-- Formulário de Novo Comentário -->
+            <div class="comment-form">
+              <textarea [(ngModel)]="newCommentText" placeholder="Escreva um comentário..." rows="3" class="form-control mb-2"></textarea>
+              <button (click)="addComment()" class="btn btn-primary">Postar Comentário</button>
+            </div>
+
+            <!-- Lista de Comentários -->
+
+
+          <div class="comment-list">
+            <div *ngFor="let comment of comments" class="comment mb-4 p-3 bg-light rounded">
+              <div class="d-flex align-items-center">
+                <!-- Foto do perfil do usuário -->
+                <img *ngIf="comment.profilePhoto; else defaultProfile" [src]="comment.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
+                <ng-template #defaultProfile>
+                  <img src="../assets/img/default_user.jpg" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
+                </ng-template>
+                <!-- Nome do usuário e data do comentário -->
+                <div class="ml-3">
+                  <strong>{{ comment.userName }}</strong> <span class="text-muted">em {{ comment.createdAt | date }}</span>
+                </div>
+              </div>
+              <button *ngIf="currentUser === comment.userName" class="btn btn-danger btn-sm" (click)="deleteComment(comment.id)">Excluir</button>
+
+              <p class="comment-text mt-2">{{ comment.text }}</p>
+            </div>
+            <div *ngIf="comments.length === 0" class="text-muted">
+              Ainda não há comentários. Seja o primeiro a comentar!
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

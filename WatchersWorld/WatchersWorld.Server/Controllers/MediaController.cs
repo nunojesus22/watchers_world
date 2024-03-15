@@ -216,6 +216,92 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(watchLaterMedia);
         }
-    }
+
+        public class CommentDto
+        {
+            public int Id { get; set; }
+            public string UserName { get; set; }
+            public int MediaId { get; set; }
+            public string Text { get; set; }
+            public DateTime CreatedAt { get; set; }
+            public string ProfilePhoto { get; set; } // Inclui a URL da foto do perfil
+
+        }
+
+        public class CreateCommentDto
+        {
+            public int MediaId { get; set; }
+            public string Text { get; set; }
+        }
+        [HttpPost("/api/media/add-comment")]
+        public IActionResult AddComment([FromBody] CreateCommentDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var comment = new Comment
+            {
+                UserId = userId,
+                MediaId = request.MediaId,
+                Text = request.Text,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Comments.Add(comment);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário adicionado com sucesso." });
+        }
+
+        [HttpGet("/api/media/get-comments/{mediaId}")]
+        public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
+        {
+            var comments = _context.Comments
+                .Where(c => c.MediaId == mediaId)
+                .Join(_context.ProfileInfo, // Realiza um join com ProfileInfo
+                    comment => comment.UserId,
+                    profile => profile.UserId,
+                    (comment, profile) => new { comment, profile })
+                .Select(cp => new CommentDto
+                {
+                    Id = cp.comment.Id,
+                    UserName = cp.profile.UserName,
+                    MediaId = cp.comment.MediaId,
+                    Text = cp.comment.Text,
+                    CreatedAt = cp.comment.CreatedAt,
+                    ProfilePhoto = cp.profile.ProfilePhoto // Inclui a foto do perfil
+                })
+                .ToList();
+
+            return Ok(comments);
+        }
+
+        [Authorize]
+        [HttpDelete("/api/media/delete-comment/{commentId}")]
+        public IActionResult DeleteComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var comment = _context.Comments.Find(commentId);
+            if (comment == null)
+            {
+                return NotFound(new { message = "Comentário não encontrado." });
+            }
+
+            if (comment.UserId != userId)
+            {
+                return BadRequest(new { message = "Você só pode apagar seus próprios comentários." });
+            }
+
+            _context.Comments.Remove(comment);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário excluído com sucesso." });
+        }
+
 
     }
+
+
+}

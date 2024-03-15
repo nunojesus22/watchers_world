@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 
 
@@ -177,6 +177,29 @@ export class MovieApiServiceComponent {
 
   unmarkMediaToWatchLater(mediaId: number, type: string): Observable<any> {
     return this.http.post(`${environment.appUrl}/api/media/unmark-to-watch-later`, { mediaId, type });
+  }
+
+
+  //COMENTARIOS
+
+
+  getMediaComments(mediaId: any): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`);
+  }
+  
+
+  addComment(mediaId: number, mediaType: string, text: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/add-comment`, {
+      mediaId,
+      mediaType,
+      text
+    }).pipe(
+      map((response: any) => response.comment) // Assumindo que 'comment' é o campo na resposta JSON
+    );
+  }
+
+  deleteComment(commentId: number): Observable<any> {
+    return this.http.delete(`${environment.appUrl}/api/media/delete-comment/${commentId}`);
   }
 
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { AuthenticationService } from '../../../authentication/services/authentication.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -9,7 +10,7 @@ import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-
   styleUrl: './movie-details.component.css' 
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService) { }
   getMovieDetailResult: any;
   getMovieVideoResult: any;
   getMovieCastResult: any;
@@ -18,19 +19,24 @@ export class MovieDetailsComponent {
   type: string = "movie";
   isWatched: boolean = false; // Adicione esta linha
   isToWatchLater: boolean = false; // Adicione esta linha
+  currentUser: string = '';
+
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');
     this.showAll = false;
-    this.getMovie(getParamId);
     this.getVideo(getParamId);
     this.getMovieCast(getParamId);
     this.getProviders(getParamId);
-    this.getMovie(getParamId);
     this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
 
     this.checkIfWatchedLater(getParamId);
+
+    this.fetchComments(); // Carrega os comentários
+
+    //this.currentUser = this.auth.getCurrentUserName();
+
   }
 
 
@@ -61,25 +67,8 @@ export class MovieDetailsComponent {
     });
   }
 
-  getMovie(id: any) {
-    this.service.getMovieDetails(id).subscribe(async (result) => {
-      console.log(result, 'getmoviedetails#');
-      this.getMovieDetailResult = await result;
 
-      // updatetags
-      this.title.setTitle(`${this.getMovieDetailResult.original_title} | ${this.getMovieDetailResult.tagline}`);
-      this.meta.updateTag({ name: 'title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ name: 'description', content: this.getMovieDetailResult.overview });
-
-      // facebook
-      this.meta.updateTag({ property: 'og:type', content: "website" });
-      this.meta.updateTag({ property: 'og:url', content: `` });
-      this.meta.updateTag({ property: 'og:title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ property: 'og:description', content: this.getMovieDetailResult.overview });
-      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getMovieDetailResult.backdrop_path}` });
-
-    });
-  }
+ 
 
   getVideo(id: any) {
     this.service.getMovieVideo(id).subscribe((result) => {
@@ -188,5 +177,62 @@ export class MovieDetailsComponent {
   }
 
 
+  comments: any[] = [];
+
+  // Dentro do ngOnInit ou em uma função separada que você chamará no ngOnInit
+  getComments(mediaId: any): void {
+    this.service.getMediaComments(mediaId).subscribe({
+      next: (response: any) => {
+        this.comments = response;
+        console.log('Comentários:', this.comments);
+      },
+      error: (error) => {
+        console.error('Erro ao buscar comentários', error);
+      }
+    });
+  }
+  
+  fetchComments(): void {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.service.getMediaComments(+mediaId).subscribe(comments => {
+        this.comments = comments;
+      });
+    }
+  }
+  newCommentText: string = '';
+
+  addComment(): void {
+    if (!this.newCommentText.trim()) {
+      return; // Verifica se o comentário não está vazio
+    }
+
+    const mediaId = this.getMovieDetailResult.id;
+    const mediaType = this.type;
+
+    this.service.addComment(mediaId, mediaType, this.newCommentText).subscribe({
+      next: (newComment) => {
+        this.comments.unshift(newComment); // Adiciona imediatamente o novo comentário à lista para atualização instantânea
+        this.newCommentText = ''; // Limpar o campo de texto após adicionar o comentário
+        this.fetchComments(); // Atualiza a lista de comentários para garantir que todos os comentários sejam recuperados
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar comentário', error);
+      }
+    });
+  }
+
+  deleteComment(commentId: number): void {
+    this.service.deleteComment(commentId).subscribe({
+      next: () => {
+        console.log('Comentário deletado com sucesso');
+        // Atualiza a lista de comentários removendo o comentário deletado
+        this.comments = this.comments.filter(comment => comment.id !== commentId);
+      },
+      error: error => {
+        console.error('Erro ao deletar o comentário', error);
+      }
+    });
+  }
 }
 
