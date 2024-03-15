@@ -164,3 +164,34 @@ a {
   color: var(--bs-card-color);
   padding: 0;
 }
+
+.fa-star {
+  cursor: pointer;
+  color: #d4af37; /* cor dourada para a estrela */
+  font-size: 24px; /* tamanho maior para a estrela */
+}
+
+  .fa-star:hover {
+    color: #f1c40f; /* cor dourada mais clara para o hover */
+  }
+
+.far.fa-star {
+  color: #bbb; /* Cor cinza para estrela não favorita */
+  cursor: pointer;
+  font-size: 24px; /* Tamanho da estrela */
+}
+
+.fas.fa-star {
+  color: #ffd700; /* Cor dourada para estrela favorita */
+  cursor: pointer;
+  font-size: 24px; /* Tamanho da estrela */
+}
+
+.favorite {
+  color: #ffd700; /* Cor dourada para favoritos */
+}
+
+.not-favorite {
+  color: #ccc; /* Cor cinza para não favoritos */
+}
+

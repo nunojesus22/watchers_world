@@ -18,6 +18,8 @@ export class SeriesDetailsComponent {
   type: string = "serie";
   isWatched: boolean = false; // Adicione esta linha
   isToWatchLater: boolean = false;
+  actorIsFavorite: boolean = false;
+  movieRating = 0; 
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -30,6 +32,23 @@ export class SeriesDetailsComponent {
     this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
     this.checkIfWatchedLater(getParamId);
 
+  }
+
+  toggleFavorite(selectedActor: any): void {
+    if (selectedActor.isFavorite) {
+      selectedActor.isFavorite = false;
+      return;
+    }
+
+    this.getMovieCastResult.forEach((actor: { isFavorite: boolean; }) => {
+      actor.isFavorite = false;
+    });
+
+    selectedActor.isFavorite = true;
+  }
+
+  rateMovie(rating: number): void {
+    this.movieRating = rating;
   }
 
   checkIfWatched(mediaId: any) {
