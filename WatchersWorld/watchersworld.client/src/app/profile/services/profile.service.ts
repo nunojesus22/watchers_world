@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { User } from '../../authentication/models/user';
 import { environment } from '../../../environments/environment.development';
 import { Profile } from '../models/profile';
+import { FollowerProfile } from '../models/follower-profile';
+import { UserMedia } from '../models/user-media';
 
 @Injectable({
   providedIn: 'root'
@@ -48,17 +50,61 @@ export class ProfileService {
     return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-users-profiles`, {headers});
   }
 
-  followUser(usernameToFollow: string): Observable<any> {
+  followUser(usernameAuthenticated : string, usernameToFollow: string): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.post<any>(`${environment.appUrl}/api/profile/follow/${usernameToFollow}`, {}, { headers });
+    return this.http.post<any>(`${environment.appUrl}/api/profile/follow/${usernameAuthenticated}/${usernameToFollow}`, {}, { headers });
   }
 
-  unfollowUser(usernameToUnfollow: string): Observable<any> {
+  unfollowUser(usernameAuthenticated: string, usernameToFollow: string): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.delete<any>(`${environment.appUrl}/api/profile/unfollow/${usernameToUnfollow}`, { headers });
+    return this.http.delete<any>(`${environment.appUrl}/api/profile/unfollow/${usernameAuthenticated}/${usernameToFollow}`, { headers });
   }
 
+  getFollowers(username: string): Observable<FollowerProfile[]> {
+    const headers = this.getHeaders();
+    return this.http.get<FollowerProfile[]>(`${environment.appUrl}/api/profile/get-followers/${username}`, { headers });
+  }
 
+  getFollowing(username: string): Observable<FollowerProfile[]> {
+    const headers = this.getHeaders();
+    return this.http.get<FollowerProfile[]>(`${environment.appUrl}/api/profile/get-whoFollow/${username}`, { headers });
+  }
+
+  alreadyFollows(usernameAuthenticated: string, usernameToFollow: string): Observable<boolean> {
+    const headers = this.getHeaders();
+    return this.http.get<boolean>(`${environment.appUrl}/api/profile/alreadyFollows/${usernameAuthenticated}/${usernameToFollow}`, { headers });
+  }
+
+  getUserWatchedMedia(username: string): Observable<UserMedia[]> {
+    const headers = this.getHeaders();
+    return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-media-watched-list/${username}`, { headers });
+  }
+
+  getUserWatchLaterMedia(username: string): Observable<UserMedia[]> {
+    const headers = this.getHeaders();
+    return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-watch-later-list/${username}`, { headers });
+  }
+  
+  deleteUserByUsername(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete(`${environment.appUrl}/api/users/${encodeURIComponent(username)}`,
+      { headers, responseType: 'text' }); // Expecting a text response
+  }
+
+  banUserPermanently(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(`${environment.appUrl}/api/account/ban-user-permanently/${encodeURIComponent(username)}`, {}, { headers });
+  }
+
+  BanUserTemporarily(username: string, banDurationInDays: number): Observable<any> {
+    const headers = this.getHeaders();
+    // Append the ban duration as a query parameter
+    const url = `${environment.appUrl}/api/account/ban-user-temporarily/${encodeURIComponent(username)}?banDurationInDays=${banDurationInDays}`;
+    return this.http.post<any>(url, {}, { headers });
+  }
+
+  getUserRole(username: string) {
+    return this.http.get<string[]>(`${environment.appUrl}/api/account/getUserRole/${username}`);  }
 
 
 }

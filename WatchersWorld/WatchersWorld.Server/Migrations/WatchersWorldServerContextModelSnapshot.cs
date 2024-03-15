@@ -169,19 +169,29 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Followers")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("EndBanDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Following")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Followers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Following")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartBanDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserName");
@@ -258,6 +268,111 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Followers", b =>
+                {
+                    b.Property<Guid>("FollowersId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WhosBeingFollowed")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WhosFollowing")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FollowersId");
+
+                    b.ToTable("Followers");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>
+                {
+                    b.Property<int>("IdTableMedia")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTableMedia"));
+
+                    b.Property<int>("IdMedia")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdTableMedia");
+
+                    b.ToTable("MediaInfoModel");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaListModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ListName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MediaListModel");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ListName = "Filmes"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ListName = "Séries"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ListName = "Ver Mais Tarde Series"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ListName = "Ver Mais Tarde Filmes"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ListName = "Favoritos"
+                        });
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("IdListMedia")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTableMedia")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdListMedia");
+
+                    b.HasIndex("IdTableMedia");
+
+                    b.ToTable("UserMedia");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -307,6 +422,23 @@ namespace WatchersWorld.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaListModel", "MediaListModel")
+                        .WithMany()
+                        .HasForeignKey("IdListMedia");
+
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfoModel")
+                        .WithMany()
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaInfoModel");
+
+                    b.Navigation("MediaListModel");
                 });
 #pragma warning restore 612, 618
         }

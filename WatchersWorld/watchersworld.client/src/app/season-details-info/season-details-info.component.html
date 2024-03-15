@@ -1,0 +1,40 @@
+<div class="container bg-white rounded">
+  <!-- Botão Voltar e Pôster da Série -->
+  <div class="series-header mb-4">
+    <div class="backdrop-with-poster">
+      <img *ngIf="getSerieSeasonDetailsResult?.poster_path" src="https://image.tmdb.org/t/p/original/{{ getSerieSeasonDetailsResult.poster_path  }}" class="backdrop-image img-fluid rounded" alt="Backdrop da Série">
+    </div>
+    <div class="series-info d-flex align-items-center">
+      <button [routerLink]="['/serie', getSerieDetailsResult?.id,'season']" class="btn btn-secondary shadow-sm">
+        <i class="fas fa-arrow-left"></i> Voltar
+      </button>
+      <div class="ml-4">
+        <h1 class="serie-title">{{ getSerieSeasonDetailsResult.name }}</h1>
+        <h6 class="serie-tagline">{{ getSerieDetailsResult.tagline }}</h6>
+      </div>
+    </div>
+  </div>
+
+  <!-- Título da Seção -->
+  <h2 class="mb-4">Episódios</h2>
+
+  <!-- Loop pelos episódios da temporada selecionada -->
+  <div *ngFor="let episode of getSerieSeasonDetailsResult.episodes" class="episode-container d-flex mb-4">
+    <div class="episode-image-container">
+      <img *ngIf="episode.still_path" src="https://image.tmdb.org/t/p/w200/{{ episode.still_path }}" class="img-fluid rounded" alt="Still do Episódio">
+      <ng-template #defaultImage>
+        <img src="../assets/img/default_episode_still.jpg" class="img-fluid rounded" alt="Still Padrão do Episódio">
+      </ng-template>
+    </div>
+    <div class="episode-info p-3">
+      <h3>{{ episode.episode_number }}. {{ episode.name }}</h3>
+      <p>Temporada: {{ episode.season_number }}</p>
+      <p>Episódio: {{ episode.episode_number }}</p>
+      <p>Data de Exibição: {{ episode.air_date || '-' }}</p>
+      <p *ngIf="episode.overview; else defaultSynopsis">Sinopse: {{ episode.overview }}</p>
+      <ng-template #defaultSynopsis>
+        <p>Sinopse: Detalhes não disponíveis.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

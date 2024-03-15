@@ -6,11 +6,14 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { AuthorizationGuard } from './guards/authorization.guard';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { AllMoviesPageComponent } from './all-movies-page/all-movies-page.component';
-import { AllSeriesPageComponent } from './all-series-page/all-series-page.component';
-import { MovieDetailsComponent } from './movie-details/movie-details.component';
-import { SeriesDetailsComponent } from './series-details/series-details.component';
-import { SearchComponent } from './search/search.component';
+import { AllMoviesPageComponent } from './media/movies/all-movies-page/all-movies-page.component';
+import { AllSeriesPageComponent } from './media/series/all-series-page/all-series-page.component';
+import { MovieDetailsComponent } from './media/movies/movie-details/movie-details.component';
+import { SeriesDetailsComponent } from './media/series/series-details/series-details.component';
+import { SearchComponent } from './media/search/search.component';
+import { AdminComponent } from './admin/admin.component';
+import { SeasonDetailsComponent } from './season-details/season-details.component';
+import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -31,9 +34,12 @@ const routes: Routes = [
   { path: 'all-series-page', component: AllSeriesPageComponent },
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'serie/:id', component: SeriesDetailsComponent },
+  { path: 'admin', component: AdminComponent },
 
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm
+  { path: 'serie/:id/season', component: SeasonDetailsComponent },
+  { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent }
 
   
 ];

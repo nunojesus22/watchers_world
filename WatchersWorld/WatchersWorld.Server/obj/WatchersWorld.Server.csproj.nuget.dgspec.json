@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {}
+    "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {
+    "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+        "projectUniqueName": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
         "projectName": "WatchersWorld.Server",
-        "projectPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-        "packagesPath": "C:\\Users\\nunoj\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nunoj\\Documents\\DEV\\WatchersWorld\\Software\\WatchersWorld\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+        "projectPath": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+        "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\nunoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
