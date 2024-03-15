@@ -1,0 +1,209 @@
+.container.bg-white {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.movie-page-box {
+  margin: auto;
+  padding: 20px;
+}
+
+.season-container {
+  display: flex;
+  align-items: center; /* Alinha os itens ao centro verticalmente */
+  margin-bottom: 20px;
+  border: 1px solid #ccc; /* Acrescenta um border cinza discreto */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Acrescenta uma sombra suave */
+  border-radius: 5px; /* Bordas arredondadas */
+  background-color: white; /* Fundo branco */
+}
+
+.movie-page-box {
+  margin: auto;
+  padding: 20px;
+  background-color: white; /* Fundo branco para o container principal */
+  border-radius: 8px; /* Bordas arredondadas para o container principal */
+}
+
+/* Pode aplicar a mesma sombra a outros containers que você deseja destacar */
+.white_container, .settings_panel, .genre_tab, .row.mb-4.shadow-sm {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Para manter todo o conteúdo dentro dos limites do container */
+}
+
+.season-image-container {
+  padding: 15px; /* Espaçamento interno para a imagem não tocar as bordas */
+  text-align: center; /* Centraliza a imagem horizontalmente */
+}
+
+.season-poster-image {
+  height: auto; /* Altura automática para manter a proporção */
+  max-width: 100%; /* Garante que a imagem não exceda o container */
+  border-radius: 5px; /* Bordas arredondadas para a imagem */
+}
+
+.season-info {
+  flex: 1; /* Ocupa o restante do espaço */
+  padding: 20px; /* Espaçamento interno para o texto */
+}
+
+.btn-primary {
+  margin-top: 10px; /* Espaço acima do botão */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Acrescenta uma sombra suave ao botão */
+}
+
+.btn-secondary {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Acrescenta uma sombra suave ao botão */
+}
+  .season-info h3, .season-info p {
+    margin-bottom: 10px; /* Espaçamento entre os elementos */
+  }
+
+
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o ícone e o texto */
+  padding: 10px 20px; /* Ajuste conforme necessário */
+  border-radius: 5px; /* Bordas arredondadas */
+  background-color: #4CAEFE; /* Cor de fundo do botão */
+  color: white; /* Cor do texto */
+}
+
+  .btn-secondary i {
+    margin-right: 5px; /* Espaço entre o ícone e o texto */
+  }
+
+.btn-primary {
+  background-color: #4CAEFE;
+  color: white;
+  border-radius: 4px;
+  padding: 8px 12px;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+  .btn-primary:hover {
+    background-color: #007bff;
+  }
+
+@media (max-width: 768px) {
+  .season-container {
+    flex-direction: column; /* Muda a direção dos itens para coluna em dispositivos menores */
+    align-items: center; /* Centraliza os itens no container */
+  }
+
+  .season-image-container {
+    margin-bottom: 15px; /* Adiciona espaço abaixo da imagem em dispositivos menores */
+  }
+
+  .season-info p, .season-info h3 {
+    color: #495057; /* Cor cinza escuro para texto */
+  }
+}
+.back-navigation-container {
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0; /* Cor de fundo */
+  padding: 10px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra */
+}
+
+.series-poster {
+  width: 60px; /* Largura da imagem */
+  margin-right: 20px; /* Espaçamento entre a imagem e o texto */
+  border-radius: 4px; /* Bordas arredondadas da imagem */
+}
+
+.navigation-info h2 {
+  margin: 0; /* Remove margem padrão */
+  color: #333; /* Cor do texto */
+  font-size: 24px; /* Tamanho do texto */
+}
+
+.back-link {
+  display: inline-flex; /* Exibe como flex inline */
+  align-items: center; /* Alinha itens verticalmente */
+  color: #007bff; /* Cor do link */
+  text-decoration: none; /* Remove sublinhado do link */
+  font-size: 16px; /* Tamanho do texto */
+  gap: 8px; /* Espaço entre ícone e texto */
+}
+
+  .back-link:hover {
+    text-decoration: underline; /* Sublinha ao passar o mouse */
+  }
+
+.d-flex {
+  display: flex !important;
+  align-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+.container.bg-white[_ngcontent-ng-c4128739590] {
+  background-color: #fff;
+  /* padding: 20px; */
+  border-radius: 8px;
+  /* margin-top: 20px; */
+}
+
+.container.bg-white {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.backdrop-with-poster {
+  position: relative;
+  text-align: center;
+}
+
+.backdrop-image {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.poster-overlay {
+  position: absolute;
+  top: 10px; /* Ajuste conforme necessário */
+  left: 10px; /* Ajuste conforme necessário */
+  display: flex;
+  align-items: center;
+}
+
+.poster-image {
+  width: 120px; /* Ajuste o tamanho conforme necessário */
+  margin-right: 20px;
+}
+.serie-title {
+  color: black; /* Azul */
+  font-weight: bold;
+}
+
+.season-info h3 {
+  color: #4CAEFE; /* Cor azul para títulos */
+}
+
+.serie-tagline {
+    font-size:19px;
+}
+
+
+.backdrop-image[_ngcontent-ng-c2959465852] {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity:0.8;
+}

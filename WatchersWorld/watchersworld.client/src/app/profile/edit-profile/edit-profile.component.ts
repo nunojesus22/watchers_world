@@ -6,6 +6,7 @@ import { ProfileService } from '../services/profile.service';
 import { User } from '../../authentication/models/user';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-profile',
@@ -13,6 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./edit-profile.component.css']
 })
 export class EditProfileComponent {
+  currentUsername: string | undefined; // Nome de usuário do perfil exibido
+  loggedUserName: string | null = null; // Nome de usuário do usuário logado
+
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
@@ -33,6 +37,9 @@ export class EditProfileComponent {
   isProfileLocked: boolean = false;
   profileLocked: string = "Public";
 
+  followersCount: number | undefined;
+  followingCount: number | undefined;
+
   showFavorites: boolean = false;
   showMovies: boolean = false;
   showSeries: boolean = false;
@@ -44,10 +51,12 @@ export class EditProfileComponent {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const userName = params['username'];
-      this.getUserProfileInfo(userName);
-      this.setFormFields(userName);
-      this.setImages(userName);
+      if (typeof params['username'] === 'string') {
+        this.currentUsername = params['username'];
+        this.getUserProfileInfo(this.currentUsername);
+        this.setFormFields(this.currentUsername);
+        this.setImages(this.currentUsername);
+      }
     });
     this.initializeForm();
     this.getUserProfiles();
@@ -156,11 +165,9 @@ export class EditProfileComponent {
   getUserProfileInfo(username:string) {
     this.profileService.getUserData(username).subscribe({
       next: (response: Profile) => {
-        console.log(response);
         return response;
       },
       error: (error) => {
-        console.log(error);
         return error;
       }
     });
@@ -230,28 +237,24 @@ export class EditProfileComponent {
   }
 
   updateFormFields(username: string) {
-    const userName = this.profileForm.get('name')?.value;
     const hobby = this.profileForm.get('hobby')?.value;
     const gender = this.profileForm.get('gender')?.value;
     const date = this.profileForm.get('date')?.value;
     const profilePhoto = this.profilePhoto;
     const coverPhoto = this.coverPhoto;
     const profileStatus = this.profileLocked;
+    const numberOfFollowers = this.followersCount || 0;
+    const numberOfFollowing = this.followingCount || 0;
+
     
-    const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus);
+    const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus, numberOfFollowers, numberOfFollowing);
     
-    console.log(data);
-    console.log(this.profileForm.valid);
     if (this.profileForm.valid) {
       this.profileService.setUserData(data).subscribe({
         next: (response: any) => {
-          console.log(response);
           this.setFormFields(username);
-          console.log(data);
-          console.log(response.value.message);
         },
         error: (error) => {
-          console.log(error);
           if (error.error.errors) {
             this.errorMessages = error.error.errors;
           } else {

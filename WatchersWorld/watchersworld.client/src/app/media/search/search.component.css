@@ -1,0 +1,212 @@
+.white_container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  opacity:0.9;
+}
+
+
+  .grey_column {
+    background-color: #f6f6f6;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+.settings_panel {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+}
+
+.background_color {
+  background-color: #4CAEFE;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.settings.panel.with_counts {
+  list-style-type: none;
+  padding: 0;
+  cursor: pointer; /* Faz com que o cursor seja um ponteiro quando passa sobre os itens de gênero */
+}
+
+  .settings.panel.with_counts li {
+    padding: 10px 0;
+    border-bottom: 1px solid #dddddd;
+  }
+
+    .settings.panel.with_counts li:last-child {
+      border-bottom: none;
+    }
+
+    .settings.panel.with_counts li a {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .settings.panel.with_counts li span {
+      float: right;
+    }
+
+    .settings.panel.with_counts li.selected {
+      background-color: #dddddd;
+    }
+
+      .settings.panel.with_counts li.selected a {
+        font-weight: bold;
+      }
+
+.genre_tab {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+  .genre_tab i {
+    width: 24px; /* Define uma largura fixa para todos os ícones */
+    text-align: center; /* Certifica-se de que os ícones menores também estejam centralizados em seu espaço */
+    margin-right: 8px; /* Espaço entre o ícone e o texto */
+  }
+
+  .genre_tab a {
+    flex-grow: 1;
+    text-decoration: none;
+    color: #000000;
+    display: flex;
+    align-items: center; /* Isso garante que o texto dentro do link esteja alinhado com o ícone */
+  }
+  .genre_tab:hover {
+    background-color: #f0f0f0; /* Muda a cor de fundo quando o mouse passa por cima */
+  }
+
+.settings.panel.with_counts li {
+  border-bottom: 1px solid #dddddd;
+}
+
+
+
+button {
+  background-color: dodgerblue;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+}
+
+  button:hover {
+    background-color: #ffffff;
+    color: dodgerblue;
+  }
+
+  img {
+    width: 100%;
+    cursor: pointer;
+    transition: transform .2s;
+  }
+
+  img:hover {
+    transform: scale(1.1);
+  }
+
+h5 {
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.row.mb-4.shadow-sm {
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+  .row.mb-4.shadow-sm:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+button.btn-md {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+  button.btn-md.active {
+    background-color: #007bff; /* Cor de fundo para página ativa */
+    color: #fff; /* Cor do texto para página ativa */
+  }
+
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  margin-right: 10px;
+}
+
+.col-md-9.mt-5 {
+  margin-top: 2rem; /* Ajuste conforme necessário */
+}
+.col-md-3.mt-5 {
+  margin-top: 2rem; /* Ajuste conforme necessário */
+}
+
+.background_color{
+  border-radius:5px 5px 0px 0px;
+  font-size:21px;
+}
+
+
+.p-5 {
+  padding: 1.5rem !important;
+}
+
+.mt-5 {
+  margin-top: 1.5rem !important;
+}
+button.btn-md[_ngcontent-ng-c1193286722] {
+  margin-right: 0px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+
+a {
+  color: #4CAEFE;
+  text-decoration: none;
+}

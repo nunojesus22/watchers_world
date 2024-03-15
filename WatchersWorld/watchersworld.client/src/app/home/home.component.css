@@ -137,3 +137,35 @@
 .seu-texto {
   flex: 1;
 }
+.carousel-control-next, .carousel-control-prev {
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6%;
+  height: initial;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+  background: 0 0;
+  border: 0;
+  opacity: .5;
+  transition: opacity .15s ease;
+}
+
+.carousel-dark .carousel-control-next-icon,
+.carousel-dark .carousel-control-prev-icon {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(95%) saturate(6402%) hue-rotate(188deg) brightness(101%) contrast(101%);
+  opacity: 1; /* Garante que o ícone seja totalmente opaco */
+}
+
+.carousel-control-next-icon, .carousel-control-prev-icon {
+  display: inline-block;
+  width: 7rem;
+  height: 4rem;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 100% 100%;
+}

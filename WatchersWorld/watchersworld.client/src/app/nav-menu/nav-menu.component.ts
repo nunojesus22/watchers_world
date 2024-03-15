@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../movie-api-service/movie-api-service.component';
 import { Router } from '@angular/router';
-import { SearchServiceComponent } from '../search-service/search-service.component';
+import { SearchServiceComponent } from '../media/search-service/search-service.component';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -49,13 +49,33 @@ export class NavMenuComponent {
 
   onSubmit() {
     if (this.searchQuery) {
-      this.searchService.changeSearchQuery(this.searchQuery);
-      this.router.navigate(['/search']);
+      // Isso garante que a pesquisa é comunicada através de parâmetros de consulta
+      this.router.navigate(['/search'], { queryParams: { title: this.searchQuery } });
     }
   }
 
   onKeyup() {
     console.log('one key up',this.searchQuery);
+  }
+
+  navigateBasedOnRole(username: string) {
+    this.authService.getUserRole(username).subscribe((roles: string[]) => {
+      if (roles.includes('Admin')) {
+        this.router.navigate(['/admin']);
+      } else if (roles.includes('User')) {
+        this.router.navigate(['/profile', username]);
+      } else {
+        // Handle case for users without Admin or User roles or redirect to a default route
+        this.router.navigate(['/home']);
+      }
+    }, error => {
+      console.error('Error fetching user role', error);
+      this.router.navigate(['/home']); // Fallback in case of an error
+    });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
 

@@ -11,21 +11,23 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<IFollowersService, FollowersService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<JWTService>();
-builder.Services.AddScoped<EmailService>();
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddIdentityCore<User>(options =>
 {
@@ -101,20 +103,63 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseCors("AllowAllOrigins");
-/*
-app.UseCors(options =>
-{
-    options.AllowAnyHeader()
-           .AllowAnyMethod()
-           .AllowCredentials()
-           .WithOrigins(builder.Configuration["JWT:ClientURL"]);
-}); */
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<WatchersWorldServerContext>();
+        var userManager = services.GetRequiredService<UserManager<User>>();
+
+        DataSeeder.SeedData(context, userManager).Wait();
+    }
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var roles = new[] { "Admin", "Moderator", "User" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+    string email = "admin@admin.com";
+    string password = "Teste1234";
+
+    if (await userManager.FindByEmailAsync(email) == null)
+    {
+        var user = new User
+        {
+            Provider = "Credentials",
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true
+        };
+
+        await userManager.CreateAsync(user, password);
+
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+
+}
+
 
 app.UseHttpsRedirection();
 
