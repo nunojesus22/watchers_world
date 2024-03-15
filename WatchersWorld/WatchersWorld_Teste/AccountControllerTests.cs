@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NuGet.Protocol;
@@ -26,8 +28,9 @@ namespace WatchersWorld_Teste
         private readonly JWTService _jwtService;
         private readonly EmailService _emailService;
         private readonly IntegrationTestsFixture _fixture;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountControllerTests(IntegrationTestsFixture fixture)
+        public AccountControllerTests(IntegrationTestsFixture fixture, ILogger<AccountController> logger)
         {
             _fixture = fixture;
             _context = fixture.Context;
@@ -35,9 +38,9 @@ namespace WatchersWorld_Teste
             _signInManager = fixture.ServiceProvider.GetRequiredService<SignInManager<WatchersWorld.Server.Models.Authentication.User>>();
             _jwtService = fixture.ServiceProvider.GetRequiredService<JWTService>();
             _emailService = fixture.ServiceProvider.GetRequiredService<EmailService>();
-
+            _logger = logger;
             // Agora você pode instanciar o AccountController com as dependências necessárias
-            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context);
+            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context, logger);
         }
 
         public async Task InitializeAsync()

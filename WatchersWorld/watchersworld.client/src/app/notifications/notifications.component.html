@@ -1,0 +1,17 @@
+<div class="title-panel" *ngIf="loggedUserName === currentUsername">
+    <h3 class="title-center">Notificações</h3>
+    <hr class="divider">
+    <div class="user-list">
+      <h4>Tem um ou mais pedidos para seguir:</h4>
+      <div class="user" *ngFor="let userProfile of usersProfiles">
+        <div class="user-info">
+          <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+          <p class="name">{{ userProfile.userName }}</p>
+          <div class="actions">
+            <button class="accept-follow-request">Aceitar</button>
+            <button class="recuse-follow-request">Recusar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
