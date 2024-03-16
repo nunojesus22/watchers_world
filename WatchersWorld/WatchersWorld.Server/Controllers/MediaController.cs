@@ -240,28 +240,31 @@ namespace WatchersWorld.Server.Controllers
         [HttpGet("/api/media/get-comments/{mediaId}")]
         public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do usuário atual
+
             var comments = _context.Comments
                 .Where(c => c.MediaId == mediaId)
-                .Join(_context.ProfileInfo, // Realiza um join com ProfileInfo
-                    comment => comment.UserId,
-                    profile => profile.UserId,
-                    (comment, profile) => new { comment, profile })
-                .Select(cp => new CommentDto
+                .Include(c => c.Likes) // Garantir que os likes sejam incluídos
+                .Include(c => c.Dislikes) // Garantir que os dislikes sejam incluídos
+                .ToList() // Executa a consulta e obtém os resultados
+                .Select(c => new CommentDto
                 {
-                    Id = cp.comment.Id,
-                    UserName = cp.profile.UserName,
-                    MediaId = cp.comment.MediaId,
-                    Text = cp.comment.Text,
-                    CreatedAt = cp.comment.CreatedAt,
-                    ProfilePhoto = cp.profile.ProfilePhoto, // Inclui a foto do perfil
-                    LikesCount = cp.comment.Likes.Count, // Contagem d0e likes
-                    DislikesCount = cp.comment.Dislikes.Count // Contagem de dislikes
-
-                })
-                .ToList();
+                    Id = c.Id,
+                    UserName = _context.Users.FirstOrDefault(u => u.Id == c.UserId)?.UserName,
+                    MediaId = c.MediaId,
+                    Text = c.Text,
+                    CreatedAt = c.CreatedAt,
+                    ProfilePhoto = _context.ProfileInfo.FirstOrDefault(pi => pi.UserId == c.UserId)?.ProfilePhoto,
+                    LikesCount = c.Likes?.Count ?? 0, // Use a propriedade null-conditional e o coalesce operator para evitar NullReferenceException
+                    DislikesCount = c.Dislikes?.Count ?? 0,
+                    HasLiked = c.Likes?.Any(l => l.UserId == userId) ?? false, // Verifica se o usuário atual já curtiu o comentário
+                    HasDisliked = c.Dislikes?.Any(d => d.UserId == userId) ?? false // Verifica se o usuário atual já descurtiu o comentário
+                }).ToList();
 
             return Ok(comments);
         }
+
+
 
         [Authorize]
         [HttpDelete("/api/media/delete-comment/{commentId}")]
