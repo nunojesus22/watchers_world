@@ -46,5 +46,7 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
         public DateTime StartBanDate { get; set; }
 
         public DateTime EndBanDate { get; set; }
+
+        public bool IsBanned { get; set; }
     }
 }

@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Profile } from '../profile/models/profile';
 import { ProfileService } from '../profile/services/profile.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
+import { AdminService } from '../admin/service/admin.service'
 
 
 @Component({
@@ -18,8 +19,10 @@ export class AdminComponent implements OnDestroy {
   loggedUserName: string | null = null;
   selectedUserForBan: string | null = null;
   banDuration: number | undefined;
+  isBanned?: boolean; 
 
-  constructor(private profileService: ProfileService, private authService: AuthenticationService) { }
+
+  constructor(private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
@@ -36,8 +39,13 @@ export class AdminComponent implements OnDestroy {
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
-        // Filter out the logged-in user from the profiles
-        this.usersProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
+        // Here you should set the isBanned property based on the data from the server
+        this.usersProfiles = profiles.map(profile => {
+          return {
+            ...profile,
+            isBanned: this.checkIfUserIsBanned(profile) // You need to implement this method
+          };
+        });
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
@@ -45,6 +53,12 @@ export class AdminComponent implements OnDestroy {
     );
   }
 
+
+  checkIfUserIsBanned(profile: Profile): boolean {
+    // Directly return the isBanned status from the profile
+    // If the property could be undefined, provide a default value
+    return profile.isBanned ?? false;
+  }
 
 
   banTemp(username: string | null): void {
@@ -58,10 +72,15 @@ export class AdminComponent implements OnDestroy {
     }
     console.log(`Attempting to ban user temporarily: ${username} for ${this.banDuration} days`);
     // Call the service method and pass the username and this.banDuration
-    this.profileService.BanUserTemporarily(username, this.banDuration).subscribe(
+    this.adminService.BanUserTemporarily(username, this.banDuration).subscribe(
       () => {
         console.log(`User banned temporarily for ${this.banDuration} days`);
-        // Update UI here if needed
+        const user = this.usersProfiles?.find(u => u.userName === username);
+        if (user) {
+          user.isBanned = true;
+        }
+        // This will trigger change detection and update the UI
+        this.usersProfiles = [...this.usersProfiles!];
       },
       error => {
         console.error("Error banning user temporarily:", error);
@@ -77,10 +96,15 @@ export class AdminComponent implements OnDestroy {
       return;
     }
     console.log(`Attempting to ban user permanently: ${username}`);
-    this.profileService.banUserPermanently(username).subscribe(
+    this.adminService.banUserPermanently(username).subscribe(
       () => {
         console.log('User banned permanently');
-        // You may want to update your UI here to reflect the ban status
+        const user = this.usersProfiles?.find(u => u.userName === username);
+        if (user) {
+          user.isBanned = true;
+        }
+        // This will trigger change detection and update the UI
+        this.usersProfiles = [...this.usersProfiles!];
       },
       error => {
         console.error("Error banning user:", error);
@@ -97,7 +121,7 @@ export class AdminComponent implements OnDestroy {
       return;
     }
     console.log(`Attempting to delete user: ${username}`); // This should appear in your browser's console when you click the delete button
-    this.profileService.deleteUserByUsername(username).subscribe(
+    this.adminService.deleteUserByUsername(username).subscribe(
       () => {
         this.usersProfiles = this.usersProfiles?.filter(user => user.userName !== username);
         console.log('User deleted successfully');
@@ -108,12 +132,31 @@ export class AdminComponent implements OnDestroy {
     );
   }
 
+  
 
-
-
-  unban() {
-
+  unban(username: string | undefined): void {
+    if (!username) {
+      console.error('Username is undefined, cannot unban user.');
+      return;
+    }
+    this.adminService.unbanUser(username).subscribe(
+      (response) => {
+        console.log(response.message);
+        const user = this.usersProfiles?.find(u => u.userName === username);
+        if (user) {
+          user.isBanned = false;
+        }
+        // This will trigger change detection and update the UI
+        this.usersProfiles = [...this.usersProfiles!];
+      },
+      (error) => {
+        console.error("Error unbanning user:", error);
+      }
+    );
   }
+
+
+
 
   showBanPopup(username: string): void {
     this.selectedUserForBan = username;

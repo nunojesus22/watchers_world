@@ -7,7 +7,11 @@ export class Profile {
   coverPhoto: string;
   profileStatus: string;
   followers: number;
-  following: number
+  following: number;
+  startBanDate: Date | undefined;
+  endBanDate: Date | undefined;
+  isBanned: boolean | undefined;
+
 
   constructor(
     birthDate: Date,

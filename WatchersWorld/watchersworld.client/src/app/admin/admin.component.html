@@ -15,8 +15,8 @@
       </div>
       <div class="actions">
         <button class="delete" (click)="deleteAccount(userProfile.userName)">Apagar conta</button>
-        <button class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
-        <button class="unban">Remover ban</button>
+        <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
+        <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
       </div>
     </div>
 
