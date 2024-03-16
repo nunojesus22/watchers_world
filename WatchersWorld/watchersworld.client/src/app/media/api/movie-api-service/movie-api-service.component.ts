@@ -220,5 +220,12 @@ export class MovieApiServiceComponent {
     return this.http.delete(`${environment.appUrl}/api/media/remove-dislike/${commentId}`);
   }
 
+  addCommentReply(parentCommentId: number, mediaId: number, text: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/add-comment-reply`, {
+      parentCommentId,
+      mediaId,
+      text
+    });
+  }
 
 }

@@ -21,6 +21,12 @@ namespace WatchersWorld.Server.Models.Media
 
         public ICollection<CommentLike> Likes { get; set; }
         public ICollection<CommentDislike> Dislikes { get; set; }
+
+
+        public int? ParentCommentId { get; set; } // Adicione isto para suportar respostas
+
+        public Comment ParentComment { get; set; } // Adicione isto para referenciar o comentário pai
+        public ICollection<Comment> Replies { get; set; } // Adicione isto para listar as respostas
     }
 
 }

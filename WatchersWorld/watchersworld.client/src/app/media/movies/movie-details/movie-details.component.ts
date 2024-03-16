@@ -234,18 +234,25 @@ export class MovieDetailsComponent {
     });
   }
 
-  deleteComment(commentId: number): void {
+  deleteComment(commentId: number, parentCommentId?: number): void {
     this.service.deleteComment(commentId).subscribe({
       next: () => {
         console.log('Comentário deletado com sucesso');
-        // Atualiza a lista de comentários removendo o comentário deletado
-        this.comments = this.comments.filter(comment => comment.id !== commentId);
+        if (parentCommentId) {
+          const parentComment = this.comments.find((c: any) => c.id === parentCommentId);
+          if (parentComment && parentComment.replies) {
+            parentComment.replies = parentComment.replies.filter((reply: any) => reply.id !== commentId);
+          }
+        } else {
+          this.comments = this.comments.filter((comment: any) => comment.id !== commentId);
+        }
       },
       error: error => {
         console.error('Erro ao deletar o comentário', error);
       }
     });
   }
+
 
 
   likeComment(commentId: number): void {
@@ -291,53 +298,105 @@ export class MovieDetailsComponent {
     });
   }
 
-  toggleLikeComment(commentId: number): void {
-    const comment = this.comments.find(c => c.id === commentId);
+  toggleLikeComment(commentId: number, parentCommentId?: number): void {
+    let commentList = this.comments;
+    if (parentCommentId) {
+      const parentComment = this.comments.find(c => c.id === parentCommentId);
+      if (parentComment) {
+        commentList = parentComment.replies;
+      }
+    }
+
+    const comment = commentList.find(c => c.id === commentId);
     if (comment) {
       if (comment.hasLiked) {
-        // O usuário já curtiu este comentário, então vamos remover o like
+        // The user already liked this comment, so we will remove the like
         this.service.removeLikeFromComment(commentId).subscribe(() => {
           comment.hasLiked = false;
           comment.likesCount--;
+          this.fetchComments(); // Refresh comments to update UI
         });
       } else {
-        // O usuário ainda não curtiu este comentário, então vamos adicionar o like
+        // The user has not liked this comment yet, so we will add a like
         this.service.likeComment(commentId).subscribe(() => {
           comment.hasLiked = true;
           comment.likesCount++;
-          // Se já deu dislike antes, remover essa ação
           if (comment.hasDisliked) {
             comment.hasDisliked = false;
             comment.dislikesCount--;
           }
+          this.fetchComments(); // Refresh comments to update UI
         });
       }
     }
   }
 
-  toggleDislikeComment(commentId: number): void {
-    const comment = this.comments.find(c => c.id === commentId);
+  toggleDislikeComment(commentId: number, parentCommentId?: number): void {
+    let commentList = this.comments;
+    if (parentCommentId) {
+      const parentComment = this.comments.find(c => c.id === parentCommentId);
+      if (parentComment) {
+        commentList = parentComment.replies;
+      }
+    }
+
+    const comment = commentList.find(c => c.id === commentId);
     if (comment) {
       if (comment.hasDisliked) {
-        // O usuário já descurtiu este comentário, então vamos remover o dislike
+        // The user already disliked this comment, so we will remove the dislike
         this.service.removeDislikeFromComment(commentId).subscribe(() => {
           comment.hasDisliked = false;
           comment.dislikesCount--;
+          this.fetchComments(); // Refresh comments to update UI
         });
       } else {
-        // O usuário ainda não descurtiu este comentário, então vamos adicionar o dislike
+        // The user has not disliked this comment yet, so we will add a dislike
         this.service.dislikeComment(commentId).subscribe(() => {
           comment.hasDisliked = true;
           comment.dislikesCount++;
-          // Se já deu like antes, remover essa ação
           if (comment.hasLiked) {
             comment.hasLiked = false;
             comment.likesCount--;
           }
+          this.fetchComments(); // Refresh comments to update UI
         });
       }
     }
   }
+  // Este é um exemplo, ajuste conforme sua lógica e nomes de propriedades
+  showReplyForms: { [key: number]: boolean } = {};
+  replyTexts: { [key: number]: string } = {};
+
+  toggleReplyForm(commentId: number): void {
+    // Isso alternará a exibição do formulário de resposta para um determinado comentário.
+    this.showReplyForms[commentId] = !this.showReplyForms[commentId];
+    // Garantir que um campo de texto esteja disponível para novas respostas.
+    if (this.replyTexts[commentId] === undefined) {
+      this.replyTexts[commentId] = '';
+    }
+  }
+
+
+  addReply(parentCommentId: number): void {
+    // Garanta que existe um texto de resposta para evitar erro de 'undefined'
+    const replyText = this.replyTexts[parentCommentId] || '';
+    if (!replyText.trim()) {
+      return; // Verifica se a resposta não está vazia
+    }
+
+    const mediaId = this.getMovieDetailResult.id;
+    this.service.addCommentReply(parentCommentId, mediaId, replyText).subscribe({
+      next: () => {
+        this.fetchComments(); // Atualize os comentários para incluir a nova resposta
+        this.replyTexts[parentCommentId] = ''; // Limpe o campo de texto da resposta
+        // Se estiver usando um objeto para controlar os formulários de resposta:
+        if (this.showReplyForms) this.showReplyForms[parentCommentId] = false;
+      },
+      error: (error) => console.error('Erro ao adicionar resposta ao comentário', error)
+    });
+  }
+
+
 
 
 

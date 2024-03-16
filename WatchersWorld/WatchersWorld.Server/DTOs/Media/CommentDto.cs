@@ -1,4 +1,6 @@
-﻿namespace WatchersWorld.Server.DTOs.Media
+﻿using WatchersWorld.Server.Models.Media;
+
+namespace WatchersWorld.Server.DTOs.Media
 {
     public class CommentDto
     {
@@ -13,5 +15,10 @@
 
         public bool HasLiked { get; set; }
         public bool HasDisliked { get; set; }
+
+        public int? ParentCommentId { get; set; } // Adicione isto para suportar respostas
+
+        public Comment ParentComment { get; set; } // Adicione isto para referenciar o comentário pai
+        public ICollection<CommentDto> Replies { get; set; } // Isto está correto
     }
 }

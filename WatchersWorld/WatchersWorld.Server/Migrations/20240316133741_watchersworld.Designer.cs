@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240315211400_watchersworld")]
+    [Migration("20240316133741_watchersworld")]
     partial class watchersworld
     {
         /// <inheritdoc />
@@ -305,6 +305,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<int>("MediaId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -314,6 +317,8 @@ namespace WatchersWorld.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdTableMedia");
+
+                    b.HasIndex("ParentCommentId");
 
                     b.HasIndex("UserId");
 
@@ -511,11 +516,17 @@ namespace WatchersWorld.Server.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("IdTableMedia");
 
+                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
                     b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Media");
+
+                    b.Navigation("ParentComment");
 
                     b.Navigation("User");
                 });
@@ -576,6 +587,8 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("Dislikes");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>

@@ -218,6 +218,10 @@ namespace WatchersWorld.Server.Controllers
             return Ok(watchLaterMedia);
         }
 
+
+        //COMENTARIOS 
+
+
         [HttpPost("/api/media/add-comment")]
         public IActionResult AddComment([FromBody] CreateCommentDto request)
         {
@@ -242,28 +246,64 @@ namespace WatchersWorld.Server.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do usuário atual
 
-            var comments = _context.Comments
+            // Obter todos os comentários (principais e respostas) para o MediaId fornecido
+            var allComments = _context.Comments
                 .Where(c => c.MediaId == mediaId)
                 .Include(c => c.Likes) // Garantir que os likes sejam incluídos
                 .Include(c => c.Dislikes) // Garantir que os dislikes sejam incluídos
-                .ToList() // Executa a consulta e obtém os resultados
-                .Select(c => new CommentDto
-                {
-                    Id = c.Id,
-                    UserName = _context.Users.FirstOrDefault(u => u.Id == c.UserId)?.UserName,
-                    MediaId = c.MediaId,
-                    Text = c.Text,
-                    CreatedAt = c.CreatedAt,
-                    ProfilePhoto = _context.ProfileInfo.FirstOrDefault(pi => pi.UserId == c.UserId)?.ProfilePhoto,
-                    LikesCount = c.Likes?.Count ?? 0, // Use a propriedade null-conditional e o coalesce operator para evitar NullReferenceException
-                    DislikesCount = c.Dislikes?.Count ?? 0,
-                    HasLiked = c.Likes?.Any(l => l.UserId == userId) ?? false, // Verifica se o usuário atual já curtiu o comentário
-                    HasDisliked = c.Dislikes?.Any(d => d.UserId == userId) ?? false // Verifica se o usuário atual já descurtiu o comentário
-                }).ToList();
+                .OrderBy(c => c.CreatedAt) // Pode ordenar como preferir
+                .ToList(); // Executa a consulta e obtém os resultados
 
-            return Ok(comments);
+            // Converter para DTOs
+            var commentsDto = allComments.Select(c => new CommentDto
+            {
+                Id = c.Id,
+                ParentCommentId = c.ParentCommentId, // Certifique-se de que essa propriedade exista no seu DTO
+                UserName = _context.Users.FirstOrDefault(u => u.Id == c.UserId)?.UserName,
+                MediaId = c.MediaId,
+                Text = c.Text,
+                CreatedAt = c.CreatedAt,
+                ProfilePhoto = _context.ProfileInfo.FirstOrDefault(pi => pi.UserId == c.UserId)?.ProfilePhoto,
+                LikesCount = c.Likes?.Count ?? 0,
+                DislikesCount = c.Dislikes?.Count ?? 0,
+                HasLiked = c.Likes?.Any(l => l.UserId == userId) ?? false,
+                HasDisliked = c.Dislikes?.Any(d => d.UserId == userId) ?? false
+            }).ToList();
+
+            // Construir a hierarquia de comentários e respostas
+            var rootComments = commentsDto.Where(c => c.ParentCommentId == null).ToList(); // Comentários principais não têm ParentCommentId
+            foreach (var rootComment in rootComments)
+            {
+                rootComment.Replies = commentsDto.Where(c => c.ParentCommentId == rootComment.Id).ToList(); // Associar respostas ao seu comentário principal
+            }
+
+            return Ok(rootComments); // Retorna apenas comentários principais (as respostas estão aninhadas dentro deles)
         }
 
+
+
+        // Para postar uma resposta a um comentário
+        [Authorize]
+        [HttpPost("/api/media/add-comment-reply")]
+        public IActionResult ReplyComment([FromBody] CreateCommentDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var reply = new Comment
+            {
+                UserId = userId,
+                MediaId = request.MediaId,
+                Text = request.Text,
+                CreatedAt = DateTime.Now,
+                ParentCommentId = request.ParentCommentId // Adicione o ID do comentário pai
+            };
+
+            _context.Comments.Add(reply);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Resposta adicionada com sucesso." });
+        }
 
 
         [Authorize]
@@ -273,7 +313,7 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
 
-            var comment = _context.Comments.Find(commentId);
+            var comment = _context.Comments.Include(c => c.Replies).SingleOrDefault(c => c.Id == commentId);
             if (comment == null)
             {
                 return NotFound(new { message = "Comentário não encontrado." });
@@ -284,12 +324,25 @@ namespace WatchersWorld.Server.Controllers
                 return BadRequest(new { message = "Você só pode apagar seus próprios comentários." });
             }
 
+            // Remova recursivamente todos os comentários filhos
+            RemoveChildComments(comment.Id);
+
             _context.Comments.Remove(comment);
             _context.SaveChanges();
 
             return Ok(new { message = "Comentário excluído com sucesso." });
         }
 
+        // Método auxiliar para remover comentários filhos
+        private void RemoveChildComments(int parentId)
+        {
+            var childComments = _context.Comments.Where(c => c.ParentCommentId == parentId).ToList();
+            foreach (var child in childComments)
+            {
+                RemoveChildComments(child.Id); // Chama recursivamente para remover filhos dos filhos
+                _context.Comments.Remove(child);
+            }
+        }
 
         [Authorize]
         [HttpPost("/api/media/like-comment/{commentId}")]
