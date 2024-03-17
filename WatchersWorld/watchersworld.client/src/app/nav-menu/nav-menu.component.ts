@@ -62,10 +62,8 @@ export class NavMenuComponent {
     this.authService.getUserRole(username).subscribe((roles: string[]) => {
       if (roles.includes('Admin')) {
         this.router.navigate(['/admin']);
-      } else if (roles.includes('User')) {
+      } else if (roles.includes('User') || roles.includes('Moderator')) {
         this.router.navigate(['/profile', username]);
-      } else if (roles.includes('Moderator')) {
-        this.router.navigate(['/moderator', username]);
       } else {
         // Handle case for users without Admin or User roles or redirect to a default route
         this.router.navigate(['/home']);

@@ -356,7 +356,11 @@ export class ProfileComponent implements OnInit {
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
-        this.usersProfiles = this.getRandomOtherUsers(profiles, 5);
+        // Assuming `getLoggedInUserName()` returns the username of the logged-in user
+        const currentUsername = this.authService.getLoggedInUserName();
+        // Filter out the logged-in user's profile from the list
+        this.usersProfiles = profiles.filter(profile => profile.userName !== currentUsername);
+        // Then apply any other transformations (like randomizing) if needed
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);

@@ -222,7 +222,7 @@
 
 <!-- MODERADOR -->
 <div class="moderator-panel" *ngIf="isModerator">
-  <h3>Bem vindo {{ loggedUserName }}</h3>
+  <h3>Menu de moderador</h3>
   <div class="search-bar">
     <i class="fa fa-search search-icon"></i>
     <form>
@@ -241,7 +241,6 @@
         <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
       </div>
     </div>
-
   </div>
   <!-- Ban Popup -->
   <div *ngIf="isBanPopupVisible" class="ban-popup">

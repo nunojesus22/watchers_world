@@ -54,6 +54,7 @@ export class AdminComponent implements OnDestroy {
   }
 
 
+
   checkIfUserIsBanned(profile: Profile): boolean {
     // Directly return the isBanned status from the profile
     // If the property could be undefined, provide a default value
