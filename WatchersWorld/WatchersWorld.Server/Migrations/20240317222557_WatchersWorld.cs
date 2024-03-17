@@ -108,7 +108,8 @@ namespace WatchersWorld.Server.Migrations
                     Followers = table.Column<int>(type: "int", nullable: false),
                     Following = table.Column<int>(type: "int", nullable: false),
                     StartBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsBanned = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
