@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { User } from '../../../authentication/models/user';
 
 
 @Injectable({
@@ -13,6 +14,27 @@ export class MovieApiServiceComponent {
   baseurl = "https://api.themoviedb.org/3";
   apikey = "8e5d555177cf6c9221bb24f57822ef0d";
 
+  getJWT() {
+    const key = localStorage.getItem(environment.userKey);
+    if (key) {
+      const user = JSON.parse(key) as User;
+      return user.jwt;
+    } else {
+      return 'No JWT';
+    }
+  }
+
+  getHeaders() {
+    const jwt = this.getJWT();
+
+    // Set up the headers with the authentication token
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`
+    });
+
+    return headers;
+  }
 
 
   //getStreamingProvider
@@ -164,11 +186,13 @@ export class MovieApiServiceComponent {
   }
 
   checkIfWatched(mediaId: number, mediaType: string): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/media/is-watched/${mediaId}/${mediaType}`);
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/is-watched/${mediaId}/${mediaType}`, { headers });
   }
 
   checkIfWatchedLater(mediaId: number, mediaType: string): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`);
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`, {headers});
   } 
 
   markMediaToWatchLater(mediaId: number, type: string): Observable<any> {

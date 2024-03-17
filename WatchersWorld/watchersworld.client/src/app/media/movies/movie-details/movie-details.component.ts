@@ -17,42 +17,37 @@ export class MovieDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "movie";
-  isWatched: boolean = false; // Adicione esta linha
-  isToWatchLater: boolean = false; // Adicione esta linha
+  isWatched: boolean = false;
+  isToWatchLater: boolean = false; 
   currentUser: string | null = null;
+  comments: any[] = [];
+  showComments: boolean = false;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
-    console.log(getParamId, 'getparamid#');
     this.showAll = false;
     this.getMovie(getParamId);
     this.getVideo(getParamId);
     this.getMovieCast(getParamId);
     this.getProviders(getParamId);
-    this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
-
+    if (getParamId) {
+      this.checkIfWatchedOnInit(getParamId);
+}
     this.checkIfWatchedLater(getParamId);
-
 
     this.auth.user$.subscribe(user => {
       this.currentUser = user ? user.username.toLowerCase() : null;
-      this.fetchComments(); // Carrega os comentários
+      this.fetchComments(); 
     });
-    console.log("user", this.currentUser);
-
-  }
-  canDeleteComment(commentUserName: string): boolean {
-    if (!this.currentUser) return false;
-    return this.currentUser.toLowerCase() === commentUserName.toLowerCase();
   }
 
+  /* VISUALIZADO */
 
-  checkIfWatched(mediaId: any) {
-    // Supondo que você tenha uma propriedade `isWatched` neste componente
-    this.service.checkIfWatched(mediaId,this.type).subscribe({
-      next: (response: any) => {
+  checkIfWatchedOnInit(mediaId: string) {
+    this.service.checkIfWatched(+mediaId, this.type).subscribe({
+      next: (response) => {
         this.isWatched = response.isWatched;
-        console.log("esta visto?",this.isWatched)
+        this.showComments = this.isWatched; // Isto assegura que showComments seja atualizado com base no estado assistido
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -60,18 +55,88 @@ export class MovieDetailsComponent {
     });
   }
 
+  checkIfWatched(mediaId: any) {
+    this.service.checkIfWatched(mediaId, this.type).subscribe({
+      next: (response: any) => {
+        this.isWatched = response.isWatched;
+      },
+      error: (error) => {
+        console.error('Erro ao verificar se a mídia foi assistida', error);
+      }
+    });
+  }
+
+  markAsWatched() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      if (!this.isWatched) {
+        this.service.markMediaAsWatched(+mediaId, this.type).subscribe({
+          next: () => {
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+            this.isWatched = true;
+            this.showComments = true;
+          },
+          error: (error) => {
+            console.error('Erro ao marcar filme como assistido', error);
+          }
+        });
+      } else {
+        this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
+          next: () => {
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+            this.isWatched = false;
+            this.showComments = false;
+          },
+          error: (error) => {
+            console.error('Erro ao desmarcar filme como assistido', error);
+          }
+        });
+      }
+    }
+  }
+
+  /* VER MAIS TARDE */
+
   checkIfWatchedLater(mediaId: any) {
-    // Supondo que você tenha uma propriedade `isWatched` neste componente
     this.service.checkIfWatchedLater(mediaId, this.type).subscribe({
       next: (response: any) => {
         this.isToWatchLater = response.isToWatchLater;
-        console.log("nao esta visto?", this.isToWatchLater)
-// Aqui você atualiza com base na resposta
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
       }
     });
+  }
+
+  markToWatchLater() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      if (!this.isToWatchLater) {
+        this.service.markMediaToWatchLater(+mediaId, this.type).subscribe({
+          next: (result) => {
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+          },
+          error: (error) => {
+            console.error('Erro ao marcar media para assistir mais tarde', error);
+          }
+        });
+      } else {
+        this.service.unmarkMediaToWatchLater(+mediaId, this.type).subscribe({
+          next: (result) => {
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+          },
+          error: (error) => {
+            console.error('Erro ao desmarcar media de assistir mais tarde', error);
+          }
+        });
+      }
+    }
   }
 
   getMovie(id: any) {
@@ -90,7 +155,6 @@ export class MovieDetailsComponent {
           this.getMovieVideoResult = element.key;
         }
       });
-
     });
   }
 
@@ -130,66 +194,9 @@ export class MovieDetailsComponent {
     }
   }
 
-  markToWatchLater() {
-    let mediaId = this.router.snapshot.paramMap.get('id');
-    if (mediaId) {
-      if (!this.isToWatchLater) {
-        this.service.markMediaToWatchLater(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao marcar media para assistir mais tarde', error);
-          }
-        });
-      } else {
-        this.service.unmarkMediaToWatchLater(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao desmarcar media de assistir mais tarde', error);
-          }
-        });
-      }
-    }
+  toggleComents() {
+    this.showComments = !this.showComments;
   }
-
-  markAsWatched() {
-    let mediaId = this.router.snapshot.paramMap.get('id');
-    if (mediaId) {
-      if (!this.isWatched) {
-        this.service.markMediaAsWatched(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao marcar filme como assistido', error);
-          }
-        });
-      } else {
-        this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao desmarcar filme como assistido', error);
-          }
-        });
-      }
-    }
-  }
-
-
-  comments: any[] = [];
 
   // Dentro do ngOnInit ou em uma função separada que você chamará no ngOnInit
   getComments(mediaId: any): void {
@@ -208,7 +215,7 @@ export class MovieDetailsComponent {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
       this.service.getMediaComments(+mediaId).subscribe(comments => {
-        this.comments = comments;
+        this.comments = comments.reverse();
       });
     }
   }
@@ -233,6 +240,12 @@ export class MovieDetailsComponent {
       }
     });
   }
+
+  canDeleteComment(commentUserName: string): boolean {
+    if (!this.currentUser) return false;
+    return this.currentUser.toLowerCase() === commentUserName.toLowerCase();
+  }
+
 
   deleteComment(commentId: number, parentCommentId?: number): void {
     this.service.deleteComment(commentId).subscribe({
