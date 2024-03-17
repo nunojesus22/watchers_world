@@ -189,6 +189,7 @@ a {
 
 .not-favorite {
   color: #ccc; /* Cor cinza para não favoritos */
+}
 
 .comment-form textarea {
   resize: none; /* Prevents resizing of textarea */
@@ -343,4 +344,3 @@ a {
 .likes-count {
   font-size: 16px; /* Tamanho do texto para o número de curtidas */
 }
-

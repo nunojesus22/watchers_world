@@ -15,10 +15,6 @@ namespace WatchersWorld.Server.Data
         public DbSet<MediaInfoModel> MediaInfoModel{ get; set; }
         public DbSet<MediaListModel> MediaListModel { get; set; }
         public DbSet<UserMedia> UserMedia{ get; set; }
-        public DbSet<Comment> Comments { get; set; }
-
-        public DbSet<CommentLike> CommentLikes { get; set; }
-        public DbSet<CommentDislike> CommentDislikes { get; set; }
 
 
         public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)
