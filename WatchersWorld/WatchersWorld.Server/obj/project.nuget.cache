@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aENHkvBA9Rt4vYrM4aBsXoCiupP1dcfWOncoeGd63DOkh8t7+MTMRIEFVtJg+85IfE69BdFRGTJOqfX/JL0JhQ==",
+  "dgSpecHash": "G87hMlzb18nq4COFMSDJA3XZPbsXDc7c2G/1L40jF+kN7eRAVSoYa8aKSFiXFiujHt2lrJ1uQFYmilNXtCg7wQ==",
   "success": true,
   "projectFilePath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
   "expectedPackageFiles": [
@@ -78,6 +78,7 @@
     "C:\\Users\\johnn\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\8.0.1\\microsoft.aspnetcore.identity.entityframeworkcore.8.0.1.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.1\\microsoft.aspnetcore.identity.ui.8.0.1.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\microsoft.aspnetcore.metadata\\8.0.1\\microsoft.aspnetcore.metadata.8.0.1.nupkg.sha512",
+    "C:\\Users\\johnn\\.nuget\\packages\\microsoft.aspnetcore.owin\\8.0.2\\microsoft.aspnetcore.owin.8.0.2.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.24\\microsoft.aspnetcore.razor.language.6.0.24.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\8.0.3\\microsoft.aspnetcore.spaproxy.8.0.3.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
@@ -285,5 +286,12 @@
     "C:\\Users\\johnn\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema ao ler o arquivo de cache D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\obj\\project.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

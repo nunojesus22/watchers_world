@@ -1,9 +1,11 @@
 const PROXY_CONFIG = [
   {
     context: [
-      "/weatherforecast",
+      //"/weatherforecast",
+      "/api",
     ],
-    target: "https://localhost:7155",
+    //target: "https://localhost:7155",
+    target: "https://watchersworld.azurewebsites.net",
     secure: false
   }
 ]

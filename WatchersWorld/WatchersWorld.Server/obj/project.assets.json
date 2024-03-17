@@ -1017,6 +1017,22 @@
           }
         }
       },
+      "Microsoft.AspNetCore.Owin/8.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Microsoft.AspNetCore.Owin.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.Owin.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Razor.Language/6.0.24": {
         "type": "package",
         "compile": {
@@ -6258,6 +6274,21 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Metadata.xml",
         "microsoft.aspnetcore.metadata.8.0.1.nupkg.sha512",
         "microsoft.aspnetcore.metadata.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.Owin/8.0.2": {
+      "sha512": "ogxxXVmapqmUo0OMRHY9ZDf0FaOdkHsrAAVp+ANzMmp8xw+1lfEd5QcyuIMJq4eDy5q08onFEpAZme1RpnyvSQ==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.owin/8.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net8.0/Microsoft.AspNetCore.Owin.dll",
+        "lib/net8.0/Microsoft.AspNetCore.Owin.xml",
+        "microsoft.aspnetcore.owin.8.0.2.nupkg.sha512",
+        "microsoft.aspnetcore.owin.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Razor.Language/6.0.24": {
@@ -14413,6 +14444,7 @@
       "Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter >= 8.0.1",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.1",
       "Microsoft.AspNetCore.Identity.UI >= 8.0.1",
+      "Microsoft.AspNetCore.Owin >= 8.0.2",
       "Microsoft.AspNetCore.SpaProxy >= 8.*-*",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.1",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.1",
@@ -14502,6 +14534,10 @@
             "target": "Package",
             "version": "[8.0.1, )"
           },
+          "Microsoft.AspNetCore.Owin": {
+            "target": "Package",
+            "version": "[8.0.2, )"
+          },
           "Microsoft.AspNetCore.SpaProxy": {
             "target": "Package",
             "version": "[8.*-*, )"
@@ -14563,5 +14599,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema ao ler o arquivo de cache D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\obj\\project.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
