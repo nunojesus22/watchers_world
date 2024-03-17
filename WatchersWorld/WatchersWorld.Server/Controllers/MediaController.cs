@@ -9,6 +9,7 @@ using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Media;
+using static WatchersWorld.Server.Controllers.MediaController;
 
 namespace WatchersWorld.Server.Controllers
 {
@@ -216,6 +217,226 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(watchLaterMedia);
         }
-    }
+
+
+        //COMENTARIOS 
+
+
+        [HttpPost("/api/media/add-comment")]
+        public IActionResult AddComment([FromBody] CreateCommentDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var comment = new Comment
+            {
+                UserId = userId,
+                MediaId = request.MediaId,
+                Text = request.Text,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Comments.Add(comment);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário adicionado com sucesso." });
+        }
+        [HttpGet("/api/media/get-comments/{mediaId}")]
+        public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do usuário atual
+
+            // Obter todos os comentários (principais e respostas) para o MediaId fornecido
+            var allComments = _context.Comments
+                .Where(c => c.MediaId == mediaId)
+                .Include(c => c.Likes) // Garantir que os likes sejam incluídos
+                .Include(c => c.Dislikes) // Garantir que os dislikes sejam incluídos
+                .OrderBy(c => c.CreatedAt) // Pode ordenar como preferir
+                .ToList(); // Executa a consulta e obtém os resultados
+
+            // Converter para DTOs
+            var commentsDto = allComments.Select(c => new CommentDto
+            {
+                Id = c.Id,
+                ParentCommentId = c.ParentCommentId, // Certifique-se de que essa propriedade exista no seu DTO
+                UserName = _context.Users.FirstOrDefault(u => u.Id == c.UserId)?.UserName,
+                MediaId = c.MediaId,
+                Text = c.Text,
+                CreatedAt = c.CreatedAt,
+                ProfilePhoto = _context.ProfileInfo.FirstOrDefault(pi => pi.UserId == c.UserId)?.ProfilePhoto,
+                LikesCount = c.Likes?.Count ?? 0,
+                DislikesCount = c.Dislikes?.Count ?? 0,
+                HasLiked = c.Likes?.Any(l => l.UserId == userId) ?? false,
+                HasDisliked = c.Dislikes?.Any(d => d.UserId == userId) ?? false
+            }).ToList();
+
+            // Construir a hierarquia de comentários e respostas
+            var rootComments = commentsDto.Where(c => c.ParentCommentId == null).ToList(); // Comentários principais não têm ParentCommentId
+            foreach (var rootComment in rootComments)
+            {
+                rootComment.Replies = commentsDto.Where(c => c.ParentCommentId == rootComment.Id).ToList(); // Associar respostas ao seu comentário principal
+            }
+
+            return Ok(rootComments); // Retorna apenas comentários principais (as respostas estão aninhadas dentro deles)
+        }
+
+
+
+        // Para postar uma resposta a um comentário
+        [Authorize]
+        [HttpPost("/api/media/add-comment-reply")]
+        public IActionResult ReplyComment([FromBody] CreateCommentDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var reply = new Comment
+            {
+                UserId = userId,
+                MediaId = request.MediaId,
+                Text = request.Text,
+                CreatedAt = DateTime.Now,
+                ParentCommentId = request.ParentCommentId // Adicione o ID do comentário pai
+            };
+
+            _context.Comments.Add(reply);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Resposta adicionada com sucesso." });
+        }
+
+
+        [Authorize]
+        [HttpDelete("/api/media/delete-comment/{commentId}")]
+        public IActionResult DeleteComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var comment = _context.Comments.Include(c => c.Replies).SingleOrDefault(c => c.Id == commentId);
+            if (comment == null)
+            {
+                return NotFound(new { message = "Comentário não encontrado." });
+            }
+
+            if (comment.UserId != userId)
+            {
+                return BadRequest(new { message = "Você só pode apagar seus próprios comentários." });
+            }
+
+            // Remova recursivamente todos os comentários filhos
+            RemoveChildComments(comment.Id);
+
+            _context.Comments.Remove(comment);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário excluído com sucesso." });
+        }
+
+        // Método auxiliar para remover comentários filhos
+        private void RemoveChildComments(int parentId)
+        {
+            var childComments = _context.Comments.Where(c => c.ParentCommentId == parentId).ToList();
+            foreach (var child in childComments)
+            {
+                RemoveChildComments(child.Id); // Chama recursivamente para remover filhos dos filhos
+                _context.Comments.Remove(child);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("/api/media/like-comment/{commentId}")]
+        public IActionResult LikeComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var existingLike = _context.CommentLikes.FirstOrDefault(cl => cl.CommentId == commentId && cl.UserId == userId);
+            if (existingLike != null)
+            {
+                return BadRequest(new { message = "Você já curtiu este comentário." });
+            }
+
+            var like = new CommentLike
+            {
+                CommentId = commentId,
+                UserId = userId
+            };
+
+            _context.CommentLikes.Add(like);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário curtido com sucesso." });
+        }
+        [Authorize]
+        [HttpPost("/api/media/dislike-comment/{commentId}")]
+        public IActionResult DisLikeComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var existingDisLike = _context.CommentDislikes.FirstOrDefault(cl => cl.CommentId == commentId && cl.UserId == userId);
+            if (existingDisLike != null)
+            {
+                return BadRequest(new { message = "Você já deu dislike este comentário." });
+            }
+
+            var dislike = new CommentDislike
+            {
+                CommentId = commentId,
+                UserId = userId
+            };
+
+            _context.CommentDislikes.Add(dislike);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Comentário curtido com sucesso." });
+        }
+
+        [Authorize]
+        [HttpDelete("/api/media/remove-like/{commentId}")]
+        public IActionResult RemoveLikeFromComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var like = _context.CommentLikes.FirstOrDefault(cl => cl.CommentId == commentId && cl.UserId == userId);
+            if (like == null)
+            {
+                return NotFound(new { message = "Like não encontrado." });
+            }
+
+            _context.CommentLikes.Remove(like);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Like removido com sucesso." });
+        }
+
+        [Authorize]
+        [HttpDelete("/api/media/remove-dislike/{commentId}")]
+        public IActionResult RemoveDislikeFromComment(int commentId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var dislike = _context.CommentDislikes.FirstOrDefault(cd => cd.CommentId == commentId && cd.UserId == userId);
+            if (dislike == null)
+            {
+                return NotFound(new { message = "Dislike não encontrado." });
+            }
+
+            _context.CommentDislikes.Remove(dislike);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Dislike removido com sucesso." });
+        }
+
+
+
 
     }
+
+
+
+
+}
