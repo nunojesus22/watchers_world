@@ -118,8 +118,76 @@
               </div>
             </div>
           </div>
+
+          <div class="comments-section mt-5" *ngIf="isWatched">
+            <h2 class="mb-4">Adicionar comentário</h2>
+
+            <!-- Formulário de Novo Comentário -->
+            <div class="comment-form mb-3">
+              <textarea [(ngModel)]="newCommentText" placeholder="Escreva um comentário..." rows="3" class="form-control mb-2"></textarea>
+              <button (click)="addComment()" class="btn btn-primary">Publicar Comentário</button>
+            </div>
+
+            <!-- Lista de Comentários -->
+            <div class="comment-list" *ngIf="isWatched">
+              <h2 class="mb-4">Comentários</h2>
+              <h5 *ngIf="comments.length > 0" class="mb-4"> Número total de comentários: {{comments.length}}</h5>
+              <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded">
+                <div class="d-flex justify-content-between">
+                  <div class="user-info d-flex align-items-center">
+                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
+                    <ng-template #defaultProfile>
+                      <img src="../assets/img/joao-pfp.png" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
+                    </ng-template>
+                    <strong *ngIf="comment?.userName">{{ comment.userName }}</strong>
+                    <span class="text-muted" *ngIf="comment?.createdAt">em {{ comment.createdAt | date:'short' }}</span>
+                  </div>
+                  <button *ngIf="comment?.userName && canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" class="btn btn-danger mt-2">Apagar Comentário</button>
+                </div>
+
+                <p class="comment-text mt-2" style="margin-left:55px" *ngIf="comment?.text">{{ comment.text }}</p>
+                <div class="comment-actions d-flex align-items-center" *ngIf="comment">
+                  <button *ngIf="!comment.hasDisliked" (click)="toggleLikeComment(comment.id)" class="icon-button" [ngClass]="comment.hasLiked ? 'liked' : 'not-liked'">
+                    <i class="fa fa-thumbs-up"></i>
+                  </button>
+                  <span class="likes-count" *ngIf="comment?.likesCount">{{comment.likesCount}}</span>
+                </div>
+
+                <div class="replies mt-3" *ngIf="comment?.replies">
+                  <button *ngIf="!showReplyForms[comment.id]" (click)="toggleReplyForm(comment.id)" class="btn btn-outline-secondary">Responder</button>
+                  <div *ngIf="showReplyForms[comment.id]" class="reply-form mt-2">
+                    <textarea [(ngModel)]="replyTexts[comment.id]" class="form-control" placeholder="Escreva uma resposta..." rows="3"></textarea>
+                    <button (click)="addReply(comment.id)" class="btn btn-secondary mt-2">Enviar Resposta</button>
+                  </div>
+
+                  <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-list">
+                    <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
+                      <div class="d-flex justify-content-between" style="margin-top:15px">
+                        <div class="user-info d-flex align-items-center">
+                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image">
+                          <strong>{{ reply?.userName }}</strong>
+                          <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
+                        </div>
+                        <button *ngIf="canDeleteComment(reply.userName)" (click)="deleteComment(reply.id, comment.id)" class="btn btn-danger btn-sm">Apagar Resposta</button>
+                      </div>
+
+                      <p class="my-1" style="margin-left:45px" *ngIf="reply?.text">{{ reply?.text }}</p>
+                      <div class="action-buttons d-flex align-items-center">
+                        <button *ngIf="!reply.hasDisliked" (click)="toggleLikeComment(reply.id, comment.id)" class="icon-button" [ngClass]="reply.hasLiked ? 'liked' : 'not-liked'">
+                          <i class="fa fa-thumbs-up"></i>
+                        </button>
+                        <span class="likes-count">{{reply?.likesCount}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="comments.length === 0" class="text-muted text-center mt-3">Ainda não há comentários. Seja o primeiro a comentar!</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<br /><br />

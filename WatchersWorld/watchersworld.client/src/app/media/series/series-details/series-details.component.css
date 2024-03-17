@@ -195,3 +195,156 @@ a {
   color: #ccc; /* Cor cinza para não favoritos */
 }
 
+.comment-form textarea {
+  resize: none; /* Prevents resizing of textarea */
+}
+
+.comment-list .comment {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+  .comment-list .comment .d-flex.align-items-center {
+    margin-bottom: 15px;
+  }
+
+  .comment-list .comment img {
+    margin-right: 15px;
+    border: 3px solid #fff; /* Creates a white border around the image */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .comment-list .comment strong {
+    font-size: 1.2em; /* Makes the username larger */
+  }
+
+  .comment-list .comment .text-muted {
+    font-size: 0.9em; /* Adjust text size for date */
+    margin-left: 10px;
+  }
+
+  .comment-list .comment .like-dislike-buttons {
+    display: flex;
+    gap: 10px; /* Adds space between buttons */
+  }
+
+    .comment-list .comment .like-dislike-buttons button {
+      flex-grow: 1; /* Makes buttons fill the available space */
+    }
+
+.comment-text {
+  white-space: pre-wrap; /* Ensures that line breaks are preserved */
+  font-size: 1em; /* Adjust text size for comment */
+  margin-bottom: 15px;
+}
+
+.reply-form textarea {
+  resize: none;
+  border-radius: 8px;
+}
+
+.reply-list .reply {
+  background-color: #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  position: relative;
+}
+
+  .reply-list .reply img {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    border: 2px solid #dee2e6;
+  }
+
+  .reply-list .reply .text-muted {
+    font-size: 0.9em;
+  }
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+  .action-buttons button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 5px;
+  }
+
+.btn-outline-secondary {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-secondary {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-outline-primary, .btn-outline-danger {
+  border-width: 2px; /* Makes border thicker for a bolder look */
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem; /* Adjust padding for smaller buttons */
+  font-size: 0.875rem; /* Adjust font size for smaller buttons */
+}
+
+.comment-form button, .reply-form button {
+  width: 100%; /* Makes buttons full width for a more cohesive look */
+  margin-top: 10px; /* Adds space above the button */
+}
+
+.comment-list .comment {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.delete-icon {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.like-dislike-buttons .btn {
+  font-size: 14px;
+}
+
+.reply-list .reply {
+  background-color: #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.user-info img {
+  border: 2px solid #dee2e6;
+}
+
+.comment-form textarea {
+  border-radius: 8px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* ou o tamanho que preferir para o ícone */
+  cursor: pointer;
+}
+
+  .icon-button.liked {
+    color: #4CAEFE; /* Cor quando curtido */
+  }
+
+  .icon-button.not-liked {
+    color: grey; /* Cor quando não curtido */
+  }
+
+.likes-count {
+  font-size: 16px; /* Tamanho do texto para o número de curtidas */
+}
