@@ -1,8 +1,10 @@
-﻿using Mailjet.Client.Resources;
+﻿using Castle.Core.Logging;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NuGet.Protocol;
@@ -17,7 +19,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace WatchersWorld_Teste
 {
     [Collection("Database collection")]
-    public class AccountControllerTests : IClassFixture<IntegrationTestsFixture>, IAsyncLifetime
+    public class AccountControllerTests : IClassFixture<IntegrationTestsFixture>
     {
         private readonly WatchersWorldServerContext _context;
         private readonly AccountController _accountController;
@@ -26,6 +28,7 @@ namespace WatchersWorld_Teste
         private readonly JWTService _jwtService;
         private readonly EmailService _emailService;
         private readonly IntegrationTestsFixture _fixture;
+        private readonly ILogger<AccountController> _logger;
 
         public AccountControllerTests(IntegrationTestsFixture fixture)
         {
@@ -35,19 +38,9 @@ namespace WatchersWorld_Teste
             _signInManager = fixture.ServiceProvider.GetRequiredService<SignInManager<WatchersWorld.Server.Models.Authentication.User>>();
             _jwtService = fixture.ServiceProvider.GetRequiredService<JWTService>();
             _emailService = fixture.ServiceProvider.GetRequiredService<EmailService>();
+            _logger = fixture.ServiceProvider.GetRequiredService<ILogger<AccountController>>();
 
-            // Agora você pode instanciar o AccountController com as dependências necessárias
-            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context);
-        }
-
-        public async Task InitializeAsync()
-        {
-            await _fixture.SeedDatabaseForAccountTestAsync();
-        }
-
-        public Task DisposeAsync()
-        {
-            return Task.CompletedTask;
+            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context, _logger);
         }
 
         [Fact]

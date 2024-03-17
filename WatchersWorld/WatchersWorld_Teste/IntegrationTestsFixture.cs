@@ -1,5 +1,4 @@
-﻿using Google;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,15 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Services;
-using Mailjet.Client.Resources;
 
 namespace WatchersWorld_Teste
 {
@@ -26,7 +20,6 @@ namespace WatchersWorld_Teste
         public WatchersWorldServerContext Context { get; private set; }
         public UserManager<WatchersWorld.Server.Models.Authentication.User> UserManager { get; private set; }
         public IFollowersService _followersService { get; private set; }
-        
 
         public IntegrationTestsFixture()
         {
@@ -113,126 +106,79 @@ namespace WatchersWorld_Teste
             UserManager = ServiceProvider.GetRequiredService<UserManager<WatchersWorld.Server.Models.Authentication.User>>();
             _followersService = ServiceProvider.GetRequiredService<IFollowersService>();
             Context.Database.EnsureCreated();
+            SeedDatabaseForFollowersTestAsync().Wait();
         }
 
         public void Dispose() => Context.Database.EnsureDeleted();
 
-        public async Task SeedDatabaseForAccountTestAsync()
-        {
-            var user1 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest1@gmail.com",
-                UserName = "UserTest1",
-                Provider = "google",
-                EmailConfirmed = true,
-            };
-
-            var user2 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest2@gmail.com",
-                UserName = "UserTest2",
-                Provider = "Credentials",
-                EmailConfirmed = true,
-            };
-
-            var user3 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest3@gmail.com",
-                UserName = "UserTest3",
-                Provider = "Credentials",
-                EmailConfirmed = false,
-            };
-
-            var user6 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest6@gmail.com",
-                UserName = "UserTest6",
-                Provider = "Credentials",
-                EmailConfirmed = false,
-            };
-
-            await UserManager.CreateAsync(user1, user1.UserName);
-            await UserManager.CreateAsync(user2, user2.UserName);
-            await UserManager.CreateAsync(user3, user3.UserName);
-            await UserManager.CreateAsync(user6, user6.UserName);
-            await Context.SaveChangesAsync();
-        }
-    
         public async Task SeedDatabaseForFollowersTestAsync()
         {
-            var user1 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest1@gmail.com",
-                UserName = "UserTest1",
-                Provider = "google",
-                EmailConfirmed = true,
-            };
+            await AddUserWithProfileAsync("usertest1@gmail.com", "UserTest1", "google", true, "Public");
+            await AddUserWithProfileAsync("usertest2@gmail.com", "UserTest2", "Credentials", true, "Public");
+            await AddUserWithProfileAsync("usertest3@gmail.com", "UserTest3", "Credentials", true, "Public");
+            await AddUserWithProfileAsync("usertest4@gmail.com", "UserTest4", "Credentials", true, "Public");
+            await AddUserWithProfileAsync("usertest5@gmail.com", "UserTest5", "Credentials", true, "Private");
+            await AddUserWithProfileAsync("usertest6@gmail.com", "UserTest6", "Credentials", true, "Private");
+            await AddUserWithProfileAsync("usertest6@gmail.com", "UserTest7", "Credentials", true, "Private");
 
-            var user2 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest2@gmail.com",
-                UserName = "UserTest2",
-                Provider = "Credentials",
-                EmailConfirmed = true,
-            };
-
-            var user3 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest3@gmail.com",
-                UserName = "UserTest3",
-                Provider = "Credentials",
-                EmailConfirmed = true,
-            };
-
-            var user4 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest4@gmail.com",
-                UserName = "UserTest4",
-                Provider = "Credentials",
-                EmailConfirmed = true,
-            };
-
-            var user5 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest5@gmail.com",
-                UserName = "UserTest5",
-                Provider = "Credentials",
-                EmailConfirmed = true,
-            };
-
-            var user6 = new WatchersWorld.Server.Models.Authentication.User
-            {
-                Email = "usertest6@gmail.com",
-                UserName = "UserTest6",
-                Provider = "Credentials",
-                EmailConfirmed = true,
-            };
-
-            await UserManager.CreateAsync(user1, user1.UserName);
-            await UserManager.CreateAsync(user2, user2.UserName);
-            await UserManager.CreateAsync(user3, user3.UserName);
-            await UserManager.CreateAsync(user4, user4.UserName);
-            await UserManager.CreateAsync(user5, user5.UserName);
-            await UserManager.CreateAsync(user6, user6.UserName);
-
-            var user1ToGetId = await UserManager.FindByNameAsync(user1.UserName);
-
-            var user2ToGetId = await UserManager.FindByNameAsync(user2.UserName);
-
-            var user3ToGetId = await UserManager.FindByNameAsync(user3.UserName);
-
-            var user4ToGetId = await UserManager.FindByNameAsync(user4.UserName);
-
-            var user5ToGetId = await UserManager.FindByNameAsync(user5.UserName);
-
-            var user6ToGetId = await UserManager.FindByNameAsync(user6.UserName);
+            var user1ToGetId = await UserManager.FindByNameAsync("UserTest1");
+            var user2ToGetId = await UserManager.FindByNameAsync("UserTest2");
+            var user3ToGetId = await UserManager.FindByNameAsync("UserTest3");
+            var user4ToGetId = await UserManager.FindByNameAsync("UserTest4");
+            var user5ToGetId = await UserManager.FindByNameAsync("UserTest5");
+            var user6ToGetId = await UserManager.FindByNameAsync("UserTest6");
+            var user7ToGetId = await UserManager.FindByNameAsync("UserTest7");
 
             await _followersService.Follow(user1ToGetId!.Id, user2ToGetId!.Id);
             await _followersService.Follow(user1ToGetId!.Id, user3ToGetId!.Id);
             await _followersService.Follow(user2ToGetId!.Id, user3ToGetId!.Id);
             await _followersService.Follow(user2ToGetId!.Id, user4ToGetId!.Id);
             await _followersService.Follow(user3ToGetId!.Id, user1ToGetId!.Id);
+            await _followersService.Follow(user1ToGetId!.Id, user6ToGetId!.Id);
+            await _followersService.Follow(user2ToGetId!.Id, user6ToGetId!.Id);
+            await _followersService.Follow(user3ToGetId!.Id, user6ToGetId!.Id);
+            await _followersService.Follow(user4ToGetId!.Id, user6ToGetId!.Id);
+            await _followersService.Follow(user1ToGetId!.Id, user7ToGetId!.Id);
+            await _followersService.Follow(user2ToGetId!.Id, user7ToGetId!.Id);
+            await _followersService.Follow(user3ToGetId!.Id, user7ToGetId!.Id);
+            await _followersService.Follow(user4ToGetId!.Id, user7ToGetId!.Id);
+            await _followersService.AcceptFollowSend(user6ToGetId!.Id, user1ToGetId!.Id);
+            await _followersService.RejectFollowSend(user6ToGetId!.Id, user2ToGetId!.Id);
 
+            await Context.SaveChangesAsync();
+        }
+
+        private async Task AddUserWithProfileAsync(string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
+        {
+            var user = new WatchersWorld.Server.Models.Authentication.User
+            {
+                Email = email,
+                UserName = userName,
+                Provider = provider,
+                EmailConfirmed = emailConfirmed,
+            };
+
+            var result = await UserManager.CreateAsync(user, user.UserName);
+            if (!result.Succeeded)
+            {
+                throw new Exception("Failed to create user: " + result.Errors.FirstOrDefault()?.Description);
+            }
+
+            var userProfile = new ProfileInfo
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Description = "Description for " + userName,
+                Gender = 'M',
+                BirthDate = DateTime.Now.AddYears(-20),
+                ProfileStatus = profileStatus,
+                ProfilePhoto = "assets/img/pfp2.png",
+                CoverPhoto = "assets/img/pfp2.png",
+                Following = 0,
+                Followers = 0
+            };
+
+            Context.ProfileInfo.Add(userProfile);
             await Context.SaveChangesAsync();
         }
     }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WatchersWorld.Server.Models.Authentication;
 
-namespace WatchersWorld.Server.Models
+namespace WatchersWorld.Server.Models.Followers
 {
     public class Followers
     {
@@ -15,5 +15,7 @@ namespace WatchersWorld.Server.Models
 
         [ForeignKey(nameof(User.Id))]
         public string WhosBeingFollowed { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

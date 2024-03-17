@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WatchersWorld.Server.Models;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
 
 namespace WatchersWorld.Server.Data

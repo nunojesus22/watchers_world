@@ -125,11 +125,17 @@ namespace WatchersWorld.Server.Controllers
                 case false:
                     return BadRequest("Não foi possível seguir o utilizador pretendido.");
                 case true:
-                    var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
-                    var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+                    var isPending = await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
 
-                    currentUserProfile.Following++;
-                    userProfileToFollow.Followers++;
+                    if (!isPending)
+                    {
+                        var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                        var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+
+                        currentUserProfile.Following++;
+                        userProfileToFollow.Followers++;
+                    }
+                    
                     break;
             }
 
@@ -156,17 +162,22 @@ namespace WatchersWorld.Server.Controllers
             var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
             var userIdToFollow = userToFollow.Id;
 
+            var isPending = await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
+
             var result = await _followersService.Unfollow(userIdAuthenticated, userIdToFollow);
             switch (result)
             {
                 case false:
                     return BadRequest("Não foi possível deixar de seguir o utilizador pretendido.");
                 case true:
-                    var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
-                    var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+                    if (!isPending)
+                    {
+                        var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                        var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
 
-                    currentUserProfile.Following--;
-                    userProfileToFollow.Followers--;
+                        currentUserProfile.Following--;
+                        userProfileToFollow.Followers--;
+                    }
                     break;
             }
 
@@ -254,6 +265,93 @@ namespace WatchersWorld.Server.Controllers
             {
                 _logger.LogError(ex, "Error while getting users' profiles");
                 return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("get-whosPending/{username}")]
+        public async Task<IActionResult> GetWhosPending(string username)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(username);
+                var result = await _followersService.GetPendingsSend(user.Id);
+
+                var allProfilesFollowers = _context.ProfileInfo.Where(p => result.Contains(p.UserId.ToString()))
+                                                                .Select(profile => new FollowerDto
+                                                                {
+                                                                    Username = profile.UserName,
+                                                                    ProfilePhoto = profile.ProfilePhoto
+                                                                });
+
+                return Ok(allProfilesFollowers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("acceptFollow/{usernameAuthenticated}/{usernameWhoSend}")]
+        public async Task<IActionResult> AcceptFollow(string usernameAuthenticated, string usernameWhoSend)
+        {
+            var userAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
+            var userIdAuthenticated = userAuthenticated.Id;
+
+            var userWhoSend = await _userManager.FindByNameAsync(usernameWhoSend);
+            var userIdWhoSend = userWhoSend.Id;
+
+            var result = await _followersService.AcceptFollowSend(userIdAuthenticated, userIdWhoSend);
+            switch (result)
+            {
+                case false:
+                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
+                case true:
+                    var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                    var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameWhoSend);
+
+                    currentUserProfile.Followers++;
+                    userProfileToFollow.Following++;
+
+                    break;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Agora " + usernameWhoSend + " já o segue."});
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocorreu um erro ao seguir o utilizador.");
+                return StatusCode(500, "Não foi possível seguir o utilizador.");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpDelete("rejectFollow/{usernameAuthenticated}/{usernameWhoSend}")]
+        public async Task<IActionResult> RejectFollow(string usernameAuthenticated, string usernameWhoSend)
+        {
+            var userAuthenticated = await _userManager.FindByNameAsync(usernameAuthenticated);
+            var userIdAuthenticated = userAuthenticated.Id;
+
+            var userWhoSend = await _userManager.FindByNameAsync(usernameWhoSend);
+            var userIdWhoSend = userWhoSend.Id;
+
+            var result = await _followersService.RejectFollowSend(userIdAuthenticated, userIdWhoSend);
+            if(!result) return BadRequest("Não foi possível seguir o utilizador pretendido.");
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Você rejeitou o pedido de " + usernameWhoSend + " para o seguir." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocorreu um erro ao seguir o utilizador.");
+                return StatusCode(500, "Não foi possível seguir o utilizador.");
             }
         }
 
