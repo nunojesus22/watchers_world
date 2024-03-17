@@ -64,6 +64,8 @@ export class NavMenuComponent {
         this.router.navigate(['/admin']);
       } else if (roles.includes('User')) {
         this.router.navigate(['/profile', username]);
+      } else if (roles.includes('Moderator')) {
+        this.router.navigate(['/moderator', username]);
       } else {
         // Handle case for users without Admin or User roles or redirect to a default route
         this.router.navigate(['/home']);

@@ -63,5 +63,14 @@ export class AdminService {
     return this.http.put<any>(`${environment.appUrl}/api/admin/unban-user/${encodeURIComponent(username)}`, {}, { headers });
   }
 
+  changeRoleToModerator(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put(`${environment.appUrl}/api/admin/change-role-to-moderator/${encodeURIComponent(username)}`, {}, {
+      headers: headers,
+      responseType: 'text'  // Expect a text response
+    });
+  }
+
+
 
 }

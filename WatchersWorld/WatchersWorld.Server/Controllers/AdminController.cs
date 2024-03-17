@@ -217,6 +217,33 @@ namespace WatchersWorld.Server.Controllers
 
 
 
+        [HttpPut("api/admin/change-role-to-moderator/{username}")]
+        public async Task<IActionResult> ChangeRoleToModerator(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!removeResult.Succeeded)
+            {
+                return BadRequest("Failed to remove existing roles.");
+            }
+
+            var addResult = await _userManager.AddToRoleAsync(user, "Moderator");
+            if (!addResult.Succeeded)
+            {
+                // Optionally, you might want to rollback removing the roles if adding the new role fails
+                return BadRequest("Failed to add user to moderator role.");
+            }
+
+            return Ok("User role updated to Moderator successfully.");
+        }
+
 
 
 
