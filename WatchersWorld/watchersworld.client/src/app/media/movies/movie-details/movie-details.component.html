@@ -79,7 +79,7 @@
           </div>
 
           <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getMovieVideoResult?}}"
-          target="_blank">watch trailer</a>-->
+  target="_blank">watch trailer</a>-->
 
           <div class="container">
             <h2 class="text-black">Top Cast</h2>
@@ -98,19 +98,16 @@
               </div>
             </div>
           </div>
-          <!-- Seção de Comentários -->
           <div class="comments-section mt-5">
             <h2 class="mb-4">Comentários</h2>
 
             <!-- Formulário de Novo Comentário -->
-            <div class="comment-form">
+            <div class="comment-form mb-3">
               <textarea [(ngModel)]="newCommentText" placeholder="Escreva um comentário..." rows="3" class="form-control mb-2"></textarea>
               <button (click)="addComment()" class="btn btn-primary">Postar Comentário</button>
             </div>
 
             <!-- Lista de Comentários -->
-
-
             <div class="comment-list">
               <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded">
                 <div class="d-flex align-items-center">
@@ -122,51 +119,53 @@
                     <strong>{{ comment.userName }}</strong> <span class="text-muted">em {{ comment.createdAt | date:'short' }}</span>
                   </div>
                 </div>
-                <div class="like-dislike-buttons">
-                  <button (click)="toggleLikeComment(comment.id)" class="btn" [ngClass]="comment.hasLiked ? 'btn-primary' : 'btn-outline-primary'">
+                <div class="like-dislike-buttons mt-2">
+                  <button *ngIf="!comment.hasDisliked" (click)="toggleLikeComment(comment.id)" class="btn" [ngClass]="comment.hasLiked ? 'btn-primary' : 'btn-outline-primary'">
                     {{comment.hasLiked ? 'Remover Curtir' : 'Curtir'}} {{comment.likesCount}}
                   </button>
-                  <button (click)="toggleDislikeComment(comment.id)" class="btn" [ngClass]="comment.hasDisliked ? 'btn-danger' : 'btn-outline-danger'">
+                  <!--<button *ngIf="!comment.hasLiked" (click)="toggleDislikeComment(comment.id)" class="btn" [ngClass]="comment.hasDisliked ? 'btn-danger' : 'btn-outline-danger'">
                     {{comment.hasDisliked ? 'Remover Descurtir' : 'Descurtir'}} {{comment.dislikesCount}}
-                  </button>
-
+                  </button>-->
                 </div>
                 <button *ngIf="canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" class="btn btn-danger mt-2">Apagar Comentário</button>
                 <p class="comment-text mt-2">{{ comment.text }}</p>
-                <div class="replies">
-                  <!-- Botão para responder ao comentário -->
+                <div class="replies mt-3">
                   <button *ngIf="!showReplyForms[comment.id]" (click)="toggleReplyForm(comment.id)" class="btn btn-outline-secondary mt-2">Responder</button>
-                  <!-- Formulário de resposta -->
                   <div *ngIf="showReplyForms[comment.id]" class="reply-form mt-2">
                     <textarea [(ngModel)]="replyTexts[comment.id]" class="form-control" placeholder="Escreva uma resposta..." rows="3"></textarea>
                     <button (click)="addReply(comment.id)" class="btn btn-secondary mt-2">Enviar Resposta</button>
                   </div>
-                  <!-- Listagem de respostas -->
-                  <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-list mt-2">
-                    <div *ngFor="let reply of comment.replies" class="reply mb-2 p-2 bg-light rounded">
+                  <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-list mt-3">
+                    <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
                       <div class="d-flex justify-content-between">
                         <div>
+                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" style="width: 35px; height: 35px;" alt="Reply user profile image">
                           <strong>{{ reply.userName }}</strong> <span class="text-muted">em {{ reply.createdAt | date:'short' }}</span>
                           <p>{{ reply.text }}</p>
                         </div>
-                        <div>
-                          <button (click)="toggleLikeComment(reply.id, comment.id)" class="btn" [ngClass]="reply.hasLiked ? 'btn-primary btn-sm' : 'btn-outline-primary btn-sm'">
+                        <div class="action-buttons">
+                          <button *ngIf="canDeleteComment(reply.userName)" (click)="deleteComment(reply.id, comment.id)" class="btn btn-danger btn-sm">Apagar Resposta</button>
+                          <button *ngIf="!reply.hasDisliked" (click)="toggleLikeComment(reply.id, comment.id)" class="btn" [ngClass]="reply.hasLiked ? 'btn-primary btn-sm' : 'btn-outline-primary btn-sm'">
                             {{reply.hasLiked ? 'Remover Curtir' : 'Curtir'}} {{reply.likesCount}}
                           </button>
-                          <button (click)="toggleDislikeComment(reply.id, comment.id)" class="btn" [ngClass]="reply.hasDisliked ? 'btn-danger btn-sm' : 'btn-outline-danger btn-sm'">
+                          <!--<button *ngIf="!reply.hasLiked" (click)="toggleDislikeComment(reply.id, comment.id)" class="btn" [ngClass]="reply.hasDisliked ? 'btn-danger btn-sm' : 'btn-outline-danger btn-sm'">
                             {{reply.hasDisliked ? 'Remover Descurtir' : 'Descurtir'}} {{reply.dislikesCount}}
-                          </button>
+                          </button>-->
                         </div>
-                        <button *ngIf="canDeleteComment(reply.userName)" (click)="deleteComment(reply.id, comment.id)" class="btn btn-danger btn-sm">Apagar Resposta</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div *ngIf="comments.length === 0" class="text-muted">Ainda não há comentários. Seja o primeiro a comentar!</div>
+              <div *ngIf="comments.length === 0" class="text-muted text-center mt-3">Ainda não há comentários. Seja o primeiro a comentar!</div>
             </div>
-
           </div>
+
+
+
+
+
+        </div>
         </div>
       </div>
     </div>

@@ -266,15 +266,15 @@ export class MovieDetailsComponent {
   }
 
 
-  dislikeComment(commentId: number): void {
-    this.service.dislikeComment(commentId).subscribe({
-      next: () => {
-        // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
-        this.fetchComments();
-      },
-      error: (error) => console.error('Erro ao curtir o comentário', error)
-    });
-  }
+  //dislikeComment(commentId: number): void {
+  //  this.service.dislikeComment(commentId).subscribe({
+  //    next: () => {
+  //      // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
+  //      this.fetchComments();
+  //    },
+  //    error: (error) => console.error('Erro ao curtir o comentário', error)
+  //  });
+  //}
 
   removeLike(commentId: number): void {
     this.service.removeLikeFromComment(commentId).subscribe(() => {
@@ -287,16 +287,16 @@ export class MovieDetailsComponent {
     });
   }
 
-  removeDislike(commentId: number): void {
-    this.service.removeDislikeFromComment(commentId).subscribe(() => {
-      // Atualize a interface do usuário aqui
-      const comment = this.comments.find(c => c.id === commentId);
-      if (comment) {
-        comment.dislikesCount--;
-        comment.hasDisliked = false;
-      }
-    });
-  }
+  //removeDislike(commentId: number): void {
+  //  this.service.removeDislikeFromComment(commentId).subscribe(() => {
+  //    // Atualize a interface do usuário aqui
+  //    const comment = this.comments.find(c => c.id === commentId);
+  //    if (comment) {
+  //      comment.dislikesCount--;
+  //      comment.hasDisliked = false;
+  //    }
+  //  });
+  //}
 
   toggleLikeComment(commentId: number, parentCommentId?: number): void {
     let commentList = this.comments;
@@ -331,38 +331,38 @@ export class MovieDetailsComponent {
     }
   }
 
-  toggleDislikeComment(commentId: number, parentCommentId?: number): void {
-    let commentList = this.comments;
-    if (parentCommentId) {
-      const parentComment = this.comments.find(c => c.id === parentCommentId);
-      if (parentComment) {
-        commentList = parentComment.replies;
-      }
-    }
+  //toggleDislikeComment(commentId: number, parentCommentId?: number): void {
+  //  let commentList = this.comments;
+  //  if (parentCommentId) {
+  //    const parentComment = this.comments.find(c => c.id === parentCommentId);
+  //    if (parentComment) {
+  //      commentList = parentComment.replies;
+  //    }
+  //  }
 
-    const comment = commentList.find(c => c.id === commentId);
-    if (comment) {
-      if (comment.hasDisliked) {
-        // The user already disliked this comment, so we will remove the dislike
-        this.service.removeDislikeFromComment(commentId).subscribe(() => {
-          comment.hasDisliked = false;
-          comment.dislikesCount--;
-          this.fetchComments(); // Refresh comments to update UI
-        });
-      } else {
-        // The user has not disliked this comment yet, so we will add a dislike
-        this.service.dislikeComment(commentId).subscribe(() => {
-          comment.hasDisliked = true;
-          comment.dislikesCount++;
-          if (comment.hasLiked) {
-            comment.hasLiked = false;
-            comment.likesCount--;
-          }
-          this.fetchComments(); // Refresh comments to update UI
-        });
-      }
-    }
-  }
+  //  const comment = commentList.find(c => c.id === commentId);
+  //  if (comment) {
+  //    if (comment.hasDisliked) {
+  //      // The user already disliked this comment, so we will remove the dislike
+  //      this.service.removeDislikeFromComment(commentId).subscribe(() => {
+  //        comment.hasDisliked = false;
+  //        comment.dislikesCount--;
+  //        this.fetchComments(); // Refresh comments to update UI
+  //      });
+  //    } else {
+  //      // The user has not disliked this comment yet, so we will add a dislike
+  //      this.service.dislikeComment(commentId).subscribe(() => {
+  //        comment.hasDisliked = true;
+  //        comment.dislikesCount++;
+  //        if (comment.hasLiked) {
+  //          comment.hasLiked = false;
+  //          comment.likesCount--;
+  //        }
+  //        this.fetchComments(); // Refresh comments to update UI
+  //      });
+  //    }
+  //  }
+  //}
   // Este é um exemplo, ajuste conforme sua lógica e nomes de propriedades
   showReplyForms: { [key: number]: boolean } = {};
   replyTexts: { [key: number]: string } = {};
