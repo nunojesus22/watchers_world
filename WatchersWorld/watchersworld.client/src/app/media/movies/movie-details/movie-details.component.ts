@@ -21,8 +21,6 @@ export class MovieDetailsComponent {
   isToWatchLater: boolean = false; // Adicione esta linha
   actorIsFavorite: boolean = false;
   movieRating = 0; 
-  isWatched: boolean = false;
-  isToWatchLater: boolean = false; 
   currentUser: string | null = null;
   comments: any[] = [];
   showComments: boolean = false;
