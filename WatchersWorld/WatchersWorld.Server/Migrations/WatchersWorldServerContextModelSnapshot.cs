@@ -169,6 +169,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("EndBanDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Followers")
                         .HasColumnType("int");
 
@@ -184,6 +187,9 @@ namespace WatchersWorld.Server.Migrations
 
                     b.Property<string>("ProfileStatus")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartBanDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
@@ -367,6 +373,7 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("UserMedia");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("WatchersWorld.Server.Models.Quiz.QuizCategorys", b =>
                 {
                     b.Property<int>("Id")
@@ -850,6 +857,8 @@ namespace WatchersWorld.Server.Migrations
                         });
                 });
 
+=======
+>>>>>>> development
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -917,6 +926,7 @@ namespace WatchersWorld.Server.Migrations
 
                     b.Navigation("MediaListModel");
                 });
+<<<<<<< HEAD
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Quiz.QuizOption", b =>
                 {
@@ -945,6 +955,8 @@ namespace WatchersWorld.Server.Migrations
 
                     b.Navigation("QuizQuestionsGroup");
                 });
+=======
+>>>>>>> development
 #pragma warning restore 612, 618
         }
     }

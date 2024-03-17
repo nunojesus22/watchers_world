@@ -41,5 +41,10 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 
         public int Followers { get; set; } 
         public int Following { get; set; }
+
+
+        public DateTime StartBanDate { get; set; }
+
+        public DateTime EndBanDate { get; set; }
     }
 }

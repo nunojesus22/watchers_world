@@ -57,6 +57,26 @@ export class NavMenuComponent {
   onKeyup() {
     console.log('one key up',this.searchQuery);
   }
+
+  navigateBasedOnRole(username: string) {
+    this.authService.getUserRole(username).subscribe((roles: string[]) => {
+      if (roles.includes('Admin')) {
+        this.router.navigate(['/admin']);
+      } else if (roles.includes('User')) {
+        this.router.navigate(['/profile', username]);
+      } else {
+        // Handle case for users without Admin or User roles or redirect to a default route
+        this.router.navigate(['/home']);
+      }
+    }, error => {
+      console.error('Error fetching user role', error);
+      this.router.navigate(['/home']); // Fallback in case of an error
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 }
 
 

@@ -72,6 +72,12 @@
 
           </div>
 
+          <div>
+            <!-- O botão abaixo navega para a página de detalhes da temporada -->
+            <button [routerLink]="['/serie', getSerieDetailsResult?.id, 'season']" class="btn btn-primary">
+              Ver Todas as Temporadas
+            </button>
+          </div>
 
 
 
@@ -87,9 +93,12 @@
             Onde Ver:
             Ainda não existem provedores de streaming disponíveis.
           </div>
-
+          <div *ngIf="isWatched" class="rating-container">
+            <p class="manual-text mt-2 mb-1">Avaliação:</p>
+            <i class="fa-star" *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" [class.fas]="movieRating > i" [class.far]="movieRating <= i" (click)="rateMovie(i + 1)"></i>
+          </div>
           <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getSerieVideoResult?}}"
-          target="_blank">watch trailer</a>-->
+  target="_blank">watch trailer</a>-->
 
           <div class="container">
             <h2 class="text-black">Top Cast</h2>
@@ -102,8 +111,8 @@
                   </ng-template>
                 </div>
                 <div class="card-body">
+                  <i *ngIf="isWatched" class="fa-star" [class.fas]="c.isFavorite" [class.far]="!c.isFavorite" (click)="toggleFavorite(c)"></i>
                   <h3 class="text-black">{{c?.original_name}}</h3>
-                  <p class="text-black">{{c?.character}}</p>
                   <p class="text-black">{{c?.character}}</p>
                 </div>
               </div>

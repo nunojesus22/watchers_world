@@ -25,18 +25,33 @@ nav {
 
 /* Aumentar o tamanho do ícone do menu */
 .fa-bars {
-  font-size: 40px; /* Ajuste o tamanho conforme necessário */
+  font-size: 50px; /* Ajuste o tamanho conforme necessário */
+}
+
+a:hover {
+  transform: scale(1.09);
+  cursor: pointer;
 }
 
 .logo {
   width: 5%
 }
 
+  .logo:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
 .menu-item {
   display: flex; /* Organiza o ícone e o texto lado a lado */
   align-items: center; /* Centraliza verticalmente */
   color: white; /* Cor do texto e ícone */
   text-decoration: none; /* Remove o sublinhado do link */
+}
+
+.menu-item:hover {
+  transform: scale(1.09);
+  cursor: pointer;
 }
 
   .menu-item i {
@@ -48,12 +63,22 @@ nav {
   height: auto; /* mantém a proporção da imagem */
 }
 
+.user-icon:hover {
+  transform: scale(1.09);
+  cursor: pointer;
+}
+
 
 /**BARRA DE PESQUISA*/
 .search-bar {
   display: flex;
   align-items: center;
   position: relative;
+}
+
+.search-bar:hover {
+  transform: scale(1.09);
+  cursor: pointer;
 }
 
 .search-icon {
@@ -107,7 +132,7 @@ nav {
 }
 
   .sidebar a {
-    padding: 8px 8px 16px; /* Ajuste o padding-left para centralizar mais para a esquerda */
+    padding: 8px 8px 16px 8px; /* Ajuste o padding-left para centralizar mais para a esquerda */
     text-decoration: none;
     font-size: 25px;
     color: #818181;
@@ -116,6 +141,7 @@ nav {
     transition: 0.3s;
     height: 40px; /* Altura fixa para os links */
     line-height: 40px; /* Alinha verticalmente o texto */
+    z-index:1;
   }
 
     .sidebar a:hover {
@@ -129,15 +155,16 @@ nav {
   .sidebar .closebtn {
     position: absolute;
     top: 0;
-    right: 25px;
+    left: 155px;
     font-size: 36px;
-    margin-left: 50px;
+    margin-top:10px;
   }
 
 
 .wwimage {
   max-width: 50%;
   height: auto;
+  margin-bottom:20px;
 }
 
 .active-link {

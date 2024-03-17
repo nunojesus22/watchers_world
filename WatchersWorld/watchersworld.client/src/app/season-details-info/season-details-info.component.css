@@ -1,0 +1,103 @@
+
+
+.d-flex {
+  display: flex !important;
+  align-content: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.container.bg-white {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.series-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.backdrop-with-poster {
+  position: relative;
+  max-width: 200px;
+  margin-right: 20px;
+}
+
+
+
+
+.serie-title {
+  color: #007bff; /* Azul para o título da série */
+  font-size: 24px;
+}
+
+.serie-tagline {
+  font-size: 16px;
+  color: #6c757d; /* Cinza para a tagline */
+}
+
+.episode-container {
+  display: flex;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Acrescenta um border cinza discreto */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Acrescenta uma sombra suave */
+  border-radius: 5px; /* Bordas arredondadas */
+}
+
+
+
+.episode-info {
+  flex: 1;
+  padding: 0px;
+}
+
+  .episode-info h3 {
+    color: #4CAEFE; /* Azul para o nome do episódio */
+    font-size: 20px;
+  }
+
+  .episode-info p {
+    margin-bottom: 5px;
+    color: #495057; /* Cinza escuro para o texto */
+  }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #6c757d;
+  color: white;
+}
+
+  .btn-secondary i {
+    margin-right: 5px;
+  }
+
+@media (max-width: 768px) {
+  .episode-container {
+    flex-direction: column;
+  }
+
+  .episode-image-container, .episode-info {
+    flex: 1;
+  }
+}
+
+.episode-container[_ngcontent-ng-c3539288208] {
+  display: flex;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-around;
+  align-content: space-around;
+  flex-direction: row;
+}

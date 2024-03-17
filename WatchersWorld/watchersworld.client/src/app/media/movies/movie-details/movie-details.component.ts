@@ -20,6 +20,8 @@ export class MovieDetailsComponent {
   type: string = "movie";
   isWatched: boolean = false; // Adicione esta linha
   isToWatchLater: boolean = false; // Adicione esta linha
+  actorIsFavorite: boolean = false;
+  movieRating = 0; 
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -31,10 +33,25 @@ export class MovieDetailsComponent {
     this.getProviders(getParamId);
     this.getMovie(getParamId);
     this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
-
     this.checkIfWatchedLater(getParamId);
   }
 
+  toggleFavorite(selectedActor: any): void {
+    if (selectedActor.isFavorite) {
+      selectedActor.isFavorite = false;
+      return;
+    }
+
+    this.getMovieCastResult.forEach((actor: { isFavorite: boolean; }) => {
+      actor.isFavorite = false;
+    });
+
+    selectedActor.isFavorite = true;
+  }
+
+  rateMovie(rating: number): void {
+    this.movieRating = rating;
+  }
 
   checkIfWatched(mediaId: any) {
     // Supondo que você tenha uma propriedade `isWatched` neste componente
