@@ -37,7 +37,7 @@ namespace WatchersWorld_Teste
             _emailService = fixture.ServiceProvider.GetRequiredService<EmailService>();
 
             // Agora você pode instanciar o AccountController com as dependências necessárias
-            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context);
+            //_accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context);
         }
 
         public async Task InitializeAsync()

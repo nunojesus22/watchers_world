@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class watchersworld : Migration
+    public partial class WatchersWorld : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -108,7 +108,8 @@ namespace WatchersWorld.Server.Migrations
                     Followers = table.Column<int>(type: "int", nullable: false),
                     Following = table.Column<int>(type: "int", nullable: false),
                     StartBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsBanned = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
