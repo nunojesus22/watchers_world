@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace WatchersWorld.Server.Models.Media
 {
     public class MediaInfoModel
@@ -15,8 +14,7 @@ namespace WatchersWorld.Server.Models.Media
 
 
 
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
     }
 }
