@@ -182,9 +182,6 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 

@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WatchersWorld.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dab8a33a938eb92715a0702ab56905322f7eee61")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78b14ea80d02769c64edb2d5393322b89545bb0d")]
 [assembly: System.Reflection.AssemblyProductAttribute("WatchersWorld.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WatchersWorld.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

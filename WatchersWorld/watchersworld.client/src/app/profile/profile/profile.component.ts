@@ -9,7 +9,6 @@ import { FollowerProfile } from '../models/follower-profile';
 import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movie-api-service.component';
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
-import { AdminService } from '../../admin/service/admin.service';
 
 interface MovieCategory {
   name: string;
@@ -88,22 +87,10 @@ export class ProfileComponent implements OnInit {
   watchLaterSeries: any[] = [];
   getMovieDetailResult: any;
 
-
-
-  //MODERADOR
-  isBanPopupVisible = false;
-  isModerator: boolean = false;
-  banDuration: number | undefined;
-  isBanned?: boolean; 
-  selectedUserForBan: string | null = null;
-
-
-
-
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
-    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
+    private service: MovieApiServiceComponent, private title: Title) { }
 
   ngOnInit(): void {
 
@@ -127,7 +114,6 @@ export class ProfileComponent implements OnInit {
         }
       });
 
-      this.loadUserRole();
 
 
       if (this.currentUsername) {
@@ -168,19 +154,6 @@ export class ProfileComponent implements OnInit {
     this.unsubscribed$.next();
     this.unsubscribed$.complete();
   }
-
-  private loadUserRole() {
-    // Assuming the AuthService is keeping track of the current user's username
-    const currentUsername = this.authService.getLoggedInUserName();
-    if (currentUsername) {
-      this.authService.getUserRole(currentUsername).subscribe(roles => {
-        this.isModerator = roles.includes('Moderator');
-      }, error => {
-        console.error('Error fetching roles:', error);
-      });
-    }
-  }
-
 
   // A função getUserProfileInfo deve retornar uma Promise agora
   getUserProfileInfo(username: string): Promise<void> {
@@ -356,11 +329,7 @@ export class ProfileComponent implements OnInit {
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
-        // Assuming `getLoggedInUserName()` returns the username of the logged-in user
-        const currentUsername = this.authService.getLoggedInUserName();
-        // Filter out the logged-in user's profile from the list
-        this.usersProfiles = profiles.filter(profile => profile.userName !== currentUsername);
-        // Then apply any other transformations (like randomizing) if needed
+        this.usersProfiles = this.getRandomOtherUsers(profiles, 5);
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
@@ -563,97 +532,4 @@ export class ProfileComponent implements OnInit {
   toggleExpandedSuggestions() {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
   }
-
-
-  //--------------------------------------------------MODERADOR------------------------------------------------------------------
-  checkIfUserIsBanned(profile: Profile): boolean {
-    // Directly return the isBanned status from the profile
-    // If the property could be undefined, provide a default value
-    return profile.isBanned ?? false;
-  }
-
-
-  banTemp(username: string | null): void {
-    if (!username) {
-      console.error('Username is undefined, cannot ban user temporarily.');
-      return;
-    }
-    if (this.banDuration == null || this.banDuration <= 0) {
-      console.error('Ban duration is not specified or is invalid.');
-      return;
-    }
-    console.log(`Attempting to ban user temporarily: ${username} for ${this.banDuration} days`);
-
-    this.adminService.BanUserTemporarily(username, this.banDuration).subscribe({
-      next: () => {
-        console.log(`User banned temporarily for ${this.banDuration} days`);
-        const user = this.usersProfiles?.find(u => u.userName === username);
-        if (user) {
-          user.isBanned = true;
-          // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
-        }
-      },
-      error: error => {
-        console.error("Error banning user temporarily:", error);
-      }
-    });
-  }
-
-
-
-  banPerm(username: string | null): void {
-    if (!username) {
-      console.error('Username is undefined, cannot ban user.');
-      return;
-    }
-    console.log(`Attempting to ban user permanently: ${username}`);
-
-    this.adminService.banUserPermanently(username).subscribe({
-      next: () => {
-        console.log('User banned permanently');
-        const user = this.usersProfiles?.find(u => u.userName === username);
-        if (user) {
-          user.isBanned = true;
-          // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
-        }
-      },
-      error: error => {
-        console.error("Error banning user:", error);
-      }
-    });
-  }
-
-  unban(username: string | undefined): void {
-    if (!username) {
-      console.error('Username is undefined, cannot unban user.');
-      return;
-    }
-    this.adminService.unbanUser(username).subscribe({
-      next: (response) => {
-        console.log(response.message);
-        const user = this.usersProfiles?.find(u => u.userName === username);
-        if (user) {
-          user.isBanned = false;
-        }
-        // This will trigger change detection and update the UI
-        this.usersProfiles = [...this.usersProfiles!];
-      },
-      error: (error) => {
-        console.error("Error unbanning user:", error);
-      }
-    });
-  }
-
-  showBanPopup(username: string): void {
-    this.selectedUserForBan = username;
-    this.isBanPopupVisible = true; // This should show the popup
-  }
-
-  hideBanPopup(): void {
-    this.isBanPopupVisible = false;
-    this.selectedUserForBan = null; // Clear the selected user
-  }
-
 }
