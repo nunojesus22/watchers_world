@@ -18,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IFollowersService, FollowersService>();
+builder.Services.AddScoped<IFavoriteActorService, FavoriteActorService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
