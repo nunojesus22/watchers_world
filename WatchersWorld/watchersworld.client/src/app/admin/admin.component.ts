@@ -76,6 +76,7 @@ export class AdminComponent implements OnDestroy {
       next: () => {
         console.log(`User banned temporarily for ${this.banDuration} days`);
         const user = this.usersProfiles?.find(u => u.userName === username);
+        this.hideBanPopup();
         if (user) {
           user.isBanned = true;
           // This will trigger change detection and update the UI
@@ -101,6 +102,7 @@ export class AdminComponent implements OnDestroy {
       next: () => {
         console.log('User banned permanently');
         const user = this.usersProfiles?.find(u => u.userName === username);
+        this.hideBanPopup();
         if (user) {
           user.isBanned = true;
         }
