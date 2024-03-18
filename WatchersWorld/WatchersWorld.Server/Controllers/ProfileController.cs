@@ -356,6 +356,7 @@ namespace WatchersWorld.Server.Controllers
         }
 
         [AllowAnonymous]
+        [Authorize]
         [HttpGet("alreadyFollows/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> IsFollowing(string usernameAuthenticated, string usernameToFollow)
         {

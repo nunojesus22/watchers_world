@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WatchersWorld.Server", "WatchersWorld.Server\WatchersWorld.Server.csproj", "{32C0C30D-859A-4245-A3C0-191720C5BCB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersWorld.Server", "WatchersWorld.Server\WatchersWorld.Server.csproj", "{32C0C30D-859A-4245-A3C0-191720C5BCB7}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "watchersworld.client", "watchersworld.client\watchersworld.client.esproj", "{51FACCED-FB2D-43D9-A894-0B591346BD55}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersWorld_Teste", "WatchersWorld_Teste\WatchersWorld_Teste.csproj", "{36F49022-A1F0-41B3-A944-BA02E56EA095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{51FACCED-FB2D-43D9-A894-0B591346BD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51FACCED-FB2D-43D9-A894-0B591346BD55}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51FACCED-FB2D-43D9-A894-0B591346BD55}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{36F49022-A1F0-41B3-A944-BA02E56EA095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36F49022-A1F0-41B3-A944-BA02E56EA095}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36F49022-A1F0-41B3-A944-BA02E56EA095}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36F49022-A1F0-41B3-A944-BA02E56EA095}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
