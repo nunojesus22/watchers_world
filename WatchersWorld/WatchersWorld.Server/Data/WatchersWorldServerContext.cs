@@ -5,6 +5,7 @@ using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Media.FavoriteActor;
+using WatchersWorld.Server.Models.Media.RatingMedia;
 
 namespace WatchersWorld.Server.Data
 {
@@ -19,6 +20,7 @@ namespace WatchersWorld.Server.Data
         public DbSet<Actor> Actor { get; set; }
         public DbSet<ActorMedia> ActorMedia { get; set; }
         public DbSet<FavoriteActorChoice> FavoriteActorChoice { get; set; }
+        public DbSet<UserRatingMedia> UserRatingMedia { get; set; }
 
 
         public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)
