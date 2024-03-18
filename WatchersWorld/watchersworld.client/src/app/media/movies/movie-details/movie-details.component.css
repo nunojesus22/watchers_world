@@ -20,8 +20,8 @@ h1 {
 .movie-details-sinopse {
   background: #e3e3e369;
   border-radius: 1% / 1%;
-
 }
+
 a {
   background-color: #E50914;
   color: black;
@@ -33,6 +33,7 @@ a {
     color: #ffffff;
     border: 2px solid #ffffff;
   }
+
 .category-div {
   display: flex;
   /* flex: auto; */
@@ -40,19 +41,21 @@ a {
   justify-content: flex-start;
   align-items: baseline;
   flex-direction: row;
-  font-size:15px;
-  color:black;
-  
+  font-size: 15px;
+  color: black;
 }
+
 .genre-p {
   color: black;
-  font-weight:550;
+  font-weight: 550;
 }
+
 .provider-logo {
   width: 50px; /* Defina o tamanho da imagem conforme necessário */
   margin-right: 10px; /* Ajuste a margem conforme necessário para espaçamento entre a imagem e o texto */
   border-radius: 50%;
 }
+
 .ps {
   display: table-cell;
   padding-right: 32px;
@@ -65,7 +68,6 @@ a {
   width: 100%;
   height: auto;
   opacity: 0.8;
-
 }
 
 
@@ -79,8 +81,9 @@ a {
 }
 
 .p-4 {
-  margin-left:3%;
+  margin-left: 3%;
 }
+
 .expand-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -106,6 +109,7 @@ a {
   .row.flex-nowrap .col-lg-4 {
     display: inline-block;
   }
+
 .actor-image {
   object-fit: cover;
   height: 100%;
@@ -125,6 +129,7 @@ a {
 .default-image {
   margin: auto;
 }
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -150,9 +155,9 @@ a {
   transition: 0.3s;
 }
 
-.actor-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+  .actor-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
 
 .card-body[_ngcontent-ng-c671431383] {
   flex: 1 1 auto;
@@ -189,6 +194,7 @@ a {
 
 .not-favorite {
   color: #ccc; /* Cor cinza para não favoritos */
+}
 
 .comment-form textarea {
   resize: none; /* Prevents resizing of textarea */
@@ -260,9 +266,9 @@ a {
   }
 
 .action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
   .action-buttons button {
@@ -343,4 +349,3 @@ a {
 .likes-count {
   font-size: 16px; /* Tamanho do texto para o número de curtidas */
 }
-
