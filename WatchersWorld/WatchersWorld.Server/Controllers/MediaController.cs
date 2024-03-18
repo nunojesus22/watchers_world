@@ -319,12 +319,21 @@ namespace WatchersWorld.Server.Controllers
                 return NotFound(new { message = "Comentário não encontrado." });
             }
 
-            if (comment.UserId != userId)
+            // Get the admin and moderator role IDs in one call
+            var adminRoleId = _context.Roles.Where(r => r.Name == "Admin").Select(r => r.Id).FirstOrDefault();
+            var moderatorRoleId = _context.Roles.Where(r => r.Name == "Moderator").Select(r => r.Id).FirstOrDefault();
+
+            // Check if the user is an admin or moderator in one call
+            bool isUserAdminOrModerator = _context.UserRoles.Any(ur =>
+                ur.UserId == userId &&
+                (ur.RoleId == adminRoleId || ur.RoleId == moderatorRoleId));
+
+            if (comment.UserId != userId && !isUserAdminOrModerator)
             {
                 return BadRequest(new { message = "Você só pode apagar seus próprios comentários." });
             }
 
-            // Remova recursivamente todos os comentários filhos
+            // Remove recursively all child comments
             RemoveChildComments(comment.Id);
 
             _context.Comments.Remove(comment);
@@ -332,6 +341,9 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Comentário excluído com sucesso." });
         }
+
+
+
 
         // Método auxiliar para remover comentários filhos
         private void RemoveChildComments(int parentId)

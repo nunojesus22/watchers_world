@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
+import { AdminService } from '../../../admin/service/admin.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-movie-details',
@@ -10,7 +12,10 @@ import { AuthenticationService } from '../../../authentication/services/authenti
   styleUrl: './movie-details.component.css' 
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService) {
+    this.setUserRole();
+  }
+
   getMovieDetailResult: any;
   getMovieVideoResult: any;
   getMovieCastResult: any;
@@ -24,6 +29,9 @@ export class MovieDetailsComponent {
   currentUser: string | null = null;
   comments: any[] = [];
   showComments: boolean = false;
+
+  private isAdminOrModerator$ = new BehaviorSubject<boolean>(false);
+
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -43,6 +51,15 @@ export class MovieDetailsComponent {
       this.currentUser = user ? user.username.toLowerCase() : null;
       this.fetchComments(); 
     });
+  }
+
+  setUserRole(): void {
+    const username = this.auth.getLoggedInUserName();
+    if (username) {
+      this.adminService.getUserRole(username).subscribe(roles => {
+        this.isAdminOrModerator$.next(roles.includes('Admin') || roles.includes('Moderator'));
+      });
+    }
   }
 
   toggleFavorite(selectedActor: any): void {
@@ -263,7 +280,9 @@ export class MovieDetailsComponent {
 
   canDeleteComment(commentUserName: string): boolean {
     if (!this.currentUser) return false;
-    return this.currentUser.toLowerCase() === commentUserName.toLowerCase();
+    const isCurrentUser = this.currentUser.toLowerCase() === commentUserName.toLowerCase();
+    const isAdminOrModerator = this.isAdminOrModerator$.getValue();
+    return isCurrentUser || isAdminOrModerator;
   }
 
 
