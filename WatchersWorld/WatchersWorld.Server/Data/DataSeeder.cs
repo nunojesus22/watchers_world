@@ -48,7 +48,7 @@ namespace WatchersWorld.Server.Data
                 Gender = 'M',
                 BirthDate = DateTime.Now.AddYears(-20),
                 ProfileStatus = profileStatus,
-                ProfilePhoto = "assets/img/pfp2.png",
+                ProfilePhoto = "assets/img/nuno-pfp.png",
                 CoverPhoto = "assets/img/pfp2.png",
                 Following = 0,
                 Followers = 0

@@ -10,10 +10,16 @@ import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-a
   styleUrl: './nav-menu.component.css'
 })
 export class NavMenuComponent {
+  loggedUserName: string | null = null;
   isActive: boolean = false;
   searchQuery: any;
 
   constructor(private service: MovieApiServiceComponent, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+
+  ngOnInit(): void {
+    this.loggedUserName = this.authService.getLoggedInUserName();
+  }
+
   showMenu = false;
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) {

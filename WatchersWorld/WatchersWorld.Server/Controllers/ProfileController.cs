@@ -293,6 +293,7 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+
         [AllowAnonymous]
         [HttpPost("acceptFollow/{usernameAuthenticated}/{usernameWhoSend}")]
         public async Task<IActionResult> AcceptFollow(string usernameAuthenticated, string usernameWhoSend)

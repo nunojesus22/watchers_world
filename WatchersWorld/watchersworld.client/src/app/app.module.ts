@@ -28,6 +28,7 @@ import { SearchServiceComponent } from './media/search-service/search-service.co
 import { AdminComponent } from './admin/admin.component';
 import { SeasonDetailsComponent } from './season-details/season-details.component';
 import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { SeasonDetailsInfoComponent } from './season-details-info/season-details
     AdminComponent,
     SeasonDetailsComponent,
     SeasonDetailsInfoComponent,
-
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
