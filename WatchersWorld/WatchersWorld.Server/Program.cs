@@ -21,7 +21,7 @@ builder.Services.AddScoped<IFollowersService, FollowersService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("WatchersWorldServerContextConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddControllers();

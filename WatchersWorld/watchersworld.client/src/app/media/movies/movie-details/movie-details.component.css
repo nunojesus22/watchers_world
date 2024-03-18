@@ -189,6 +189,7 @@ a {
 
 .not-favorite {
   color: #ccc; /* Cor cinza para não favoritos */
+}
 
 .comment-form textarea {
   resize: none; /* Prevents resizing of textarea */
