@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { AuthenticationService } from '../../../authentication/services/authentication.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -9,7 +10,7 @@ import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-
   styleUrl: './movie-details.component.css' 
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService) { }
   getMovieDetailResult: any;
   getMovieVideoResult: any;
   getMovieCastResult: any;
@@ -20,13 +21,14 @@ export class MovieDetailsComponent {
   isToWatchLater: boolean = false; // Adicione esta linha
   actorIsFavorite: boolean = false;
   movieRating = 0; 
+  isWatched: boolean = false;
+  isToWatchLater: boolean = false; 
   currentUser: string | null = null;
   comments: any[] = [];
   showComments: boolean = false;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
-    console.log(getParamId, 'getparamid#');
     this.showAll = false;
     this.getMovie(getParamId);
     this.getVideo(getParamId);
@@ -38,6 +40,11 @@ export class MovieDetailsComponent {
       this.checkIfWatchedOnInit(getParamId);
 }
     this.checkIfWatchedLater(getParamId);
+
+    this.auth.user$.subscribe(user => {
+      this.currentUser = user ? user.username.toLowerCase() : null;
+      this.fetchComments(); 
+    });
   }
 
   toggleFavorite(selectedActor: any): void {
@@ -71,11 +78,9 @@ export class MovieDetailsComponent {
   }
 
   checkIfWatched(mediaId: any) {
-    // Supondo que você tenha uma propriedade `isWatched` neste componente
-    this.service.checkIfWatched(mediaId,this.type).subscribe({
+    this.service.checkIfWatched(mediaId, this.type).subscribe({
       next: (response: any) => {
         this.isWatched = response.isWatched;
-        console.log("esta visto?",this.isWatched)
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -83,36 +88,83 @@ export class MovieDetailsComponent {
     });
   }
 
+  markAsWatched() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      if (!this.isWatched) {
+        this.service.markMediaAsWatched(+mediaId, this.type).subscribe({
+          next: () => {
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+            this.isWatched = true;
+            this.showComments = true;
+          },
+          error: (error) => {
+            console.error('Erro ao marcar filme como assistido', error);
+          }
+        });
+      } else {
+        this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
+          next: () => {
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+            this.isWatched = false;
+            this.showComments = false;
+          },
+          error: (error) => {
+            console.error('Erro ao desmarcar filme como assistido', error);
+          }
+        });
+      }
+    }
+  }
+
+  /* VER MAIS TARDE */
+
   checkIfWatchedLater(mediaId: any) {
-    // Supondo que você tenha uma propriedade `isWatched` neste componente
     this.service.checkIfWatchedLater(mediaId, this.type).subscribe({
       next: (response: any) => {
         this.isToWatchLater = response.isToWatchLater;
-        console.log("nao esta visto?", this.isToWatchLater)
-// Aqui você atualiza com base na resposta
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
       }
     });
+  }
+
+  markToWatchLater() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      if (!this.isToWatchLater) {
+        this.service.markMediaToWatchLater(+mediaId, this.type).subscribe({
+          next: (result) => {
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+          },
+          error: (error) => {
+            console.error('Erro ao marcar media para assistir mais tarde', error);
+          }
+        });
+      } else {
+        this.service.unmarkMediaToWatchLater(+mediaId, this.type).subscribe({
+          next: (result) => {
+            // Após a ação, atualize os estados e verifique novamente
+            this.checkIfWatched(mediaId);
+            this.checkIfWatchedLater(mediaId);
+          },
+          error: (error) => {
+            console.error('Erro ao desmarcar media de assistir mais tarde', error);
+          }
+        });
+      }
+    }
   }
 
   getMovie(id: any) {
     this.service.getMovieDetails(id).subscribe(async (result) => {
       console.log(result, 'getmoviedetails#');
       this.getMovieDetailResult = await result;
-
-      // updatetags
-      this.title.setTitle(`${this.getMovieDetailResult.original_title} | ${this.getMovieDetailResult.tagline}`);
-      this.meta.updateTag({ name: 'title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ name: 'description', content: this.getMovieDetailResult.overview });
-
-      // facebook
-      this.meta.updateTag({ property: 'og:type', content: "website" });
-      this.meta.updateTag({ property: 'og:url', content: `` });
-      this.meta.updateTag({ property: 'og:title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ property: 'og:description', content: this.getMovieDetailResult.overview });
-      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getMovieDetailResult.backdrop_path}` });
 
     });
   }
@@ -125,7 +177,6 @@ export class MovieDetailsComponent {
           this.getMovieVideoResult = element.key;
         }
       });
-
     });
   }
 
@@ -165,63 +216,223 @@ export class MovieDetailsComponent {
     }
   }
 
-  markToWatchLater() {
+  toggleComents() {
+    this.showComments = !this.showComments;
+  }
+
+  // Dentro do ngOnInit ou em uma função separada que você chamará no ngOnInit
+  getComments(mediaId: any): void {
+    this.service.getMediaComments(mediaId).subscribe({
+      next: (response: any) => {
+        this.comments = response;
+        console.log('Comentários:', this.comments);
+      },
+      error: (error) => {
+        console.error('Erro ao buscar comentários', error);
+      }
+    });
+  }
+  
+  fetchComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      if (!this.isToWatchLater) {
-        this.service.markMediaToWatchLater(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao marcar media para assistir mais tarde', error);
+      this.service.getMediaComments(+mediaId).subscribe(comments => {
+        this.comments = comments.reverse();
+      });
+    }
+  }
+  newCommentText: string = '';
+
+  addComment(): void {
+    if (!this.newCommentText.trim()) {
+      return; // Verifica se o comentário não está vazio
+    }
+
+    const mediaId = this.getMovieDetailResult.id;
+    const mediaType = this.type;
+
+    this.service.addComment(mediaId, mediaType, this.newCommentText).subscribe({
+      next: (newComment) => {
+        this.comments.unshift(newComment); // Adiciona imediatamente o novo comentário à lista para atualização instantânea
+        this.newCommentText = ''; // Limpar o campo de texto após adicionar o comentário
+        this.fetchComments(); // Atualiza a lista de comentários para garantir que todos os comentários sejam recuperados
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar comentário', error);
+      }
+    });
+  }
+
+  canDeleteComment(commentUserName: string): boolean {
+    if (!this.currentUser) return false;
+    return this.currentUser.toLowerCase() === commentUserName.toLowerCase();
+  }
+
+
+  deleteComment(commentId: number, parentCommentId?: number): void {
+    this.service.deleteComment(commentId).subscribe({
+      next: () => {
+        console.log('Comentário deletado com sucesso');
+        if (parentCommentId) {
+          const parentComment = this.comments.find((c: any) => c.id === parentCommentId);
+          if (parentComment && parentComment.replies) {
+            parentComment.replies = parentComment.replies.filter((reply: any) => reply.id !== commentId);
           }
+        } else {
+          this.comments = this.comments.filter((comment: any) => comment.id !== commentId);
+        }
+      },
+      error: error => {
+        console.error('Erro ao deletar o comentário', error);
+      }
+    });
+  }
+
+
+
+  likeComment(commentId: number): void {
+    this.service.likeComment(commentId).subscribe({
+      next: () => {
+        // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
+        this.fetchComments();
+      },
+      error: (error) => console.error('Erro ao curtir o comentário', error)
+    });
+  }
+
+
+  //dislikeComment(commentId: number): void {
+  //  this.service.dislikeComment(commentId).subscribe({
+  //    next: () => {
+  //      // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
+  //      this.fetchComments();
+  //    },
+  //    error: (error) => console.error('Erro ao curtir o comentário', error)
+  //  });
+  //}
+
+  removeLike(commentId: number): void {
+    this.service.removeLikeFromComment(commentId).subscribe(() => {
+      // Atualize a interface do usuário aqui
+      const comment = this.comments.find(c => c.id === commentId);
+      if (comment) {
+        comment.likesCount--;
+        comment.hasLiked = false;
+      }
+    });
+  }
+
+  //removeDislike(commentId: number): void {
+  //  this.service.removeDislikeFromComment(commentId).subscribe(() => {
+  //    // Atualize a interface do usuário aqui
+  //    const comment = this.comments.find(c => c.id === commentId);
+  //    if (comment) {
+  //      comment.dislikesCount--;
+  //      comment.hasDisliked = false;
+  //    }
+  //  });
+  //}
+
+  toggleLikeComment(commentId: number, parentCommentId?: number): void {
+    let commentList = this.comments;
+    if (parentCommentId) {
+      const parentComment = this.comments.find(c => c.id === parentCommentId);
+      if (parentComment) {
+        commentList = parentComment.replies;
+      }
+    }
+
+    const comment = commentList.find(c => c.id === commentId);
+    if (comment) {
+      if (comment.hasLiked) {
+        // The user already liked this comment, so we will remove the like
+        this.service.removeLikeFromComment(commentId).subscribe(() => {
+          comment.hasLiked = false;
+          comment.likesCount--;
+          this.fetchComments(); // Refresh comments to update UI
         });
       } else {
-        this.service.unmarkMediaToWatchLater(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao desmarcar media de assistir mais tarde', error);
+        // The user has not liked this comment yet, so we will add a like
+        this.service.likeComment(commentId).subscribe(() => {
+          comment.hasLiked = true;
+          comment.likesCount++;
+          if (comment.hasDisliked) {
+            comment.hasDisliked = false;
+            comment.dislikesCount--;
           }
+          this.fetchComments(); // Refresh comments to update UI
         });
       }
     }
   }
 
-  markAsWatched() {
-    let mediaId = this.router.snapshot.paramMap.get('id');
-    if (mediaId) {
-      if (!this.isWatched) {
-        this.service.markMediaAsWatched(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao marcar filme como assistido', error);
-          }
-        });
-      } else {
-        this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
-          next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
-            this.checkIfWatched(mediaId);
-            this.checkIfWatchedLater(mediaId);
-          },
-          error: (error) => {
-            console.error('Erro ao desmarcar filme como assistido', error);
-          }
-        });
-      }
+  //toggleDislikeComment(commentId: number, parentCommentId?: number): void {
+  //  let commentList = this.comments;
+  //  if (parentCommentId) {
+  //    const parentComment = this.comments.find(c => c.id === parentCommentId);
+  //    if (parentComment) {
+  //      commentList = parentComment.replies;
+  //    }
+  //  }
+
+  //  const comment = commentList.find(c => c.id === commentId);
+  //  if (comment) {
+  //    if (comment.hasDisliked) {
+  //      // The user already disliked this comment, so we will remove the dislike
+  //      this.service.removeDislikeFromComment(commentId).subscribe(() => {
+  //        comment.hasDisliked = false;
+  //        comment.dislikesCount--;
+  //        this.fetchComments(); // Refresh comments to update UI
+  //      });
+  //    } else {
+  //      // The user has not disliked this comment yet, so we will add a dislike
+  //      this.service.dislikeComment(commentId).subscribe(() => {
+  //        comment.hasDisliked = true;
+  //        comment.dislikesCount++;
+  //        if (comment.hasLiked) {
+  //          comment.hasLiked = false;
+  //          comment.likesCount--;
+  //        }
+  //        this.fetchComments(); // Refresh comments to update UI
+  //      });
+  //    }
+  //  }
+  //}
+  // Este é um exemplo, ajuste conforme sua lógica e nomes de propriedades
+  showReplyForms: { [key: number]: boolean } = {};
+  replyTexts: { [key: number]: string } = {};
+
+  toggleReplyForm(commentId: number): void {
+    // Isso alternará a exibição do formulário de resposta para um determinado comentário.
+    this.showReplyForms[commentId] = !this.showReplyForms[commentId];
+    // Garantir que um campo de texto esteja disponível para novas respostas.
+    if (this.replyTexts[commentId] === undefined) {
+      this.replyTexts[commentId] = '';
     }
   }
+
+
+  addReply(parentCommentId: number): void {
+    // Garanta que existe um texto de resposta para evitar erro de 'undefined'
+    const replyText = this.replyTexts[parentCommentId] || '';
+    if (!replyText.trim()) {
+      return; // Verifica se a resposta não está vazia
+    }
+
+    const mediaId = this.getMovieDetailResult.id;
+    this.service.addCommentReply(parentCommentId, mediaId, replyText).subscribe({
+      next: () => {
+        this.fetchComments(); // Atualize os comentários para incluir a nova resposta
+        this.replyTexts[parentCommentId] = ''; // Limpe o campo de texto da resposta
+        // Se estiver usando um objeto para controlar os formulários de resposta:
+        if (this.showReplyForms) this.showReplyForms[parentCommentId] = false;
+      },
+      error: (error) => console.error('Erro ao adicionar resposta ao comentário', error)
+    });
+  }
+
+
+
 
 
 }

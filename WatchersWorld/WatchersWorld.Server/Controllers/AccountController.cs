@@ -114,10 +114,6 @@ namespace WatchersWorld.Server.Controllers
             }
 
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
-            if (!passwordCheck.Succeeded)
-            {
-                return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
-            }
 
             if (!passwordCheck.Succeeded) return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
 
@@ -332,7 +328,7 @@ namespace WatchersWorld.Server.Controllers
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
+            if (user == null) return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
 
             if (user.EmailConfirmed) return BadRequest( new { Message = "O email já foi confirmado anteriormente!", Field = "Email" });
 
@@ -365,7 +361,7 @@ namespace WatchersWorld.Server.Controllers
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
+            if (user == null) return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
 
             if (user.EmailConfirmed) return BadRequest(new { Message = "O email já foi confirmado anteriormente!", Field = "Email" });
 
@@ -393,7 +389,7 @@ namespace WatchersWorld.Server.Controllers
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
+            if (user == null) return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Email" });
             if (!user.EmailConfirmed) return BadRequest(new { Message = "O email tem de ser confirmado primeiro!", Field = "Email" });
             try
             {
@@ -418,7 +414,7 @@ namespace WatchersWorld.Server.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Password" });
+            if (user == null) return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "Password" });
             if (!user.EmailConfirmed) return BadRequest(new { Message = "O email tem de ser confirmado primeiro!", Field = "Password" });
             try
             {
@@ -627,7 +623,7 @@ namespace WatchersWorld.Server.Controllers
         /// <returns>True if the username exists, otherwise false.</returns>
         private async Task<bool> CheckUsernameExistsAsync(string username)
         {
-            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.UserName == username);
         }
 
         /// <summary>

@@ -1,10 +1,7 @@
 C:\Users\nunoj\Documents\DEV\Watchers World\Software\watchers-worldd\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
 C:\Users\nunoj\Documents\DEV\Watchers World\Software\WatchersWorld\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
-C:\Users\dalia\OneDrive\Documentos\GitHub\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
 C:\Users\nunoj\Documents\DEV\WatchersWorld\Software\WatchersWorld\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
 C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
 C:\Users\dalia\OneDrive\Documentos\GitHub\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
-C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\watchersworld.client\obj\Debug\watchersworld.client.esproj.CoreCompileInputs.cache
