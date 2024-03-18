@@ -190,3 +190,138 @@ a {
   color: #ccc; /* Cor cinza para não favoritos */
 }
 
+
+/* Botões */
+.btn-primary {
+  background-color: #4CAEFE; /* Cor de fundo dos botões primários */
+  border-color: #4CAEFE; /* Cor da borda dos botões primários */
+}
+
+.btn-success {
+  background-color: #4CAEFE; /* Cor de fundo para botões de sucesso */
+  border-color: #4CAEFE; /* Cor da borda para botões de sucesso */
+}
+
+  .btn-primary:hover,
+  .btn-success:hover {
+    opacity: 0.85; /* Efeito ao passar o mouse */
+  }
+
+/* Cards das questões */
+.card {
+  border-color: #ddd; /* Cor da borda dos cards */
+}
+
+.card-header {
+  padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+  margin-bottom: 0;
+  color: #4CAEFE;
+  background-color: var(--bs-card-cap-bg);
+  border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+}
+
+/* Alertas */
+.alert-info {
+  background-color: #d1ecf1; /* Cor de fundo dos alertas */
+  border-color: #bee5eb; /* Cor da borda dos alertas */
+  color: #0c5460; /* Cor do texto dos alertas */
+}
+
+/* Personalizações de Formulários */
+.form-check-input {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.form-check-label {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+/* Lista de Respostas */
+.list-group-item {
+  border-color: #ddd; /* Cor da borda dos itens da lista */
+}
+
+  .list-group-item:nth-of-type(odd) {
+    background-color: #f8f9fa; /* Cor de fundo para itens alternados */
+  }
+
+
+/* Estilo do Popup do Quiz */
+.quiz-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1050; /* Garanta que o popup esteja sobre outros elementos */
+  padding: 20px;
+}
+
+/* Conteúdo do Popup */
+.popup-content {
+  position: relative;
+}
+
+/* Botão de Fechar */
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Melhora a aparência dos botões */
+.btn {
+  margin: 5px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    color: white;
+  }
+
+.btn-success {
+  background-color: #4CAEFE;
+  color: white;
+}
+
+
+
+/* Estilo das perguntas e respostas */
+.card-header {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #e7e7e7;
+  font-weight: bold;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+}
+
+  .list-group-item:nth-child(odd) {
+    background-color: #e9ecef;
+  }
+
+/* Formatação dos inputs e labels dentro do quiz */
+.form-check-input {
+  margin-top: 0.3rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.form-check-label {
+  cursor: pointer;
+}
