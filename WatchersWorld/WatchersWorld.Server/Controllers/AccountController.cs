@@ -498,61 +498,6 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
-        [HttpPost("api/account/ban-user-permanently/{username}")]
-        //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
-        public async Task<IActionResult> BanUserPermanently(string username)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            // Retrieve the user's profile info
-            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-            if (profileInfo == null)
-            {
-                return NotFound("User profile info not found.");
-            }
-
-            // Set ban-related properties in the profile info DTO
-            profileInfo.StartBanDate = DateTime.UtcNow; // Set the start ban date
-            profileInfo.EndBanDate = DateTime.MaxValue; // Set the end ban date to a large value, indicating permanent ban
-
-            // Update the user's profile info in the database
-            _context.ProfileInfo.Update(profileInfo);
-            await _context.SaveChangesAsync();
-
-            return Ok("User banned permanently.");
-        }
-
-
-        [HttpPost("api/account/ban-user-temporarily/{username}")]
-        //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
-        public async Task<IActionResult> BanUserTemporarily(string username, [FromQuery] int banDurationInDays)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-            if (profileInfo == null)
-            {
-                return NotFound("User profile info not found.");
-            }
-
-            profileInfo.StartBanDate = DateTime.UtcNow;
-            profileInfo.EndBanDate = DateTime.UtcNow.AddDays(banDurationInDays);
-
-            _context.ProfileInfo.Update(profileInfo);
-            await _context.SaveChangesAsync();
-
-            return Ok($"User banned temporarily for {banDurationInDays} days.");
-        }
-
-
 
 
         private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)

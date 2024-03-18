@@ -244,6 +244,43 @@
   </div>
 </div>
 
+<!-- MODERADOR -->
+<div class="moderator-panel" *ngIf="isModerator">
+  <h3>Menu de moderador</h3>
+  <div class="search-bar">
+    <i class="fa fa-search search-icon"></i>
+    <form>
+      <input type="text" name="searchQuery" placeholder="Procurar..." class="search-input">
+    </form>
+  </div>
+  <div class="user-list">
+    <h4>Utilizadores:</h4>
+    <div class="user" *ngFor="let userProfile of usersProfilesMod">
+      <div class="user-info">
+        <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+        <p class="name">{{ userProfile.userName }}</p>
+      </div>
+      <div class="actions">
+        <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
+        <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
+      </div>
+    </div>
 
+  </div>
+  <!-- Ban Popup -->
+  <div *ngIf="isBanPopupVisible" class="ban-popup">
+    <div class="popup-content">
+      <button class="close-popup" (click)="hideBanPopup()">X</button>
+      <h4>Selecione o tipo de ban:</h4>
+      <div class="ban-buttons-container">
+        <button class="banPerm" (click)="banPerm(selectedUserForBan)">Banir permanentemente</button>
+        <button class="banTemp" (click)="banTemp(selectedUserForBan)">Banir temporariamente</button>
+      </div>
+      <div class="ban-duration-container">
+        <input type="number" [(ngModel)]="banDuration" placeholder="Duration in days" min="1" class="ban-duration-input">
+      </div>
+    </div>
+  </div>
+</div>
 
 
