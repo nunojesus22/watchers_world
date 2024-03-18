@@ -3,7 +3,7 @@
     <hr class="divider">
     <div *ngIf= pendingFollowRequests.length >
     <div class="user-list">
-      <h4>Tem um ou mais pedidos para seguir:</h4>
+      <h4>Número de pedidos para seguir: {{pendingFollowRequests.length}}</h4>
       <div *ngFor="let request of pendingFollowRequests" class="user">
         <div class="user-info">
           <img class="avatar" [src]="request.profilePhoto" [routerLink]="['/profile', request.username]">
