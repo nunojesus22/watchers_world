@@ -17,17 +17,25 @@ export class MovieDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "movie";
-  isWatched: boolean = false; // Adicione esta linha
-  isToWatchLater: boolean = false; // Adicione esta linha
+  isWatched: boolean = false; 
+  isToWatchLater: boolean = false;
   actorIsFavorite: boolean = false;
   movieRating = 0;
 
-  quizQuestions: any[] = []; // Substitua any pelo tipo apropriado conforme sua estrutura de dados
-  userAnswers: { [questionId: number]: number } = {}; // Mapeia o ID da questão para o ID da resposta selecionada
-  quizResult: any; // Armazena o resultado do quiz
+  quizQuestions: any[] = []; 
+  userAnswers: { [questionId: number]: number } = {}; 
+  quizResult: any; 
 
   quizCompleted: boolean=false;
+  isQuizPopupVisible: boolean = false;
 
+
+  lastQuizScore: any;
+  isQuizActive: boolean = false;
+  showLastScore: boolean = false
+
+
+  currentQuestionIndex: number = 0;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -44,7 +52,6 @@ export class MovieDetailsComponent {
     this.checkQuizCompleted(getParamId);
     this.loadQuizQuestions();
   }
-  isQuizPopupVisible: boolean = false;
 
   // Mostra o pop-up do quiz
   showQuizPopup(): void {
@@ -59,12 +66,7 @@ export class MovieDetailsComponent {
   hideQuizPopup(): void {
     this.isQuizPopupVisible = false;
   }
-  lastQuizScore :any;
-  isQuizActive: boolean = false;
-  showLastScore: boolean = false
 
-
-  currentQuestionIndex: number = 0;
 
   // Função para ir para a próxima pergunta
   nextQuestion(): void {
@@ -303,17 +305,6 @@ export class MovieDetailsComponent {
       console.log(result, 'getmoviedetails#');
       this.getMovieDetailResult = await result;
 
-      // updatetags
-      this.title.setTitle(`${this.getMovieDetailResult.original_title} | ${this.getMovieDetailResult.tagline}`);
-      this.meta.updateTag({ name: 'title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ name: 'description', content: this.getMovieDetailResult.overview });
-
-      // facebook
-      this.meta.updateTag({ property: 'og:type', content: "website" });
-      this.meta.updateTag({ property: 'og:url', content: `` });
-      this.meta.updateTag({ property: 'og:title', content: this.getMovieDetailResult.original_title });
-      this.meta.updateTag({ property: 'og:description', content: this.getMovieDetailResult.overview });
-      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getMovieDetailResult.backdrop_path}` });
 
     });
   }

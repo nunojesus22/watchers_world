@@ -142,13 +142,13 @@
           </div>
 
           <div *ngIf="quizResult">
-            <p>Você acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
+            <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
           </div>
 
 
           <!-- Mensagem de conclusão do quiz -->
           <div *ngIf="showLastScore" class="alert alert-info">
-            <p>Você já completou esse quiz. Sua última pontuação foi: {{ lastQuizScore }}</p>
+            <p>Já completou esse quiz. A sua última pontuação foi: {{ lastQuizScore }} pontos</p>
           </div>
 
 

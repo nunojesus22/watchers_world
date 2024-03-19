@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Models;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Media;
+using WatchersWorld.Server.Models.Media.Quiz;
+using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 
 namespace WatchersWorld.Server.Data
 {
@@ -15,6 +17,9 @@ namespace WatchersWorld.Server.Data
         public DbSet<MediaInfoModel> MediaInfoModel{ get; set; }
         public DbSet<MediaListModel> MediaListModel { get; set; }
         public DbSet<UserMedia> UserMedia{ get; set; }
+
+
+        public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
 
 
         public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)
@@ -33,7 +38,7 @@ namespace WatchersWorld.Server.Data
             new MediaListModel { Id = 4, ListName = "Ver Mais Tarde Filmes" },
             new MediaListModel { Id = 5, ListName = "Favoritos" }
              );
-
+           
         }
     }
 }
