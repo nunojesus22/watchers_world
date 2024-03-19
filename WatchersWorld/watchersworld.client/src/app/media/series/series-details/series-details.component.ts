@@ -3,13 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
-<<<<<<< HEAD
 import { BehaviorSubject } from 'rxjs';
 import { AdminService } from '../../../admin/service/admin.service';
-=======
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { Actor } from '../../media-models/actor';
->>>>>>> Joao
 
 @Component({
   selector: 'app-series-details',
@@ -33,10 +30,8 @@ export class SeriesDetailsComponent {
   showComments: boolean = false;
   currentUser: string | null = null;
 
-<<<<<<< HEAD
   private isAdminOrModerator$ = new BehaviorSubject<boolean>(false);
 
-=======
   movieRating = 0;
   averageRating: number = 0;
   userRating: number = 0;
@@ -44,7 +39,6 @@ export class SeriesDetailsComponent {
   userFavoriteActor: string | null = null;
 
   actorVotePercentages: { [actorId: number]: number } = {};
->>>>>>> Joao
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
