@@ -3,6 +3,9 @@ import { AuthenticationService } from '../authentication/services/authentication
 import { Router } from '@angular/router';
 import { SearchServiceComponent } from '../media/search-service/search-service.component';
 import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
+import { ProfileService } from '../profile/services/profile.service';
+import { Subject, takeUntil } from 'rxjs';
+import { FollowerProfile } from '../profile/models/follower-profile';
 
 @Component({
   selector: 'app-nav-menu',
@@ -13,11 +16,30 @@ export class NavMenuComponent {
   loggedUserName: string | null = null;
   isActive: boolean = false;
   searchQuery: any;
+  unsubscribed$: Subject<void> = new Subject<void>();
+  pendingFollowRequests: FollowerProfile[] = [];
 
-  constructor(private service: MovieApiServiceComponent, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
+    this.getPendingFollowRequests();
+
+  }
+
+  getPendingFollowRequests() {
+    if (this.loggedUserName) {
+      this.profileService.getPendingFollowRequests(this.loggedUserName)
+        .pipe(takeUntil(this.unsubscribed$))
+        .subscribe({
+          next: (profiles: FollowerProfile[]) => {
+            this.pendingFollowRequests = profiles;
+          },
+          error: (error) => {
+            console.error('Error fetching pending follow requests:', error);
+          }
+        });
+    }
   }
 
   showMenu = false;
@@ -83,6 +105,8 @@ export class NavMenuComponent {
   logout() {
     this.authService.logout();
   }
+
+
 }
 
 
