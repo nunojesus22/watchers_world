@@ -3,14 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
-<<<<<<< HEAD
 import { AdminService } from '../../../admin/service/admin.service';
 import { BehaviorSubject } from 'rxjs';
-=======
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { FavoriteActor } from '../../media-models/fav-actor';
 import { Actor } from '../../media-models/actor';
->>>>>>> Joao
 
 @Component({
   selector: 'app-movie-details',
@@ -39,9 +36,7 @@ export class MovieDetailsComponent {
   comments: any[] = [];
   showComments: boolean = false;
 
-<<<<<<< HEAD
   private isAdminOrModerator$ = new BehaviorSubject<boolean>(false);
-=======
   showReplyForms: { [key: number]: boolean } = {};
   replyTexts: { [key: number]: string } = {};
 
@@ -50,7 +45,6 @@ export class MovieDetailsComponent {
   userFavoriteActor: string | null = null;
 
   actorVotePercentages: { [actorId: number]: number } = {};
->>>>>>> Joao
 
 
   ngOnInit(): void {
@@ -69,9 +63,14 @@ export class MovieDetailsComponent {
 
     this.auth.user$.subscribe(user => {
       this.currentUser = user ? user.username.toLowerCase() : null;
-<<<<<<< HEAD
       this.fetchComments(); 
     });
+
+    this.loadAverageRatingForMedia(getParamId);
+    this.loadUserRatingForMedia(getParamId);
+
+    this.getFavoriteActorChoicesForMedia(getParamId);
+    this.getUserFavoriteActorChoice(getParamId);
   }
 
   setUserRole(): void {
@@ -81,27 +80,6 @@ export class MovieDetailsComponent {
         this.isAdminOrModerator$.next(roles.includes('Admin') || roles.includes('Moderator'));
       });
     }
-  }
-
-  toggleFavorite(selectedActor: any): void {
-    if (selectedActor.isFavorite) {
-      selectedActor.isFavorite = false;
-      return;
-    }
-
-    this.getMovieCastResult.forEach((actor: { isFavorite: boolean; }) => {
-      actor.isFavorite = false;
-=======
-      this.fetchComments();
->>>>>>> Joao
-    });
-
-    this.loadAverageRatingForMedia(getParamId);
-    this.loadUserRatingForMedia(getParamId);
-
-    this.getFavoriteActorChoicesForMedia(getParamId);
-    this.getUserFavoriteActorChoice(getParamId);
-
   }
 
   /* VISUALIZADO */
