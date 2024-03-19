@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WatchersWorld.Server.Data;
 
@@ -11,9 +12,11 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    partial class WatchersWorldServerContextModelSnapshot : ModelSnapshot
+    [Migration("20240318122337_WatchersWorld")]
+    partial class WatchersWorld
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,55 +291,6 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("Followers");
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("IdTableMedia")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParentCommentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdTableMedia");
-
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentDislike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.FavoriteActor.Actor", b =>
                 {
                     b.Property<int>("ActorId")
@@ -387,34 +341,6 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CommentDislikes");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CommentLikes");
                     b.HasIndex("ActorMediaId");
 
                     b.HasIndex("UserThatChooseId");
@@ -564,32 +490,6 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "Media")
-                        .WithMany("Comments")
-                        .HasForeignKey("IdTableMedia");
-
-                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
-
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Media");
-
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentDislike", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
-                        .WithMany("Dislikes")
-                        .HasForeignKey("CommentId")
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.FavoriteActor.ActorMedia", b =>
                 {
                     b.HasOne("WatchersWorld.Server.Models.Media.FavoriteActor.Actor", "Actor")
@@ -619,26 +519,6 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
-                        .WithMany("Likes")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Comment");
                         .HasForeignKey("UserThatChooseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -663,20 +543,6 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("MediaInfoModel");
 
                     b.Navigation("MediaListModel");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
-                {
-                    b.Navigation("Dislikes");
-
-                    b.Navigation("Likes");
-
-                    b.Navigation("Replies");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

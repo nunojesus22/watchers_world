@@ -1,73 +1,53 @@
 ﻿using Google.Apis.Auth;
-using Mailjet.Client.TransactionalEmails;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Versioning;
 using System.Security.Claims;
 using System.Text;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Account;
 using WatchersWorld.Server.Models.Authentication;
-using WatchersWorld.Server.Models.Authentication.Status;
 using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
     /// <summary>
-    /// Controller handling user account-related requests such as authentication, registration, email confirmation, and password management.
+    /// Controlador responsável por tratar das solicitações relacionadas com contas de utilizador, como autenticação, registo, confirmação de email e gestão de senha.
     /// </summary>
+    /// <remarks>
+    /// Construtor para injeção de dependências.
+    /// </remarks>
+    /// <param name="jWTService">Service for generating JWT tokens.</param>
+    /// <param name="signInManager">Manager for handling sign-in processes.</param>
+    /// <param name="userManager">Manager for user-related operations.</param>
+    /// <param name="emailService">Service for handling email operations.</param>
+    /// <param name="config">Application configuration settings.</param>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger) : ControllerBase
     {
         // Service for generating JWT tokens.
-        private readonly JWTService _jwtService;
+        private readonly JWTService _jwtService = jWTService;
 
         // Manager for authentication processes.
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<User> _signInManager = signInManager;
 
         // Manager for user-related operations.
-        private readonly UserManager<User> _userManager;
-        private readonly EmailService _emailService;
-        private readonly IConfiguration _config;
+        private readonly UserManager<User> _userManager = userManager;
+        private readonly EmailService _emailService = emailService;
+        private readonly IConfiguration _config = config;
 
-        private readonly ILogger<AccountController> _logger;
+        private readonly ILogger<AccountController> _logger = logger;
 
 
-        private WatchersWorldServerContext _context;
-
-        // Constructor for dependency injection.
-        public AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
-        /// <summary>
-        /// Constructor for AccountController.
-        /// </summary>
-        /// <param name="jWTService">Service for generating JWT tokens.</param>
-        /// <param name="signInManager">Manager for handling sign-in processes.</param>
-        /// <param name="userManager">Manager for user-related operations.</param>
-        /// <param name="emailService">Service for handling email operations.</param>
-        /// <param name="config">Application configuration settings.</param>
-        {
-            _jwtService = jWTService;
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _emailService = emailService;
-            _config = config;
-            _context = context;
-            _logger = logger;
-
-        }
+        private readonly WatchersWorldServerContext _context = context;
 
         /// <summary>
-        /// Constructor for AccountController.
+        /// Renova o token de um utilizador autenticado.
         /// </summary>
-        /// <param name="jWTService">Service for generating JWT tokens.</param>
-        /// <param name="signInManager">Manager for handling sign-in processes.</param>
-        /// <param name="userManager">Manager for user-related operations.</param>
-        /// <param name="emailService">Service for handling email operations.</param>
-        /// <param name="config">Application configuration settings.</param>
+        /// <returns>Um novo UserDto com o token renovado.</returns>
         [Authorize]
         [HttpGet("api/account/refresh-user-token")]
         public async Task<ActionResult<UserDto>> RefreshUserToken()
@@ -77,10 +57,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Handles the login process for a user.
+        /// Processa o login de um utilizador.
         /// </summary>
-        /// <param name="model">Login DTO containing user credentials.</param>
-        /// <returns>UserDto on successful login; otherwise, returns an error.</returns>
+        /// <param name="model">DTO de Login contendo as credenciais do utilizador.</param>
+        /// <returns>UserDto em caso de login bem-sucedido; caso contrário, retorna um erro.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
@@ -119,6 +99,12 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok ( new { user = CreateApplicationUserDto(user) });
         }
+
+        /// <summary>
+        /// Processa o login de um utilizador através de um serviço externo (ex: Google).
+        /// </summary>
+        /// <param name="model">DTO contendo informações do login externo.</param>
+        /// <returns>UserDto em caso de sucesso.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/login-with-third-party")]
         public async Task<ActionResult<UserDto>> LoginWithThirdParty(LoginWithExternalDto model)
@@ -163,10 +149,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Handles the user registration process.
+        /// Trata do processo de registo de um novo utilizador.
         /// </summary>
-        /// <param name="model">Registration DTO containing new user details.</param>
-        /// <returns>ActionResult indicating the result of the registration process.</returns>
+        /// <param name="model">DTO de Registo contendo detalhes do novo utilizador.</param>
+        /// <returns>ActionResult indicando o resultado do processo de registo.</returns>
         [AllowAnonymous]
         [HttpPost("api/account/register")]
         public async Task<IActionResult> Register(RegisterDto model)
@@ -319,11 +305,12 @@ namespace WatchersWorld.Server.Controllers
 
             return CreateApplicationUserDto(userToAdd);
         }
+
         /// <summary>
-        /// Confirms a user's email address.
+        /// Confirma o endereço de email de um utilizador.
         /// </summary>
-        /// <param name="model">DTO containing the email and confirmation token.</param>
-        /// <returns>ActionResult indicating the result of the email confirmation process.</returns>
+        /// <param name="model">DTO contendo o email e o token de confirmação.</param>
+        /// <returns>ActionResult indicando o resultado do processo de confirmação do email.</returns>
         [HttpPut("api/account/confirm-email")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto model)
         {
@@ -352,10 +339,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Resends the email confirmation link to a user.
+        /// Reenvia o link de confirmação de email para um utilizador.
         /// </summary>
-        /// <param name="email">Email address of the user.</param>
-        /// <returns>ActionResult indicating the result of the resend operation.</returns>
+        /// <param name="email">Endereço de email do utilizador.</param>
+        /// <returns>ActionResult indicando o resultado da operação de reenvio.</returns>
         [HttpPost("api/account/resend-email-confirmation-link/{email}")]
         public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
@@ -380,10 +367,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Handles the process for a user to reset their forgotten password.
+        /// Trata o processo de redefinição de senha para um utilizador que esqueceu a sua senha.
         /// </summary>
-        /// <param name="email">Email address of the user.</param>
-        /// <returns>ActionResult indicating the result of the forgot password process.</returns>
+        /// <param name="email">Endereço de email do utilizador.</param>
+        /// <returns>ActionResult indicando o resultado do processo de esquecimento de senha.</returns>
         [HttpPost("api/account/forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
@@ -406,10 +393,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Resets a user's password.
+        /// Redefine a senha de um utilizador.
         /// </summary>
-        /// <param name="model">DTO containing new password details and token.</param>
-        /// <returns>ActionResult indicating the result of the password reset process.</returns>
+        /// <param name="model">DTO contendo detalhes da nova senha e token.</param>
+        /// <returns>ActionResult indicando o resultado do processo de redefinição de senha.</returns>
         [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
@@ -434,6 +421,12 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Obtém os papéis de um utilizador.
+        /// </summary>
+        /// <param name="username">Nome de utilizador do qual obter os papéis.</param>
+        /// <returns>ActionResult com os papéis do utilizador.</returns>
         [HttpGet("api/account/getUserRole/{username}")]
         public async Task<ActionResult<string[]>> GetUserRole(string username)
         {
@@ -447,59 +440,129 @@ namespace WatchersWorld.Server.Controllers
             return Ok(roles.ToArray());
         }
 
-
+        /// <summary>
+        /// Elimina um utilizador e a sua informação de perfil pelo seu nome de utilizador.
+        /// </summary>
+        /// <param name="username">Nome de utilizador do utilizador a eliminar.</param>
+        /// <returns>ActionResult indicando o resultado do processo de eliminação.</returns>
         [HttpDelete("api/users/{username}")]
         //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
         public async Task<IActionResult> DeleteUserByUsername(string username)
         {
             // Start a transaction
-            using (var transaction = _context.Database.BeginTransaction())
+            using var transaction = _context.Database.BeginTransaction();
+            try
             {
-                try
+                // Find the user's profile info
+                var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+                if (profileInfo != null)
                 {
-                    // Find the user's profile info
-                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-                    if (profileInfo != null)
-                    {
-                        // Delete the profile info
-                        _context.ProfileInfo.Remove(profileInfo);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    // Find the user by username
-                    var user = await _userManager.FindByNameAsync(username);
-                    if (user == null)
-                    {
-                        return NotFound("User not found.");
-                    }
-
-                    // Delete the user
-                    var result = await _userManager.DeleteAsync(user);
-                    if (!result.Succeeded)
-                    {
-                        // If the user wasn't deleted successfully, return the errors
-                        return BadRequest(result.Errors);
-                    }
-
-                    // Commit the transaction
-                    await transaction.CommitAsync();
-
-                    return Ok("User and profile info successfully deleted.");
+                    // Delete the profile info
+                    _context.ProfileInfo.Remove(profileInfo);
+                    await _context.SaveChangesAsync();
                 }
-                catch (Exception ex)
+
+                // Find the user by username
+                var user = await _userManager.FindByNameAsync(username);
+                if (user == null)
                 {
-                    // If there was an exception, rollback the transaction
-                    await transaction.RollbackAsync();
-
-                    // Log the exception and return a generic error message
-                    _logger.LogError(ex, "An error occurred while deleting user and profile info.");
-                    return StatusCode(500, "An error occurred while deleting the user and profile info.");
+                    return NotFound("User not found.");
                 }
+
+                // Delete the user
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    // If the user wasn't deleted successfully, return the errors
+                    return BadRequest(result.Errors);
+                }
+
+                // Commit the transaction
+                await transaction.CommitAsync();
+
+                return Ok("User and profile info successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                // If there was an exception, rollback the transaction
+                await transaction.RollbackAsync();
+
+                // Log the exception and return a generic error message
+                _logger.LogError(ex, "An error occurred while deleting user and profile info.");
+                return StatusCode(500, "An error occurred while deleting the user and profile info.");
             }
         }
 
+        /// <summary>
+        /// Bane um utilizador de forma permanente.
+        /// </summary>
+        /// <param name="username">Nome de utilizador do utilizador a banir.</param>
+        /// <returns>ActionResult indicando o resultado do processo de banimento.</returns>
+        [HttpPost("api/account/ban-user-permanently/{username}")]
+        //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
+        public async Task<IActionResult> BanUserPermanently(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
 
+            // Retrieve the user's profile info
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
 
+            // Set ban-related properties in the profile info DTO
+            profileInfo.StartBanDate = DateTime.UtcNow; // Set the start ban date
+            profileInfo.EndBanDate = DateTime.MaxValue; // Set the end ban date to a large value, indicating permanent ban
+
+            // Update the user's profile info in the database
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            return Ok("User banned permanently.");
+        }
+
+        /// <summary>
+        /// Bane um utilizador temporariamente.
+        /// </summary>
+        /// <param name="username">Nome de utilizador do utilizador a banir.</param>
+        /// <param name="banDurationInDays">Duração do banimento em dias.</param>
+        /// <returns>ActionResult indicando o resultado do processo de banimento temporário.</returns>
+        [HttpPost("api/account/ban-user-temporarily/{username}")]
+        //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
+        public async Task<IActionResult> BanUserTemporarily(string username, [FromQuery] int banDurationInDays)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
+
+            profileInfo.StartBanDate = DateTime.UtcNow;
+            profileInfo.EndBanDate = DateTime.UtcNow.AddDays(banDurationInDays);
+
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            return Ok($"User banned temporarily for {banDurationInDays} days.");
+        }
+
+        /// <summary>
+        /// Valida o token de acesso do Google e verifica se o userId corresponde ao esperado.
+        /// </summary>
+        /// <param name="accessToken">Token de acesso fornecido pelo Google.</param>
+        /// <param name="userId">UserId do Google para validar.</param>
+        /// <returns>True se a validação for bem-sucedida; False caso contrário.</returns>
         private async Task<bool> GoogleValidatedAsync(string accessToken, string userId)
         {
 
@@ -558,7 +621,7 @@ namespace WatchersWorld.Server.Controllers
         /// <returns>True if the email exists, otherwise false.</returns>
         private async Task<bool> CheckEmailExistsAsync(string email)
         {
-            return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
