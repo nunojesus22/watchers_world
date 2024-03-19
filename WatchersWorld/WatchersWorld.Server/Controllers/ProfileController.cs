@@ -18,24 +18,32 @@ using User = WatchersWorld.Server.Models.Authentication.User; // Alias para o Us
 
 namespace WatchersWorld.Server.Controllers
 {
+    /// <summary>
+    /// Controlador responsável pela gestão de perfis de utilizadores, incluindo a obtenção de informações de perfil,
+    /// atualização de informações de perfil, e gestão de seguidores.
+    /// </summary>
+    /// <remarks>
+    /// Construtor que inicializa uma nova instância do controlador ProfileController.
+    /// </remarks>
+    /// <param name="context">Contexto da base de dados.</param>
+    /// <param name="userManager">Gestor de utilizadores.</param>
+    /// <param name="logger">Logger para registar eventos ou erros.</param>
+    /// <param name="followersService">Serviço para gestão de seguidores.</param>
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase
+    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService) : ControllerBase
     {
-        private readonly WatchersWorldServerContext _context;
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<ProfileController> _logger;
-        private readonly IFollowersService _followersService;
+        private readonly WatchersWorldServerContext _context = context;
+        private readonly UserManager<User> _userManager = userManager;
+        private readonly ILogger<ProfileController> _logger = logger;
+        private readonly IFollowersService _followersService = followersService;
 
-        public ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService)
-        {
-            _context = context;
-            _userManager = userManager;
-            _logger = logger;
-            _followersService = followersService;
-        }
-
+        /// <summary>
+        /// Obtém informações de perfil para um utilizador especificado.
+        /// </summary>
+        /// <param name="username">Nome de utilizador do perfil a ser obtido.</param>
+        /// <returns>Informações de perfil do utilizador.</returns>
         [HttpGet("get-user-info/{username}")]
         public async Task<ActionResult<ProfileInfoDto>> GetUser(string username)
         {
@@ -49,7 +57,7 @@ namespace WatchersWorld.Server.Controllers
 
             var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
 
-            ProfileInfoDto userProfileDto = new ProfileInfoDto
+            ProfileInfoDto userProfileDto = new()
             {
                 UserName = data.UserName,
                 Description = data.Description,
@@ -65,6 +73,11 @@ namespace WatchersWorld.Server.Controllers
             return userProfileDto;
         }
 
+        /// <summary>
+        /// Atualiza informações de perfil para o utilizador autenticado.
+        /// </summary>
+        /// <param name="model">Dados do perfil para atualização.</param>
+        /// <returns>Resultado da operação de atualização.</returns>
         [HttpPut("update-user-info")]
         public async Task<ActionResult> UpdateUserInfo(ProfileInfoDto model)
         {
@@ -109,6 +122,12 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Permite a um utilizador autenticado seguir outro utilizador.
+        /// </summary>
+        /// <param name="usernameAuthenticated">Nome do utilizador que pretende seguir outro.</param>
+        /// <param name="usernameToFollow">Nome do utilizador a ser seguido.</param>
+        /// <returns>Resultado da operação de seguir.</returns>
         [AllowAnonymous]
         [HttpPost("follow/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> FollowUser(string usernameAuthenticated, string usernameToFollow)
@@ -152,6 +171,12 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        /// <summary>
+        /// Permite a um utilizador autenticado deixar de seguir outro utilizador.
+        /// </summary>
+        /// <param name="usernameAuthenticated">Nome do utilizador que pretende deixar de seguir.</param>
+        /// <param name="usernameToFollow">Nome do utilizador a ser deixado de seguir.</param>
+        /// <returns>Resultado da operação de deixar de seguir.</returns>
         [AllowAnonymous]
         [HttpDelete("unfollow/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> UnfollowUser(string usernameAuthenticated, string usernameToFollow)
@@ -193,6 +218,10 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém a lista de perfis de todos os utilizadores.
+        /// </summary>
+        /// <returns>Uma lista de informações de perfil.</returns>
         [HttpGet("get-users-profiles")]
         public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfile()
         {
@@ -218,6 +247,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém os seguidores de um utilizador especificado.
+        /// </summary>
+        /// <param name="username">O nome do utilizador para o qual os seguidores serão obtidos.</param>
+        /// <returns>Uma lista de seguidores do utilizador.</returns>
         [AllowAnonymous]
         [HttpGet("get-followers/{username}")]
         public async Task<IActionResult> GetFollowers(string username)
@@ -243,6 +277,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém os utilizadores que um determinado utilizador está a seguir.
+        /// </summary>
+        /// <param name="username">O nome do utilizador para o qual se quer obter a lista de seguindo.</param>
+        /// <returns>Uma lista de perfis que o utilizador está a seguir.</returns>
         [AllowAnonymous]
         [HttpGet("get-whoFollow/{username}")]
         public async Task<IActionResult> GetWhoFollow(string username)
@@ -268,6 +307,11 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtém os pedidos de seguimento pendentes enviados para um utilizador.
+        /// </summary>
+        /// <param name="username">O nome do utilizador para o qual se quer obter os pedidos de seguimento pendentes.</param>
+        /// <returns>Uma lista de pedidos de seguimento pendentes.</returns>
         [AllowAnonymous]
         [HttpGet("get-whosPending/{username}")]
         public async Task<IActionResult> GetWhosPending(string username)
@@ -293,6 +337,12 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Aceita um pedido de seguimento de um utilizador para outro.
+        /// </summary>
+        /// <param name="usernameAuthenticated">Nome do utilizador que está a aceitar o seguimento.</param>
+        /// <param name="usernameWhoSend">Nome do utilizador que enviou o pedido de seguimento.</param>
+        /// <returns>Resultado da operação de aceitação do seguimento.</returns>
         [AllowAnonymous]
         [HttpPost("acceptFollow/{usernameAuthenticated}/{usernameWhoSend}")]
         public async Task<IActionResult> AcceptFollow(string usernameAuthenticated, string usernameWhoSend)
@@ -330,6 +380,12 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Rejeita um pedido de seguimento de um utilizador para outro.
+        /// </summary>
+        /// <param name="usernameAuthenticated">Nome do utilizador que está a rejeitar o seguimento.</param>
+        /// <param name="usernameWhoSend">Nome do utilizador que enviou o pedido de seguimento.</param>
+        /// <returns>Resultado da operação de rejeição do seguimento.</returns>
         [AllowAnonymous]
         [HttpDelete("rejectFollow/{usernameAuthenticated}/{usernameWhoSend}")]
         public async Task<IActionResult> RejectFollow(string usernameAuthenticated, string usernameWhoSend)
@@ -355,6 +411,12 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Verifica se um utilizador está a seguir outro utilizador.
+        /// </summary>
+        /// <param name="usernameAuthenticated">Nome do utilizador que pode estar a seguir o outro.</param>
+        /// <param name="usernameToFollow">Nome do utilizador que pode estar a ser seguido.</param>
+        /// <returns>Um valor booleano indicando se o utilizador está a seguir o outro utilizador.</returns>
         [AllowAnonymous]
         [HttpGet("alreadyFollows/{usernameAuthenticated}/{usernameToFollow}")]
         public async Task<IActionResult> IsFollowing(string usernameAuthenticated, string usernameToFollow)

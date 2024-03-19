@@ -9,7 +9,7 @@ using WatchersWorld.Server.Models.Media.RatingMedia;
 
 namespace WatchersWorld.Server.Data
 {
-    public class WatchersWorldServerContext : IdentityDbContext<User>
+    public class WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options) : IdentityDbContext<User>(options)
     {
         public new DbSet<User> Users { get; set; }
         public DbSet<ProfileInfo> ProfileInfo { get; set; }
@@ -21,12 +21,6 @@ namespace WatchersWorld.Server.Data
         public DbSet<ActorMedia> ActorMedia { get; set; }
         public DbSet<FavoriteActorChoice> FavoriteActorChoice { get; set; }
         public DbSet<UserRatingMedia> UserRatingMedia { get; set; }
-
-
-        public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)
-        : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
