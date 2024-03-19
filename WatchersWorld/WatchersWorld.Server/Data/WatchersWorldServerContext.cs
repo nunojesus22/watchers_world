@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
@@ -21,6 +22,11 @@ namespace WatchersWorld.Server.Data
         public DbSet<ActorMedia> ActorMedia { get; set; }
         public DbSet<FavoriteActorChoice> FavoriteActorChoice { get; set; }
         public DbSet<UserRatingMedia> UserRatingMedia { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<CommentLike> CommentLikes { get; set; }
+        public DbSet<CommentDislike> CommentDislikes { get; set; }
 
 
         public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)

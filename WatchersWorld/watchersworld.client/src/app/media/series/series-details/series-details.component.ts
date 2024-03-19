@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { UserRatingMedia } from '../../media-models/UserRatingMedia';
+import { Actor } from '../../media-models/actor';
 
 @Component({
   selector: 'app-series-details',
@@ -20,10 +22,17 @@ export class SeriesDetailsComponent {
   isWatched: boolean = false; // Adicione esta linha
   isToWatchLater: boolean = false;
   actorIsFavorite: boolean = false;
-  movieRating = 0; 
   comments: any[] = [];
   showComments: boolean = false;
   currentUser: string | null = null;
+
+  movieRating = 0;
+  averageRating: number = 0;
+  userRating: number = 0;
+  userFavoriteActorId: number | null = null;
+  userFavoriteActor: string | null = null;
+
+  actorVotePercentages: { [actorId: number]: number } = {};
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -55,28 +64,13 @@ export class SeriesDetailsComponent {
     });
   }
 
-  toggleFavorite(selectedActor: any): void {
-    if (selectedActor.isFavorite) {
-      selectedActor.isFavorite = false;
-      return;
-    }
+ 
 
-    this.getMovieCastResult.forEach((actor: { isFavorite: boolean; }) => {
-      actor.isFavorite = false;
-    });
-
-    selectedActor.isFavorite = true;
-  }
-
-  rateMovie(rating: number): void {
-    this.movieRating = rating;
-  }
 
   checkIfWatched(mediaId: any) {
     this.service.checkIfWatched(mediaId, this.type).subscribe({
       next: (response: any) => {
         this.isWatched = response.isWatched;
-        console.log("esta visto?", this.isWatched)
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -88,7 +82,6 @@ export class SeriesDetailsComponent {
     this.service.checkIfWatchedLater(mediaId, this.type).subscribe({
       next: (response: any) => {
         this.isToWatchLater = response.isToWatchLater;
-        console.log("nao esta visto?", this.isToWatchLater)
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -227,12 +220,11 @@ export class SeriesDetailsComponent {
     this.showComments = !this.showComments;
   }
 
-  // Dentro do ngOnInit ou em uma função separada que você chamará no ngOnInit
   getComments(mediaId: any): void {
     this.service.getMediaComments(mediaId).subscribe({
       next: (response: any) => {
         this.comments = response;
-        console.log('Comentários:', this.comments);
+        //console.log('Comentários:', this.comments);
       },
       error: (error) => {
         console.error('Erro ao buscar comentários', error);
@@ -279,7 +271,7 @@ export class SeriesDetailsComponent {
   deleteComment(commentId: number, parentCommentId?: number): void {
     this.service.deleteComment(commentId).subscribe({
       next: () => {
-        console.log('Comentário deletado com sucesso');
+        //console.log('Comentário deletado com sucesso');
         if (parentCommentId) {
           const parentComment = this.comments.find((c: any) => c.id === parentCommentId);
           if (parentComment && parentComment.replies) {
@@ -437,4 +429,163 @@ export class SeriesDetailsComponent {
       error: (error) => console.error('Erro ao adicionar resposta ao comentário', error)
     });
   }
+
+
+  // RATINGS
+
+  setUserRatingForMedia(rating: number): void {
+    if (this.currentUser) {
+      const userRatingMedia: UserRatingMedia = {
+        Rating: rating,
+        Username: this.currentUser,
+        Media: { mediaId: this.getSerieDetailsResult.id, type: "serie" },
+      };
+      this.service.giveRatingToMedia(userRatingMedia).subscribe({
+        next: (response) => {
+          //console.log('Avaliação enviada com sucesso', response);
+          this.userRating = response;
+          this.loadAverageRatingForMedia(this.getSerieDetailsResult.id);
+          this.loadUserRatingForMedia(this.getSerieDetailsResult.id);
+        },
+        error: (error) => {
+          console.error('Erro ao enviar a avaliação', error);
+        }
+      });
+    } else {
+      console.error('Usuário não está logado.');
+    }
+  }
+
+  rateMovie(rating: number): void {
+    this.movieRating = rating;
+    this.setUserRatingForMedia(rating);
+  }
+
+  loadUserRatingForMedia(mediaId: any): void {
+    if (this.currentUser) {
+      this.service.getUserRatingForMedia(this.currentUser, mediaId).subscribe({
+        next: (rating) => {
+          if (rating) {
+            this.userRating = rating;
+            //console.log('Classificação recebida', rating);
+          } else {
+            //console.log('Não existem classificações feitas pelo usuário para esta mídia.');
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao obter a classificação', error);
+        }
+      });
+    }
+
+  }
+
+  loadAverageRatingForMedia(mediaId: any): void {
+    this.service.getAverageRatingForMedia(mediaId).subscribe({
+      next: (averageRating) => {
+        if (averageRating) {
+          this.averageRating = averageRating.toFixed(2);
+          //console.log('Classificação média recebida', averageRating);
+        } else {
+          //console.log('Não existem classificações médias para esta mídia.');
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao obter a classificação média', error);
+      }
+    });
+  }
+
+  // ATORES
+
+  toggleFavorite(actor: Actor): void {
+    if (!this.actorIsFavorite) { 
+      this.chooseFavoriteActor(actor);
+    } else {
+      console.log('Ator já é favorito');
+    }
+  }
+
+  getFavoriteActorChoicesForMedia(mediaId: any): void {
+    this.service.getActorChoicesForMedia(mediaId).subscribe({
+      next: (choices) => {
+        this.actorVotePercentages = {};
+        choices.forEach((choice: { actorId: number; percentage: number }) => {
+          this.actorVotePercentages[choice.actorId] = choice.percentage;
+        });
+        //console.log('Escolhas de atores favoritos para a mídia recebidas:', choices);
+      },
+      error: (error) => {
+        console.error('Erro ao obter escolhas de atores favoritos para a mídia:', error);
+      }
+    });
+  }
+
+
+  getUserFavoriteActorChoice(mediaId: any): void {
+    if (this.currentUser /*&& this.isWatched*/) {
+      this.service.getUserActorChoice(this.currentUser, mediaId).subscribe({
+        next: (response) => {
+          //console.log(response);
+          if (response) {
+            //console.log('Escolha de ator favorito do usuário recebida:', response);
+            this.updateFavoriteActorStatus(response);
+            this.userFavoriteActorId = response;
+          } else {
+            //console.log('Usuário ainda não escolheu um ator favorito para esta mídia.');
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao obter a escolha do ator favorito do usuário:', error);
+        }
+      });
+    }
+  }
+
+  chooseFavoriteActor(selectedActor: Actor): void {
+    if (!this.currentUser) {
+      return;
+    }
+
+    const mediaCast = {
+      ActorId: selectedActor.id,
+      ActorName: selectedActor.name
+    };
+
+    const favoriteActorChoice = {
+      Username: this.currentUser,
+      ActorChoiceId: selectedActor.id,
+      Media: {
+        MediaId: this.getSerieDetailsResult.id,
+        Type: this.type
+      },
+      MediaCast: [mediaCast]
+    };
+
+    //console.log(favoriteActorChoice);
+
+    this.service.chooseAnActor(favoriteActorChoice).subscribe({
+      next: (response) => {
+        this.userFavoriteActorId = favoriteActorChoice.ActorChoiceId;
+        this.updateFavoriteActorStatus(favoriteActorChoice.ActorChoiceId);
+      },
+      error: (error) => {
+        console.error('Erro ao escolher ator favorito:', error);
+      }
+    });
+  }
+
+  // Função para atualizar o status de favorito do ator na UI
+  updateFavoriteActorStatus(selectedActorId: number): void {
+    if (this.getMovieCastResult) {
+      this.getMovieCastResult.forEach((actor: any) => {
+        this.actorIsFavorite = actor.id === selectedActorId;
+      });
+    }
+  }
+
+  isFavoriteActor(actorId: number): boolean {
+    return actorId === this.userFavoriteActorId;
+  }
+
 }

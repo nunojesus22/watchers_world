@@ -182,6 +182,9 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
@@ -286,6 +289,89 @@ namespace WatchersWorld.Server.Migrations
                     b.HasKey("FollowersId");
 
                     b.ToTable("Followers");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("IdTableMedia")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdTableMedia");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentDislike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CommentDislikes");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CommentLikes");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.FavoriteActor.Actor", b =>
@@ -410,6 +496,31 @@ namespace WatchersWorld.Server.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("IdTableMedia")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserThatRateId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdTableMedia");
+
+                    b.HasIndex("UserThatRateId");
+
+                    b.ToTable("UserRatingMedia");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
                 {
                     b.Property<int>("Id")
@@ -487,6 +598,61 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "Media")
+                        .WithMany("Comments")
+                        .HasForeignKey("IdTableMedia");
+
+                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Media");
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentDislike", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
+                        .WithMany("Dislikes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.FavoriteActor.ActorMedia", b =>
                 {
                     b.HasOne("WatchersWorld.Server.Models.Media.FavoriteActor.Actor", "Actor")
@@ -525,6 +691,25 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfo")
+                        .WithMany()
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserThatRateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaInfo");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
                 {
                     b.HasOne("WatchersWorld.Server.Models.Media.MediaListModel", "MediaListModel")
@@ -540,6 +725,20 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("MediaInfoModel");
 
                     b.Navigation("MediaListModel");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
+                {
+                    b.Navigation("Dislikes");
+
+                    b.Navigation("Likes");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.MediaInfoModel", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

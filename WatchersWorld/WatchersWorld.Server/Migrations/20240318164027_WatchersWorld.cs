@@ -8,11 +8,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class watchersworld : Migration
+    public partial class WatchersWorld : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Actor",
+                columns: table => new
+                {
+                    ActorId = table.Column<int>(type: "int", nullable: false),
+                    ActorName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actor", x => x.ActorId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -59,7 +71,8 @@ namespace WatchersWorld.Server.Migrations
                 {
                     FollowersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WhosFollowing = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WhosBeingFollowed = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    WhosBeingFollowed = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,7 +121,8 @@ namespace WatchersWorld.Server.Migrations
                     Followers = table.Column<int>(type: "int", nullable: false),
                     Following = table.Column<int>(type: "int", nullable: false),
                     StartBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndBanDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsBanned = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,6 +236,31 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ActorMedia",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ActorId = table.Column<int>(type: "int", nullable: false),
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActorMedia", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ActorMedia_Actor_ActorId",
+                        column: x => x.ActorId,
+                        principalTable: "Actor",
+                        principalColumn: "ActorId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ActorMedia_MediaInfoModel_IdTableMedia",
+                        column: x => x.IdTableMedia,
+                        principalTable: "MediaInfoModel",
+                        principalColumn: "IdTableMedia",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -255,6 +294,32 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserRatingMedia",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    UserThatRateId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRatingMedia", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRatingMedia_AspNetUsers_UserThatRateId",
+                        column: x => x.UserThatRateId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRatingMedia_MediaInfoModel_IdTableMedia",
+                        column: x => x.IdTableMedia,
+                        principalTable: "MediaInfoModel",
+                        principalColumn: "IdTableMedia",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserMedia",
                 columns: table => new
                 {
@@ -278,6 +343,31 @@ namespace WatchersWorld.Server.Migrations
                         column: x => x.IdListMedia,
                         principalTable: "MediaListModel",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FavoriteActorChoice",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserThatChooseId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ActorMediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteActorChoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FavoriteActorChoice_ActorMedia_ActorMediaId",
+                        column: x => x.ActorMediaId,
+                        principalTable: "ActorMedia",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FavoriteActorChoice_AspNetUsers_UserThatChooseId",
+                        column: x => x.UserThatChooseId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -341,6 +431,16 @@ namespace WatchersWorld.Server.Migrations
                     { 4, "Ver Mais Tarde Filmes" },
                     { 5, "Favoritos" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActorMedia_ActorId",
+                table: "ActorMedia",
+                column: "ActorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ActorMedia_IdTableMedia",
+                table: "ActorMedia",
+                column: "IdTableMedia");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -417,6 +517,22 @@ namespace WatchersWorld.Server.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FavoriteActorChoice_ActorMediaId",
+                table: "FavoriteActorChoice",
+                column: "ActorMediaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FavoriteActorChoice_UserThatChooseId",
+                table: "FavoriteActorChoice",
+                column: "UserThatChooseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MediaInfoModel_IdMedia",
+                table: "MediaInfoModel",
+                column: "IdMedia",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserMedia_IdListMedia",
                 table: "UserMedia",
                 column: "IdListMedia");
@@ -425,6 +541,16 @@ namespace WatchersWorld.Server.Migrations
                 name: "IX_UserMedia_IdTableMedia",
                 table: "UserMedia",
                 column: "IdTableMedia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRatingMedia_IdTableMedia",
+                table: "UserRatingMedia",
+                column: "IdTableMedia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRatingMedia_UserThatRateId",
+                table: "UserRatingMedia",
+                column: "UserThatRateId");
         }
 
         /// <inheritdoc />
@@ -452,6 +578,9 @@ namespace WatchersWorld.Server.Migrations
                 name: "CommentLikes");
 
             migrationBuilder.DropTable(
+                name: "FavoriteActorChoice");
+
+            migrationBuilder.DropTable(
                 name: "Followers");
 
             migrationBuilder.DropTable(
@@ -461,16 +590,25 @@ namespace WatchersWorld.Server.Migrations
                 name: "UserMedia");
 
             migrationBuilder.DropTable(
+                name: "UserRatingMedia");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "ActorMedia");
+
+            migrationBuilder.DropTable(
                 name: "MediaListModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Actor");
 
             migrationBuilder.DropTable(
                 name: "MediaInfoModel");

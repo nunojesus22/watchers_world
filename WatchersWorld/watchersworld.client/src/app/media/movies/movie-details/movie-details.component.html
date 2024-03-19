@@ -73,9 +73,18 @@
             Onde Ver:
             Ainda não existem provedores de streaming disponíveis.
           </div>
+
+          <div class="rating-container">
+            <p class="manual-text mt-2 mb-1">Classificação Média:</p>
+            <p class="movie-details mt-1 mb-2">{{ averageRating }}  <i class="fas fa-star"></i></p>
+          </div>
+
+
           <div *ngIf="isWatched" class="rating-container">
-            <p class="manual-text mt-2 mb-1">Avaliação:</p>
-            <i class="fa-star" *ngFor="let star of [1, 2, 3, 4, 5]; let i = index" [class.fas]="movieRating > i" [class.far]="movieRating <= i" (click)="rateMovie(i + 1)"></i>
+            <p class="manual-text mt-2 mb-1">A sua avaliação:</p>
+            <i class="fa-star" *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+               [class.fas]="userRating > i" [class.far]="userRating <= i"
+               (click)="rateMovie(i + 1)"></i>
           </div>
 
           <div class="container">
@@ -90,9 +99,13 @@
                 </div>
                 <div class="card-body">
                   <!-- Exibir a estrela apenas se a mídia estiver marcada como assistida -->
-                  <i *ngIf="isWatched" class="fa-star" [class.fas]="c.isFavorite" [class.far]="!c.isFavorite" (click)="toggleFavorite(c)"></i>
+                  <i *ngIf="isWatched" class="fa-star"
+                     [class.fas]="isFavoriteActor(c.id)"
+                     [class.far]="!isFavoriteActor(c.id)"
+                     (click)="chooseFavoriteActor(c)"></i>
                   <h3 class="text-black">{{c?.original_name}}</h3>
                   <p class="text-black">{{c?.character}}</p>
+                  <p class="text-black" *ngIf="actorVotePercentages[c.id]">{{ actorVotePercentages[c.id] }}% votos</p>
                 </div>
               </div>
             </div>

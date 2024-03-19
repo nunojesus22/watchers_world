@@ -3,6 +3,8 @@ import { Component, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { User } from '../../../authentication/models/user';
+import { UserRatingMedia } from '../../media-models/UserRatingMedia';
+import { FavoriteActor } from '../../media-models/fav-actor';
 
 
 @Injectable({
@@ -218,7 +220,7 @@ export class MovieApiServiceComponent {
       mediaType,
       text
     }).pipe(
-      map((response: any) => response.comment) // Assumindo que 'comment' é o campo na resposta JSON
+      map((response: any) => response.comment) 
     );
   }
 
@@ -251,5 +253,42 @@ export class MovieApiServiceComponent {
       text
     });
   }
+
+  // RATINGS
+
+  giveRatingToMedia(ratingMediaDto: UserRatingMedia): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/UserRatingMedia/give-rating`, ratingMediaDto,  { headers });
+  }
+
+  getRatingForMedia(mediaId: number): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-rates/${mediaId}`);
+  }
+
+  getAverageRatingForMedia(mediaId: number): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-average-rating/${mediaId}`);
+  }
+
+  getUserRatingForMedia(username: string, mediaId: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-user-choice/${username}/${mediaId}`, { headers });
+  }
+
+  // ATORES
+
+  getActorChoicesForMedia(mediaId: number): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-choices/${mediaId}`);
+  }
+
+  chooseAnActor(favoriteActorChoice: FavoriteActor): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/FavoriteActorChoice/choose-an-actor`, favoriteActorChoice, { headers });
+  }
+
+  getUserActorChoice(username: string, mediaId: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-user-choice/${username}/${mediaId}`, { headers });
+  }
+
 
 }

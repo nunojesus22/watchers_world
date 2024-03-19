@@ -1,7 +1,8 @@
 <div class="title-panel" *ngIf="loggedUserName === currentUsername">
-    <h3 class="title-center">Notificações</h3>
-    <hr class="divider">
-    <div *ngIf= pendingFollowRequests.length >
+  <h3 class="title-center">Notificações</h3>
+  <hr class="divider">
+  <!-- Verificação se existem pedidos pendentes -->
+  <div *ngIf="pendingFollowRequests.length; else noRequests">
     <div class="user-list">
       <h4>Número de pedidos para seguir: {{pendingFollowRequests.length}}</h4>
       <div *ngFor="let request of pendingFollowRequests" class="user">
@@ -16,4 +17,10 @@
       </div>
     </div>
   </div>
+  <!-- Template para exibir quando não há pedidos pendentes -->
+  <ng-template #noRequests>
+    <div class="no-requests">
+      <p>Não existe nenhuma notificação pendente.</p>
+    </div>
+  </ng-template>
 </div>

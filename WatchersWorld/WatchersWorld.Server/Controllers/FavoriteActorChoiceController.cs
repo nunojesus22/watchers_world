@@ -58,12 +58,13 @@ namespace WatchersWorld.Server.Controllers
             if (userAuthenticated == null) return BadRequest("User não reconhecido no sistema!");
 
             var result = await _favoriteActorService.GetUserChoice(userAuthenticated.Id, mediaId);
-            if(result != 0)
+            if (result != 0)
             {
                 return Ok(result);
             }
 
-            return BadRequest("Não foi possível obter o voto do user no ator favorito dessa media.");
+            // Altere de BadRequest para Ok e retorne null ou um identificador claro que possa ser tratado pelo frontend
+            return Ok(new { ChoiceId = (int?)null });
         }
 
     }

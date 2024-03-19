@@ -27,21 +27,21 @@ export class HomeComponent {
 
   initCategories() {
     this.categories = [
-      { name: 'Banner', results: [], activeIndex: 0, media_type: "movie"},
-      { name: 'Trending Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'Top Rated Series', results: [], activeIndex: 0, media_type: "tv" },
-      { name: 'Action Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'Adventure Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'Comedy Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'Animation Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'Documentary Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'ScienceFiction Movies', results: [], activeIndex: 0, media_type: "movie" },
-      { name: 'Thriller Movies', results: [], activeIndex: 0, media_type: "movie" },
-      
+      { name: 'Banner', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes em Destaque', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Séries Mais Votadas', results: [], activeIndex: 0, media_type: "tv" },
+      { name: 'Filmes de Ação', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes de Aventura', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes de Comédia', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes de Animação', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes Documentários', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes de Ficção Científica', results: [], activeIndex: 0, media_type: "movie" },
+      { name: 'Filmes de Thriller', results: [], activeIndex: 0, media_type: "movie" },
     ];
 
     this.fetchMovies();
-  }
+  } 
+
 
   fetchMovies() {
     const fetchMethods = [
