@@ -140,9 +140,10 @@ namespace WatchersWorld.Server.Services
                 .Select(group => new ActorVotePercentageDto
                 {
                     ActorId = group.Key,
-                    Percentage = (double)group.Count() / totalChoices * 100
+                    Percentage = Math.Round((double)group.Count() / totalChoices * 100, 2)
                 })
                 .ToList();
+
 
             return votePercentages;
         }

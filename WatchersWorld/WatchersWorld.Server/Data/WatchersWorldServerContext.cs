@@ -27,16 +27,6 @@ namespace WatchersWorld.Server.Data
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<CommentDislike> CommentDislikes { get; set; }
 
-        public DbSet<Actor> Actor { get; set; }
-        public DbSet<ActorMedia> ActorMedia { get; set; }
-        public DbSet<FavoriteActorChoice> FavoriteActorChoice { get; set; }
-        public DbSet<UserRatingMedia> UserRatingMedia { get; set; }
-
-
-        public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)
-        : base(options)
-        {
-        }
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

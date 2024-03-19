@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs;
 using WatchersWorld.Server.Models.Authentication;

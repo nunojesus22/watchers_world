@@ -15,7 +15,7 @@ namespace WatchersWorld.Server.Data
         /// <param name="context">Contexto do servidor WatchersWorld.</param>
         /// <param name="userManager">Gestor de utilizadores.</param>
         /// <returns>Tarefa assíncrona.</returns>
-        public static async Task SeedData(WatchersWorldServerContext context, UserManager<User> userManager) 
+        public static async Task SeedData(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole>? roleManager) 
         {
             // Seed roles
             if (roleManager != null)
@@ -30,13 +30,8 @@ namespace WatchersWorld.Server.Data
             await SeedTestUser(context, userManager, roleManager);
         }
 
-        /// <summary>
-        /// Semeia utilizadores de teste no contexto e no gestor de utilizadores.
-        /// </summary>
-        /// <param name="context">Contexto do servidor WatchersWorld.</param>
-        /// <param name="userManager">Gestor de utilizadores.</param>
-        /// <returns>Tarefa assíncrona.</returns>
-        private static async Task SeedTestUser(WatchersWorldServerContext context, UserManager<User> userManager)
+        
+        private static async Task EnsureRolesAsync(RoleManager<IdentityRole>? roleManager)
         {
             string[] roles = ["Admin", "Moderator", "User"];
 
@@ -74,6 +69,12 @@ namespace WatchersWorld.Server.Data
             }
         }
 
+        /// <summary>
+        /// Semeia utilizadores de teste no contexto e no gestor de utilizadores.
+        /// </summary>
+        /// <param name="context">Contexto do servidor WatchersWorld.</param>
+        /// <param name="userManager">Gestor de utilizadores.</param>
+        /// <returns>Tarefa assíncrona.</returns>
         private static async Task SeedTestUser(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest1@gmail.com", "UserTest1", "google", true, "Public");
