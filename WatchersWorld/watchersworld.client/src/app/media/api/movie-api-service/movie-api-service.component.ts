@@ -290,5 +290,23 @@ export class MovieApiServiceComponent {
     return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-user-choice/${username}/${mediaId}`, { headers });
   }
 
+  //QUIZ
+  getQuizQuestions(mediaId: number): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/quiz/${mediaId}`);
+  }
+
+  submitQuizAttempt(quizAttempt: any): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/quiz/attempt/`, quizAttempt);
+  }
+
+  getLastQuizAttempt(mediaId: any): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/quiz/last-attempt/${mediaId}`);
+
+  }
+  checkQuizCompleted(mediaId: any): Observable<any> {
+    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`);
+  }
+
+
 
 }

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { BehaviorSubject } from 'rxjs';
+import { AdminService } from '../../../admin/service/admin.service';
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { Actor } from '../../media-models/actor';
 
@@ -12,7 +14,9 @@ import { Actor } from '../../media-models/actor';
   styleUrl: './series-details.component.css'
 })
 export class SeriesDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService) { }
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService) {
+    this.setUserRole();
+  }
   getSerieDetailsResult: any;
   getSerieVideoResult: any;
   getMovieCastResult: any;
@@ -26,6 +30,8 @@ export class SeriesDetailsComponent {
   showComments: boolean = false;
   currentUser: string | null = null;
 
+  private isAdminOrModerator$ = new BehaviorSubject<boolean>(false);
+
   movieRating = 0;
   averageRating: number = 0;
   userRating: number = 0;
@@ -34,44 +40,270 @@ export class SeriesDetailsComponent {
 
   actorVotePercentages: { [actorId: number]: number } = {};
 
+  quizQuestions: any[] = [];
+  userAnswers: { [questionId: number]: number } = {};
+  quizResult: any;
+
+  quizCompleted: boolean = false;
+  isQuizPopupVisible: boolean = false;
+  lastQuizScore: any;
+  isQuizActive: boolean = false;
+  showLastScore: boolean = false;
+  currentQuestionIndex: number = 0;
+
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');
     this.showAll = false;
-    this.getMovie(getParamId);
-    this.getVideo(getParamId);
-    this.getSerieCast(getParamId);
-    this.getSerieProviders(getParamId);
     if (getParamId) {
-      this.checkIfWatched(getParamId); 
-    }
-    this.checkIfWatchedLater(getParamId);
-    this.auth.user$.subscribe(user => {
-      this.currentUser = user ? user.username.toLowerCase() : null;
-      this.fetchComments();
-    });
+      this.getMovie(getParamId);
+      this.getVideo(getParamId);
+      this.getSerieCast(getParamId);
+      this.getSerieProviders(getParamId);
+      this.checkIfWatched(getParamId);
+      this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
+      this.checkIfWatchedLater(getParamId);
 
+      this.checkQuizCompleted(getParamId);
+    }
+    this.auth.user$.subscribe(user => { this.currentUser = user ? user.username.toLowerCase() : null });
     this.loadAverageRatingForMedia(getParamId);
     this.loadUserRatingForMedia(getParamId);
-
-    this.getFavoriteActorChoicesForMedia(getParamId);
     this.getUserFavoriteActorChoice(getParamId);
+    this.getFavoriteActorChoicesForMedia(getParamId);
+    this.fetchComments();
+    this.loadQuizQuestions();
+  }
+
+  // Mostra o pop-up do quiz
+  showQuizPopup(): void {
+    this.isQuizPopupVisible = true;
+    // Resetar respostas e resultado do quiz se necessário
+    this.userAnswers = {};
+    this.quizResult = null;
+    this.loadQuizQuestions();
+  }
+
+  // Esconde o pop-up do quiz
+  hideQuizPopup(): void {
+    this.isQuizPopupVisible = false;
+  }
+
+
+
+  // Função para ir para a próxima pergunta
+  nextQuestion(): void {
+    if (this.currentQuestionIndex < this.quizQuestions.length - 1) {
+      this.currentQuestionIndex++;
+    }
+  }
+
+  // Função para voltar para a pergunta anterior
+  prevQuestion(): void {
+    if (this.currentQuestionIndex > 0) {
+      this.currentQuestionIndex--;
+    }
+  }
+  checkQuizCompleted(mediaId: any): void {
+
+    this.service.checkQuizCompleted(mediaId).subscribe({
+      next: (response: any) => { // Agora tratando response como 'any'
+        this.quizCompleted = response.hasCompleted;
+        this.lastQuizScore = response.score; // Certifique-se de adicionar lastQuizScore na definição de classe do componente
+        this.showLastScore = true;
+
+      },
+      error: (error) => {
+        console.error('Error checking if quiz was completed:', error);
+        this.quizCompleted = false;
+        this.lastQuizScore = null;
+        this.showLastScore = false;
+      }
+    });
+  }
+
+  loadQuizQuestions(): void {
+    this.isQuizActive = true;
+    this.showLastScore = false;
+
+
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      // Imagine que você já tenha obtido os detalhes da mídia em getSerieDetailsResult
+      const movieDetails = this.getSerieDetailsResult;
+      if (movieDetails) {
+        this.quizQuestions = [
+          {
+            id: 1,
+            text: 'Qual é o título original da serie?',
+            answers: [
+              { id: 1, text: `${movieDetails.original_name}` }, // Resposta correta
+              { id: 2, text: 'Arrakis: A New Hope' }, // Inventada
+              { id: 3, text: 'The Spice Wars' } // Inventada
+            ]
+          },
+          {
+            id: 2,
+            text: 'Qual é o numero total de episodios da serie?',
+            answers: [
+              { id: 1, text: `${movieDetails.number_of_episodes}` }, // Resposta correta
+              { id: 2, text: '12' }, // Inventada
+              { id: 3, text: '50' } // Inventada
+            ]
+          },
+          {
+            id: 3,
+            text: 'Qualé o numero total de temporadas da serie?',
+            answers: [
+              {
+                id: 1, text: `${movieDetails.number_of_seasons}`
+              },
+              { id: 2, text: '4' },
+              { id: 3, text: '7' }
+            ]
+          },
+          {
+            id: 4,
+            text: 'Qual é a data de lançamento da serie?',
+            answers: [
+              { id: 1, text: `${movieDetails.last_air_date}` },
+              { id: 2, text: '2024-03-15' }, // Inventada
+              { id: 3, text: '2024-11-22' } // Inventada
+            ]
+          },
+          {
+            id: 5,
+            text: 'Qual é o gênero principal do filme?',
+            answers: [
+              { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
+              { id: 2, text: 'Comédia' }, // Inventada
+              { id: 3, text: 'Romance' } // Inventada
+            ]
+          },
+          {
+            id: 6,
+            text: 'Qual é o idioma original do filme?',
+            answers: [
+              { id: 1, text: movieDetails.original_language === 'en' ? 'Inglês' : movieDetails.original_language }, // Resposta correta
+              { id: 2, text: 'Francês' }, // Inventada
+              { id: 3, text: 'Alemão' } // Inventada
+            ]
+          },
+
+
+          {
+            id: 7,
+            text: 'A série continua em produção?',
+            answers: [
+              { id: 1, text: movieDetails.in_production ? 'Sim' : 'Não' }, // Resposta correta, com base no estado da produção
+              { id: 2, text: movieDetails.in_production ? 'Não' : 'Sim' }  // Opção incorreta
+            ]
+          }
+          // Adicione mais perguntas conforme necessário
+        ];
+      }
+
+    }
+  }
+
+
+  // Simula a geração de perguntas e respostas do quiz
+  submitQuiz(): void {
+    this.isQuizActive = false; // O quiz foi concluído
+    this.quizCompleted = true; // Indica que o quiz foi completado
+    let correctAnswers = 0;
+
+    this.quizQuestions.forEach(question => {
+      const userAnswer = this.userAnswers[question.id];
+      let correctAnswerId;
+      switch (question.id) {
+        case 1: // Título original
+          correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.original_name)?.id;
+          break;
+        case 2: // Receita
+          correctAnswerId = question.answers.find((answer: any) => answer.text === `${this.getSerieDetailsResult.number_of_episodes}`)?.id;
+          break;
+        case 3: // Orçamento
+          correctAnswerId = question.answers.find((answer: any) => answer.text === `${this.getSerieDetailsResult.number_of_seasons}`)?.id;
+          break;
+        case 4: // Data de lançamento
+          correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.last_air_date)?.id;
+          break;
+        case 5: // Tagline
+          correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.genres[0].name)?.id;
+          break;
+        case 6: // Idioma original
+          correctAnswerId = question.answers.find((answer: any) => answer.text === (this.getSerieDetailsResult.original_language === 'en' ? 'Inglês' : this.getSerieDetailsResult.original_language))?.id;
+          break;
+        case 7:
+          correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.in_production ? answer.text === 'Sim' : answer.text === 'Não')?.id;
+          break;
+        // Adicione mais casos conforme necessário
+      }
+      if (userAnswer === correctAnswerId) {
+        correctAnswers++;
+      }
+    });
+
+    this.quizResult = { correctAnswers, totalQuestions: this.quizQuestions.length };
+
+    // Preparando os dados para enviar ao back-end
+    const quizAttempt = {
+      mediaId: this.getSerieDetailsResult.id,
+      score: correctAnswers
+      // Você pode incluir mais dados aqui, como as respostas do usuário
+    };
+    this.lastQuizScore = quizAttempt.score;
+    this.hideQuizPopup();
+
+    // Chamando o serviço para enviar os dados ao back-end
+    this.service.submitQuizAttempt(quizAttempt).subscribe({
+      next: (result) => console.log(result),
+      error: (error) => console.error('Erro ao enviar tentativa do quiz', error)
+    });
+  }
+
+
+  selectAnswer(questionId: number, answerId: number): void {
+    this.userAnswers[questionId] = answerId;
+  }
+
+
+
+  //toggleFavorite(selectedActor: any): void {
+  //  if (selectedActor.isFavorite) {
+  //    selectedActor.isFavorite = false;
+  //    return;
+  //  }
+  //  this.checkIfWatchedLater(getParamId);
+  //  this.auth.user$.subscribe(user => {
+  //    this.currentUser = user ? user.username.toLowerCase() : null;
+  //    this.fetchComments();
+  //  });
+  //}
+
+  setUserRole(): void {
+    const username = this.auth.getLoggedInUserName();
+    if (username) {
+      this.adminService.getUserRole(username).subscribe(roles => {
+        this.isAdminOrModerator$.next(roles.includes('Admin') || roles.includes('Moderator'));
+      });
+    }
   }
 
   checkIfWatchedOnInit(mediaId: string) {
     this.service.checkIfWatched(+mediaId, this.type).subscribe({
       next: (response) => {
         this.isWatched = response.isWatched;
-        this.showComments = this.isWatched; 
+        this.showComments = this.isWatched;
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
       }
     });
-
   }
 
- 
+
 
 
   checkIfWatched(mediaId: any) {
@@ -101,17 +333,6 @@ export class SeriesDetailsComponent {
       console.log(result, 'getseriedetails#');
       this.getSerieDetailsResult = await result;
 
-      // updatetags
-      this.title.setTitle(`${this.getSerieDetailsResult.original_title} | ${this.getSerieDetailsResult.tagline}`);
-      this.meta.updateTag({ name: 'title', content: this.getSerieDetailsResult.original_title });
-      this.meta.updateTag({ name: 'description', content: this.getSerieDetailsResult.overview });
-
-      // facebook
-      this.meta.updateTag({ property: 'og:type', content: "website" });
-      this.meta.updateTag({ property: 'og:url', content: `` });
-      this.meta.updateTag({ property: 'og:title', content: this.getSerieDetailsResult.original_title });
-      this.meta.updateTag({ property: 'og:description', content: this.getSerieDetailsResult.overview });
-      this.meta.updateTag({ property: 'og:image', content: `https://image.tmdb.org/t/p/original/${this.getSerieDetailsResult.backdrop_path}` });
 
     });
   }
@@ -271,7 +492,9 @@ export class SeriesDetailsComponent {
 
   canDeleteComment(commentUserName: string): boolean {
     if (!this.currentUser) return false;
-    return this.currentUser.toLowerCase() === commentUserName.toLowerCase();
+    const isCurrentUser = this.currentUser.toLowerCase() === commentUserName.toLowerCase();
+    const isAdminOrModerator = this.isAdminOrModerator$.getValue();
+    return isCurrentUser || isAdminOrModerator;
   }
 
 
@@ -506,7 +729,7 @@ export class SeriesDetailsComponent {
   // ATORES
 
   toggleFavorite(actor: Actor): void {
-    if (!this.actorIsFavorite) { 
+    if (!this.actorIsFavorite) {
       this.chooseFavoriteActor(actor);
     } else {
       console.log('Ator já é favorito');
@@ -576,7 +799,6 @@ export class SeriesDetailsComponent {
         this.userFavoriteActorId = favoriteActorChoice.ActorChoiceId;
         this.updateFavoriteActorStatus(favoriteActorChoice.ActorChoiceId);
         this.getFavoriteActorChoicesForMedia(this.getSerieDetailsResult.id);
-
       },
       error: (error) => {
         console.error('Erro ao escolher ator favorito:', error);

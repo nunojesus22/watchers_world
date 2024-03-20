@@ -7,10 +7,12 @@ using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
+using WatchersWorld.Server.Models.Media.Quiz;
+using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 
 namespace WatchersWorld.Server.Data
 {
-    public class WatchersWorldServerContext : IdentityDbContext<User>
+    public class WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options) : IdentityDbContext<User>(options)
     {
         public new DbSet<User> Users { get; set; }
         public DbSet<ProfileInfo> ProfileInfo { get; set; }
@@ -22,17 +24,14 @@ namespace WatchersWorld.Server.Data
         public DbSet<ActorMedia> ActorMedia { get; set; }
         public DbSet<FavoriteActorChoice> FavoriteActorChoice { get; set; }
         public DbSet<UserRatingMedia> UserRatingMedia { get; set; }
-
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<CommentDislike> CommentDislikes { get; set; }
 
+        
+        public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
 
-        public WatchersWorldServerContext(DbContextOptions<WatchersWorldServerContext> options)
-        : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +52,7 @@ namespace WatchersWorld.Server.Data
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
+           
         }
     }
 }

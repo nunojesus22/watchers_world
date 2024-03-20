@@ -11,7 +11,6 @@ using System.Text;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Account;
 using WatchersWorld.Server.Models.Authentication;
-using WatchersWorld.Server.Models.Authentication.Status;
 using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers

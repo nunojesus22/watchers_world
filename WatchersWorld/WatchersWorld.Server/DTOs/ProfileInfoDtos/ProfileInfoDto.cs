@@ -1,50 +1,64 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using WatchersWorld.Server.Models.Authentication.Status;
-
-namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
+﻿namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 {
+    /// <summary>
+    /// DTO (Objeto de Transferência de Dados) que representa as informações de perfil de um utilizador.
+    /// Inclui detalhes como o nome de utilizador, data de nascimento, descrição, género, fotografias de perfil e de capa, estado do perfil, seguidores, seguindo, e datas de início e fim de banimento.
+    /// </summary>
     public class ProfileInfoDto
     {
         /// <summary>
-        /// Email associated with the user's profile.
-        /// Used as a unique identifier for the user's profile and for communication purposes.
+        /// Nome de utilizador associado ao perfil do utilizador. Utilizado como identificador único do perfil do utilizador e para fins de comunicação.
         /// </summary>
-
-        public string UserName { get; set; }    
+        public string UserName { get; set; }
 
         /// <summary>
-        /// The user's date of birth.
-        /// This information can be used for age verification or displayed in user profiles for personalization.
+        /// Data de nascimento do utilizador. Pode ser utilizada para verificação de idade ou exibida no perfil do utilizador para fins de personalização.
         /// </summary>
         public DateTime BirthDate { get; set; }
 
-        // A brief description or bio of the user.
-        // This could be a personal statement or any information the user wishes to share publicly.
+        /// <summary>
+        /// Descrição ou biografia breve do utilizador. Pode ser uma declaração pessoal ou qualquer informação que o utilizador deseje partilhar publicamente.
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Género do utilizador.
+        /// </summary>
         public char Gender { get; set; }
 
-        // URL or path to the user's profile photo.
-        // This image is typically shown in the user's profile or next to user-generated content.
+        /// <summary>
+        /// URL ou caminho para a fotografia de perfil do utilizador. Esta imagem é tipicamente mostrada no perfil do utilizador ou ao lado de conteúdo gerado pelo utilizador.
+        /// </summary>
         public string ProfilePhoto { get; set; }
 
-        // URL or path to the user's cover photo.
-        // This is often a larger image displayed at the top of the user's profile.
+        /// <summary>
+        /// URL ou caminho para a fotografia de capa do utilizador. Esta é frequentemente uma imagem maior exibida no topo do perfil do utilizador.
+        /// </summary>
         public string CoverPhoto { get; set; }
 
         /// <summary>
-        /// Enum representing the visibility status of the profile (e.g., Public, Private).
-        /// It dictates the visibility or accessibility of the profile to other users on the platform.
+        /// String representando o estado de visibilidade do perfil (por exemplo, Público, Privado). Dita a visibilidade ou acessibilidade do perfil para outros utilizadores na plataforma.
         /// </summary>
         public string ProfileStatus { get; set; }
 
-        public int Followers { get; set; } 
+        /// <summary>
+        /// Número de seguidores do utilizador.
+        /// </summary>
+        public int Followers { get; set; }
+
+        /// <summary>
+        /// Número de utilizadores que este utilizador segue.
+        /// </summary>
         public int Following { get; set; }
 
-
+        /// <summary>
+        /// Data de início do banimento do utilizador, se aplicável.
+        /// </summary>
         public DateTime StartBanDate { get; set; }
 
+        /// <summary>
+        /// Data de fim do banimento do utilizador, se aplicável.
+        /// </summary>
         public DateTime EndBanDate { get; set; }
 
         public bool IsBanned { get; set; }

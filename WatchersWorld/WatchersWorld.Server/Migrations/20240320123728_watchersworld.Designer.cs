@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WatchersWorld.Server.Data;
 
@@ -11,9 +12,16 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    partial class WatchersWorldServerContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240320124300_WatchersWorld.Designer.cs
+    [Migration("20240320124300_WatchersWorld")]
+    partial class WatchersWorld
+========
+    [Migration("20240320123728_watchersworld")]
+    partial class watchersworld
+>>>>>>>> development:WatchersWorld/WatchersWorld.Server/Migrations/20240320123728_watchersworld.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -496,6 +504,8 @@ namespace WatchersWorld.Server.Migrations
                         });
                 });
 
+<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240320124300_WatchersWorld.Designer.cs
+========
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz.QuizAttempt", b =>
                 {
                     b.Property<int>("Id")
@@ -521,6 +531,7 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("QuizAttempts");
                 });
 
+>>>>>>>> development:WatchersWorld/WatchersWorld.Server/Migrations/20240320123728_watchersworld.Designer.cs
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>
                 {
                     b.Property<Guid>("Id")

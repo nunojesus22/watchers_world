@@ -93,22 +93,21 @@
             Onde Ver:
             Ainda não existem provedores de streaming disponíveis.
           </div>
-
           <div class="rating-container">
             <p class="manual-text mt-2 mb-1">Classificação Média:</p>
             <p class="movie-details mt-1 mb-2">{{ averageRating }}  <i class="fas fa-star"></i></p>
           </div>
-
-
           <div *ngIf="isWatched" class="rating-container">
             <p class="manual-text mt-2 mb-1">A sua avaliação:</p>
             <i class="fa-star" *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
                [class.fas]="userRating > i" [class.far]="userRating <= i"
                (click)="rateMovie(i + 1)"></i>
           </div>
-
+          <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getSerieVideoResult?}}"
+  target="_blank">watch trailer</a>-->
+          <br />
           <div class="container">
-            <h2 class="text-black">Principais Atores</h2>
+            <h2 class="text-black">Principais atores</h2>
             <div class="d-flex flex-row flex-nowrap overflow-auto">
               <div class="card text-center flex-shrink-0" *ngFor="let c of getMovieCastResult">
                 <div class="actor-image-container">
@@ -129,6 +128,59 @@
                 </div>
               </div>
             </div>
+          </div>
+          <br />
+
+          <div *ngIf="isWatched">
+            <h2 class="text-black">Quiz:</h2>
+
+            <button *ngIf="quizCompleted" (click)="showQuizPopup()" class="btn btn-primary my-3">
+              Refazer Quiz
+            </button>
+            <button *ngIf="!quizCompleted" (click)="showQuizPopup()" class="btn btn-primary my-3">
+              Iniciar Quiz
+            </button>
+
+            <div *ngIf="isQuizPopupVisible" class="quiz-popup">
+              <div class="popup-content">
+                <button class="close-popup" (click)="hideQuizPopup()">X</button>
+                <h4>Quiz sobre o filme</h4>
+                <form *ngIf="!quizResult">
+                  <!-- Exibe apenas a pergunta atual baseada em currentQuestionIndex -->
+                  <div class="card mb-3">
+                    <div class="card-header">
+                      {{ quizQuestions[currentQuestionIndex].text }}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item" *ngFor="let answer of quizQuestions[currentQuestionIndex].answers">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" [name]="'question' + quizQuestions[currentQuestionIndex].id" [(ngModel)]="userAnswers[quizQuestions[currentQuestionIndex].id]" [value]="answer.id">
+                          <label class="form-check-label" for="answer{{ answer.id }}">
+                            {{ answer.text }}
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- Botões de Navegação -->
+                  <div class="navigation-buttons">
+                    <button type="button" class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">Anterior</button>
+                    <button type="button" class="btn btn-secondary" (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1">Próximo</button>
+                  </div>
+                  <!-- Mostrar botão de enviar apenas na última pergunta -->
+                  <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-success">Enviar respostas</button>
+                </form>
+              </div>
+            </div>
+
+            <div *ngIf="quizResult">
+              <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
+            </div>
+
+            <div *ngIf="quizCompleted" class="alert alert-info">
+              <p>Já completou esse quiz. A sua última pontuação foi de {{ lastQuizScore }} pontos</p>
+            </div>
+
           </div>
 
           <div class="comments-section mt-5" *ngIf="isWatched">
@@ -188,7 +240,7 @@
                         <button *ngIf="!reply.hasDisliked" (click)="toggleLikeComment(reply.id, comment.id)" class="icon-button" [ngClass]="reply.hasLiked ? 'liked' : 'not-liked'">
                           <i class="fa fa-thumbs-up"></i>
                         </button>
-                        <span class="likes-count">{{reply?.likesCount}}</span>
+                        <span class="likes-count" *ngIf="reply?.likesCount">{{reply?.likesCount}}</span>
                       </div>
                     </div>
                   </div>
@@ -201,5 +253,5 @@
       </div>
     </div>
   </div>
-</div>
-<br /><br />
+  <br /><br />
+
