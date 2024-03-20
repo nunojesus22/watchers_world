@@ -40,9 +40,9 @@ export class SeriesDetailsComponent {
 
   actorVotePercentages: { [actorId: number]: number } = {};
 
-  quizQuestions: any[] = []; 
-  userAnswers: { [questionId: number]: number } = {}; 
-  quizResult: any; 
+  quizQuestions: any[] = [];
+  userAnswers: { [questionId: number]: number } = {};
+  quizResult: any;
 
   quizCompleted: boolean = false;
   isQuizPopupVisible: boolean = false;
@@ -55,18 +55,24 @@ export class SeriesDetailsComponent {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');
     this.showAll = false;
-    this.getMovie(getParamId);
-    this.getVideo(getParamId);
-    this.getSerieCast(getParamId);
-    this.getSerieProviders(getParamId);
     if (getParamId) {
+      this.getMovie(getParamId);
+      this.getVideo(getParamId);
+      this.getSerieCast(getParamId);
+      this.getSerieProviders(getParamId);
       this.checkIfWatched(getParamId);
       this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
       this.checkIfWatchedLater(getParamId);
 
       this.checkQuizCompleted(getParamId);
-      this.loadQuizQuestions();
     }
+    this.auth.user$.subscribe(user => { this.currentUser = user ? user.username.toLowerCase() : null });
+    this.loadAverageRatingForMedia(getParamId);
+    this.loadUserRatingForMedia(getParamId);
+    this.getUserFavoriteActorChoice(getParamId);
+    this.getFavoriteActorChoicesForMedia(getParamId);
+    this.fetchComments();
+    this.loadQuizQuestions();
   }
 
   // Mostra o pop-up do quiz
@@ -125,76 +131,78 @@ export class SeriesDetailsComponent {
     if (mediaId) {
       // Imagine que você já tenha obtido os detalhes da mídia em getSerieDetailsResult
       const movieDetails = this.getSerieDetailsResult;
+      if (movieDetails) {
+        this.quizQuestions = [
+          {
+            id: 1,
+            text: 'Qual é o título original da serie?',
+            answers: [
+              { id: 1, text: `${movieDetails.original_name}` }, // Resposta correta
+              { id: 2, text: 'Arrakis: A New Hope' }, // Inventada
+              { id: 3, text: 'The Spice Wars' } // Inventada
+            ]
+          },
+          {
+            id: 2,
+            text: 'Qual é o numero total de episodios da serie?',
+            answers: [
+              { id: 1, text: `${movieDetails.number_of_episodes}` }, // Resposta correta
+              { id: 2, text: '12' }, // Inventada
+              { id: 3, text: '50' } // Inventada
+            ]
+          },
+          {
+            id: 3,
+            text: 'Qualé o numero total de temporadas da serie?',
+            answers: [
+              {
+                id: 1, text: `${movieDetails.number_of_seasons}`
+              },
+              { id: 2, text: '4' },
+              { id: 3, text: '7' }
+            ]
+          },
+          {
+            id: 4,
+            text: 'Qual é a data de lançamento da serie?',
+            answers: [
+              { id: 1, text: `${movieDetails.last_air_date}` },
+              { id: 2, text: '2024-03-15' }, // Inventada
+              { id: 3, text: '2024-11-22' } // Inventada
+            ]
+          },
+          {
+            id: 5,
+            text: 'Qual é o gênero principal do filme?',
+            answers: [
+              { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
+              { id: 2, text: 'Comédia' }, // Inventada
+              { id: 3, text: 'Romance' } // Inventada
+            ]
+          },
+          {
+            id: 6,
+            text: 'Qual é o idioma original do filme?',
+            answers: [
+              { id: 1, text: movieDetails.original_language === 'en' ? 'Inglês' : movieDetails.original_language }, // Resposta correta
+              { id: 2, text: 'Francês' }, // Inventada
+              { id: 3, text: 'Alemão' } // Inventada
+            ]
+          },
 
-      // Exemplo de geração de perguntas
-      this.quizQuestions = [
-        {
-          id: 1,
-          text: 'Qual é o título original da serie?',
-          answers: [
-            { id: 1, text: `${movieDetails.original_name}` }, // Resposta correta
-            { id: 2, text: 'Arrakis: A New Hope' }, // Inventada
-            { id: 3, text: 'The Spice Wars' } // Inventada
-          ]
-        },
-        {
-          id: 2,
-          text: 'Qual é o numero total de episodios da serie?',
-          answers: [
-            { id: 1, text: `${movieDetails.number_of_episodes}` }, // Resposta correta
-            { id: 2, text: '12' }, // Inventada
-            { id: 3, text: '50' } // Inventada
-          ]
-        },
-        {
-          id: 3,
-          text: 'Qualé o numero total de temporadas da serie?',
-          answers: [
-            {
-              id: 1, text: `${movieDetails.number_of_seasons}` }, 
-            { id: 2, text: '4' }, 
-            { id: 3, text: '7' } 
-          ]
-        },
-        {
-          id: 4,
-          text: 'Qual é a data de lançamento da serie?',
-          answers: [
-            { id: 1, text: `${movieDetails.last_air_date}` }, 
-            { id: 2, text: '2024-03-15' }, // Inventada
-            { id: 3, text: '2024-11-22' } // Inventada
-          ]
-        },
-        {
-          id: 5,
-          text: 'Qual é o gênero principal do filme?',
-          answers: [
-            { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
-            { id: 2, text: 'Comédia' }, // Inventada
-            { id: 3, text: 'Romance' } // Inventada
-          ]
-        },
-        {
-          id: 6,
-          text: 'Qual é o idioma original do filme?',
-          answers: [
-            { id: 1, text: movieDetails.original_language === 'en' ? 'Inglês' : movieDetails.original_language }, // Resposta correta
-            { id: 2, text: 'Francês' }, // Inventada
-            { id: 3, text: 'Alemão' } // Inventada
-          ]
-        },
 
+          {
+            id: 7,
+            text: 'A série continua em produção?',
+            answers: [
+              { id: 1, text: movieDetails.in_production ? 'Sim' : 'Não' }, // Resposta correta, com base no estado da produção
+              { id: 2, text: movieDetails.in_production ? 'Não' : 'Sim' }  // Opção incorreta
+            ]
+          }
+          // Adicione mais perguntas conforme necessário
+        ];
+      }
 
-        {
-          id: 7,
-          text: 'A série continua em produção?',
-          answers: [
-            { id: 1, text: movieDetails.in_production ? 'Sim' : 'Não' }, // Resposta correta, com base no estado da produção
-            { id: 2, text: movieDetails.in_production ? 'Não' : 'Sim' }  // Opção incorreta
-          ]
-        }
-        // Adicione mais perguntas conforme necessário
-      ];
     }
   }
 
@@ -208,7 +216,6 @@ export class SeriesDetailsComponent {
     this.quizQuestions.forEach(question => {
       const userAnswer = this.userAnswers[question.id];
       let correctAnswerId;
-      debugger
       switch (question.id) {
         case 1: // Título original
           correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.original_name)?.id;
@@ -228,8 +235,8 @@ export class SeriesDetailsComponent {
         case 6: // Idioma original
           correctAnswerId = question.answers.find((answer: any) => answer.text === (this.getSerieDetailsResult.original_language === 'en' ? 'Inglês' : this.getSerieDetailsResult.original_language))?.id;
           break;
-        case 7: 
-          correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.in_production? answer.text === 'Sim' : answer.text === 'Não')?.id;
+        case 7:
+          correctAnswerId = question.answers.find((answer: any) => answer.text === this.getSerieDetailsResult.in_production ? answer.text === 'Sim' : answer.text === 'Não')?.id;
           break;
         // Adicione mais casos conforme necessário
       }
@@ -246,7 +253,7 @@ export class SeriesDetailsComponent {
       score: correctAnswers
       // Você pode incluir mais dados aqui, como as respostas do usuário
     };
-
+    this.lastQuizScore = quizAttempt.score;
     this.hideQuizPopup();
 
     // Chamando o serviço para enviar os dados ao back-end
@@ -261,7 +268,7 @@ export class SeriesDetailsComponent {
     this.userAnswers[questionId] = answerId;
   }
 
-  
+
 
   //toggleFavorite(selectedActor: any): void {
   //  if (selectedActor.isFavorite) {
@@ -288,7 +295,7 @@ export class SeriesDetailsComponent {
     this.service.checkIfWatched(+mediaId, this.type).subscribe({
       next: (response) => {
         this.isWatched = response.isWatched;
-        this.showComments = this.isWatched; 
+        this.showComments = this.isWatched;
       },
       error: (error) => {
         console.error('Erro ao verificar se a mídia foi assistida', error);
@@ -296,7 +303,7 @@ export class SeriesDetailsComponent {
     });
   }
 
- 
+
 
 
   checkIfWatched(mediaId: any) {
@@ -722,7 +729,7 @@ export class SeriesDetailsComponent {
   // ATORES
 
   toggleFavorite(actor: Actor): void {
-    if (!this.actorIsFavorite) { 
+    if (!this.actorIsFavorite) {
       this.chooseFavoriteActor(actor);
     } else {
       console.log('Ator já é favorito');
@@ -791,6 +798,7 @@ export class SeriesDetailsComponent {
       next: (response) => {
         this.userFavoriteActorId = favoriteActorChoice.ActorChoiceId;
         this.updateFavoriteActorStatus(favoriteActorChoice.ActorChoiceId);
+        this.getFavoriteActorChoicesForMedia(this.getSerieDetailsResult.id);
       },
       error: (error) => {
         console.error('Erro ao escolher ator favorito:', error);

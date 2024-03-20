@@ -25,7 +25,7 @@ export class MovieDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "movie";
-  isWatched: boolean = false; 
+  isWatched: boolean = false;
   isToWatchLater: boolean = false;
   actorIsFavorite: boolean = false;
 
@@ -46,11 +46,11 @@ export class MovieDetailsComponent {
 
   actorVotePercentages: { [actorId: number]: number } = {};
 
-  quizQuestions: any[] = []; 
-  userAnswers: { [questionId: number]: number } = {}; 
-  quizResult: any; 
+  quizQuestions: any[] = [];
+  userAnswers: { [questionId: number]: number } = {};
+  quizResult: any;
 
-  quizCompleted: boolean=false;
+  quizCompleted: boolean = false;
   isQuizPopupVisible: boolean = false;
 
 
@@ -64,21 +64,24 @@ export class MovieDetailsComponent {
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     this.showAll = false;
-    this.getMovie(getParamId);
-    this.getVideo(getParamId);
-    this.getMovieCast(getParamId);
-    this.getProviders(getParamId);
-    this.getMovie(getParamId);
-    this.checkIfWatched(getParamId);
     if (getParamId) {
+      this.getMovie(getParamId);
+      this.getVideo(getParamId);
+      this.getMovieCast(getParamId);
+      this.getProviders(getParamId);
+      this.getMovie(getParamId);
+      this.checkIfWatched(getParamId);
       this.checkIfWatchedOnInit(getParamId);
-      this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
+      this.checkIfWatched(getParamId);
       this.checkIfWatchedLater(getParamId);
-
       this.checkQuizCompleted(getParamId);
-      this.loadQuizQuestions();
     }
     this.auth.user$.subscribe(user => { this.currentUser = user ? user.username.toLowerCase() : null });
+    this.loadAverageRatingForMedia(getParamId);
+    this.loadUserRatingForMedia(getParamId);
+    this.getUserFavoriteActorChoice(getParamId);
+    this.getFavoriteActorChoicesForMedia(getParamId);
+    this.loadQuizQuestions();
     this.fetchComments();
   }
 
@@ -111,13 +114,11 @@ export class MovieDetailsComponent {
     }
   }
   checkQuizCompleted(mediaId: any): void {
-    
     this.service.checkQuizCompleted(mediaId).subscribe({
       next: (response: any) => { // Agora tratando response como 'any'
         this.quizCompleted = response.hasCompleted;
         this.lastQuizScore = response.score; // Certifique-se de adicionar lastQuizScore na definição de classe do componente
         this.showLastScore = true;
-
       },
       error: (error) => {
         console.error('Error checking if quiz was completed:', error);
@@ -137,84 +138,85 @@ export class MovieDetailsComponent {
     if (mediaId) {
       // Imagine que você já tenha obtido os detalhes da mídia em getMovieDetailResult
       const movieDetails = this.getMovieDetailResult;
+      if (movieDetails) {
+        // Exemplo de geração de perguntas
+        this.quizQuestions = [
+          {
+            id: 1,
+            text: 'Qual é o título original do filme?',
+            answers: [
+              { id: 1, text: `${movieDetails.original_title}` }, // Resposta correta
+              { id: 2, text: 'Arrakis: A New Hope' }, // Inventada
+              { id: 3, text: 'The Spice Wars' } // Inventada
+            ]
+          },
+          {
+            id: 2,
+            text: 'Qual é a receita do filme?',
+            answers: [
+              { id: 1, text: `${movieDetails.revenue}` }, // Resposta correta
+              { id: 2, text: '750000000' }, // Inventada
+              { id: 3, text: '900000000' } // Inventada
+            ]
+          },
+          {
+            id: 3,
+            text: 'Qual foi o orçamento do filme?',
+            answers: [
+              { id: 1, text: `${movieDetails.budget}` }, // Resposta correta
+              { id: 2, text: '120000000' }, // Inventada
+              { id: 3, text: '180000000' } // Inventada
+            ]
+          },
+          {
+            id: 4,
+            text: 'Qual é a data de lançamento do filme?',
+            answers: [
+              { id: 1, text: `${movieDetails.release_date}` }, // Resposta correta
+              { id: 2, text: '2024-03-15' }, // Inventada
+              { id: 3, text: '2024-11-22' } // Inventada
+            ]
+          },
+          {
+            id: 6,
+            text: 'Qual é a tagline do filme?',
+            answers: [
+              { id: 1, text: movieDetails.tagline }, // Resposta correta
+              { id: 2, text: 'A saga continua além das estrelas' }, // Inventada
+              { id: 3, text: 'O destino de um mundo em suas mãos' } // Inventada
+            ]
+          },
+          {
+            id: 7,
+            text: 'Qual é o idioma original do filme?',
+            answers: [
+              { id: 1, text: movieDetails.original_language === 'en' ? 'Inglês' : movieDetails.original_language }, // Resposta correta
+              { id: 2, text: 'Francês' }, // Inventada
+              { id: 3, text: 'Alemão' } // Inventada
+            ]
+          },
 
-      // Exemplo de geração de perguntas
-      this.quizQuestions = [
-        {
-          id: 1,
-          text: 'Qual é o título original do filme?',
-          answers: [
-            { id: 1, text: `${movieDetails.original_title }` }, // Resposta correta
-            { id: 2, text: 'Arrakis: A New Hope' }, // Inventada
-            { id: 3, text: 'The Spice Wars' } // Inventada
-          ]
-        },
-        {
-          id: 2,
-          text: 'Qual é a receita do filme?',
-          answers: [
-            { id: 1, text: `${movieDetails.revenue}` }, // Resposta correta
-            { id: 2, text: '750000000' }, // Inventada
-            { id: 3, text: '900000000' } // Inventada
-          ]
-        },
-        {
-          id: 3,
-          text: 'Qual foi o orçamento do filme?',
-          answers: [
-            { id: 1, text: `${movieDetails.budget}` }, // Resposta correta
-            { id: 2, text: '120000000' }, // Inventada
-            { id: 3, text: '180000000' } // Inventada
-          ]
-        },
-        {
-          id: 4,
-          text: 'Qual é a data de lançamento do filme?',
-          answers: [
-            { id: 1, text: `${movieDetails.release_date}` }, // Resposta correta
-            { id: 2, text: '2024-03-15' }, // Inventada
-            { id: 3, text: '2024-11-22' } // Inventada
-          ]
-        },
-        {
-          id: 6,
-          text: 'Qual é a tagline do filme?',
-          answers: [
-            { id: 1, text: movieDetails.tagline }, // Resposta correta
-            { id: 2, text: 'A saga continua além das estrelas' }, // Inventada
-            { id: 3, text: 'O destino de um mundo em suas mãos' } // Inventada
-          ]
-        },
-        {
-          id: 7,
-          text: 'Qual é o idioma original do filme?',
-          answers: [
-            { id: 1, text: movieDetails.original_language === 'en' ? 'Inglês' : movieDetails.original_language }, // Resposta correta
-            { id: 2, text: 'Francês' }, // Inventada
-            { id: 3, text: 'Alemão' } // Inventada
-          ]
-        },
-        
-        {
-          id: 8,
-          text: 'Qual é o gênero principal do filme?',
-          answers: [
-            { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
-            { id: 2, text: 'Comédia' }, // Inventada
-            { id: 3, text: 'Romance' } // Inventada
-          ]
-        },
-        {
-          id: 9,
-          text: 'Qual é a duração do filme (em minutos)?',
-          answers: [
-            { id: 1, text: `${movieDetails.runtime}` }, // Resposta correta
-            { id: 2, text: '142' }, // Inventada
-            { id: 3, text: '156' } // Inventada
-          ]
-        }
-        // Adicione mais perguntas conforme necessário
-      ];
+          {
+            id: 8,
+            text: 'Qual é o gênero principal do filme?',
+            answers: [
+              { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
+              { id: 2, text: 'Comédia' }, // Inventada
+              { id: 3, text: 'Romance' } // Inventada
+            ]
+          },
+          {
+            id: 9,
+            text: 'Qual é a duração do filme (em minutos)?',
+            answers: [
+              { id: 1, text: `${movieDetails.runtime}` }, // Resposta correta
+              { id: 2, text: '142' }, // Inventada
+              { id: 3, text: '156' } // Inventada
+            ]
+          }
+          // Adicione mais perguntas conforme necessário
+        ];
+      }
     }
   }
 
@@ -263,13 +265,14 @@ export class MovieDetailsComponent {
 
     this.quizResult = { correctAnswers, totalQuestions: this.quizQuestions.length };
 
+
     // Preparando os dados para enviar ao back-end
     const quizAttempt = {
       mediaId: this.getMovieDetailResult.id,
       score: correctAnswers
       // Você pode incluir mais dados aqui, como as respostas do usuário
     };
-
+    this.lastQuizScore = quizAttempt.score;
     this.hideQuizPopup();
 
     // Chamando o serviço para enviar os dados ao back-end
@@ -522,7 +525,7 @@ export class MovieDetailsComponent {
   deleteComment(commentId: number, parentCommentId?: number): void {
     this.service.deleteComment(commentId).subscribe({
       next: () => {
-//console.log('Comentário deletado com sucesso');
+        //console.log('Comentário deletado com sucesso');
         if (parentCommentId) {
           const parentComment = this.comments.find((c: any) => c.id === parentCommentId);
           if (parentComment && parentComment.replies) {
@@ -755,7 +758,7 @@ export class MovieDetailsComponent {
   getFavoriteActorChoicesForMedia(mediaId: any): void {
     this.service.getActorChoicesForMedia(mediaId).subscribe({
       next: (choices) => {
-        this.actorVotePercentages = {}; 
+        this.actorVotePercentages = {};
         choices.forEach((choice: { actorId: number; percentage: number }) => {
           this.actorVotePercentages[choice.actorId] = choice.percentage;
         });
@@ -773,7 +776,7 @@ export class MovieDetailsComponent {
       this.service.getUserActorChoice(this.currentUser, mediaId).subscribe({
         next: (response) => {
           //console.log(response);
-          if (response) { 
+          if (response) {
             //console.log('Escolha de ator favorito do usuário recebida:', response);
             this.updateFavoriteActorStatus(response);
             this.userFavoriteActorId = response;
@@ -814,6 +817,7 @@ export class MovieDetailsComponent {
       next: (response) => {
         this.userFavoriteActorId = favoriteActorChoice.ActorChoiceId;
         this.updateFavoriteActorStatus(favoriteActorChoice.ActorChoiceId);
+        this.getFavoriteActorChoicesForMedia(this.getMovieDetailResult.id);
       },
       error: (error) => {
         console.error('Erro ao escolher ator favorito:', error);
