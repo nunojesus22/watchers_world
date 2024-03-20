@@ -621,7 +621,7 @@ namespace WatchersWorld.Server.Controllers
         /// <returns>True if the email exists, otherwise false.</returns>
         private async Task<bool> CheckEmailExistsAsync(string email)
         {
-            return await _userManager.Users.AnyAsync(x => x.Email.Equals(email, StringComparison.CurrentCultureIgnoreCase));
+            return await _userManager.Users.AnyAsync(x => x.Email == email );
         }
 
         /// <summary>

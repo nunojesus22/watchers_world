@@ -12,8 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240319163546_WatchersWorld")]
-    partial class WatchersWorld
+    [Migration("20240320123728_watchersworld")]
+    partial class watchersworld
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -497,6 +497,31 @@ namespace WatchersWorld.Server.Migrations
                             Id = 5,
                             ListName = "Favoritos"
                         });
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz.QuizAttempt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuizAttempts");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>

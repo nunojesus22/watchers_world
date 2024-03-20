@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class WatchersWorld : Migration
+    public partial class watchersworld : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -127,6 +127,22 @@ namespace WatchersWorld.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProfileInfo", x => x.UserName);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuizAttempts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MediaId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuizAttempts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -585,6 +601,9 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProfileInfo");
+
+            migrationBuilder.DropTable(
+                name: "QuizAttempts");
 
             migrationBuilder.DropTable(
                 name: "UserMedia");

@@ -7,6 +7,8 @@ using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
+using WatchersWorld.Server.Models.Media.Quiz;
+using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 
 namespace WatchersWorld.Server.Data
 {
@@ -28,6 +30,8 @@ namespace WatchersWorld.Server.Data
         public DbSet<CommentDislike> CommentDislikes { get; set; }
 
         
+        public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +52,7 @@ namespace WatchersWorld.Server.Data
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
+           
         }
     }
 }

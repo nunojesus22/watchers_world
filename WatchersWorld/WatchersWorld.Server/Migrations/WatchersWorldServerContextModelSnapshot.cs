@@ -182,6 +182,9 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
@@ -337,6 +340,40 @@ namespace WatchersWorld.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CommentDislikes");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CommentLikes");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.FavoriteActor.Actor", b =>
                 {
                     b.Property<int>("ActorId")
@@ -387,34 +424,6 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CommentDislikes");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CommentLikes");
                     b.HasIndex("ActorMediaId");
 
                     b.HasIndex("UserThatChooseId");
@@ -485,6 +494,56 @@ namespace WatchersWorld.Server.Migrations
                             Id = 5,
                             ListName = "Favoritos"
                         });
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz.QuizAttempt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuizAttempts");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("IdTableMedia")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserThatRateId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdTableMedia");
+
+                    b.HasIndex("UserThatRateId");
+
+                    b.ToTable("UserRatingMedia");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.UserMedia", b =>
@@ -590,6 +649,35 @@ namespace WatchersWorld.Server.Migrations
                     b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
                         .WithMany("Dislikes")
                         .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.FavoriteActor.ActorMedia", b =>
                 {
                     b.HasOne("WatchersWorld.Server.Models.Media.FavoriteActor.Actor", "Actor")
@@ -619,31 +707,30 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Media.CommentLike", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Media.Comment", "Comment")
-                        .WithMany("Likes")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Comment");
                         .HasForeignKey("UserThatChooseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ActorMedia");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfo")
+                        .WithMany()
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserThatRateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaInfo");
 
                     b.Navigation("User");
                 });
