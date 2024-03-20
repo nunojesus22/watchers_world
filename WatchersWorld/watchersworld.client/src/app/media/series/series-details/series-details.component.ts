@@ -50,6 +50,12 @@ export class SeriesDetailsComponent {
       this.currentUser = user ? user.username.toLowerCase() : null;
       this.fetchComments();
     });
+
+    this.loadAverageRatingForMedia(getParamId);
+    this.loadUserRatingForMedia(getParamId);
+
+    this.getFavoriteActorChoicesForMedia(getParamId);
+    this.getUserFavoriteActorChoice(getParamId);
   }
 
   checkIfWatchedOnInit(mediaId: string) {
@@ -62,6 +68,7 @@ export class SeriesDetailsComponent {
         console.error('Erro ao verificar se a mídia foi assistida', error);
       }
     });
+
   }
 
  
@@ -568,6 +575,8 @@ export class SeriesDetailsComponent {
       next: (response) => {
         this.userFavoriteActorId = favoriteActorChoice.ActorChoiceId;
         this.updateFavoriteActorStatus(favoriteActorChoice.ActorChoiceId);
+        this.getFavoriteActorChoicesForMedia(this.getSerieDetailsResult.id);
+
       },
       error: (error) => {
         console.error('Erro ao escolher ator favorito:', error);

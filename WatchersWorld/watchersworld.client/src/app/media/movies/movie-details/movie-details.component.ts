@@ -566,6 +566,8 @@ export class MovieDetailsComponent {
       next: (response) => {
         this.userFavoriteActorId = favoriteActorChoice.ActorChoiceId;
         this.updateFavoriteActorStatus(favoriteActorChoice.ActorChoiceId);
+        this.getFavoriteActorChoicesForMedia(this.getMovieDetailResult.id);
+
       },
       error: (error) => {
         console.error('Erro ao escolher ator favorito:', error);
