@@ -113,12 +113,35 @@ namespace WatchersWorld.Server.Controllers
                 return Ok(new { message = "A conta está por confirmar!", Field = "EmailPorConfirmar", user = CreateApplicationUserDto(user) });
             }
 
+            // Check if the user is currently banned
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(pi => pi.UserId == user.Id);
+
+            if (profileInfo != null)
+            {
+                var now = DateTime.UtcNow;
+                if (profileInfo.StartBanDate.HasValue && profileInfo.EndBanDate.HasValue &&
+                    now >= profileInfo.StartBanDate.Value && now <= profileInfo.EndBanDate.Value)
+                {
+                    var banDuration = profileInfo.EndBanDate.Value - now; // Changed to show remaining ban time
+                    return BadRequest(new
+                    {
+                        Message = "This account is currently suspended.",
+                        Field = "Banned",
+                        BanDuration = banDuration // You might want to format it properly
+                    });
+                }
+            }
+
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+            if (!passwordCheck.Succeeded)
+            {
+                return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
+            }
 
-            if (!passwordCheck.Succeeded) return BadRequest(new { Message = "A password está incorreta.", Field = "Password" });
-
-            return Ok ( new { user = CreateApplicationUserDto(user) });
+            return Ok(new { user = CreateApplicationUserDto(user) });
         }
+
+
         [AllowAnonymous]
         [HttpPost("api/account/login-with-third-party")]
         public async Task<ActionResult<UserDto>> LoginWithThirdParty(LoginWithExternalDto model)
@@ -154,6 +177,25 @@ namespace WatchersWorld.Server.Controllers
             if (user == null)
             {
                 return BadRequest(new { Message = "Não existe nenhuma conta associada a esse email!", Field = "ThirdPartyEmail" });
+            }
+
+            // Check if the user is currently banned
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(pi => pi.UserId == user.Id);
+
+            if (profileInfo != null)
+            {
+                var now = DateTime.UtcNow;
+                if (profileInfo.StartBanDate.HasValue && profileInfo.EndBanDate.HasValue &&
+                    now >= profileInfo.StartBanDate.Value && now <= profileInfo.EndBanDate.Value)
+                {
+                    var banDuration = profileInfo.EndBanDate.Value - now; // Changed to show remaining ban time
+                    return BadRequest(new
+                    {
+                        Message = "This account is currently suspended.",
+                        Field = "Banned",
+                        BanDuration = banDuration // You might want to format it properly
+                    });
+                }
             }
 
             user = await _signInManager.UserManager.FindByEmailAsync(model.Email);

@@ -12,8 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240316133741_watchersworld")]
-    partial class watchersworld
+    [Migration("20240320153404_WatchersWorld")]
+    partial class WatchersWorld
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,6 +185,9 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
@@ -271,11 +274,14 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Models.Followers", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Followers.Followers", b =>
                 {
                     b.Property<Guid>("FollowersId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
 
                     b.Property<string>("WhosBeingFollowed")
                         .HasColumnType("nvarchar(max)");
