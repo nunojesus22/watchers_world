@@ -1,29 +1,24 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WatchersWorld.Server.Controllers;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Services;
+using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration;
+using WatchersWorld_Teste.FixtureConfiguration;
 
 namespace WatchersWorld_Teste
 {
-    public class IFollowersServiceTest : IClassFixture<IntegrationTestsFixture>
+    public class FollowersServiceTest : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly WatchersWorldServerContext _context;
-        private readonly FollowersService _service;
-        private readonly IntegrationTestsFixture _fixture;
-        private readonly UserManager<WatchersWorld.Server.Models.Authentication.User> _userManager;
+        //private readonly WatchersWorldServerContext _context;
+        private readonly IFollowersService _service;
+        private readonly UserManager<User> _userManager;
 
-        public IFollowersServiceTest(IntegrationTestsFixture fixture)
+        public FollowersServiceTest(IntegrationTestsFixture fixture)
         {
-            _fixture = fixture;
-            _context = fixture.Context;
+            //_context = fixture.Context;
             _userManager = fixture.UserManager;
-            _service = new FollowersService(_context);
+            _service = fixture.FollowersService;
+            fixture.ApplySeedAsync(new FollowersTestSeedConfiguration(fixture.FollowersService)).Wait();
         }
 
         [Fact]
@@ -222,14 +217,7 @@ namespace WatchersWorld_Teste
             Assert.True(listContainsUser4);
             Assert.Equal(4, result.Count);
         }
-        /*
-
-        
-
-        
-
-        
-
-        */
     }
+
+
 }

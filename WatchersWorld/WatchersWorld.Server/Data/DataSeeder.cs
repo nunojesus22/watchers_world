@@ -15,7 +15,7 @@ namespace WatchersWorld.Server.Data
         /// <param name="context">Contexto do servidor WatchersWorld.</param>
         /// <param name="userManager">Gestor de utilizadores.</param>
         /// <returns>Tarefa assíncrona.</returns>
-        public static async Task SeedData(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole>? roleManager) 
+        public static async Task SeedData(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) 
         {
             // Seed roles
             if (roleManager != null)
@@ -31,7 +31,7 @@ namespace WatchersWorld.Server.Data
         }
 
         
-        private static async Task EnsureRolesAsync(RoleManager<IdentityRole>? roleManager)
+        private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             string[] roles = ["Admin", "Moderator", "User"];
 
@@ -44,7 +44,7 @@ namespace WatchersWorld.Server.Data
             }
         }
 
-        private static async Task EnsureAdminUserAsync(UserManager<User> userManager, RoleManager<IdentityRole>? roleManager)
+        private static async Task EnsureAdminUserAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             string adminEmail = "admin@admin.com";
             string adminPassword = "Teste1234";
@@ -98,7 +98,7 @@ namespace WatchersWorld.Server.Data
         /// <param name="emailConfirmed">Indica se o email está confirmado.</param>
         /// <param name="profileStatus">Estado do perfil (Público ou Privado).</param>
         /// <returns>Tarefa assíncrona.</returns>
-        private static async Task AddUserWithProfileAsync(WatchersWorldServerContext context, UserManager<User>? userManager, RoleManager<IdentityRole> roleManager, string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
+        private static async Task AddUserWithProfileAsync(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
         {
             var user = new User
             {
