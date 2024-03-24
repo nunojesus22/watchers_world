@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Profile } from '../profile/models/profile';
 import { ProfileService } from '../profile/services/profile.service';
@@ -8,22 +8,28 @@ import { AuthenticationService } from '../authentication/services/authentication
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrl: './chat.component.css'
+  styleUrls: ['./chat.component.css'] // Corrigido de styleUrl para styleUrls
 })
-export class ChatComponent {
-
+export class ChatComponent implements AfterViewChecked {
   loggedUserName: string | null = null;
   selectedUser: Profile | undefined;
   selectedUsername: string | null = null;
-  private unsubscribed$ = new Subject<void>();
+  private unsubscribe$ = new Subject<void>();
 
   usersProfiles: Profile[] = [];
+  filteredUsersProfiles: Profile[] = [];
   newMessage: string = '';
   messages: any[] = [];
 
+  searchTerm: string = '';
+  showNoResults: boolean = false;
 
-  constructor(private profileService: ProfileService, private route: ActivatedRoute,
-    private router: Router, public authService: AuthenticationService) { }
+  constructor(
+    private profileService: ProfileService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public authService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -37,35 +43,40 @@ export class ChatComponent {
       this.loggedUserName = user ? user.username : null;
     });
 
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
+    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (profiles: Profile[]) => {
         this.usersProfiles = profiles;
-        // Atualize o usuário selecionado se a rota já tiver um nome de usuário
+        this.filteredUsersProfiles = profiles;
         this.updateSelectedUser();
       },
-      (error) => {
+      error => {
         console.error("Error while fetching users' profiles:", error);
       }
     );
   }
 
-  sendMessage(): void {
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Obtém a hora atual
-    const message = {
-      content: this.newMessage,
-      timestamp: currentTime,
-      outgoing: true // Assumindo que é uma mensagem enviada e não recebida
-    };
-    this.messages.push(message); // Adiciona a nova mensagem à lista
-    this.newMessage = ''; // Limpa o campo de nova mensagem
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef | undefined;
+
+  // Resto do seu código...
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      if(this.myScrollContainer)
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) { }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   updateSelectedUser(): void {
-    if (this.selectedUsername) {
-      this.selectedUser = this.usersProfiles.find(u => u.userName === this.selectedUsername);
-    } else {
-      this.selectedUser = undefined;
-    }
+    this.selectedUser = this.usersProfiles.find(u => u.userName === this.selectedUsername);
   }
 
   selectUser(userProfile: Profile): void {
@@ -73,5 +84,28 @@ export class ChatComponent {
     this.router.navigate([`/chat/${userProfile.userName}`]);
   }
 
-}
+  filterUsers(): void {
+    if (!this.searchTerm) {
+      this.filteredUsersProfiles = this.usersProfiles;
+      this.showNoResults = false; 
+    } else {
+      const filtered = this.usersProfiles.filter(user =>
+        user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      this.showNoResults = filtered.length === 0 || filtered.every(u => u.userName === this.loggedUserName);
+      this.filteredUsersProfiles = filtered;
+    }
+  }
 
+  sendMessage(): void {
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const message = {
+      content: this.newMessage,
+      timestamp: currentTime,
+      outgoing: true
+    };
+    this.messages.push(message);
+    this.newMessage = '';
+    this.scrollToBottom();
+  }
+}

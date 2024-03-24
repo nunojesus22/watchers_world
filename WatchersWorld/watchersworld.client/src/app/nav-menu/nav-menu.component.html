@@ -2,7 +2,7 @@
   <img [routerLink]="['/home']" src="assets/img/Logo.png" alt="Logo Image" class="logo" />
 
   <a class="menu-item" (click)="toggleMenu($event)">
-    <i class="fa fa-bars"></i>
+    <i [ngClass]="{'menu-item-notification': pendingFollowRequests.length > 0}" class="fa fa-bars"></i>
     <span>Menu</span>
   </a>
 

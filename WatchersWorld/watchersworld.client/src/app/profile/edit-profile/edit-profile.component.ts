@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
@@ -45,9 +45,17 @@ export class EditProfileComponent {
   showSeries: boolean = false;
   showMedals: boolean = false;
 
+  currentDate: string;
+  minDate: string;
+
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) { }
+    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) {
+    const today = new Date();
+    this.currentDate = today.toISOString().split('T')[0];
+    const earliestDate = new Date('1900-01-01');
+    this.minDate = earliestDate.toISOString().split('T')[0];
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -191,7 +199,7 @@ export class EditProfileComponent {
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
-      hobby: [{ value: ''}],
+      hobby: ['', [Validators.required, Validators.maxLength(50)]],
       gender: [''],
       date: [{ value: ''}],
       name: [{ value: ''}]
@@ -219,6 +227,9 @@ export class EditProfileComponent {
           gender: userData.gender = userData.gender || "Por definir",
           date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
         });
+        if(this.loggedUserName)
+        this.getUserProfileInfo(this.loggedUserName);
+
       },
       error => {
         if (error.error.errors) {

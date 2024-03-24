@@ -49,6 +49,10 @@ a:hover {
   text-decoration: none; /* Remove o sublinhado do link */
 }
 
+.menu-item-notification {
+  color: red; /* Cor para o estado com notificações */
+}
+
 .menu-item:hover {
   transform: scale(1.09);
   cursor: pointer;

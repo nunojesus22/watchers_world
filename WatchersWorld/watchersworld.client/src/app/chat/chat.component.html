@@ -8,19 +8,32 @@
         <div class="p-2">
           <div class="search-bar">
             <i class="fa fa-search search-icon"></i>
-            <input type="text" placeholder="Procurar..." class="search-input">
+            <input type="text"
+                   placeholder="Procurar..."
+                   class="search-input"
+                   [(ngModel)]="searchTerm"
+                   (input)="filterUsers()">
           </div>
         </div>
         <!-- Contact Items -->
-        <ul class="list-group">
-          <li *ngFor="let userProfile of usersProfiles" (click)="selectUser(userProfile)">
-            <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
-              <img class="other-users-user-photo" [src]="userProfile.profilePhoto">
-              <span class="other-users-user-name">{{ userProfile.userName }}</span>
-              <span class="last-message-time">14:00</span>
+        <div class="user-list-container">
+          <ul *ngIf="filteredUsersProfiles.length > 0 && !showNoResults; else noResults" class="list-group">
+            <ng-container *ngFor="let userProfile of filteredUsersProfiles">
+              <li *ngIf="userProfile.userName !== loggedUserName" (click)="selectUser(userProfile)" class="list-group-item">
+                <div class="user-item">
+                  <img class="other-users-user-photo" [src]="userProfile.profilePhoto">
+                  <span class="other-users-user-name">{{ userProfile.userName }}</span>
+                  <span class="last-message-time">14:00</span>
+                </div>
+              </li>
+            </ng-container>
+          </ul>
+          <ng-template #noResults>
+            <div class="no-results-message">
+              Não existe nenhum utilizador com esse nome.
             </div>
-          </li>
-        </ul>
+          </ng-template>
+        </div>
       </div>
     </div>
 
@@ -36,7 +49,7 @@
         </div>
 
         <!-- Messages Area -->
-        <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area">
+        <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>
           <div class="message incoming">
             <span class="message-content">Olá, tudo bem?</span>
             <span class="message-timestamp">10:35</span>
@@ -56,10 +69,10 @@
         <div *ngIf="selectedUser" class="card-footer">
           <form (submit)="sendMessage()">
             <div class="input-group">
-              <input type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Escrever mensagem...">
+              <input type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Escrever mensagem..." required>
               <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Enviar</button>
-              </div>
+                <img src="assets/img/Send.png" class="send-button" (click)="sendMessage()" alt="Enviar">
+            </div>
             </div>
           </form>
         </div>

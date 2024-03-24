@@ -210,7 +210,8 @@ export class MovieApiServiceComponent {
 
 
   getMediaComments(mediaId: any): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`);
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`, { headers });
   }
   
 
@@ -304,7 +305,8 @@ export class MovieApiServiceComponent {
 
   }
   checkQuizCompleted(mediaId: any): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`);
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`, { headers });
   }
 
 

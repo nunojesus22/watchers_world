@@ -7,7 +7,6 @@
   margin-bottom: 1rem; /* Espaço entre os elementos */
   height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
   background-color: white; /* Fundo branco para ambos os painéis */
-  overflow-y: auto;
 }
 
 .chat-card {
@@ -43,7 +42,7 @@
 .message {
   padding: 10px 20px;
   margin: 8px 0; /* Adiciona uma margem acima e abaixo de cada mensagem */
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: white; /* Cor de fundo para mensagens recebidas */
   max-width: 75%;
   word-wrap: break-word;
@@ -70,8 +69,16 @@
   border-top: 1px solid #ddd;
 }
 
-.input-group-append .btn {
-  margin-left: -1px;
+.send-button {
+  cursor: pointer; /* Muda o cursor para o símbolo de clique */
+  width: 30px; /* Largura da imagem */
+  height: auto; /* Altura automática para manter a proporção */
+  margin-left:10px;
+  margin-top:5px;
+}
+
+.input-group .form-control {
+  margin-right: 0.5rem; /* Adiciona um espaço entre o input e o botão enviar */
 }
 
 /* Clear floats after the messages */
@@ -86,6 +93,7 @@
   padding: 8px 20px; /* Espaço interno para evitar que mensagens toquem as bordas */
   overflow-y: auto;
   height: calc(100vh - 160px); /* Ajuste a altura conforme necessário */
+
 }
 
 .message-timestamp {
@@ -105,7 +113,6 @@
   justify-content: space-between; /* Alinha os itens nos extremos opostos */
   align-items: center; /* Alinha os itens da lista verticalmente */
   padding: 0.5rem 1rem; /* Espaço interno */
-  border-bottom: 1px solid #f0f0f0; /* Linha divisória entre os itens */
 }
 
 .other-users-user-photo {
@@ -126,12 +133,26 @@
   color: #6c757d; /* Uma cor cinza */
 }
 
-
 .search-bar {
   margin-top: 0.5rem; /* Adiciona um espaçamento no topo */
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  position: relative;
+  position: -webkit-sticky; /* Para suporte ao Safari */
+  position: sticky;
+  top: 0; /* Fica no topo dentro do .contact-list */
+  background: white; /* Cor de fundo para cobrir o conteúdo por baixo quando rolar */
+  z-index: 10;
+}
+
+/* Adicione um contêiner em torno da lista de usuários para permitir rolagem apenas nessa seção */
+.user-list-container {
+  height: calc(100vh - 18rem); /* Ajuste a altura para compensar a barra de pesquisa */
+  overflow-y: auto; /* Ativa a barra de rolagem */
+}
+
+.list-group-item{
+    border-radius:0%;
 }
 
 .search-icon {
@@ -150,6 +171,7 @@
   width: 100%; /* Se desejar que ocupe toda a largura disponível */
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   outline: none;
+  border: 3px solid black;
 }
 
   .search-input::placeholder {
@@ -157,6 +179,28 @@
   }
 
   .search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    border-color: #4CAEFE;
   }
+
+.no-results-message {
+  padding: 10px;
+  text-align: center;
+  color: #666;
+}
+
+::-webkit-scrollbar {
+  width: auto; /* Largura da barra de rolagem */
+  height: auto; /* Altura da barra de rolagem */
+}
+
+
+/* Estiliza o fundo da barra (a trilha) */
+::-webkit-scrollbar-track {
+  background: white; /* Cor de fundo da trilha */
+}
+
+/* Estiliza a alça da barra de rolagem (o "thumb") */
+::-webkit-scrollbar-thumb {
+  background: #4CAEFE; /* Cor do "thumb" da barra de rolagem */
+}
+

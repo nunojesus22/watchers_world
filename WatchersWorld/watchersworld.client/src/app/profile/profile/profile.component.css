@@ -46,6 +46,13 @@
   align-items: flex-start;
   padding-top:30px;
   gap:5px;
+  overflow:hidden;
+  max-width:100%;
+}
+
+.user-details form {
+  width: 100%; /* Garante que o formulário ocupe todo o espaço horizontal disponível */
+  box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
 }
 
 .user-icons {
@@ -53,17 +60,14 @@
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:650px;
+  left:350px;
   z-index: 2;
 }
 
 .action-icons {
   display: flex;
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
-  position: absolute; /* Continua com posicionamento absoluto */
-  top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left: 450px;
-  z-index: 2;
+  margin-bottom:2rem;
 }
 
 /* Ajusta o posicionamento da área de informação do usuário */
