@@ -1,0 +1,162 @@
+.container {
+  margin-top: 1rem; /* ajuste se necessário para a sua página */
+}
+
+.contact-list {
+  border-radius: 15px; /* Arredonda os cantos */
+  margin-bottom: 1rem; /* Espaço entre os elementos */
+  height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
+  background-color: white; /* Fundo branco para ambos os painéis */
+  overflow-y: auto;
+}
+
+.chat-card {
+  border-radius: 15px; /* Arredonda os cantos */
+  margin-bottom: 1rem; /* Espaço entre os elementos */
+  height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
+  background-color: transparent; /* Fundo branco para ambos os painéis */
+  overflow-y: auto;
+  border: 1px solid #f0f0f0;
+}
+
+.contact-list {
+  border: 1px solid #ddd; /* Linha de divisão */
+}
+
+
+
+.chat-card {
+  display: flex;
+  flex-direction: column; /* Organiza o layout da card */
+}
+
+.card-header,
+.card-footer {
+  background-color: #f8f9fa; /* Fundo do cabeçalho e rodapé */
+}
+
+.chat-message-area {
+  overflow-y: auto;
+  flex-grow: 1; /* Ocupa o espaço disponível */
+}
+
+.message {
+  padding: 10px 20px;
+  margin: 8px 0; /* Adiciona uma margem acima e abaixo de cada mensagem */
+  border-radius: 20px;
+  background-color: white; /* Cor de fundo para mensagens recebidas */
+  max-width: 75%;
+  word-wrap: break-word;
+  position: relative; /* Posicionamento relativo para utilizar 'clear' */
+  clear: both; /* Evita que mensagens se sobreponham */
+}
+
+.incoming {
+  background-color: white;
+  color: black;
+  text-align: left;
+  float: left;
+}
+
+.outgoing {
+  background-color: white;
+  color: black;
+  text-align: right;
+  float: right;
+}
+
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid #ddd;
+}
+
+.input-group-append .btn {
+  margin-left: -1px;
+}
+
+/* Clear floats after the messages */
+.chat-message-area:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Ajustar a área de mensagens para ter uma margem interna */
+.chat-message-area {
+  padding: 8px 20px; /* Espaço interno para evitar que mensagens toquem as bordas */
+  overflow-y: auto;
+  height: calc(100vh - 160px); /* Ajuste a altura conforme necessário */
+}
+
+.message-timestamp {
+  display: block; /* ou inline-block, dependendo do seu layout desejado */
+  color: black; /* Cor cinza para a data/hora */
+  font-size: 0.85em; /* Um tamanho de fonte menor */
+  margin-top: 5px; /* Espaçamento no topo */
+  text-align: right; /* Alinha a data/hora à direita */
+}
+
+.message.incoming .message-timestamp {
+  text-align: left; /* Alinha a data/hora à esquerda para mensagens recebidas */
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens nos extremos opostos */
+  align-items: center; /* Alinha os itens da lista verticalmente */
+  padding: 0.5rem 1rem; /* Espaço interno */
+  border-bottom: 1px solid #f0f0f0; /* Linha divisória entre os itens */
+}
+
+.other-users-user-photo {
+  border-radius: 50%; /* Faz a foto do perfil circular */
+  width: 40px; /* Tamanho da foto do perfil */
+  height: 40px; /* Altura da foto do perfil */
+}
+
+.other-users-user-name {
+  flex-grow: 1; /* Permite que o nome do usuário ocupe qualquer espaço extra */
+  margin-left: 1rem; /* Espaço entre a foto e o nome do usuário */
+  font-weight: bold;
+  color: #333;
+}
+
+.last-message-time {
+  font-size: 0.85em; /* Tamanho menor para a hora */
+  color: #6c757d; /* Uma cor cinza */
+}
+
+
+.search-bar {
+  margin-top: 0.5rem; /* Adiciona um espaçamento no topo */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #474747;
+}
+
+.search-input {
+  padding: 10px;
+  padding-left: 50px; /* Ajusta para deixar espaço para o ícone de pesquisa */
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: 'Inter';
+  width: 100%; /* Se desejar que ocupe toda a largura disponível */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  outline: none;
+}
+
+  .search-input::placeholder {
+    color: #aaa;
+  }
+
+  .search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  }

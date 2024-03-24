@@ -16,6 +16,7 @@ import { SeasonDetailsComponent } from './season-details/season-details.componen
 import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -39,7 +40,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'notifications/:username', component: NotificationsComponent },
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
-
+  { path: 'chat', component: ChatComponent }, 
+  { path: 'chat/:username', component: ChatComponent },
 
 
   { path: 'search', component: SearchComponent },

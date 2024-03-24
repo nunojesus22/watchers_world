@@ -12,13 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-<<<<<<<< Updated upstream:WatchersWorld/WatchersWorld.Server/Migrations/20240320123728_watchersworld.Designer.cs
-    [Migration("20240320123728_watchersworld")]
-    partial class watchersworld
-========
-    [Migration("20240320101732_WatchersWorld")]
+    [Migration("20240323194201_WatchersWorld")]
     partial class WatchersWorld
->>>>>>>> Stashed changes:WatchersWorld/WatchersWorld.Server/Migrations/20240320101732_WatchersWorld.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
