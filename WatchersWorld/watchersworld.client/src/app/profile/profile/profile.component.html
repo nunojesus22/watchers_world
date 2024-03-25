@@ -10,7 +10,7 @@
           <h1 class="card-title"> </h1>
           <div *ngIf="(authService.user$ | async) as user">
             <div class="user-icons">
-              <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
+              <a *ngIf="user.username === currentUsername" [routerLink]="['/statistics', user.username]" class="profile-icon">
                 <img src="assets/img/statistic.png" alt="Estatísticas">
               </a>
               <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">

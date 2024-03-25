@@ -107,4 +107,9 @@ export class ProfileService {
     return this.http.get<string[]>(`${environment.appUrl}/api/account/getUserRole/${username}`);  }
 
 
+
+  getUserTotalComments(username: string): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/media/get-total-comments/${username}` ,{ headers });
+  }
 }

@@ -28,6 +28,9 @@ import { SearchServiceComponent } from './media/search-service/search-service.co
 import { AdminComponent } from './admin/admin.component';
 import { SeasonDetailsComponent } from './season-details/season-details.component';
 import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ChatComponent } from './chat/chat.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 
 @NgModule({
@@ -49,7 +52,9 @@ import { SeasonDetailsInfoComponent } from './season-details-info/season-details
     AdminComponent,
     SeasonDetailsComponent,
     SeasonDetailsInfoComponent,
-
+    NotificationsComponent,
+    ChatComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
