@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WatchersWorld.Server.Data;
 
@@ -11,9 +12,11 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    partial class WatchersWorldServerContextModelSnapshot : ModelSnapshot
+    [Migration("20240311115514_Updated")]
+    partial class Updated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,9 +172,6 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndBanDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Followers")
                         .HasColumnType("int");
 
@@ -187,9 +187,6 @@ namespace WatchersWorld.Server.Migrations
 
                     b.Property<string>("ProfileStatus")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartBanDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");

@@ -3,20 +3,20 @@
 namespace WatchersWorld.Server.DTOs.Account
 {
     /// <summary>
-    /// DTO utilizado para o login de utilizador.
-    /// Serve para transferir dados de login do cliente para o servidor.
+    /// DTO for user login.
+    /// Used to transfer login data from the client to the server.
     /// </summary>
     public class LoginDto
     {
         /// <summary>
-        /// Endereço de email do utilizador.
+        /// Email address of the user.
         /// </summary>
         [Required(ErrorMessage = "O email é obrigatório!")]
         [EmailAddress(ErrorMessage = "A nomenclatura do email está incorreta!")]
         public string Email { get; set; }
 
         /// <summary>
-        /// Palavra-passe do utilizador.
+        /// Password of the user.
         /// </summary>
         [Required(ErrorMessage = "A palavra-passe é obrigatória!")]
         [StringLength(12, ErrorMessage = "A palavra-passe tem de conter entre {2}-{1} caracteres, entre eles pelo menos uma letra minúscula, uma letra maiúscula e um número!", MinimumLength = 8)]

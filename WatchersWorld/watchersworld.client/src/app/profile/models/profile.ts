@@ -8,9 +8,6 @@ export class Profile {
   profileStatus: string;
   followers: number;
   following: number
-  startBanDate: Date | undefined;
-  endBanDate: Date | undefined;
-  isBanned: boolean | undefined;
 
   constructor(
     birthDate: Date,

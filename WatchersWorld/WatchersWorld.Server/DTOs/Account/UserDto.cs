@@ -1,23 +1,23 @@
 ﻿namespace WatchersWorld.Server.DTOs.Account
 {
     /// <summary>
-    /// DTO utilizado para representar um utilizador.
-    /// Contém o token JWT, o nome de utilizador e o email.
+    /// DTO for User.
+    /// Used to transfer user-related data, such as authentication tokens.
     /// </summary>
     public class UserDto
     {
         /// <summary>
-        /// Token JWT para autenticação e autorização.
+        /// JWT token for authentication and authorization purposes.
         /// </summary>
         public string JWT { get; set; }
 
         /// <summary>
-        /// Username do utilizador.
+        /// Username of the user.
         /// </summary>
         public string Username { get; set; }
 
         /// <summary>
-        /// Email do utilizador.
+        /// Email address of the user.
         /// </summary>
         public string Email { get; set; }
     }

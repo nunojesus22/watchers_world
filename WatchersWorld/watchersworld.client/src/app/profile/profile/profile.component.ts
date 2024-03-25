@@ -9,8 +9,6 @@ import { FollowerProfile } from '../models/follower-profile';
 import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movie-api-service.component';
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
-import { AdminService } from '../../admin/service/admin.service';
-
 
 interface MovieCategory {
   name: string;
@@ -39,16 +37,11 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] = [];
-  usersProfilesMod: Profile[] = [];
-
 
   followersCount: number | undefined;
   followingCount: number | undefined;
 
-  canViewData: boolean = false;
-  isFollowRequestApproved: boolean = false;
-  isProfilePublic: string | undefined;
-  followRequestSent: boolean = false;
+  canViewFollowers: boolean = false;
 
   showFollowers: boolean = true;
   showFollowing: boolean = true;
@@ -94,18 +87,10 @@ export class ProfileComponent implements OnInit {
   watchLaterSeries: any[] = [];
   getMovieDetailResult: any;
 
-
-  //MODERADOR
-  isBanPopupVisible = false;
-  isModerator: boolean = false;
-  banDuration: number | undefined;
-  isBanned?: boolean;
-  selectedUserForBan: string | null = null;
-
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
-    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
+    private service: MovieApiServiceComponent, private title: Title) { }
 
   ngOnInit(): void {
 
@@ -113,12 +98,12 @@ export class ProfileComponent implements OnInit {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
 
-        //this.getUserProfileInfo(this.currentUsername).then(() => {
-        //  // Aqui você tem certeza de que as informações do perfil foram carregadas
-        //  if (this.loggedUserProfile) {
-        //    this.canViewFollowers = this.loggedUserProfile.profileStatus === 'Public' || this.isFollowing;
-        //  }
-        //});
+        this.getUserProfileInfo(this.currentUsername).then(() => {
+          // Aqui você tem certeza de que as informações do perfil foram carregadas
+          if (this.loggedUserProfile) {
+            this.canViewFollowers = this.loggedUserProfile.profileStatus === 'Public' || this.isFollowing;
+          }
+        });
       }
 
       this.authService.user$.subscribe(user => {
@@ -129,7 +114,6 @@ export class ProfileComponent implements OnInit {
         }
       });
 
-      this.loadUserRole();
 
 
       if (this.currentUsername) {
@@ -145,8 +129,6 @@ export class ProfileComponent implements OnInit {
 
 
     });
-
-    this.getUserProfilesMod();
     this.getUserProfiles();
     this.initializeForm();
     this.categories = [
@@ -173,50 +155,25 @@ export class ProfileComponent implements OnInit {
     this.unsubscribed$.complete();
   }
 
+  // A função getUserProfileInfo deve retornar uma Promise agora
   getUserProfileInfo(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.profileService.getUserData(username).subscribe({
         next: (userData: Profile) => {
-          this.isProfilePublic = userData.profileStatus;
-          this.followersCount = userData.followers;
-          this.followingCount = userData.following;
-
-          if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
-            this.profileService.alreadyFollows(this.loggedUserName, username)
-              .subscribe(isFollowing => {
-                this.canViewData = isFollowing; 
-                resolve();
-              }, error => {
-                console.error('Erro ao verificar o status de seguimento', error);
-                this.canViewData = false;
-                reject(error);
-              });
-          } else {
-           
-            this.canViewData = true;
-            resolve();
+          if (this.loggedUserName !== null) {
+            this.followersCount = userData.followers;
+            this.followingCount = userData.following;
+            this.canViewFollowers = userData.profileStatus === 'Public' || this.isFollowing;
           }
+          resolve();
         },
         error: (error) => {
           console.error("Error while fetching user data:", error);
-          reject(error);
+          reject();
         }
       });
     });
   }
-
-  private loadUserRole() {
-    // Assuming the AuthService is keeping track of the current user's username
-    const currentUsername = this.authService.getLoggedInUserName();
-    if (currentUsername) {
-      this.authService.getUserRole(currentUsername).subscribe(roles => {
-        this.isModerator = roles.includes('Moderator');
-      }, error => {
-        console.error('Error fetching roles:', error);
-      });
-    }
-  }
-
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
@@ -285,30 +242,22 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
-  requestToFollow(): void {
-    this.followRequestSent = true;
-  }
-
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
-      this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: (response) => {
-          if (this.isProfilePublic === 'Private') {
-            console.log('Pedido enviado. Aguardando aprovação.');
-            this.followRequestSent = true;
-          } else {
-            console.log('Usuário seguido com sucesso!', response.message);
+      this.profileService.followUser(this.loggedUserName, this.currentUsername)
+        .subscribe({
+          next: (response) => {
             this.isFollowing = true;
+            console.log(this.isFollowing);
+            // this.getFollowers(this.currentUsername);
+            console.log('Usuário seguido com sucesso!', response.message);
+          },
+          error: (error) => {
+            console.error('Erro ao seguir usuário', error);
           }
-        },
-        error: (error) => {
-          console.error('Erro ao enviar pedido para seguir', error);
-        }
-      });
+        });
     } else {
-      console.error('Nome de usuário atual ou nome de usuário logado está indefinido.');
+      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
     }
   }
 
@@ -582,111 +531,5 @@ export class ProfileComponent implements OnInit {
 
   toggleExpandedSuggestions() {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
-  }
-
-  //--------------------------------------------------MODERADOR------------------------------------------------------------------
-  checkIfUserIsBanned(profile: Profile): boolean {
-    // Directly return the isBanned status from the profile
-    // If the property could be undefined, provide a default value
-    return profile.isBanned ?? false;
-  }
-
-
-  banTemp(username: string | null): void {
-    if (!username) {
-      console.error('Username is undefined, cannot ban user temporarily.');
-      return;
-    }
-    if (this.banDuration == null || this.banDuration <= 0) {
-      console.error('Ban duration is not specified or is invalid.');
-      return;
-    }
-    console.log(`Attempting to ban user temporarily: ${username} for ${this.banDuration} days`);
-
-    this.adminService.BanUserTemporarily(username, this.banDuration).subscribe({
-      next: () => {
-        console.log(`User banned temporarily for ${this.banDuration} days`);
-        const user = this.usersProfiles?.find(u => u.userName === username);
-        this.hideBanPopup();
-        if (user) {
-          user.isBanned = true;
-          // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
-        }
-      },
-      error: error => {
-        console.error("Error banning user temporarily:", error);
-      }
-    });
-  }
-
-
-
-  banPerm(username: string | null): void {
-    if (!username) {
-      console.error('Username is undefined, cannot ban user.');
-      return;
-    }
-    console.log(`Attempting to ban user permanently: ${username}`);
-
-    this.adminService.banUserPermanently(username).subscribe({
-      next: () => {
-        console.log('User banned permanently');
-        const user = this.usersProfiles?.find(u => u.userName === username);
-        this.hideBanPopup();
-        if (user) {
-          user.isBanned = true;
-          // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
-        }
-      },
-      error: error => {
-        console.error("Error banning user:", error);
-      }
-    });
-  }
-
-  unban(username: string | undefined): void {
-    if (!username) {
-      console.error('Username is undefined, cannot unban user.');
-      return;
-    }
-    this.adminService.unbanUser(username).subscribe({
-      next: (response) => {
-        console.log(response.message);
-        const user = this.usersProfiles?.find(u => u.userName === username);
-        if (user) {
-          user.isBanned = false;
-        }
-        // This will trigger change detection and update the UI
-        this.usersProfiles = [...this.usersProfiles!];
-      },
-      error: (error) => {
-        console.error("Error unbanning user:", error);
-      }
-    });
-  }
-
-  showBanPopup(username: string): void {
-    this.selectedUserForBan = username;
-    this.isBanPopupVisible = true; // This should show the popup
-  }
-
-  hideBanPopup(): void {
-    this.isBanPopupVisible = false;
-    this.selectedUserForBan = null; // Clear the selected user
-  }
-
-  getUserProfilesMod() {
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        const currentUsername = this.authService.getLoggedInUserName();
-        // Filter out the logged-in user's profile from the list
-        this.usersProfilesMod = profiles.filter(profile => profile.userName !== currentUsername);
-      },
-      (error) => {
-        console.error("Error while fetching users' profiles:", error);
-      }
-    );
   }
 }

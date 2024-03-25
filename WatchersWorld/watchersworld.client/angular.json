@@ -32,8 +32,7 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/web.config"
+              "src/assets"
             ],
             "styles": [
               "src/styles.css",
@@ -53,12 +52,6 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kb",
                   "maximumError": "6kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.development.ts",
-                  "with": "src/environments/environment.ts"
                 }
               ],
 

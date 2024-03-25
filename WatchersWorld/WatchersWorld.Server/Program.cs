@@ -18,8 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<IFollowersService, FollowersService>();
-builder.Services.AddScoped<IFavoriteActorService, FavoriteActorService>();
-builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
@@ -55,27 +53,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
-                                            {
-                                                //validar o token baseado na key dada no development.json JWT:Key
-                                                ValidateIssuerSigningKey = true,
-                                                //o issuer signing key baseada na JWT:Key
-                                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-                                                //o issuer é o link do projeto api 
-                                                ValidIssuer = builder.Configuration["JWT:Issuer"],
-                                                ValidateIssuer = true,
-                                                ValidateAudience = false,
-                                            };
+        {
+            //validar o token baseado na key dada no development.json JWT:Key
+            ValidateIssuerSigningKey = true,
+            //o issuer signing key baseada na JWT:Key
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            //o issuer é o link do projeto api 
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateIssuer = true,
+            ValidateAudience = false,
+        };
     });
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
-    {
-        builder.WithOrigins("https://watchersworldfrontend.azurewebsites.net").
-        AllowAnyOrigin()
+        builder.AllowAnyOrigin()
                .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
+               .AllowAnyHeader());
 });
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -110,8 +105,8 @@ app.UseStaticFiles();
 app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
 
@@ -120,19 +115,50 @@ app.UseCors("AllowAllOrigins");
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<WatchersWorldServerContext>();
         var userManager = services.GetRequiredService<UserManager<User>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>(); // Retrieve the RoleManager instance
 
-        context.Database.EnsureCreated();
+        DataSeeder.SeedData(context, userManager).Wait();
+    }
+}
 
-        if (!context.ProfileInfo.Any())
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var roles = new[] { "Admin", "Moderator", "User" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
         {
-            // Now passing roleManager to SeedData, which is expecting it as an optional parameter
-            await DataSeeder.SeedData(context, userManager, roleManager);
+            await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
 
-//}
+}
 
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+    string email = "admin@admin.com";
+    string password = "Teste1234";
+
+    if (await userManager.FindByEmailAsync(email) == null)
+    {
+        var user = new User
+        {
+            Provider = "Credentials",
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true
+        };
+
+        await userManager.CreateAsync(user, password);
+
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+
+}
 
 
 app.UseHttpsRedirection();

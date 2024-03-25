@@ -104,23 +104,8 @@ export class ProfileService {
   }
 
   getUserRole(username: string) {
-    return this.http.get<string[]>(`${environment.appUrl}/api/account/getUserRole/${username}`);
-  }
+    return this.http.get<string[]>(`${environment.appUrl}/api/account/getUserRole/${username}`);  }
 
-  getPendingFollowRequests(username: string): Observable<FollowerProfile[]> {
-    const headers = this.getHeaders();
-    return this.http.get<FollowerProfile[]>(`${environment.appUrl}/api/profile/get-whosPending/${username}`, { headers });
-  }
-
-  acceptFollowRequest(usernameAuthenticated: string, usernameWhoSend: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post<any>(`${environment.appUrl}/api/profile/acceptFollow/${usernameAuthenticated}/${usernameWhoSend}`, {}, { headers });
-  }
-
-  rejectFollowRequest(usernameAuthenticated: string, usernameWhoSend: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.delete<any>(`${environment.appUrl}/api/profile/rejectFollow/${usernameAuthenticated}/${usernameWhoSend}`, { headers });
-  }
 
 
   getUserTotalComments(username: string): Observable<number> {

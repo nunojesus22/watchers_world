@@ -1,10 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
-import { User } from '../../../authentication/models/user';
-import { UserRatingMedia } from '../../media-models/UserRatingMedia';
-import { FavoriteActor } from '../../media-models/fav-actor';
 
 
 @Injectable({
@@ -16,27 +13,6 @@ export class MovieApiServiceComponent {
   baseurl = "https://api.themoviedb.org/3";
   apikey = "8e5d555177cf6c9221bb24f57822ef0d";
 
-  getJWT() {
-    const key = localStorage.getItem(environment.userKey);
-    if (key) {
-      const user = JSON.parse(key) as User;
-      return user.jwt;
-    } else {
-      return 'No JWT';
-    }
-  }
-
-  getHeaders() {
-    const jwt = this.getJWT();
-
-    // Set up the headers with the authentication token
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${jwt}`
-    });
-
-    return headers;
-  }
 
 
   //getStreamingProvider
@@ -188,14 +164,12 @@ export class MovieApiServiceComponent {
   }
 
   checkIfWatched(mediaId: number, mediaType: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/media/is-watched/${mediaId}/${mediaType}`, { headers });
+    return this.http.get(`${environment.appUrl}/api/media/is-watched/${mediaId}/${mediaType}`);
   }
 
   checkIfWatchedLater(mediaId: number, mediaType: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`, {headers});
-  } 
+    return this.http.get(`${environment.appUrl}/api/media/is-watched-later/${mediaId}/${mediaType}`);
+  }
 
   markMediaToWatchLater(mediaId: number, type: string): Observable<any> {
     return this.http.post(`${environment.appUrl}/api/media/mark-to-watch-later`, { mediaId, type });
@@ -204,111 +178,5 @@ export class MovieApiServiceComponent {
   unmarkMediaToWatchLater(mediaId: number, type: string): Observable<any> {
     return this.http.post(`${environment.appUrl}/api/media/unmark-to-watch-later`, { mediaId, type });
   }
-
-
-  //COMENTARIOS
-
-
-  getMediaComments(mediaId: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`, { headers });
-  }
-  
-
-  addComment(mediaId: number, mediaType: string, text: string): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/media/add-comment`, {
-      mediaId,
-      mediaType,
-      text
-    }).pipe(
-      map((response: any) => response.comment) 
-    );
-  }
-
-  deleteComment(commentId: number): Observable<any> {
-    return this.http.delete(`${environment.appUrl}/api/media/delete-comment/${commentId}`);
-  }
-
-
-  likeComment(commentId: number): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/media/like-comment/${commentId}`, {});
-  }
-
-  dislikeComment(commentId: number): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/media/dislike-comment/${commentId}`, {});
-  }
-
-
-  removeLikeFromComment(commentId: number): Observable<any> {
-    return this.http.delete(`${environment.appUrl}/api/media/remove-like/${commentId}`);
-  }
-
-  removeDislikeFromComment(commentId: number): Observable<any> {
-    return this.http.delete(`${environment.appUrl}/api/media/remove-dislike/${commentId}`);
-  }
-
-  addCommentReply(parentCommentId: number, mediaId: number, text: string): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/media/add-comment-reply`, {
-      parentCommentId,
-      mediaId,
-      text
-    });
-  }
-
-  // RATINGS
-
-  giveRatingToMedia(ratingMediaDto: UserRatingMedia): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post(`${environment.appUrl}/api/UserRatingMedia/give-rating`, ratingMediaDto,  { headers });
-  }
-
-  getRatingForMedia(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-rates/${mediaId}`);
-  }
-
-  getAverageRatingForMedia(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-average-rating/${mediaId}`);
-  }
-
-  getUserRatingForMedia(username: string, mediaId: number): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-user-choice/${username}/${mediaId}`, { headers });
-  }
-
-  // ATORES
-
-  getActorChoicesForMedia(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-choices/${mediaId}`);
-  }
-
-  chooseAnActor(favoriteActorChoice: FavoriteActor): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post(`${environment.appUrl}/api/FavoriteActorChoice/choose-an-actor`, favoriteActorChoice, { headers });
-  }
-
-  getUserActorChoice(username: string, mediaId: number): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-user-choice/${username}/${mediaId}`, { headers });
-  }
-
-  //QUIZ
-  getQuizQuestions(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/quiz/${mediaId}`);
-  }
-
-  submitQuizAttempt(quizAttempt: any): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/quiz/attempt/`, quizAttempt);
-  }
-
-  getLastQuizAttempt(mediaId: any): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/quiz/last-attempt/${mediaId}`);
-
-  }
-  checkQuizCompleted(mediaId: any): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`, { headers });
-  }
-
-
 
 }

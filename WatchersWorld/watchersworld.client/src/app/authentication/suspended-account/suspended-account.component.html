@@ -1,10 +1,12 @@
 <div class="suspended-account-container">
   <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />
-  <div class="suspended-account-form">
-    <h3>
-      {{ banDurationMessage }}
-    </h3>
-    <!-- Listen for the click event and call the redirectToLogin method -->
-    <authentication-button [buttonText]="'VOLTAR'" (click)="redirectToLogin()"></authentication-button>
+  <div class="suspended-account-form-container">
+
+    <form class="suspended-account-form">
+      <h3>
+        A sua conta encontra-se suspensa por x tempo.
+      </h3>
+      <authentication-button [buttonText]="'VOLTAR'" [buttonType]="'submit'"></authentication-button>
+    </form>
   </div>
 </div>

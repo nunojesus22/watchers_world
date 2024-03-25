@@ -27,14 +27,14 @@ export class AllMoviesPageComponent {
 
   initCategories() {
     this.categories = [
-      { name: 'Filmes em Destaque', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes de Ação', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes de Aventura', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes de Comédia', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes de Animação', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes Documentário', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes de Ficção Científica', results: [], activeIndex: 0, showAll: false },
-      { name: 'Filmes de Thriller', results: [], activeIndex: 0, showAll: false },
+      { name: 'Trending Movies', results: [], activeIndex: 0, showAll:false },
+      { name: 'Action Movies', results: [], activeIndex: 0 ,showAll: false },
+      { name: 'Adventure Movies', results: [], activeIndex: 0, showAll: false },
+      { name: 'Comedy Movies', results: [], activeIndex: 0, showAll: false },
+      { name: 'Animation Movies', results: [], activeIndex: 0, showAll: false },
+      { name: 'Documentary Movies', results: [], activeIndex: 0, showAll: false },
+      { name: 'ScienceFiction Movies', results: [], activeIndex: 0, showAll: false },
+      { name: 'Thriller Movies', results: [], activeIndex: 0, showAll: false },
     ];
 
     this.fetchMovies();

@@ -1,4 +1,7 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,8 +10,8 @@ using WatchersWorld.Server.Models.Authentication;
 namespace WatchersWorld.Server.Services
 {
     /// <summary>
-    /// Classe de serviço para a criação de Tokens Web JSON (JWT).
-    /// Esta classe é responsável por gerar JWTs para a autenticação de utilizadores.
+    /// Service class for creating JSON Web Tokens (JWT).
+    /// This class is responsible for generating JWTs for user authentication.
     /// </summary>
     public class JWTService
     {
@@ -16,9 +19,9 @@ namespace WatchersWorld.Server.Services
         private readonly SymmetricSecurityKey _jwtKey;
 
         /// <summary>
-        /// Inicializa uma nova instância da classe JWTService.
+        /// Initializes a new instance of the JWTService class.
         /// </summary>
-        /// <param name="config">Objeto de configuração para acessar as definições da aplicação.</param>
+        /// <param name="config">Configuration object to access application settings.</param>
         public JWTService(IConfiguration config)
         {
             _config = config;
@@ -28,18 +31,18 @@ namespace WatchersWorld.Server.Services
         }
 
         /// <summary>
-        /// Cria um JWT para um dado utilizador.
+        /// Creates a JWT for a given user.
         /// </summary>
-        /// <param name="user">O utilizador para o qual o JWT será criado.</param>
-        /// <returns>Uma string representando o token JWT serializado.</returns>
+        /// <param name="user">The user for whom the JWT is to be created.</param>
+        /// <returns>A string representing the serialized JWT token.</returns>
         public string CreateJWT(User user)
         {
             // Claims are the pieces of data included within the token.
             var userClaims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier, user.Id),
-                new("UserName", user.UserName),
-                new(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("UserName", user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
             };
 
             // Credentials used to sign the token, ensuring its integrity and authenticity.

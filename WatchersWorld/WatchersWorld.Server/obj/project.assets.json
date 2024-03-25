@@ -1017,22 +1017,6 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Owin/8.0.2": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Microsoft.AspNetCore.Owin.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Owin.dll": {
-            "related": ".xml"
-          }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
-      },
       "Microsoft.AspNetCore.Razor.Language/6.0.24": {
         "type": "package",
         "compile": {
@@ -6274,21 +6258,6 @@
         "lib/netstandard2.0/Microsoft.AspNetCore.Metadata.xml",
         "microsoft.aspnetcore.metadata.8.0.1.nupkg.sha512",
         "microsoft.aspnetcore.metadata.nuspec"
-      ]
-    },
-    "Microsoft.AspNetCore.Owin/8.0.2": {
-      "sha512": "ogxxXVmapqmUo0OMRHY9ZDf0FaOdkHsrAAVp+ANzMmp8xw+1lfEd5QcyuIMJq4eDy5q08onFEpAZme1RpnyvSQ==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.owin/8.0.2",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net8.0/Microsoft.AspNetCore.Owin.dll",
-        "lib/net8.0/Microsoft.AspNetCore.Owin.xml",
-        "microsoft.aspnetcore.owin.8.0.2.nupkg.sha512",
-        "microsoft.aspnetcore.owin.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Razor.Language/6.0.24": {
@@ -14444,7 +14413,6 @@
       "Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter >= 8.0.1",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.1",
       "Microsoft.AspNetCore.Identity.UI >= 8.0.1",
-      "Microsoft.AspNetCore.Owin >= 8.0.2",
       "Microsoft.AspNetCore.SpaProxy >= 8.*-*",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.1",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.1",
@@ -14457,19 +14425,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\dalia\\.nuget\\packages\\": {}
+    "C:\\Users\\diogo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dalia\\OneDrive\\Documentos\\GitHub\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "projectUniqueName": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
       "projectName": "WatchersWorld.Server",
-      "projectPath": "C:\\Users\\dalia\\OneDrive\\Documentos\\GitHub\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-      "packagesPath": "C:\\Users\\dalia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dalia\\OneDrive\\Documentos\\GitHub\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+      "projectPath": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\diogo\\Desktop\\Projeto ESA\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\dalia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14528,10 +14496,6 @@
           "Microsoft.AspNetCore.Identity.UI": {
             "target": "Package",
             "version": "[8.0.1, )"
-          },
-          "Microsoft.AspNetCore.Owin": {
-            "target": "Package",
-            "version": "[8.0.2, )"
           },
           "Microsoft.AspNetCore.SpaProxy": {
             "target": "Package",

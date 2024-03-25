@@ -1,31 +1,37 @@
 ﻿namespace WatchersWorld.Server.DTOs.Account
 {
     /// <summary>
-    /// DTO utilizado para enviar email.
-    /// Contém o destinatário, o assunto e o corpo do email.
+    /// Data Transfer Object (DTO) for sending email.
+    /// Contains the necessary properties to construct an email message.
     /// </summary>
-    /// <remarks>
-    /// Inicializa uma nova instância de EmailSendDto.
-    /// </remarks>
-    /// <param name="to">Endereço de email do destinatário.</param>
-    /// <param name="subject">Assunto do email.</param>
-    /// <param name="body">Conteúdo do corpo do email.</param>
-    public class EmailSendDto(string to, string subject, string body)
+    public class EmailSendDto
     {
+        /// <summary>
+        /// Initializes a new instance of EmailSendDto.
+        /// </summary>
+        /// <param name="to">Recipient's email address.</param>
+        /// <param name="subject">Subject of the email.</param>
+        /// <param name="body">Body content of the email.</param>
+        public EmailSendDto(string to, string subject, string body)
+        {
+            To = to;
+            Subject = subject;
+            Body = body;
+        }
 
         /// <summary>
-        /// Endereço de email do destinatário.
+        /// Recipient's email address.
         /// </summary>
-        public string To { get; set; } = to;
+        public string To { get; set; }
 
         /// <summary>
-        /// Assunto do email.
+        /// Subject of the email.
         /// </summary>
-        public string Subject { get; set; } = subject;
+        public string Subject { get; set; }
 
         /// <summary>
-        /// Conteúdo do corpo do email.
+        /// Body content of the email.
         /// </summary>
-        public string Body { get; set; } = body;
+        public string Body { get; set; }
     }
 }

@@ -49,10 +49,6 @@ a:hover {
   text-decoration: none; /* Remove o sublinhado do link */
 }
 
-.menu-item-notification {
-  color: red; /* Cor para o estado com notificações */
-}
-
 .menu-item:hover {
   transform: scale(1.09);
   cursor: pointer;
@@ -177,18 +173,4 @@ a:hover {
 
 .user-icon.active {
   background-image: url('../../assets/img/user-selected.png');
-}
-
-/* Adiciona estilos para a badge de notificação */
-.notification-badge {
-  height: 10px;
-  width: 10px;
-  background-color: red;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 10px; /* ou ajuste conforme necessário */
-}
-
-.notification-icon {
-  color: #ff0000; /* ou qualquer cor que você quiser */
 }

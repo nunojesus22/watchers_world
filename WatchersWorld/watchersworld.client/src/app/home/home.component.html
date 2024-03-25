@@ -5,7 +5,7 @@
 </div>
 <div class="session-container" *ngIf="(authService.user$ | async) as user">
   <span>
-    Bem-vindo, {{user.username}}!
+    Bem-vindo, {{user.username | titlecase}}!
   </span>
   <button (click)="logout()" class="logout-button">Terminar sessão</button>
 </div>
