@@ -93,12 +93,21 @@
             Onde Ver:
             Ainda não existem provedores de streaming disponíveis.
           </div>
-
+          <div class="rating-container">
+            <p class="manual-text mt-2 mb-1">Classificação Média:</p>
+            <p class="movie-details mt-1 mb-2">{{ averageRating }}  <i class="fas fa-star"></i></p>
+          </div>
+          <div *ngIf="isWatched" class="rating-container">
+            <p class="manual-text mt-2 mb-1">A sua avaliação:</p>
+            <i class="fa-star" *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+               [class.fas]="userRating > i" [class.far]="userRating <= i"
+               (click)="rateMovie(i + 1)"></i>
+          </div>
           <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getSerieVideoResult?}}"
-          target="_blank">watch trailer</a>-->
-
+  target="_blank">watch trailer</a>-->
+          <br />
           <div class="container">
-            <h2 class="text-black">Top Cast</h2>
+            <h2 class="text-black">Principais atores</h2>
             <div class="d-flex flex-row flex-nowrap overflow-auto">
               <div class="card text-center flex-shrink-0" *ngFor="let c of getMovieCastResult">
                 <div class="actor-image-container">
@@ -108,14 +117,141 @@
                   </ng-template>
                 </div>
                 <div class="card-body">
+                  <!-- Exibir a estrela apenas se a mídia estiver marcada como assistida -->
+                  <i *ngIf="isWatched" class="fa-star"
+                     [class.fas]="isFavoriteActor(c.id)"
+                     [class.far]="!isFavoriteActor(c.id)"
+                     (click)="chooseFavoriteActor(c)"></i>
                   <h3 class="text-black">{{c?.original_name}}</h3>
                   <p class="text-black">{{c?.character}}</p>
+                  <p class="text-black" *ngIf="actorVotePercentages[c.id]">{{ actorVotePercentages[c.id] }}% votos</p>
                 </div>
               </div>
             </div>
+          </div>
+          <br />
+
+          <div *ngIf="isWatched">
+            <h2 class="text-black">Quiz:</h2>
+
+            <button *ngIf="quizCompleted" (click)="showQuizPopup()" class="btn btn-primary my-3">
+              Refazer Quiz
+            </button>
+            <button *ngIf="!quizCompleted" (click)="showQuizPopup()" class="btn btn-primary my-3">
+              Iniciar Quiz
+            </button>
+
+            <div *ngIf="isQuizPopupVisible" class="quiz-popup">
+              <div class="popup-content">
+                <button class="close-popup" (click)="hideQuizPopup()">X</button>
+                <h4>Quiz sobre o filme</h4>
+                <form *ngIf="!quizResult">
+                  <!-- Exibe apenas a pergunta atual baseada em currentQuestionIndex -->
+                  <div class="card mb-3">
+                    <div class="card-header">
+                      {{ quizQuestions[currentQuestionIndex].text }}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item" *ngFor="let answer of quizQuestions[currentQuestionIndex].answers">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" [name]="'question' + quizQuestions[currentQuestionIndex].id" [(ngModel)]="userAnswers[quizQuestions[currentQuestionIndex].id]" [value]="answer.id">
+                          <label class="form-check-label" for="answer{{ answer.id }}">
+                            {{ answer.text }}
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- Botões de Navegação -->
+                  <div class="navigation-buttons">
+                    <button type="button" class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">Anterior</button>
+                    <button type="button" class="btn btn-secondary" (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1">Próximo</button>
+                  </div>
+                  <!-- Mostrar botão de enviar apenas na última pergunta -->
+                  <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-success">Enviar respostas</button>
+                </form>
+              </div>
+            </div>
+
+            <div *ngIf="quizResult">
+              <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
+            </div>
+
+            <div *ngIf="quizCompleted" class="alert alert-info">
+              <p>Já completou esse quiz. A sua última pontuação foi de {{ lastQuizScore }} pontos</p>
+            </div>
+
+          </div>
+
+          <div class="comments-section mt-5" *ngIf="isWatched">
+            <h2 class="mb-4">Adicionar comentário</h2>
+
+            <!-- Formulário de Novo Comentário -->
+            <div class="comment-form mb-3">
+              <textarea [(ngModel)]="newCommentText" placeholder="Escreva um comentário..." rows="3" class="form-control mb-2"></textarea>
+              <button (click)="addComment()" class="btn btn-primary">Publicar Comentário</button>
+            </div>
+
+            <!-- Lista de Comentários -->
+            <div class="comment-list" *ngIf="isWatched">
+              <h2 class="mb-4">Comentários</h2>
+              <h5 *ngIf="comments.length > 0" class="mb-4"> Número total de comentários: {{comments.length}}</h5>
+              <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded">
+                <div class="d-flex justify-content-between">
+                  <div class="user-info d-flex align-items-center">
+                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
+                    <ng-template #defaultProfile>
+                      <img src="../assets/img/joao-pfp.png" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
+                    </ng-template>
+                    <strong *ngIf="comment?.userName">{{ comment.userName }}</strong>
+                    <span class="text-muted" *ngIf="comment?.createdAt">em {{ comment.createdAt | date:'short' }}</span>
+                  </div>
+                  <button *ngIf="comment?.userName && canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" class="btn btn-danger mt-2">Apagar Comentário</button>
+                </div>
+
+                <p class="comment-text mt-2" style="margin-left:55px" *ngIf="comment?.text">{{ comment.text }}</p>
+                <div class="comment-actions d-flex align-items-center" *ngIf="comment">
+                  <button *ngIf="!comment.hasDisliked" (click)="toggleLikeComment(comment.id)" class="icon-button" [ngClass]="comment.hasLiked ? 'liked' : 'not-liked'">
+                    <i class="fa fa-thumbs-up"></i>
+                  </button>
+                  <span class="likes-count" *ngIf="comment?.likesCount">{{comment.likesCount}}</span>
+                </div>
+
+                <div class="replies mt-3" *ngIf="comment?.replies">
+                  <button *ngIf="!showReplyForms[comment.id]" (click)="toggleReplyForm(comment.id)" class="btn btn-outline-secondary">Responder</button>
+                  <div *ngIf="showReplyForms[comment.id]" class="reply-form mt-2">
+                    <textarea [(ngModel)]="replyTexts[comment.id]" class="form-control" placeholder="Escreva uma resposta..." rows="3"></textarea>
+                    <button (click)="addReply(comment.id)" class="btn btn-secondary mt-2">Enviar Resposta</button>
+                  </div>
+
+                  <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-list">
+                    <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
+                      <div class="d-flex justify-content-between" style="margin-top:15px">
+                        <div class="user-info d-flex align-items-center">
+                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image">
+                          <strong>{{ reply?.userName }}</strong>
+                          <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
+                        </div>
+                        <button *ngIf="canDeleteComment(reply.userName)" (click)="deleteComment(reply.id, comment.id)" class="btn btn-danger btn-sm">Apagar Resposta</button>
+                      </div>
+
+                      <p class="my-1" style="margin-left:45px" *ngIf="reply?.text">{{ reply?.text }}</p>
+                      <div class="action-buttons d-flex align-items-center">
+                        <button *ngIf="!reply.hasDisliked" (click)="toggleLikeComment(reply.id, comment.id)" class="icon-button" [ngClass]="reply.hasLiked ? 'liked' : 'not-liked'">
+                          <i class="fa fa-thumbs-up"></i>
+                        </button>
+                        <span class="likes-count" *ngIf="reply?.likesCount">{{reply?.likesCount}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="comments.length === 0" class="text-muted text-center mt-3">Ainda não há comentários. Seja o primeiro a comentar!</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+  <br /><br />
+

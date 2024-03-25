@@ -39,6 +39,11 @@ const routes: Routes = [
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'serie/:id', component: SeriesDetailsComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'notifications/:username', component: NotificationsComponent },
+  { path: 'suspendedAccount', component: SuspendedAccountComponent },
+  { path: 'chat', component: ChatComponent }, 
+  { path: 'chat/:username', component: ChatComponent },
+
 
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm
@@ -50,7 +55,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), ReactiveFormsModule],
+  imports: [RouterModule.forRoot(routes, {useHash: false}), ReactiveFormsModule],
   exports: [RouterModule]
 })
 

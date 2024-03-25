@@ -164,3 +164,323 @@ a {
   color: var(--bs-card-color);
   padding: 0;
 }
+
+.fa-star {
+  cursor: pointer;
+  color: #d4af37; /* cor dourada para a estrela */
+  font-size: 24px; /* tamanho maior para a estrela */
+}
+
+  .fa-star:hover {
+    color: #f1c40f; /* cor dourada mais clara para o hover */
+  }
+
+.far.fa-star {
+  color: #bbb; /* Cor cinza para estrela não favorita */
+  cursor: pointer;
+  font-size: 24px; /* Tamanho da estrela */
+}
+
+.fas.fa-star {
+  color: #ffd700; /* Cor dourada para estrela favorita */
+  cursor: pointer;
+  font-size: 24px; /* Tamanho da estrela */
+}
+
+.favorite {
+  color: #ffd700; /* Cor dourada para favoritos */
+}
+
+.not-favorite {
+  color: #ccc; /* Cor cinza para não favoritos */
+}
+
+.comment-form textarea {
+  resize: none; /* Prevents resizing of textarea */
+}
+
+.comment-list .comment {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+  .comment-list .comment .d-flex.align-items-center {
+    margin-bottom: 15px;
+  }
+
+  .comment-list .comment img {
+    margin-right: 15px;
+    border: 3px solid #fff; /* Creates a white border around the image */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .comment-list .comment strong {
+    font-size: 1.2em; /* Makes the username larger */
+  }
+
+  .comment-list .comment .text-muted {
+    font-size: 0.9em; /* Adjust text size for date */
+    margin-left: 10px;
+  }
+
+  .comment-list .comment .like-dislike-buttons {
+    display: flex;
+    gap: 10px; /* Adds space between buttons */
+  }
+
+    .comment-list .comment .like-dislike-buttons button {
+      flex-grow: 1; /* Makes buttons fill the available space */
+    }
+
+.comment-text {
+  white-space: pre-wrap; /* Ensures that line breaks are preserved */
+  font-size: 1em; /* Adjust text size for comment */
+  margin-bottom: 15px;
+}
+
+.reply-form textarea {
+  resize: none;
+  border-radius: 8px;
+}
+
+.reply-list .reply {
+  background-color: #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  position: relative;
+}
+
+  .reply-list .reply img {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    border: 2px solid #dee2e6;
+  }
+
+  .reply-list .reply .text-muted {
+    font-size: 0.9em;
+  }
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+  .action-buttons button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-bottom: 5px;
+  }
+
+.btn-outline-secondary {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-secondary {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-outline-primary, .btn-outline-danger {
+  border-width: 2px; /* Makes border thicker for a bolder look */
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem; /* Adjust padding for smaller buttons */
+  font-size: 0.875rem; /* Adjust font size for smaller buttons */
+}
+
+.comment-form button, .reply-form button {
+  width: 100%; /* Makes buttons full width for a more cohesive look */
+  margin-top: 10px; /* Adds space above the button */
+}
+
+.comment-list .comment {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.delete-icon {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.like-dislike-buttons .btn {
+  font-size: 14px;
+}
+
+.reply-list .reply {
+  background-color: #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.user-info img {
+  border: 2px solid #dee2e6;
+}
+
+.comment-form textarea {
+  border-radius: 8px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* ou o tamanho que preferir para o ícone */
+  cursor: pointer;
+}
+
+  .icon-button.liked {
+    color: #4CAEFE; /* Cor quando curtido */
+  }
+
+  .icon-button.not-liked {
+    color: grey; /* Cor quando não curtido */
+  }
+
+.likes-count {
+  font-size: 16px; /* Tamanho do texto para o número de curtidas */
+}
+
+
+/* Botões */
+.btn-primary {
+  background-color: #4CAEFE; /* Cor de fundo dos botões primários */
+  border-color: #4CAEFE; /* Cor da borda dos botões primários */
+}
+
+.btn-success {
+  background-color: #4CAEFE; /* Cor de fundo para botões de sucesso */
+  border-color: #4CAEFE; /* Cor da borda para botões de sucesso */
+}
+
+  .btn-primary:hover,
+  .btn-success:hover {
+    opacity: 0.85; /* Efeito ao passar o mouse */
+  }
+
+/* Cards das questões */
+.card {
+  border-color: #ddd; /* Cor da borda dos cards */
+}
+
+.card-header {
+  padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+  margin-bottom: 0;
+  color: #4CAEFE;
+  background-color: var(--bs-card-cap-bg);
+  border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+}
+
+/* Alertas */
+.alert-info {
+  background-color: #d1ecf1; /* Cor de fundo dos alertas */
+  border-color: #bee5eb; /* Cor da borda dos alertas */
+  color: #0c5460; /* Cor do texto dos alertas */
+}
+
+/* Personalizações de Formulários */
+.form-check-input {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.form-check-label {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+/* Lista de Respostas */
+.list-group-item {
+  border-color: #ddd; /* Cor da borda dos itens da lista */
+}
+
+  .list-group-item:nth-of-type(odd) {
+    background-color: #f8f9fa; /* Cor de fundo para itens alternados */
+  }
+
+
+/* Estilo do Popup do Quiz */
+.quiz-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1050; /* Garanta que o popup esteja sobre outros elementos */
+  padding: 20px;
+}
+
+/* Conteúdo do Popup */
+.popup-content {
+  position: relative;
+}
+
+/* Botão de Fechar */
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Melhora a aparência dos botões */
+.btn {
+  margin: 5px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    color: white;
+  }
+
+.btn-success {
+  background-color: #4CAEFE;
+  color: white;
+}
+
+
+
+/* Estilo das perguntas e respostas */
+.card-header {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #e7e7e7;
+  font-weight: bold;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+}
+
+  .list-group-item:nth-child(odd) {
+    background-color: #e9ecef;
+  }
+
+/* Formatação dos inputs e labels dentro do quiz */
+.form-check-input {
+  margin-top: 0.3rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.form-check-label {
+  cursor: pointer;
+}

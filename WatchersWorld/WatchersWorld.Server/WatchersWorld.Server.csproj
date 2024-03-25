@@ -16,6 +16,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\chunk-6GPJJZ5Z.js" />
+    <Content Remove="wwwroot\chunk-FXFFS7U7.js" />
+    <Content Remove="wwwroot\main-XHIWI5PY.js" />
+    <Content Remove="wwwroot\polyfills-RX4V3J3S.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\chunk-6GPJJZ5Z.js" />
+    <None Include="wwwroot\chunk-FXFFS7U7.js" />
+    <None Include="wwwroot\main-XHIWI5PY.js" />
+    <None Include="wwwroot\polyfills-RX4V3J3S.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.66.0" />
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" NoWarn="NU1605" />
@@ -23,6 +37,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>8.*-*</Version>
     </PackageReference>

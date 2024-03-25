@@ -1,53 +1,43 @@
-﻿using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NuGet.Protocol;
 using System.Text;
 using WatchersWorld.Server.Controllers;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Account;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using WatchersWorld_Teste.FixtureConfiguration;
+using WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration;
+
 
 namespace WatchersWorld_Teste
 {
-    [Collection("Database collection")]
-    public class AccountControllerTests : IClassFixture<IntegrationTestsFixture>, IAsyncLifetime
+    public class AccountControllerTests : IClassFixture<IntegrationTestsFixture>
     {
         private readonly WatchersWorldServerContext _context;
         private readonly AccountController _accountController;
-        private readonly UserManager<WatchersWorld.Server.Models.Authentication.User> _userManager;
-        private readonly SignInManager<WatchersWorld.Server.Models.Authentication.User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly JWTService _jwtService;
         private readonly EmailService _emailService;
-        private readonly IntegrationTestsFixture _fixture;
 
         public AccountControllerTests(IntegrationTestsFixture fixture)
         {
-            _fixture = fixture;
             _context = fixture.Context;
             _userManager = fixture.UserManager;
-            _signInManager = fixture.ServiceProvider.GetRequiredService<SignInManager<WatchersWorld.Server.Models.Authentication.User>>();
+            _signInManager = fixture.ServiceProvider.GetRequiredService<SignInManager<User>>();
             _jwtService = fixture.ServiceProvider.GetRequiredService<JWTService>();
             _emailService = fixture.ServiceProvider.GetRequiredService<EmailService>();
-
-            // Agora você pode instanciar o AccountController com as dependências necessárias
-            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context);
-        }
-
-        public async Task InitializeAsync()
-        {
-            await _fixture.SeedDatabaseForAccountTestAsync();
-        }
-
-        public Task DisposeAsync()
-        {
-            return Task.CompletedTask;
+            var logger = fixture.ServiceProvider.GetRequiredService<ILogger<AccountController>>();
+            
+            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context, logger);
+            
+            fixture.ApplySeedAsync(new AccountControllerTestSeedConfiguration(fixture.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>())).Wait();
         }
 
         [Fact]
@@ -166,9 +156,9 @@ namespace WatchersWorld_Teste
         {
             var model = new RegisterDto
             {
-                Username = "UserTest4",
-                Email = "usertest4@gmail.com",
-                Password = "userTest4"
+                Username = "UserTest11",
+                Email = "usertest11@gmail.com",
+                Password = "userTest11"
             };
 
             var result = await _accountController.Register(model);
@@ -207,8 +197,8 @@ namespace WatchersWorld_Teste
             var model = new ResetPasswordDto
             {
                 Token = "ABC",
-                Email = "usertest6@gmail.com",
-                NewPassword = "userTest6"
+                Email = "usertest9@gmail.com",
+                NewPassword = "userTest9"
             };
 
             var result = await _accountController.ResetPassword(model);
@@ -292,7 +282,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task ForgotPassword_EmailToConfirm_ShouldReturnBadRequestWithErrors()
         {
-            var result = await _accountController.ForgotPassword("usertest6@gmail.com");
+            var result = await _accountController.ForgotPassword("usertest9@gmail.com");
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             var errorObject = JObject.FromObject(badRequestResult.Value!);
@@ -340,7 +330,7 @@ namespace WatchersWorld_Teste
             var model = new ConfirmEmailDto
             {
                 Token = "123",
-                Email = "usertest5@gmail.com"
+                Email = "usertest12@gmail.com"
             };
 
             var result = await _accountController.ConfirmEmail(model);
@@ -493,8 +483,8 @@ namespace WatchersWorld_Teste
         {
             var model = new LoginDto
             {
-                Password = "UserTest6",
-                Email = "usertest6@gmail.com"
+                Password = "UserTest10",
+                Email = "usertest10@gmail.com"
             };
 
             var result = await _accountController.Login(model);
@@ -513,8 +503,8 @@ namespace WatchersWorld_Teste
                 JWT = userObject!.Value<string>("JWT"),
             };
 
-            Assert.Equal("usertest6@gmail.com", user.Email);
-            Assert.Equal("UserTest6", user.Username);
+            Assert.Equal("usertest10@gmail.com", user.Email);
+            Assert.Equal("UserTest10", user.Username);
             Assert.NotNull(user.JWT);
             Assert.Equal("EmailPorConfirmar", errorField);
             Assert.Equal("A conta está por confirmar!", errorMessage);

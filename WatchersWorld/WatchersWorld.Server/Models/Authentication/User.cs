@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using WatchersWorld.Server.Models.Authentication.Status;
 
 namespace WatchersWorld.Server.Models.Authentication
 {
     /// <summary>
-    /// Represents a user entity extending the IdentityUser class provided by ASP.NET Core Identity.
-    /// Includes basic user information and additional properties specific to the application.
+    /// Representa uma entidade de utilizador que estende a classe IdentityUser fornecida pelo ASP.NET Core Identity.
+    /// Inclui informações básicas do utilizador e propriedades adicionais específicas à aplicação.
     /// </summary>
     public class User : IdentityUser
     {
+        /// <summary>
+        /// Fornecedor utilizado pelo utilizador para se registar ou autenticar na aplicação.
+        /// </summary>
         [Required]
         public string Provider { get; set; }
     }
