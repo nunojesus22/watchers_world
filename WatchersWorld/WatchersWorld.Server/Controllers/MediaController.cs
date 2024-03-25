@@ -482,5 +482,23 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Dislike removido com sucesso." });
         }
+
+        [Authorize]
+        [HttpGet("/api/media/get-total-comments/{username}")]
+        public async Task<ActionResult<int>> GetTotalCommentsByUser(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var totalComments = await _context.Comments.CountAsync(c => c.UserId == user.Id);
+
+            return Ok(totalComments);
+        }
     }
+
+
+
 }

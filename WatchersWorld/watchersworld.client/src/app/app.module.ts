@@ -30,6 +30,7 @@ import { SeasonDetailsComponent } from './season-details/season-details.componen
 import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ChatComponent } from './chat/chat.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { ChatComponent } from './chat/chat.component';
     SeasonDetailsInfoComponent,
     NotificationsComponent,
     ChatComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

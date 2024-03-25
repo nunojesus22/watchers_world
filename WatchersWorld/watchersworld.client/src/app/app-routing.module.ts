@@ -17,6 +17,7 @@ import { SeasonDetailsInfoComponent } from './season-details-info/season-details
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
 import { ChatComponent } from './chat/chat.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -47,8 +48,8 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm
   { path: 'serie/:id/season', component: SeasonDetailsComponent },
-  { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent }
-
+  { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent },
+  { path: 'statistics/:username', component: StatisticsComponent },
   
 ];
 

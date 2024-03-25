@@ -122,4 +122,8 @@ export class ProfileService {
     return this.http.delete<any>(`${environment.appUrl}/api/profile/rejectFollow/${usernameAuthenticated}/${usernameWhoSend}`, { headers });
   }
 
+  getUserTotalComments(username: string): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/media/get-total-comments/${username}`, { headers });
+  }
 }
