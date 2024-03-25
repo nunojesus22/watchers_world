@@ -83,7 +83,7 @@ namespace WatchersWorld.Server.Controllers
         public async Task<IActionResult> GetTotalFavoriteActors()
         {
             var userAuthenticated = await _userManager.GetUserAsync(User);
-            if (userAuthenticated == null) return BadRequest("Usuário não encontrado.");
+            if (userAuthenticated == null) return BadRequest("Utilizador não encontrado.");
 
             var totalFavoriteActors = await _favoriteActorService.GetTotalFavoriteActorsByUser(userAuthenticated.Id);
 

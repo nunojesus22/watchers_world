@@ -42,6 +42,9 @@ namespace WatchersWorld.Server.Services
         /// <param name="mediaId">O identificador da Media.</param>
         /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém a avaliação média como um double.</returns>
         Task<double> GetAverageRatingForMedia(int mediaId);
+
+        Task<int> GetTotalRatinsByUser(string username);
+
     }
 
     /// <summary>
@@ -56,6 +59,15 @@ namespace WatchersWorld.Server.Services
 
         public WatchersWorldServerContext Context { get; set; } = context;
 
+
+        public async Task<int> GetTotalRatinsByUser(string userId)
+        {
+            var totalRatings= await Context.UserRatingMedia
+                .Where(fac => fac.UserThatRateId== userId)
+                .CountAsync();
+
+            return totalRatings;
+        }
         /// <inheritdoc />
         public async Task<bool> GiveRatingToMedia(string userId, UserMediaDto media, int rating)
         {

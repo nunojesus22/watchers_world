@@ -142,4 +142,10 @@ export class ProfileService {
 
     return this.http.get<number>(`${environment.appUrl}/api/FavoriteActorChoice/get-total-favorite-actors`, { headers });
   }
+
+  getTotalRatingsByUser(): Observable<number> {
+    const headers = this.getHeaders();
+
+    return this.http.get<number>(`${environment.appUrl}/api/UserRatingMedia/get-rating-by-user`, { headers });
+  }
 }

@@ -20,6 +20,8 @@ export class StatisticsComponent implements OnInit {
   totalLikesReceivedCount: number | undefined;
   totalQuizAttempts: number | undefined;
   totalFavoriteActors: number | undefined;
+  totalRatigns: number | undefined;
+
 
   constructor(
     private profileService: ProfileService,
@@ -35,6 +37,7 @@ export class StatisticsComponent implements OnInit {
       this.fetchTotalLikes(this.currentUser);
       this.fetchTotalQuizAttempts(this.currentUser);
       this.loadTotalFavoriteActors();
+      this.loadTotalRatings();
     }
   }
 
@@ -98,6 +101,17 @@ export class StatisticsComponent implements OnInit {
     this.profileService.getTotalFavoriteActors().subscribe({
       next: (total) => {
         this.totalFavoriteActors = total;
+      },
+      error: (error) => {
+        console.error("Error fetching total favorite actors:", error);
+      }
+    });
+  }
+
+  private loadTotalRatings(): void {
+    this.profileService.getTotalRatingsByUser().subscribe({
+      next: (total) => {
+        this.totalRatigns = total;
       },
       error: (error) => {
         console.error("Error fetching total favorite actors:", error);
