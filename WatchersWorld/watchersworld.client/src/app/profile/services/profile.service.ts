@@ -126,4 +126,20 @@ export class ProfileService {
     const headers = this.getHeaders();
     return this.http.get<number>(`${environment.appUrl}/api/media/get-total-comments/${username}`, { headers });
   }
+
+  getUserTotalLikesReceived(username: string): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/media/get-total-likes-received/${username}`, { headers });
+  }
+
+  getTotalQuizAttempts(username: string): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/quiz/total-attempts/${username}`, { headers });
+  }
+
+  getTotalFavoriteActors(): Observable<number> {
+    const headers = this.getHeaders();
+
+    return this.http.get<number>(`${environment.appUrl}/api/FavoriteActorChoice/get-total-favorite-actors`, { headers });
+  }
 }

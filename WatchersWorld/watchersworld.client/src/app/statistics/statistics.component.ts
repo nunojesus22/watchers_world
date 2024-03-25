@@ -17,7 +17,9 @@ export class StatisticsComponent implements OnInit {
   watchLaterSeriesCount: number = 0;
   currentUser: any;
   totalCommentsCount: number | undefined;
-
+  totalLikesReceivedCount: number | undefined;
+  totalQuizAttempts: number | undefined;
+  totalFavoriteActors: number | undefined;
 
   constructor(
     private profileService: ProfileService,
@@ -30,6 +32,9 @@ export class StatisticsComponent implements OnInit {
       this.fetchStatistics(this.currentUser);
       this.fetchMediaCounts(this.currentUser);
       this.fetchTotalComments(this.currentUser);
+      this.fetchTotalLikes(this.currentUser);
+      this.fetchTotalQuizAttempts(this.currentUser);
+      this.loadTotalFavoriteActors();
     }
   }
 
@@ -70,4 +75,34 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching total user comments:", error)
     });
   }
+
+  private fetchTotalLikes(username: string): void {
+    // Chamadas existentes para buscar followers, following, etc.
+    this.profileService.getUserTotalLikesReceived(username).subscribe({
+      next: (totalLikes) => {
+        this.totalLikesReceivedCount = totalLikes;
+      },  
+      error: (error) => console.error("Error fetching total user likes:", error)
+    });
+  }
+  private fetchTotalQuizAttempts(userId: string): void {
+    this.profileService.getTotalQuizAttempts(userId).subscribe({
+      next: (totalAttempts) => {
+        this.totalQuizAttempts = totalAttempts;
+      },
+      error: (error) => console.error("Error fetching total quiz attempts:", error)
+    });
+  }
+
+  private loadTotalFavoriteActors(): void {
+    this.profileService.getTotalFavoriteActors().subscribe({
+      next: (total) => {
+        this.totalFavoriteActors = total;
+      },
+      error: (error) => {
+        console.error("Error fetching total favorite actors:", error);
+      }
+    });
+  }
+
 }

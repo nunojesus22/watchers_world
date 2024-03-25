@@ -36,6 +36,9 @@ namespace WatchersWorld.Server.Services
         /// <param name="mediaId">Identificador da mídia.</param>
         /// <returns>Identificador do ator escolhido, ou 0 se não houver escolha.</returns>
         Task<int> GetUserChoice(string userId, int mediaId);
+
+        Task<int> GetTotalFavoriteActorsByUser(string username);
+
     }
 
     /// <summary>
@@ -48,6 +51,15 @@ namespace WatchersWorld.Server.Services
     public class FavoriteActorService(WatchersWorldServerContext context) : IFavoriteActorService
     {
         public WatchersWorldServerContext Context { get; set; } = context;
+
+        public async Task<int> GetTotalFavoriteActorsByUser(string userId)
+        {
+            var totalFavoriteActors = await Context.FavoriteActorChoice
+                .Where(fac => fac.UserThatChooseId == userId)
+                .CountAsync();
+
+            return totalFavoriteActors;
+        }
 
         /// <summary>
         /// Escolhe um ator como favorito para um dado utilizador e mídia.
@@ -320,5 +332,6 @@ namespace WatchersWorld.Server.Services
                 return false;
             }
         }
+
     }
 }

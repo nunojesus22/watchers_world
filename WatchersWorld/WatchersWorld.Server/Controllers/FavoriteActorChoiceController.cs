@@ -79,6 +79,15 @@ namespace WatchersWorld.Server.Controllers
 
             return BadRequest("Não foi possível obter o voto do user no ator favorito dessa media.");
         }
+        [HttpGet("get-total-favorite-actors")]
+        public async Task<IActionResult> GetTotalFavoriteActors()
+        {
+            var userAuthenticated = await _userManager.GetUserAsync(User);
+            if (userAuthenticated == null) return BadRequest("Usuário não encontrado.");
 
+            var totalFavoriteActors = await _favoriteActorService.GetTotalFavoriteActorsByUser(userAuthenticated.Id);
+
+            return Ok(totalFavoriteActors);
+        }
     }
 }
