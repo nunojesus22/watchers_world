@@ -97,16 +97,17 @@ export class NotificationsComponent {
         .pipe(takeUntil(this.unsubscribed$))
         .subscribe({
           next: (notifications) => {
-            this.notifications = notifications.map(notification => {
-              return new NotificationModel(
+            this.notifications = notifications
+              .map(notification => new NotificationModel(
+                notification.id,
                 notification.triggeredByUserName,
                 notification.triggeredByUserPhoto,
                 notification.message,
                 new Date(notification.createdAt),
                 notification.isRead,
                 notification.eventType
-              );
-            });
+              ))
+              .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()); 
             console.log(this.notifications);
           },
           error: (error) => {
@@ -116,15 +117,16 @@ export class NotificationsComponent {
     }
   }
 
-
-
-
-
-
-
-
-
-
- 
+  clearAllNotifications(): void {
+    this.notificationService.markAllNotificationsAsRead()
+      .subscribe({
+        next: () => {
+          this.notifications.forEach(notification => notification.isRead = true);
+          console.log('Todas as notificações foram marcadas como lidas.');
+          this.getNotifications();
+        },
+        error: error => console.error('Erro ao marcar todas as notificações como lidas', error)
+      });
+  }
 
 }

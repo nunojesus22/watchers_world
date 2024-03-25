@@ -37,25 +37,34 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-        // Método para obter todas as notificações não lidas para o usuário logado
         [HttpGet("my-notifications")]
         public async Task<IActionResult> GetMyNotifications()
         {
-            // O ID do usuário é obtido do token de autenticação (usuário logado)
             var targetUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (targetUserId == null) return Unauthorized();
 
-            // Busca notificações onde o usuário logado é o destinatário
             var notifications = await _notificationService.GetNotificationsForUserAsync(targetUserId);
             return Ok(notifications);
         }
 
-        // Método para marcar uma notificação específica como lida
         [HttpPost("mark-as-read/{notificationId}")]
         public async Task<IActionResult> MarkNotificationAsRead(Guid notificationId)
         {
             await _notificationService.MarkNotificationAsReadAsync(notificationId);
             return Ok(new { message = "Notificação marcada como lida com sucesso." });
+        }
+
+        [HttpPost("mark-all-as-read")]
+        public async Task<IActionResult> MarkAllNotificationsAsRead()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            await _notificationService.MarkAllNotificationsAsReadAsync(userId);
+            return Ok(new { message = "Todas as notificações foram marcadas como lidas." });
         }
     }
 }

@@ -32,6 +32,8 @@ namespace WatchersWorld.Server.Services
         /// </summary>
         /// <param name="notificationId">O identificador da notificação a ser marcada como lida.</param>
         Task MarkNotificationAsReadAsync(Guid notificationId);
+
+        Task MarkAllNotificationsAsReadAsync(string userId);
     }
 
     /// <summary>
@@ -102,8 +104,6 @@ namespace WatchersWorld.Server.Services
             return notificationDtos;
         }
 
-
-
         public async Task MarkNotificationAsReadAsync(Guid notificationId)
         {
             var notification = await _context.Notifications.FindAsync(notificationId);
@@ -113,6 +113,20 @@ namespace WatchersWorld.Server.Services
                 _context.Notifications.Update(notification);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task MarkAllNotificationsAsReadAsync(string userId)
+        {
+            var notifications = await _context.Notifications
+                .Where(n => n.TargetUserId == userId && !n.IsRead)
+                .ToListAsync();
+
+            foreach (var notification in notifications)
+            {
+                notification.IsRead = true;
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

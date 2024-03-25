@@ -17,6 +17,9 @@
       </div>
     </div>
   </div>
+  <div  *ngIf="notifications.length > 0">
+    <button class="clear-notifications" (click)="clearAllNotifications()">Marcar todas como lidas</button>
+  </div>
   <div class="notification-panel">
     <div class="user-list">
       <div *ngFor="let notification of notifications" class="notification-item">
@@ -31,4 +34,5 @@
     <div *ngIf="notifications.length === 0" class="no-notifications">
       <p>Você não tem novas notificações.</p>
     </div>
+  </div>
 </div>

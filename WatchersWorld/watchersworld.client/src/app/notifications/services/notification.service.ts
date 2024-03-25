@@ -47,4 +47,10 @@ export class NotificationService {
     const headers = this.getHeaders();
     return this.http.post<any>(`${environment.appUrl}/api/notifications/mark-as-read/${notificationId}`, {}, { headers });
   }
+
+  markAllNotificationsAsRead(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/notifications/mark-all-as-read`, {}, {headers});
+  }
+
 }

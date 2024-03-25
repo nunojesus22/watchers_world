@@ -5,6 +5,7 @@ using System.Security.Claims;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.Models.Media;
+using WatchersWorld.Server.Models.Notifications;
 using static WatchersWorld.Server.Controllers.MediaController;
 
 namespace WatchersWorld.Server.Controllers
@@ -325,7 +326,7 @@ namespace WatchersWorld.Server.Controllers
         // Para postar uma resposta a um comentário
         [Authorize]
         [HttpPost("/api/media/add-comment-reply")]
-        public IActionResult ReplyComment([FromBody] CreateCommentDto request)
+        public async Task<IActionResult> ReplyCommentAsync([FromBody] CreateCommentDto request)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
@@ -341,6 +342,30 @@ namespace WatchersWorld.Server.Controllers
 
             _context.Comments.Add(reply);
             _context.SaveChanges();
+
+            var parentComment = await _context.Comments
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == request.ParentCommentId);
+
+            if (parentComment != null && parentComment.UserId != userId)
+            {
+                var responderProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserId == userId);
+                var responderUsername = responderProfile != null ? responderProfile.UserName : "Um utilizador";
+
+                var notification = new Notification
+                {
+                    NotificationId = Guid.NewGuid(),
+                    TriggeredByUserId = userId,
+                    TargetUserId = parentComment.UserId,
+                    Message = $"{responderUsername} respondeu ao seu comentário: '{reply.Text}'",
+                    CreatedAt = DateTime.UtcNow,
+                    IsRead = false,
+                    EventType = "CommentResponse"
+                };
+
+                _context.Notifications.Add(notification);
+                await _context.SaveChangesAsync();
+            }
 
             return Ok(new { message = "Resposta adicionada com sucesso." });
         }
@@ -381,8 +406,6 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Comentário excluído com sucesso." });
         }
-
-
 
 
         // Método auxiliar para remover comentários filhos

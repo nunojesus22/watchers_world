@@ -295,31 +295,28 @@ export class ProfileComponent implements OnInit {
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: async () => {
-          if (this.loggedUserName && this.userPhoto) {
-            const notification = new NotificationModel(
-              this.loggedUserName,
-              this.userPhoto,
-              `${this.loggedUserName} começou-te a seguir!`,
-              new Date(),
-              false,
-              'NewFollower'
-            );
-            console.log(notification);
-
-            if(this.currentUsername)
-            await firstValueFrom(this.notificationService.createNotification(this.currentUsername, notification));
-            console.log('Notificação enviada com sucesso.');
-          }
-          (error: any) => {
-            console.error('Erro ao enviar pedido para seguir', error);
-          }
+        next: async (response) => {
+          const notification = new NotificationModel(
+            response.id,
+            response.triggeredByUserName,
+            response.triggeredByUserPhoto,
+            response.message,
+            new Date(response.createdAt),
+            response.isRead,
+            response.eventType
+          );
+          console.log(notification);
+          console.log('Notificação recebida com sucesso.');
+        },
+        error: (error) => {
+          console.error('Erro ao enviar pedido para seguir', error);
         }
       });
     } else {
       console.error('Nome de usuário atual ou nome de usuário logado está indefinido.');
     }
   }
+
 
   unfollowUser(): void {
     if (this.currentUsername && this.loggedUserName) {
