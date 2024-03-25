@@ -28,16 +28,16 @@ export class AllSeriesPageComponent {
 
   initCategories() {
     this.categories = [
-      { name: 'Trending Series', results: [], activeIndex: 0, showAll: false },
-      { name: 'Action and Adventure', results: [], activeIndex: 0, showAll: false },
-      { name: 'Drama', results: [], activeIndex: 0, showAll: false },
-      { name: 'Mystery', results: [], activeIndex: 0, showAll: false },
-      { name: 'Animation', results: [], activeIndex: 0, showAll: false },
-
+      { name: 'Séries em Destaque', results: [], activeIndex: 0, showAll: false },
+      { name: 'Séries de Ação e Aventura', results: [], activeIndex: 0, showAll: false },
+      { name: 'Séries de Drama', results: [], activeIndex: 0, showAll: false },
+      { name: 'Séries de Mistério', results: [], activeIndex: 0, showAll: false },
+      { name: 'Séries de Animação', results: [], activeIndex: 0, showAll: false },
     ];
 
     this.fetchMovies();
-  }
+  } 
+
 
   fetchMovies() {
     const fetchMethods = [

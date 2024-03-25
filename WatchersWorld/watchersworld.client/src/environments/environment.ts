@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  appUrl: "",
+  appUrl: "https://watchersworld.azurewebsites.net",
   userKey: 'WatcherWorldsUserKey'
 };
 

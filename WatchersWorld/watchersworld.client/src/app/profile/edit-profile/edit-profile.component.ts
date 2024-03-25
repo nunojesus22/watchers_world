@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
@@ -14,8 +14,8 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./edit-profile.component.css']
 })
 export class EditProfileComponent {
-  currentUsername: string | undefined; // Nome de usuário do perfil exibido
-  loggedUserName: string | null = null; // Nome de usuário do usuário logado
+  currentUsername: string | undefined; 
+  loggedUserName: string | null = null;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -27,7 +27,7 @@ export class EditProfileComponent {
   hobbyEditable = false;
   genderEditable = false;
   birthdateEditable = false;
-  nameEditable = false; // Variable to control the editability of the name
+  nameEditable = false; 
   isDateEditable: boolean = false;
   userName: string = "NOME UTILIZADOR";
   coverPhoto: string = "";
@@ -45,9 +45,17 @@ export class EditProfileComponent {
   showSeries: boolean = false;
   showMedals: boolean = false;
 
+  currentDate: string;
+  minDate: string;
+
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) { }
+    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) {
+    const today = new Date();
+    this.currentDate = today.toISOString().split('T')[0];
+    const earliestDate = new Date('1900-01-01');
+    this.minDate = earliestDate.toISOString().split('T')[0];
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -90,7 +98,6 @@ export class EditProfileComponent {
         this.openFileInput('profilePhoto');
         break;
       default:
-      // Handle default case or throw an error
     }
   }
 
@@ -101,7 +108,6 @@ export class EditProfileComponent {
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
-        // Handle error as needed
       }
     );
   }
@@ -125,7 +131,6 @@ export class EditProfileComponent {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
 
     if (fileInput) {
-      // Set a data attribute to identify the target image in the changeImage function
       fileInput.setAttribute('data-target', target);
       fileInput.click();
     } else {
@@ -140,11 +145,8 @@ export class EditProfileComponent {
     if (target) {
       const file = (fileInput.files as FileList)[0];
 
-      // Use FileReader para obter a Data URL do arquivo selecionado
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        // Verifique se o target foi 'profilePhoto' ou 'coverPhoto'
-        // e atualize a respectiva propriedade com a Data URL da imagem.
         if (target === 'profilePhoto') {
           this.profilePhoto = e.target.result;
         } else if (target === 'coverPhoto') {
@@ -197,7 +199,7 @@ export class EditProfileComponent {
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
-      hobby: [{ value: ''}],
+      hobby: ['', [Validators.required, Validators.maxLength(50)]],
       gender: [''],
       date: [{ value: ''}],
       name: [{ value: ''}]
@@ -225,6 +227,9 @@ export class EditProfileComponent {
           gender: userData.gender = userData.gender || "Por definir",
           date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
         });
+        if(this.loggedUserName)
+        this.getUserProfileInfo(this.loggedUserName);
+
       },
       error => {
         if (error.error.errors) {
