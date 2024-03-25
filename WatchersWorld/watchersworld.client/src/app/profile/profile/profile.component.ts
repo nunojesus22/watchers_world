@@ -10,6 +10,8 @@ import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movi
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
+import { NotificationService } from '../../notifications/services/notification.service';
+import { NotificationModel } from '../../notifications/models/notification-model';
 
 
 interface MovieCategory {
@@ -30,6 +32,7 @@ export class ProfileComponent implements OnInit {
   loggedUserName: string | null = null; // Nome de usuário do usuário logado
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
+  userPhoto: string | undefined;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -105,6 +108,7 @@ export class ProfileComponent implements OnInit {
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
+    private notificationService: NotificationService,
     private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
 
   ngOnInit(): void {
@@ -180,6 +184,7 @@ export class ProfileComponent implements OnInit {
           this.isProfilePublic = userData.profileStatus;
           this.followersCount = userData.followers;
           this.followingCount = userData.following;
+          this.userPhoto = userData.profilePhoto;
 
           if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
             this.profileService.alreadyFollows(this.loggedUserName, username)
@@ -275,8 +280,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
-
   checkFollowingStatus(usernameAuthenticated: string, usernameToCheck: string): void {
     this.profileService.alreadyFollows(usernameAuthenticated, usernameToCheck).subscribe(isFollowing => {
       this.isFollowing = isFollowing;
@@ -285,8 +288,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
   requestToFollow(): void {
     this.followRequestSent = true;
   }
@@ -294,17 +295,25 @@ export class ProfileComponent implements OnInit {
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: (response) => {
-          if (this.isProfilePublic === 'Private') {
-            console.log('Pedido enviado. Aguardando aprovação.');
-            this.followRequestSent = true;
-          } else {
-            console.log('Usuário seguido com sucesso!', response.message);
-            this.isFollowing = true;
+        next: async () => {
+          if (this.loggedUserName && this.userPhoto) {
+            const notification = new NotificationModel(
+              this.loggedUserName,
+              this.userPhoto,
+              `${this.loggedUserName} começou-te a seguir!`,
+              new Date(),
+              false,
+              'NewFollower'
+            );
+            console.log(notification);
+
+            if(this.currentUsername)
+            await firstValueFrom(this.notificationService.createNotification(this.currentUsername, notification));
+            console.log('Notificação enviada com sucesso.');
           }
-        },
-        error: (error) => {
-          console.error('Erro ao enviar pedido para seguir', error);
+          (error: any) => {
+            console.error('Erro ao enviar pedido para seguir', error);
+          }
         }
       });
     } else {

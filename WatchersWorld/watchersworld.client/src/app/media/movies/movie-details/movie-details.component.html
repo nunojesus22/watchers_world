@@ -184,7 +184,7 @@
               <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded">
                 <div class="d-flex justify-content-between">
                   <div class="user-info d-flex align-items-center">
-                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
+                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image" [routerLink]="['/profile', comment.userName]">
                     <ng-template #defaultProfile>
                       <img src="../assets/img/joao-pfp.png" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
                     </ng-template>
@@ -213,7 +213,7 @@
                     <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
                       <div class="d-flex justify-content-between" style="margin-top:15px">
                         <div class="user-info d-flex align-items-center">
-                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image">
+                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image" [routerLink]="['/profile', reply.userName]">
                           <strong>{{ reply?.userName }}</strong>
                           <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
                         </div>

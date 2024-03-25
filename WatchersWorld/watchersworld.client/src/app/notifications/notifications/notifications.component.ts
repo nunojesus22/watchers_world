@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { ProfileService } from '../profile/services/profile.service';
-import { AuthenticationService } from '../authentication/services/authentication.service';
-import { Profile } from '../profile/models/profile';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FollowerProfile } from '../profile/models/follower-profile';
+import { Profile } from '../../profile/models/profile';
+import { FollowerProfile } from '../../profile/models/follower-profile';
+import { ProfileService } from '../../profile/services/profile.service';
+import { AuthenticationService } from '../../authentication/services/authentication.service';
+import { NotificationService } from '../services/notification.service';
+import { NotificationModel } from '../models/notification-model';
 
 
 @Component({
@@ -21,8 +23,10 @@ export class NotificationsComponent {
   selectedUserForBan: string | null = null;
   banDuration: number | undefined;
   pendingFollowRequests: FollowerProfile[] = [];
+  notifications: NotificationModel[] = [];
 
-  constructor(private profileService: ProfileService, public authService: AuthenticationService, private route: ActivatedRoute) { }
+
+  constructor(private profileService: ProfileService, public authService: AuthenticationService, public notificationService: NotificationService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -32,6 +36,7 @@ export class NotificationsComponent {
     });
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getPendingFollowRequests();
+    this.getNotifications();
   }
 
   ngOnDestroy() {
@@ -86,7 +91,30 @@ export class NotificationsComponent {
     }
   }
 
-
+  getNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.getMyNotifications()
+        .pipe(takeUntil(this.unsubscribed$))
+        .subscribe({
+          next: (notifications) => {
+            this.notifications = notifications.map(notification => {
+              return new NotificationModel(
+                notification.triggeredByUserName,
+                notification.triggeredByUserPhoto,
+                notification.message,
+                new Date(notification.createdAt),
+                notification.isRead,
+                notification.eventType
+              );
+            });
+            console.log(this.notifications);
+          },
+          error: (error) => {
+            console.error('Error fetching notifications:', error);
+          }
+        });
+    }
+  }
 
 
 

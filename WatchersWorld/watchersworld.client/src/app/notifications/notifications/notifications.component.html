@@ -2,7 +2,7 @@
   <h3 class="title-center">Notificações</h3>
   <hr class="divider">
   <!-- Verificação se existem pedidos pendentes -->
-  <div *ngIf="pendingFollowRequests.length; else noRequests">
+  <div *ngIf="pendingFollowRequests.length > 0">
     <div class="user-list">
       <h4>Número de pedidos para seguir: {{pendingFollowRequests.length}}</h4>
       <div *ngFor="let request of pendingFollowRequests" class="user">
@@ -17,10 +17,18 @@
       </div>
     </div>
   </div>
-  <!-- Template para exibir quando não há pedidos pendentes -->
-  <ng-template #noRequests>
-    <div class="no-requests">
-      <p>Não existe nenhuma notificação pendente.</p>
+  <div class="notification-panel">
+    <div class="user-list">
+      <div *ngFor="let notification of notifications" class="notification-item">
+        <div class="user-info">
+          <img class="avatar" [src]="notification.triggeredByUserPhoto" [routerLink]="['/profile', notification.triggeredByUserName]">
+          <p class="name">{{ notification.message }}</p>
+          <small>{{ notification.createdAt | date:'short' }}</small>
+        </div>
+      </div>
     </div>
-  </ng-template>
+    <!-- Se não houver notificações -->
+    <div *ngIf="notifications.length === 0" class="no-notifications">
+      <p>Você não tem novas notificações.</p>
+    </div>
 </div>
