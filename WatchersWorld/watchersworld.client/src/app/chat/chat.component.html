@@ -58,6 +58,22 @@
             <span class="message-content">Olá, sim e contigo?</span>
             <span class="message-timestamp">10:36</span>
           </div>
+          <div class="message incoming">
+            <span class="message-content">Olá, tudo bem?</span>
+            <span class="message-timestamp">10:35</span>
+          </div>
+          <div class="message outgoing">
+            <span class="message-content">Olá, sim e contigo?</span>
+            <span class="message-timestamp">10:36</span>
+          </div>
+          <div class="message incoming">
+            <span class="message-content">Olá, tudo bem?</span>
+            <span class="message-timestamp">10:35</span>
+          </div>
+          <div class="message outgoing">
+            <span class="message-content">Olá, sim e contigo?</span>
+            <span class="message-timestamp">10:36</span>
+          </div>
           <div *ngFor="let message of messages" class="message" [class.outgoing]="message.outgoing">
             <span class="message-content">{{ message.content }}</span>
             <span class="message-timestamp">{{ message.timestamp }}</span>
