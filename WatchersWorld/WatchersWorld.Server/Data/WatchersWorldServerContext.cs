@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
-using WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
+using WatchersWorld.Server.Chat.Models;
 
 namespace WatchersWorld.Server.Data
 {
@@ -32,6 +30,10 @@ namespace WatchersWorld.Server.Data
         
         public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
 
+        public DbSet<Chat.Models.Chat> Chats { get; set; }
+        public DbSet<Messages> Messages { get; set; }
+        public DbSet<MessageStatus> MessagesStatus { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,7 +54,35 @@ namespace WatchersWorld.Server.Data
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
-           
+
+            modelBuilder.Entity<Chat.Models.Chat>()
+                .HasIndex(c => c.User1Id)
+                .HasDatabaseName("IX_Chat_User1Id");
+
+            modelBuilder.Entity<Chat.Models.Chat>()
+                .HasIndex(c => c.User2Id)
+                .HasDatabaseName("IX_Chat_User2Id");
+
+            modelBuilder.Entity<Messages>()
+                .HasIndex(m => m.ChatId)
+                .HasDatabaseName("IX_Messages_ChatId");
+
+            modelBuilder.Entity<Messages>()
+                .HasIndex(m => m.SendUserId)
+                .HasDatabaseName("IX_Messages_SendUserId");
+
+            modelBuilder.Entity<Messages>()
+                .HasIndex(m => m.SentAt)
+                .HasDatabaseName("IX_Messages_SentAt");
+
+            modelBuilder.Entity<MessageStatus>()
+                .HasIndex(ms => ms.MessageId)
+                .HasDatabaseName("IX_MessageStatus_MessageId");
+
+            modelBuilder.Entity<MessageStatus>()
+                .HasIndex(ms => ms.RecipientUserId)
+                .HasDatabaseName("IX_MessageStatus_RecipientUserId");
+
         }
     }
 }
