@@ -98,7 +98,6 @@ namespace WatchersWorld.Server.Controllers
             // Set ban-related properties in the profile info DTO
             profileInfo.StartBanDate = DateTime.UtcNow; // Set the start ban date
             profileInfo.EndBanDate = DateTime.MaxValue; // Set the end ban date to a large value, indicating permanent ban
-            profileInfo.IsBanned = true;
 
             // Update the user's profile info in the database
             _context.ProfileInfo.Update(profileInfo);
@@ -125,7 +124,6 @@ namespace WatchersWorld.Server.Controllers
 
             profileInfo.StartBanDate = DateTime.UtcNow;
             profileInfo.EndBanDate = DateTime.UtcNow.AddDays(banDurationInDays);
-            profileInfo.IsBanned = banDurationInDays > 0;
 
             _context.ProfileInfo.Update(profileInfo);
             await _context.SaveChangesAsync();
@@ -205,7 +203,6 @@ namespace WatchersWorld.Server.Controllers
             // Reset ban-related properties
             profileInfo.StartBanDate = null;
             profileInfo.EndBanDate = null;
-            profileInfo.IsBanned = false; // Assuming you have a Banned flag
 
             // Update the user's profile info in the database
             _context.ProfileInfo.Update(profileInfo);
@@ -245,6 +242,32 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        [HttpPut("api/admin/change-role-to-user/{username}")]
+        public async Task<IActionResult> ChangeRoleToUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!removeResult.Succeeded)
+            {
+                return BadRequest("Failed to remove existing roles.");
+            }
+
+            var addResult = await _userManager.AddToRoleAsync(user, "User");
+            if (!addResult.Succeeded)
+            {
+                // Optionally, you might want to rollback removing the roles if adding the new role fails
+                return BadRequest("Failed to remove user from Moderators.");
+            }
+
+            return Ok("User role updated to User successfully.");
+        }
 
 
     }

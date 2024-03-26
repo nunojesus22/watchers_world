@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using WatchersWorld.Server.Models.Authentication.Status;
+﻿using System.Security.Permissions;
 
 namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 {
@@ -47,6 +48,6 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 
         public DateTime EndBanDate { get; set; }
 
-        public bool IsBanned { get; set; }
+
     }
 }

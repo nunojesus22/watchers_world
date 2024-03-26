@@ -55,6 +55,5 @@ namespace WatchersWorld.Server.Models.Authentication
 
         public DateTime? EndBanDate { get; set;}
 
-        public bool IsBanned { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240320153404_WatchersWorld")]
+    [Migration("20240326201832_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -184,9 +184,6 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
-
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");

@@ -54,7 +54,7 @@ export class AdminService {
       { headers, responseType: 'text' }); // Expecting a text response
   }
 
-  getUserRole(username: string) {
+  getUserRole(username: string): Observable<string[]> {
     return this.http.get<string[]>(`${environment.appUrl}/api/admin/getUserRole/${username}`);
   }
 
@@ -71,4 +71,11 @@ export class AdminService {
     });
   }
 
+  changeRoleToUser(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put(`${environment.appUrl}/api/admin/change-role-to-user/${encodeURIComponent(username)}`, {}, {
+      headers: headers,
+      responseType: 'text'  // Expect a text response
+    });
+  }
 }
