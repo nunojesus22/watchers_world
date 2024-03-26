@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../profile/services/profile.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { UserMedia } from '../profile/models/user-media';
+import { forkJoin, map } from 'rxjs';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 
 @Component({
   selector: 'app-statistics',
@@ -22,10 +24,13 @@ export class StatisticsComponent implements OnInit {
   totalFavoriteActors: number | undefined;
   totalRatigns: number | undefined;
 
+  totalWatchedHours: number = 0;
 
+  totalWatchedTimeFormatted: any ;
   constructor(
     private profileService: ProfileService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private apiService: MovieApiServiceComponent,
   ) { }
 
   ngOnInit(): void {
@@ -38,8 +43,38 @@ export class StatisticsComponent implements OnInit {
       this.fetchTotalQuizAttempts(this.currentUser);
       this.loadTotalFavoriteActors();
       this.loadTotalRatings();
+      this.calculateTotalWatchedTime();
+
     }
   }
+
+  calculateTotalWatchedTime(): void {
+    this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
+      // Filter only movies from the watchedMedia list
+      const watchedMovies = watchedMedia.filter(media => media.type === 'movie');
+
+      // Extract the movie IDs from the filtered list
+      const movieIds = watchedMovies.map(movie => movie.mediaId);
+
+      const detailsObservables = movieIds.map(id => this.apiService.getMovieDetails(id));
+
+      forkJoin(detailsObservables).pipe(
+        map(detailsArray => detailsArray.reduce((total, current) => total + current.runtime, 0)), // Sum up runtimes of movies only
+      ).subscribe(totalMinutes => {
+        // Convert total minutes into days, hours, and months
+        const hours = Math.floor(totalMinutes / 60);
+        const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30); // Approximation assuming 30 days per month
+
+        const remainingDays = days % 30;
+        const remainingHours = hours % 24;
+
+        this.totalWatchedTimeFormatted = `${months} meses, ${remainingDays} dias, ${remainingHours} horas`;
+      });
+    });
+  }
+
+
 
   private fetchStatistics(username: string): void {
     this.profileService.getUserData(username).subscribe({
