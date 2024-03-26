@@ -4,25 +4,44 @@
     <button [routerLink]="['/profile',currentUser]" class="btn btn-secondary shadow-sm">
       <i class="fas fa-arrow-left"></i> Voltar
     </button>
-    <div class="about-us-text">
-      <p>Número Total de Seguidores: {{ followersCount }}</p>
-      <p>Número Total de A Seguir: {{ followingCount }}</p>
-    </div>
     <div class="statistics">
       <div class="media-stats">
-        <h3>Media Statistics</h3>
-        <p>Número Total de Filmes Marcados como Vistos: {{ watchedMoviesCount }}</p>
-        <p>Número Total de Filmes Marcados como Ver Mais Tarde: {{ watchLaterMoviesCount }}</p>
-        <p>Número Total de Series Marcadas como Vistos: {{ watchedSeriesCount }}</p>
-        <p>Número Total de Series Marcadas como Ver Mais Tarde: {{ watchLaterSeriesCount }}</p>
-        <div>Número Total de Comentários/replys realizados: {{ totalCommentsCount }}</div>
-        <div>Número Total Likes Recebidos: {{totalLikesReceivedCount}}</div>
-        <div>Número Total Quizes Realizados: {{totalQuizAttempts}}</div>
-        <p>Número Total de Atores Marcados como Favoritos: {{ totalFavoriteActors }}</p>
-        <p>Número Total de Ratings feitos a Media: {{ totalRatigns }}</p>
-        <p>Número Total de Horas a Ver Filmes: {{ totalWatchedTimeFormatted }}</p>
+        <h3 class="statistics-section">Pessoal</h3>
+        <p class="statistcs-p">Número Total de Seguidores: {{ followersCount }}</p>
+        <p class="statistcs-p">Número Total de A Seguir: {{ followingCount }}</p>
+      </div>
+      </div>
+      <div class="statistics">
+        <div class="media-stats">
+          <h3 class="statistics-section">Media</h3>
+
+          <p class="statistcs-p">Número Total de Horas a Ver Filmes: {{ totalWatchedTimeFormatted }}</p>
+          <p class="statistcs-p">Número Total de Horas a Ver Series: {{ totalWatchedSeriesTimeFormatted }}</p>
+          <p class="statistcs-p">Número Total de Episodios Visto: {{ totalWatchedEpisodes }}</p>
+
+          <p class="statistcs-p">Número Total de Filmes Marcados como Vistos: {{ watchedMoviesCount }}</p>
+          <p class="statistcs-p">Número Total de Filmes Marcados como Ver Mais Tarde: {{ watchLaterMoviesCount }}</p>
+          <p class="statistcs-p">Número Total de Series Marcadas como Vistos: {{ watchedSeriesCount }}</p>
+          <p class="statistcs-p">Número Total de Series Marcadas como Ver Mais Tarde: {{ watchLaterSeriesCount }}</p>
+        </div>
+
+        <div class="media-stats">
+          <h3 class="statistics-section">Comentarios</h3>
+          <p class="statistcs-p">Número Total de Comentários/replys realizados: {{ totalCommentsCount }}</p>
+          <p class="statistcs-p">Número Total Likes Recebidos: {{totalLikesReceivedCount}}</p>
+        </div>
+
+        <div class="media-stats">
+          <h3 class="statistics-section">Quizes e Ratings</h3>
+
+          <p class="statistcs-p">Número Total Quizes Realizados: {{totalQuizAttempts}}</p>
+          <p class="statistcs-p">Número Total de Atores Marcados como Favoritos: {{ totalFavoriteActors }}</p>
+          <p class="statistcs-p">Número Total de Ratings feitos a Media: {{ totalRatigns }}</p>
+
+        </div>
+
+
+
 
       </div>
     </div>
-  </div>
-</div>

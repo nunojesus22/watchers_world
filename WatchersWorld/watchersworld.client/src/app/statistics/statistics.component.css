@@ -1,72 +1,74 @@
+/* Container principal */
 .about-us-container {
-  width: 100%;
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-  min-height: 100vh; /* Define a altura mínima para ocupar toda a tela verticalmente */
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 }
 
 .about-us-box {
-  width: 80%;
-  max-width: 800px; /* Defina um tamanho máximo para a caixa */
-  background-color: #ffffff; /* Adicione uma cor de fundo se necessário */
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adicione uma sombra para destacar a caixa */
-  margin-bottom: 50px;
-  margin-top: 50px;
+  max-width: 800px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Cabeçalho */
 .about-us-header {
-  color: black;
-  font-size: 48px;
-  font-family: Inter;
-  font-weight: 700;
-  word-wrap: break-word;
-  text-align: center; /* Centraliza o texto horizontalmente */
-  border-bottom: 2px solid black; /* Adiciona uma borda inferior preta */
+  font-size: 1.75rem;
+  color: #333333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: bold;
 }
 
-.about-us-text {
-  width: 100%;
-  color: black;
-  font-size: 25px;
-  font-family: Inter;
-  font-weight: 400;
-  word-wrap: break-word;
-  margin-top: 20px; /* Adiciona margem superior para separação */
-}
-
-.creators-container {
-  margin-top: 50px;
-  display: flex;
-  justify-content: space-around; /* Distribui igualmente os elementos na horizontal */
-  align-items: center; /* Alinha verticalmente ao centro */
-  flex-wrap: wrap; /* Permite que os elementos quebrem para a próxima linha */
-}
-
-.creator {
-  text-align: center; /* Centraliza o texto horizontalmente */
-  margin-bottom: 20px; /* Espaço entre cada criador */
-}
-
-  .creator img {
-    width: 100px; /* Define a largura da imagem */
-    height: 100px; /* Define a altura da imagem */
-    border-radius: 50%; /* Arredonda a imagem */
-  }
-
-  .creator p {
-    margin-top: 10px; /* Espaço entre a imagem e o texto */
-    font-size: 16px; /* Tamanho da fonte do nome do criador */
-  }
-
+/* Botão Voltar */
 .btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* Espaço entre o ícone e o texto */
-  padding: 10px 20px; /* Ajuste conforme necessário */
-  border-radius: 5px; /* Bordas arredondadas */
-  background-color: #4CAEFE; /* Cor de fundo do botão */
-  color: white; /* Cor do texto */
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background-color: #4CAEFE;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+  .btn-secondary:hover {
+    background-color: #4CAEFE;
+  }
+
+/* Textos */
+.about-us-text p, .statistics .media-stats p {
+  font-size: 1rem;
+  color: #555555;
+  margin-bottom: 0.5rem;
+}
+
+/* Seção de estatísticas */
+.statistics {
+  margin-top: 2rem;
+}
+
+.statistics-section {
+  font-size: 1.5rem;
+  color: #4CAEFE;
+  margin-bottom: 1rem;
+}
+
+/* Parágrafos das estatísticas */
+.statistcs-p {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Pequenas correções */
+.watchLaterSeriesCount::before {
+  content: "Número Total de Series Marcadas como Ver Mais Tarde: ";
 }

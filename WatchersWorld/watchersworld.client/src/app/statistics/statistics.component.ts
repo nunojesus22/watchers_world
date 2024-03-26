@@ -26,7 +26,11 @@ export class StatisticsComponent implements OnInit {
 
   totalWatchedHours: number = 0;
 
-  totalWatchedTimeFormatted: any ;
+  totalWatchedTimeFormatted: any;
+
+  totalWatchedSeriesTimeFormatted: any;
+
+  totalWatchedEpisodes: number = 0;
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService,
@@ -44,7 +48,8 @@ export class StatisticsComponent implements OnInit {
       this.loadTotalFavoriteActors();
       this.loadTotalRatings();
       this.calculateTotalWatchedTime();
-
+      this.calculateTotalWatchedSeriesTime();
+      this.calculateTotalWatchedEpisodes();
     }
   }
 
@@ -74,6 +79,56 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  calculateTotalWatchedSeriesTime(): void {
+    this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
+      // Filter only series from the watchedMedia list
+      const watchedSeries = watchedMedia.filter(media => media.type === 'serie');
+      // Extract the series IDs from the filtered list
+      const seriesIds = watchedSeries.map(serie => serie.mediaId);
+      const detailsObservables = seriesIds.map(id => this.apiService.getSerieDetails(id));
+      forkJoin(detailsObservables).pipe(
+        map(detailsArray => detailsArray.reduce((total, current) => {
+          // Check for undefined or null values and default to 0 if necessary
+          const episodesWatched = current.number_of_episodes || 0;
+          const episodeRunTime = (current.episode_run_time && current.episode_run_time[0]) || 0; // Use the first element or default to 0
+          return total + (episodesWatched * episodeRunTime);
+        }, 0)),
+      ).subscribe(totalMinutes => {
+        // Convert total minutes into hours, then days, and months
+        const hours = Math.floor(totalMinutes / 60);
+        const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30); // Approximation assuming 30 days per month
+        const remainingDays = days % 30;
+        const remainingHours = hours % 24;
+        this.totalWatchedSeriesTimeFormatted = `${months} meses, ${remainingDays} dias, ${remainingHours} horas`;
+      });
+    });
+  }
+
+
+  calculateTotalWatchedEpisodes(): void {
+    this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
+      // Filtra apenas as séries da lista de mídias assistidas
+      const watchedSeries = watchedMedia.filter(media => media.type === 'serie');
+
+      // Extrai os IDs das séries da lista filtrada
+      const seriesIds = watchedSeries.map(serie => serie.mediaId);
+
+      const detailsObservables = seriesIds.map(id => this.apiService.getSerieDetails(id));
+
+      forkJoin(detailsObservables).pipe(
+        map(detailsArray => detailsArray.reduce((total, current) => {
+          // Adiciona o número total de episódios assistidos para cada série
+          // Assumindo que current.number_of_episodes representa o número total de episódios para a série
+          return total + current.number_of_episodes;
+        }, 0)),
+      ).subscribe(totalEpisodes => {
+        console.log(`Número Total de Episódios Assistidos: ${totalEpisodes}`);
+        // Aqui você pode definir uma propriedade para armazenar o total de episódios e exibir no template
+        this.totalWatchedEpisodes = totalEpisodes;
+      });
+    });
+  }
 
 
   private fetchStatistics(username: string): void {
