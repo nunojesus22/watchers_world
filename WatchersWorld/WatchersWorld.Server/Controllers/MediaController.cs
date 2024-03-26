@@ -5,8 +5,7 @@ using System.Security.Claims;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.Models.Media;
-using WatchersWorld.Server.Models.Notifications;
-using static WatchersWorld.Server.Controllers.MediaController;
+using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
@@ -21,10 +20,10 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MediaController(WatchersWorldServerContext context) : Controller
+    public class MediaController(WatchersWorldServerContext context, INotificationService notificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
-
+        private readonly INotificationService _notificationService = notificationService;
         /// <summary>
         /// Marca uma media como assistida por um utilizador.
         /// </summary>
@@ -331,41 +330,24 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
 
+            var parentComment = await _context.Comments
+                .FirstOrDefaultAsync(c => c.Id == request.ParentCommentId);
+            if (parentComment == null) return NotFound("Comentário original não encontrado.");
+
             var reply = new Comment
             {
                 UserId = userId,
                 MediaId = request.MediaId,
                 Text = request.Text,
-                CreatedAt = DateTime.Now,
-                ParentCommentId = request.ParentCommentId // Adicione o ID do comentário pai
+                CreatedAt = DateTime.UtcNow,
+                ParentCommentId = request.ParentCommentId
             };
 
             _context.Comments.Add(reply);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            var parentComment = await _context.Comments
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(c => c.Id == request.ParentCommentId);
-
-            if (parentComment != null && parentComment.UserId != userId)
-            {
-                var responderProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserId == userId);
-                var responderUsername = responderProfile != null ? responderProfile.UserName : "Um utilizador";
-
-                var notification = new Notification
-                {
-                    NotificationId = Guid.NewGuid(),
-                    TriggeredByUserId = userId,
-                    TargetUserId = parentComment.UserId,
-                    Message = $"{responderUsername} respondeu ao seu comentário: '{reply.Text}'",
-                    CreatedAt = DateTime.UtcNow,
-                    IsRead = false,
-                    EventType = "CommentResponse"
-                };
-
-                _context.Notifications.Add(notification);
-                await _context.SaveChangesAsync();
-            }
+            // Cria a notificação de resposta
+            await _notificationService.CreateReplyNotificationAsync(userId, parentComment.UserId, request.MediaId, parentComment.Id, request.Text);
 
             return Ok(new { message = "Resposta adicionada com sucesso." });
         }

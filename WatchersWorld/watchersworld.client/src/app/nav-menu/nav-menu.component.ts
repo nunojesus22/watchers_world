@@ -28,7 +28,7 @@ export class NavMenuComponent {
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getPendingFollowRequests();
-    this.getNotifications();
+   // this.getNotifications();
   }
 
   getPendingFollowRequests() {
@@ -46,31 +46,31 @@ export class NavMenuComponent {
     }
   }
 
-  getNotifications(): void {
-    if (this.loggedUserName) {
-      this.notificationService.getMyNotifications()
-        .pipe(takeUntil(this.unsubscribed$))
-        .subscribe({
-          next: (notifications) => {
-            this.notifications = notifications
-              .map(notification => new NotificationModel(
-                notification.id,
-                notification.triggeredByUserName,
-                notification.triggeredByUserPhoto,
-                notification.message,
-                new Date(notification.createdAt),
-                notification.isRead,
-                notification.eventType
-              ))
-              .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-            console.log(this.notifications);
-          },
-          error: (error) => {
-            console.error('Error fetching notifications:', error);
-          }
-        });
-    }
-  }
+  //getNotifications(): void {
+  //  if (this.loggedUserName) {
+  //    this.notificationService.getMyNotifications()
+  //      .pipe(takeUntil(this.unsubscribed$))
+  //      .subscribe({
+  //        next: (notifications) => {
+  //          this.notifications = notifications
+  //            .map(notification => new NotificationModel(
+  //              notification.id,
+  //              notification.triggeredByUserName,
+  //              notification.triggeredByUserPhoto,
+  //              notification.message,
+  //              new Date(notification.createdAt),
+  //              notification.isRead,
+  //              notification.eventType
+  //            ))
+  //            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  //          console.log(this.notifications);
+  //        },
+  //        error: (error) => {
+  //          console.error('Error fetching notifications:', error);
+  //        }
+  //      });
+  //  }
+  //}
 
   showMenu = false;
   @HostListener('document:click', ['$event'])

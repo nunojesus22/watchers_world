@@ -196,7 +196,7 @@
             <div class="comment-list" *ngIf="isWatched">
               <h2 class="mb-4">Comentários</h2>
               <h5 *ngIf="comments.length > 0" class="mb-4"> Número total de comentários: {{comments.length}}</h5>
-              <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded">
+              <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded" [id]="'comment-' + comment.id">
                 <div class="d-flex justify-content-between">
                   <div class="user-info d-flex align-items-center">
                     <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image" [routerLink]="['/profile', comment.userName]">

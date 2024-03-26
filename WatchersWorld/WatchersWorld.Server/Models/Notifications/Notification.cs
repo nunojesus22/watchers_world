@@ -24,12 +24,6 @@ namespace WatchersWorld.Server.Models.Notifications
         public string TriggeredByUserId { get; set; }
 
         /// <summary>
-        /// Identificador do utilizador que deve receber a notificação.
-        /// </summary>
-        [ForeignKey(nameof(User.Id))]
-        public string TargetUserId { get; set; }
-
-        /// <summary>
         /// O conteúdo da mensagem da notificação.
         /// </summary>
         public string Message { get; set; }
@@ -49,6 +43,7 @@ namespace WatchersWorld.Server.Models.Notifications
         /// O tipo de evento que a notificação representa (por exemplo, novo seguidor, mensagem, etc.)
         /// </summary>
         public string EventType { get; set; }
+
 
     }
 }

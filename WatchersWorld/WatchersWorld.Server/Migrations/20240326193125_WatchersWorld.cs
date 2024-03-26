@@ -112,7 +112,6 @@ namespace WatchersWorld.Server.Migrations
                 {
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TriggeredByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
@@ -379,6 +378,64 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AchievementNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AchievementName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AchievementNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_AchievementNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FollowNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TriggeredByUserPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FollowNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_FollowNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReplyNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MediaId = table.Column<int>(type: "int", nullable: false),
+                    CommentId = table.Column<int>(type: "int", nullable: false),
+                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TriggeredByUserPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReplyNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_ReplyNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FavoriteActorChoice",
                 columns: table => new
                 {
@@ -590,6 +647,9 @@ namespace WatchersWorld.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AchievementNotifications");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -617,13 +677,16 @@ namespace WatchersWorld.Server.Migrations
                 name: "Followers");
 
             migrationBuilder.DropTable(
-                name: "Notifications");
+                name: "FollowNotifications");
 
             migrationBuilder.DropTable(
                 name: "ProfileInfo");
 
             migrationBuilder.DropTable(
                 name: "QuizAttempts");
+
+            migrationBuilder.DropTable(
+                name: "ReplyNotifications");
 
             migrationBuilder.DropTable(
                 name: "UserMedia");
@@ -639,6 +702,9 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "ActorMedia");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "MediaListModel");

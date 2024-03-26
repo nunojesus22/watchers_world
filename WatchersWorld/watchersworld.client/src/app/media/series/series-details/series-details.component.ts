@@ -50,6 +50,7 @@ export class SeriesDetailsComponent {
   isQuizActive: boolean = false;
   showLastScore: boolean = false;
   currentQuestionIndex: number = 0;
+  commentId: string | null = null;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -73,6 +74,21 @@ export class SeriesDetailsComponent {
     this.getFavoriteActorChoicesForMedia(getParamId);
     this.fetchComments();
     this.loadQuizQuestions();
+
+    this.router.queryParams.subscribe(params => {
+      const commentId = params['commentId'];
+      if (commentId) {
+        setTimeout(() => {
+          this.scrollToComment(commentId);
+        }, 100);
+      }
+    });
+  }
+
+  // Método para fazer scroll até o comentário
+  scrollToComment(commentId: string): void {
+    const commentElement = document.getElementById(`comment-${commentId}`);
+    commentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Mostra o pop-up do quiz

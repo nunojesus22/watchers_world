@@ -32,6 +32,9 @@ namespace WatchersWorld.Server.Data
 
         public DbSet<QuizAttempt> QuizAttempts { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<FollowNotification> FollowNotifications { get; set; }
+        public DbSet<ReplyNotification> ReplyNotifications { get; set; }
+        public DbSet<AchievementNotification> AchievementNotifications { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,7 +56,19 @@ namespace WatchersWorld.Server.Data
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
-           
+
+            modelBuilder.Entity<Notification>()
+                .ToTable("Notifications");
+
+            modelBuilder.Entity<FollowNotification>()
+                .ToTable("FollowNotifications");
+
+            modelBuilder.Entity<ReplyNotification>()
+                .ToTable("ReplyNotifications");
+
+            modelBuilder.Entity<AchievementNotification>()
+                 .ToTable("AchievementNotifications");
+
         }
     }
 }

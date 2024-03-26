@@ -7,6 +7,8 @@ import { ProfileService } from '../../profile/services/profile.service';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { NotificationService } from '../services/notification.service';
 import { NotificationModel } from '../models/notification-model';
+import { FollowNotificationModel } from '../models/follow-notification-model';
+import { ReplyNotificationModel } from '../models/reply-notification-model';
 
 
 @Component({
@@ -22,8 +24,10 @@ export class NotificationsComponent {
   loggedUserName: string | null = null;
   selectedUserForBan: string | null = null;
   banDuration: number | undefined;
+
   pendingFollowRequests: FollowerProfile[] = [];
-  notifications: NotificationModel[] = [];
+  followNotifications: FollowNotificationModel[] = [];
+  replyNotifications: ReplyNotificationModel[] = [];
 
 
   constructor(private profileService: ProfileService, public authService: AuthenticationService, public notificationService: NotificationService, private route: ActivatedRoute) { }
@@ -36,7 +40,10 @@ export class NotificationsComponent {
     });
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getPendingFollowRequests();
-    this.getNotifications();
+    // this.getNotifications();
+
+    this.loadFollowNotifications();
+    this.loadReplyNotifications();
   }
 
   ngOnDestroy() {
@@ -91,42 +98,82 @@ export class NotificationsComponent {
     }
   }
 
-  getNotifications(): void {
+  getUserNameFromMessage(message: string): string {
+    const usernameEndIndex = message.indexOf(' ');
+    return message.substring(0, usernameEndIndex);
+  }
+
+  loadFollowNotifications(): void {
+    if(this.loggedUserName)
+    this.notificationService.getFollowNotificationsForUser(this.loggedUserName)
+      .subscribe({
+        next: (notifications) => {
+          console.log(notifications);
+          this.followNotifications = notifications;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar notificações de seguimento:', err);
+        }
+      });
+  }
+
+  loadReplyNotifications(): void {
     if (this.loggedUserName) {
-      this.notificationService.getMyNotifications()
-        .pipe(takeUntil(this.unsubscribed$))
+      this.notificationService.getReplyNotifications(this.loggedUserName)
         .subscribe({
           next: (notifications) => {
-            this.notifications = notifications
-              .map(notification => new NotificationModel(
-                notification.id,
-                notification.triggeredByUserName,
-                notification.triggeredByUserPhoto,
-                notification.message,
-                new Date(notification.createdAt),
-                notification.isRead,
-                notification.eventType
-              ))
-              .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()); 
-            console.log(this.notifications);
+            console.log(notifications);
+            this.replyNotifications = notifications;
           },
-          error: (error) => {
-            console.error('Error fetching notifications:', error);
+          error: (err) => {
+            console.error('Erro ao buscar notificações de resposta:', err);
           }
         });
     }
   }
 
-  clearAllNotifications(): void {
-    this.notificationService.markAllNotificationsAsRead()
-      .subscribe({
-        next: () => {
-          this.notifications.forEach(notification => notification.isRead = true);
-          console.log('Todas as notificações foram marcadas como lidas.');
-          this.getNotifications();
-        },
-        error: error => console.error('Erro ao marcar todas as notificações como lidas', error)
-      });
-  }
+  //getNotifications(): void {
+  //  if (this.loggedUserName) {
+  //    this.notificationService.getMyNotifications(this.loggedUserName)
+  //      .pipe(takeUntil(this.unsubscribed$))
+  //      .subscribe({
+  //        next: (notifications: any[]) => { // Assumindo que você tem um tipo específico para o DTO
+  //          this.notifications = notifications
+  //            .filter(notification => notification.eventType === 'NewFollower')
+  //            .map(notification => new FollowNotificationModel(
+  //              notification.triggeredByUserId, // deve corresponder ao DTO do servidor
+  //              notification.message, // deve corresponder ao DTO do servidor
+  //              new Date(notification.createdAt), // ajuste conforme a serialização da data
+  //              notification.isRead, // deve corresponder ao DTO do servidor
+  //              notification.eventType, // deve corresponder ao DTO do servidor
+  //              notification.targetUserId, // deve corresponder ao DTO do servidor
+  //              notification.triggeredByUserPhoto // deve corresponder ao DTO do servidor
+  //            ))
+  //            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+  //          console.log(this.notifications);
+  //        },
+  //        error: (error) => {
+  //          console.error('Error fetching notifications:', error);
+  //        }
+  //      });
+  //  }
+  //}
+
+
+
+
+
+  //clearAllNotifications(): void {
+  //  this.notificationService.markAllNotificationsAsRead()
+  //    .subscribe({
+  //      next: () => {
+  //        this.notifications.forEach(notification => notification.isRead = true);
+  //        console.log('Todas as notificações foram marcadas como lidas.');
+  //        this.getNotifications();
+  //      },
+  //      error: error => console.error('Erro ao marcar todas as notificações como lidas', error)
+  //    });
+  //}
 
 }

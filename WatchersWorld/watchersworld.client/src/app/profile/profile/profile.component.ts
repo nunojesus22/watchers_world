@@ -12,6 +12,7 @@ import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
 import { NotificationService } from '../../notifications/services/notification.service';
 import { NotificationModel } from '../../notifications/models/notification-model';
+import { FollowNotificationModel } from '../../notifications/models/follow-notification-model';
 
 
 interface MovieCategory {
@@ -294,28 +295,41 @@ export class ProfileComponent implements OnInit {
 
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
+      // Primeiro, chame o serviço para seguir o usuário
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: async (response) => {
-          const notification = new NotificationModel(
-            response.id,
-            response.triggeredByUserName,
-            response.triggeredByUserPhoto,
-            response.message,
-            new Date(response.createdAt),
-            response.isRead,
-            response.eventType
-          );
-          console.log(notification);
-          console.log('Notificação recebida com sucesso.');
+        next: () => {
+          if(this.loggedUserName && this.currentUsername)
+          this.notificationService.createFollowNotification(this.loggedUserName, this.currentUsername).subscribe({
+            next: (notificationResponse) => {
+              if (this.loggedUserName) {
+                const followNotification = new FollowNotificationModel(
+                  notificationResponse.triggeredByUserId, // Este agora vem do servidor
+                  notificationResponse.message,           // Mensagem vinda do servidor
+                  new Date(notificationResponse.createdAt), // Data de criação vinda do servidor
+                  notificationResponse.isRead,              // Estado de leitura vindo do servidor
+                  notificationResponse.eventType,           // Tipo de evento vindo do servidor
+                  notificationResponse.targetUserId,
+                  notificationResponse.triggeredByUserPhoto // URL da foto vindo do servidor
+                );
+                console.log(followNotification);
+              }
+            },
+            error: (error) => {
+              console.error('Erro ao criar notificação de seguir', error);
+            }
+          });
         },
         error: (error) => {
-          console.error('Erro ao enviar pedido para seguir', error);
+          console.error('Erro ao seguir usuário', error);
         }
       });
     } else {
       console.error('Nome de usuário atual ou nome de usuário logado está indefinido.');
     }
   }
+
+
+
 
 
   unfollowUser(): void {

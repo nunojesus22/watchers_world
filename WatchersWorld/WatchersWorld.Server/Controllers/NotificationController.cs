@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WatchersWorld.Server.DTOs;
+using WatchersWorld.Server.DTOs.Notifications;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Services;
 
@@ -23,48 +23,109 @@ namespace WatchersWorld.Server.Controllers
             _notificationService = notificationService;
         }
 
-        [HttpPost("create-notification/{usernameToFollow}")]
-        public async Task<IActionResult> CreateNotification([FromBody] NotificationDto notificationDto, string usernameToFollow)
+        [HttpPost("create-notification/{authenticatedUsername}/{usernameToFollow}")]
+        public async Task<IActionResult> CreateFollowNotification(string authenticatedUsername, string usernameToFollow)
         {
-            var triggeredByUser = await _userManager.FindByNameAsync(notificationDto.TriggeredByUserName);
-            if (triggeredByUser == null) return NotFound("Usuário que disparou a notificação não encontrado.");
+            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+            if (userAuthenticated == null)
+            {
+                return NotFound($"Usuário autenticado '{authenticatedUsername}' não encontrado.");
+            }
 
-            var targetUser = await _userManager.FindByNameAsync(usernameToFollow);
-            if (targetUser == null) return NotFound("Usuário que deve receber a notificação não encontrado.");
+            var userIdAuthenticated = userAuthenticated.Id;
 
-            await _notificationService.CreateFollowNotificationAsync(triggeredByUser.Id, targetUser.Id);
-            return Ok(new { message = "Notificação de novo seguidor criada com sucesso." });
+            var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
+            if (userToFollow == null)
+            {
+                return NotFound($"Usuário a ser seguido '{usernameToFollow}' não encontrado.");
+            }
+
+            var userIdToFollow = userToFollow.Id;
+
+            // Crie a notificação de seguimento e obtenha o DTO resultante
+            var followNotificationDto = await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
+            // Agora você pode retornar o DTO diretamente
+            return Ok(followNotificationDto);
         }
 
-
-        [HttpGet("my-notifications")]
-        public async Task<IActionResult> GetMyNotifications()
+        [HttpGet("followNotifications/{authenticatedUsername}")]
+        public async Task<IActionResult> GetMyFollowNotifications(string authenticatedUsername)
         {
-            var targetUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (targetUserId == null) return Unauthorized();
+            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+            if (userAuthenticated == null)
+            {
+                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+            }
 
-            var notifications = await _notificationService.GetNotificationsForUserAsync(targetUserId);
+            var userIdAuthenticated = userAuthenticated.Id;
+            var notifications = await _notificationService.GetFollowNotificationsForUserAsync(userIdAuthenticated);
+
+            if (notifications == null || notifications.Count == 0)
+            {
+                return NotFound(new { message = "Notificações não encontradas." });
+            }
+
             return Ok(notifications);
         }
 
-        [HttpPost("mark-as-read/{notificationId}")]
-        public async Task<IActionResult> MarkNotificationAsRead(Guid notificationId)
+        [HttpGet("replyNotifications/{authenticatedUsername}")]
+        public async Task<IActionResult> GetMyReplyNotifications(string authenticatedUsername)
         {
-            await _notificationService.MarkNotificationAsReadAsync(notificationId);
-            return Ok(new { message = "Notificação marcada como lida com sucesso." });
-        }
-
-        [HttpPost("mark-all-as-read")]
-        public async Task<IActionResult> MarkAllNotificationsAsRead()
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
+            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+            if (userAuthenticated == null)
             {
-                return Unauthorized();
+                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
             }
 
-            await _notificationService.MarkAllNotificationsAsReadAsync(userId);
-            return Ok(new { message = "Todas as notificações foram marcadas como lidas." });
+            var userIdAuthenticated = userAuthenticated.Id;
+            var notifications = await _notificationService.GetReplyNotificationsForUserAsync(userIdAuthenticated);
+
+            if (notifications == null || notifications.Count == 0)
+            {
+                return NotFound(new { message = "Notificações de resposta não encontradas." });
+            }
+
+            return Ok(notifications);
         }
+
+
+        //[Authorize]
+        //[HttpGet("notifications/{authenticatedUsername}")]
+        //public async Task<IActionResult> GetMyNotifications(string authenticatedUsername)
+        //{
+        //    var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+
+        //    if (userAuthenticated == null)
+        //    {
+        //        return NotFound($"Usuário autenticado '{authenticatedUsername}' não encontrado.");
+        //    }
+
+        //    var userIdAuthenticated = userAuthenticated.Id;
+
+        //    var notifications = await _notificationService.GetNotificationsForUserAsync(userIdAuthenticated);
+        //    return Ok(notifications);
+        //}
+
+
+        //[HttpPost("mark-as-read/{notificationId}")]
+        //public async Task<IActionResult> MarkNotificationAsRead(Guid notificationId)
+        //{
+        //    await _notificationService.MarkNotificationAsReadAsync(notificationId);
+        //    return Ok(new { message = "Notificação marcada como lida com sucesso." });
+        //}
+
+        //[HttpPost("mark-all-as-read")]
+        //public async Task<IActionResult> MarkAllNotificationsAsRead()
+        //{
+        //    var username = User.FindFirst(ClaimTypes.Name)?.Value;
+        //    if (username == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+
+        //    await _notificationService.MarkAllNotificationsAsReadAsync(username);
+        //    return Ok(new { message = "Todas as notificações foram marcadas como lidas." });
+        //}
+
     }
 }

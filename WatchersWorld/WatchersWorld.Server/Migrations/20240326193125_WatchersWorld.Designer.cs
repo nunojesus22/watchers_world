@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240325152041_WatchersWorld")]
+    [Migration("20240326193125_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -593,15 +593,56 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TargetUserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TriggeredByUserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("NotificationId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.AchievementNotification", b =>
+                {
+                    b.HasBaseType("WatchersWorld.Server.Models.Notifications.Notification");
+
+                    b.Property<string>("AchievementName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("AchievementNotifications", (string)null);
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.FollowNotification", b =>
+                {
+                    b.HasBaseType("WatchersWorld.Server.Models.Notifications.Notification");
+
+                    b.Property<string>("TargetUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TriggeredByUserPhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("FollowNotifications", (string)null);
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.ReplyNotification", b =>
+                {
+                    b.HasBaseType("WatchersWorld.Server.Models.Notifications.Notification");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TriggeredByUserPhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("ReplyNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -782,6 +823,33 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("MediaInfoModel");
 
                     b.Navigation("MediaListModel");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.AchievementNotification", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Notifications.Notification", null)
+                        .WithOne()
+                        .HasForeignKey("WatchersWorld.Server.Models.Notifications.AchievementNotification", "NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.FollowNotification", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Notifications.Notification", null)
+                        .WithOne()
+                        .HasForeignKey("WatchersWorld.Server.Models.Notifications.FollowNotification", "NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.ReplyNotification", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Notifications.Notification", null)
+                        .WithOne()
+                        .HasForeignKey("WatchersWorld.Server.Models.Notifications.ReplyNotification", "NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>

@@ -427,7 +427,6 @@ namespace WatchersWorld.Server.Controllers
             var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
             var userIdToFollow = userToFollow.Id;
 
-
             var isFollowing = await _followersService.AlreadyFollow(userIdAuthenticated,userIdToFollow);
             return Ok(isFollowing);
         }

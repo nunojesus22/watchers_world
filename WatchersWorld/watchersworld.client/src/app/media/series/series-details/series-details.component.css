@@ -118,7 +118,7 @@ a {
 
 .actor-image-container {
   height: 300px; /* Ajuste este valor conforme necessário */
-  overflow: hidden;
+ /* overflow: hidden;*/
 }
 
 .card {
