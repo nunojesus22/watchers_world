@@ -10,7 +10,7 @@
         /// </summary>
         public int MediaId { get; set; }
 
-        public string MediaType { get; set; } 
+        public string MediaType { get; set; }
 
         /// <summary>
         /// Identificador do comentário que recebeu a resposta.
@@ -20,7 +20,7 @@
         /// <summary>
         /// Nome de usuário que deve receber a notificação.
         /// </summary>
-        public string TargetUseriD { get; set; }
+        public string TargetUserId { get; set; }
 
         /// <summary>
         /// Nome de usuário que desencadeou a notificação.

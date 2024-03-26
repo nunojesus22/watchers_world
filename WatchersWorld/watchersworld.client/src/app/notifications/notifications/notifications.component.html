@@ -24,11 +24,14 @@
     </button>
   </div>-->
 
-  <div class="notification-panel">
+  <div class="notification-panel" *ngIf="followNotifications.length > 0">
+    <h4>Seguidores:</h4>
+    <button (click)="clearAllFollowNotifications()" class="btn btn-secondary">
+      Marcar notificações de seguimento como lidas
+    </button>
     <div class="user-list">
-      <!-- Loop through the notifications using ngFor -->
-      <div *ngFor="let notification of followNotifications" class="notification-item">
-        <div class="user-info">
+      <div *ngFor="let notification of followNotifications" class="notification-item" >
+        <div class="user-info" *ngIf="!notification.isRead">
           <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p class="name">{{ notification.message }}</p>
@@ -36,23 +39,23 @@
         </div>
       </div>
     </div>
-    <!-- Display a message if there are no notifications -->
-    <div *ngIf="followNotifications.length === 0" class="no-notifications">
-      <p>Você não tem novas notificações.</p>
-    </div>
   </div>
 
   <div class="notification-panel" *ngIf="replyNotifications.length > 0">
     <h4>Respostas aos seus comentários</h4>
+    <button (click)="clearAllReplyNotifications()" class="btn btn-secondary">
+      Marcar notificações de resposta como lidas
+    </button>
     <div class="user-list">
-      <!-- Iterar sobre as notificações de respostas -->
-      <div *ngFor="let notification of replyNotifications" class="notification-item">
-        <div class="user-info">
+      <div *ngFor="let notification of replyNotifications" class="notification-item" >
+        <div class="user-info" *ngIf="!notification.isRead">
           <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p class="name">{{ notification.message }}</p>
           <small>{{ notification.createdAt | date:'short' }}</small>
-          <button [routerLink]="['/serie', notification.mediaId]" [queryParams]="{commentId: notification.commentId}" class="btn btn-primary">
+          <button [routerLink]="['/' + notification.mediaType, notification.mediaId]"
+                  [queryParams]="{commentId: notification.commentId}"
+                  class="btn btn-primary">
             Ver Comentário
           </button>
         </div>

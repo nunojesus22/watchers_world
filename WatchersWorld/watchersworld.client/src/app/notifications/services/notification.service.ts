@@ -52,22 +52,16 @@ export class NotificationService {
     return this.http.get<ReplyNotificationModel[]>(`${environment.appUrl}/api/notifications/replyNotifications/${username}`, { headers });
   }
 
-  //// Método para buscar as notificações do usuário autenticado
-  //getMyNotifications(usernameAuthenticated: string): Observable<FollowNotificationModel[]> {
-  //  const headers = this.getHeaders();
-  //  return this.http.get<FollowNotificationModel[]>(`${environment.appUrl}/api/notifications/notifications/${usernameAuthenticated}`, { headers });
-  //}
+  // Método para criar uma notificação de seguir um usuário
+  markAllFollowNotificationsAsRead(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/notifications/followNotifications/mark-all-as-read/${username}`, {}, { headers });
+  }
 
-  //// Método para marcar uma notificação específica como lida
-  //markNotificationAsRead(notificationId: string): Observable<any> {
-  //  const headers = this.getHeaders();
-  //  return this.http.post(`${environment.appUrl}/api/notifications/mark-as-read/${notificationId}`, {}, { headers });
-  //}
-
-  //// Método para marcar todas as notificações como lidas
-  //markAllNotificationsAsRead(): Observable<any> {
-  //  const headers = this.getHeaders();
-  //  return this.http.post(`${environment.appUrl}/api/notifications/mark-all-as-read`, {}, { headers });
-  //}
+  // Método para criar uma notificação de seguir um usuário
+  markAllReplyNotificationsAsRead(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/notifications/replyNotifications/mark-all-as-read/${username}`, {}, { headers });
+  }
 
 }

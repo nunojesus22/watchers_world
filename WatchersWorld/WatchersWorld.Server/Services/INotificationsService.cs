@@ -26,8 +26,10 @@ namespace WatchersWorld.Server.Services
 
         Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string targetUserId);
 
-      
-    }
+        Task MarkAllFollowNotificationsAsReadAsync(string username);
+
+        Task MarkAllReplyNotificationsAsReadAsync(string username);
+        }
 
     /// <summary>
     /// Implementa as operações definidas pela interface INotificationService, manipulando a lógica de negócios para notificações no sistema.
@@ -152,88 +154,77 @@ namespace WatchersWorld.Server.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string targetUserId)
+        public async Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string userId)
         {
             var notifications = await _context.ReplyNotifications
-                .Where(n => n.TargetUserId == targetUserId && !n.IsRead)
-                .Select(n => new ReplyNotificationDto
+                .Where(n => n.TargetUserId == userId && !n.IsRead)
+                .Join(_context.MediaInfoModel,
+                      notification => notification.MediaId,
+                      mediaInfo => mediaInfo.IdMedia,
+                      (notification, mediaInfo) => new { notification, mediaInfo })
+                .Select(joined => new ReplyNotificationDto
                 {
-                    TriggeredByUserId = n.TriggeredByUserId,
-                    Message = n.Message,
-                    CreatedAt = n.CreatedAt,
-                    IsRead = n.IsRead,
-                    EventType = n.EventType,
-                    MediaId = n.MediaId,
-                    CommentId = n.CommentId,
-                    TargetUseriD = n.TargetUserId,
-                    TriggeredByUserPhoto = n.TriggeredByUserPhoto
+                    // Mapeie todos os campos necessários do notification para o DTO
+                    TriggeredByUserId = joined.notification.TriggeredByUserId,
+                    Message = joined.notification.Message,
+                    CreatedAt = joined.notification.CreatedAt,
+                    IsRead = joined.notification.IsRead,
+                    EventType = joined.notification.EventType,
+                    MediaId = joined.notification.MediaId,
+                    CommentId = joined.notification.CommentId,
+                    TargetUserId = joined.notification.TargetUserId,
+                    TriggeredByUserPhoto = joined.notification.TriggeredByUserPhoto,
+
+                    // E também inclua o MediaType do join
+                    MediaType = joined.mediaInfo.Type
                 })
                 .ToListAsync();
 
             return notifications;
         }
 
+        public async Task MarkAllFollowNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
 
-        //public async Task<List<NotificationDto>> GetNotificationsForUserAsync(string userId)
-        //{
-        //    var notificationDtos = new List<NotificationDto>();
+            if (user != null)
+            {
+                var followNotifications = await _context.FollowNotifications
+                    .Where(n => n.TargetUserId == user.Id && !n.IsRead)
+                    .ToListAsync();
 
-        //    // Obter notificações de Follow
-        //    var followNotifications = await _context.FollowNotifications
-        //        .Where(n => n.TargetUserId == userId && !n.IsRead)
-        //        .ToListAsync();
+                foreach (var notification in followNotifications)
+                {
+                    notification.IsRead = true;
+                }
 
-        //    foreach (var followNotification in followNotifications)
-        //    {
-        //        var triggeredByUser = await _context.ProfileInfo
-        //            .AsNoTracking()
-        //            .FirstOrDefaultAsync(p => p.UserId == followNotification.TriggeredByUserId);
+                await _context.SaveChangesAsync();
+            }
+        }
 
-        //        notificationDtos.Add(new FollowNotificationDto
-        //        {
-        //            TriggeredByUserId = followNotification.TriggeredByUserId,
-        //            Message = followNotification.Message,
-        //            CreatedAt = followNotification.CreatedAt,
-        //            IsRead = followNotification.IsRead,
-        //            EventType = followNotification.EventType,
-        //            TargetUserId = followNotification.TargetUserId,
-        //            TriggeredByUserPhoto = triggeredByUser?.ProfilePhoto
-        //        });
-        //    }
+        public async Task MarkAllReplyNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
 
-        //    return notificationDtos.OrderBy(n => n.CreatedAt).ToList();
-        //}
+            if (user != null)
+            {
+                var replyNotifications = await _context.ReplyNotifications
+                    .Where(n => n.TargetUserId == user.Id && !n.IsRead)
+                    .ToListAsync();
 
+                foreach (var notification in replyNotifications)
+                {
+                    notification.IsRead = true;
+                }
 
+                await _context.SaveChangesAsync();
+            }
+        }
 
-        //public async Task MarkNotificationAsReadAsync(Guid notificationId)
-        //{
-        //    //var notification = await _context.Notifications.FindAsync(notificationId);
-        //    //if (notification != null)
-        //    //{
-        //    //    notification.IsRead = true;
-        //    //    _context.Notifications.Update(notification);
-        //    //    await _context.SaveChangesAsync();
-        //    //}
-        //}
-
-        //public async Task MarkAllNotificationsAsReadAsync(string userId)
-        //{
-        //    // Marcar notificações de Follow como lidas
-        //    var followNotifications = await _context.Set<FollowNotification>()
-        //        .Where(n => n.TargetUserId == userId && !n.IsRead)
-        //        .ToListAsync();
-        //    followNotifications.ForEach(n => n.IsRead = true);
-
-        //    // Marcar notificações de Reply como lidas
-        //    var replyNotifications = await _context.Set<ReplyNotification>()
-        //        .Where(n => n.TargetUserId == userId && !n.IsRead)
-        //        .ToListAsync();
-        //    replyNotifications.ForEach(n => n.IsRead = true);
-
-        //    // Salvar todas as alterações
-        //    await _context.SaveChangesAsync();
-        //}
 
 
     }

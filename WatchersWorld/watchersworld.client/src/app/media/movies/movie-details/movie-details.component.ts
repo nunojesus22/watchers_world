@@ -83,8 +83,22 @@ export class MovieDetailsComponent {
     this.getFavoriteActorChoicesForMedia(getParamId);
     this.loadQuizQuestions();
     this.fetchComments();
+
+    this.router.queryParams.subscribe(params => {
+      const commentId = params['commentId'];
+      if (commentId) {
+        setTimeout(() => {
+          this.scrollToComment(commentId);
+        }, 100);
+      }
+    });
   }
 
+  // Método para fazer scroll até o comentário
+  scrollToComment(commentId: string): void {
+    const commentElement = document.getElementById(`comment-${commentId}`);
+    commentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   // Mostra o pop-up do quiz
   showQuizPopup(): void {
     this.isQuizPopupVisible = true;

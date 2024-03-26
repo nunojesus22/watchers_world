@@ -132,48 +132,22 @@ export class NotificationsComponent {
     }
   }
 
-  //getNotifications(): void {
-  //  if (this.loggedUserName) {
-  //    this.notificationService.getMyNotifications(this.loggedUserName)
-  //      .pipe(takeUntil(this.unsubscribed$))
-  //      .subscribe({
-  //        next: (notifications: any[]) => { // Assumindo que você tem um tipo específico para o DTO
-  //          this.notifications = notifications
-  //            .filter(notification => notification.eventType === 'NewFollower')
-  //            .map(notification => new FollowNotificationModel(
-  //              notification.triggeredByUserId, // deve corresponder ao DTO do servidor
-  //              notification.message, // deve corresponder ao DTO do servidor
-  //              new Date(notification.createdAt), // ajuste conforme a serialização da data
-  //              notification.isRead, // deve corresponder ao DTO do servidor
-  //              notification.eventType, // deve corresponder ao DTO do servidor
-  //              notification.targetUserId, // deve corresponder ao DTO do servidor
-  //              notification.triggeredByUserPhoto // deve corresponder ao DTO do servidor
-  //            ))
-  //            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  clearAllFollowNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.markAllFollowNotificationsAsRead(this.loggedUserName)
+        .subscribe(() => {
+          this.loadFollowNotifications();
+        });
+    }
+  }
 
-  //          console.log(this.notifications);
-  //        },
-  //        error: (error) => {
-  //          console.error('Error fetching notifications:', error);
-  //        }
-  //      });
-  //  }
-  //}
-
-
-
-
-
-  //clearAllNotifications(): void {
-  //  this.notificationService.markAllNotificationsAsRead()
-  //    .subscribe({
-  //      next: () => {
-  //        this.notifications.forEach(notification => notification.isRead = true);
-  //        console.log('Todas as notificações foram marcadas como lidas.');
-  //        this.getNotifications();
-  //      },
-  //      error: error => console.error('Erro ao marcar todas as notificações como lidas', error)
-  //    });
-  //}
+  clearAllReplyNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.markAllReplyNotificationsAsRead(this.loggedUserName)
+        .subscribe(() => {
+          this.loadReplyNotifications();
+        });
+    }
+  }
 
 }

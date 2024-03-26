@@ -89,43 +89,19 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-        //[Authorize]
-        //[HttpGet("notifications/{authenticatedUsername}")]
-        //public async Task<IActionResult> GetMyNotifications(string authenticatedUsername)
-        //{
-        //    var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+        [HttpPost("followNotifications/mark-all-as-read/{username}")]
+        public async Task<IActionResult> MarkAllFollowNotificationsAsRead(string username)
+        {
+            await _notificationService.MarkAllFollowNotificationsAsReadAsync(username);
+            return Ok(new { message = "Todas as notificações de seguimento foram marcadas como lidas." });
+        }
 
-        //    if (userAuthenticated == null)
-        //    {
-        //        return NotFound($"Usuário autenticado '{authenticatedUsername}' não encontrado.");
-        //    }
-
-        //    var userIdAuthenticated = userAuthenticated.Id;
-
-        //    var notifications = await _notificationService.GetNotificationsForUserAsync(userIdAuthenticated);
-        //    return Ok(notifications);
-        //}
-
-
-        //[HttpPost("mark-as-read/{notificationId}")]
-        //public async Task<IActionResult> MarkNotificationAsRead(Guid notificationId)
-        //{
-        //    await _notificationService.MarkNotificationAsReadAsync(notificationId);
-        //    return Ok(new { message = "Notificação marcada como lida com sucesso." });
-        //}
-
-        //[HttpPost("mark-all-as-read")]
-        //public async Task<IActionResult> MarkAllNotificationsAsRead()
-        //{
-        //    var username = User.FindFirst(ClaimTypes.Name)?.Value;
-        //    if (username == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    await _notificationService.MarkAllNotificationsAsReadAsync(username);
-        //    return Ok(new { message = "Todas as notificações foram marcadas como lidas." });
-        //}
+        [HttpPost("replyNotifications/mark-all-as-read/{username}")]
+        public async Task<IActionResult> MarkAllReplyNotificationsAsRead(string username)
+        {
+            await _notificationService.MarkAllReplyNotificationsAsReadAsync(username);
+            return Ok(new { message = "Todas as notificações de resposta foram marcadas como lidas." });
+        }
 
     }
 }
