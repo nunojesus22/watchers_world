@@ -234,7 +234,9 @@ namespace WatchersWorld.Server.Controllers
                 var profilesList = userProfiles.Select(profile => new ProfileInfo
                 {
                     UserName = profile.UserName.ToLower(),
-                    ProfilePhoto = profile.ProfilePhoto
+                    ProfilePhoto = profile.ProfilePhoto,
+                    StartBanDate = profile.StartBanDate, 
+                    EndBanDate = profile.EndBanDate
                 });
 
                 return Ok(profilesList);
