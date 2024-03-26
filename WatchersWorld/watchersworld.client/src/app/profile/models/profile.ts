@@ -1,5 +1,5 @@
 export class Profile {
-  userName: string | undefined;
+  userName!: string;
   birthDate: Date;
   description: string | null;
   gender: string | null;
@@ -11,6 +11,7 @@ export class Profile {
   startBanDate: Date | undefined;
   endBanDate: Date | undefined;
   isBanned: boolean | undefined;
+  isModerator: boolean | undefined;
 
   constructor(
     birthDate: Date,

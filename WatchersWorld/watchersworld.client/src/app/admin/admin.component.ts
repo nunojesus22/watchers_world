@@ -1,6 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Subject, forkJoin, of } from 'rxjs';
+import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { Profile } from '../profile/models/profile';
 import { ProfileService } from '../profile/services/profile.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
@@ -12,6 +12,8 @@ import { AdminService } from '../admin/service/admin.service'
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
+
+
 export class AdminComponent implements OnDestroy {
   isBanPopupVisible = false;
   unsubscribed$: Subject<void> = new Subject<void>();
@@ -19,16 +21,18 @@ export class AdminComponent implements OnDestroy {
   loggedUserName: string | null = null;
   selectedUserForBan: string | null = null;
   banDuration: number | undefined;
-  isBanned?: boolean; 
+  isBanned?: boolean;
+  isModerator?: boolean;
 
 
-  constructor(private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService) { }
+  constructor(private cdRef: ChangeDetectorRef, private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService) { }
 
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
     // Fetch user profiles
     this.getUserProfiles();
+
   }
 
   ngOnDestroy() {
@@ -38,15 +42,37 @@ export class AdminComponent implements OnDestroy {
   }
 
   getUserProfiles() {
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        // Here you should set the isBanned property based on the data from the server
-        this.usersProfiles = profiles.map(profile => {
-          return {
-            ...profile,
-            isBanned: this.checkIfUserIsBanned(profile) // You need to implement this method
-          };
+    this.profileService.getUserProfiles().pipe(
+      takeUntil(this.unsubscribed$),
+      mergeMap(profiles => {
+        const profilesWithRoles$ = profiles.map(profile => {
+          if (!profile.userName) {
+            // Handle the case where userName is undefined
+            // Perhaps log a warning or handle however you see fit
+            console.warn(`Profile with undefined userName encountered: `, profile);
+            return of({ ...profile, isModerator: false });
+          }
+          // Now it's safe to call getUserRole because we've ensured userName is defined
+          return this.adminService.getUserRole(profile.userName).pipe(
+            map(roles => ({
+              ...profile,
+              isBanned: this.checkIfUserIsBanned(profile),
+              isModerator: roles.includes('Moderator'),
+            })),
+            catchError(error => {
+              console.error('Error fetching roles:', profile.userName, error);
+              return of({ ...profile, isModerator: false }); // default to false on error
+            })
+          );
         });
+        return forkJoin(profilesWithRoles$);
+      })
+    ).subscribe(
+      (profiles: Profile[]) => {
+        this.usersProfiles = profiles;
+
+
+        this.cdRef.detectChanges();
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
@@ -54,11 +80,27 @@ export class AdminComponent implements OnDestroy {
     );
   }
 
+
+
   checkIfUserIsBanned(profile: Profile): boolean {
-    // Directly return the isBanned status from the profile
-    // If the property could be undefined, provide a default value
-    return profile.isBanned ?? false;
+    try {
+      if (!profile.startBanDate || !profile.endBanDate) {
+        return false;
+      }
+
+      const now = new Date();
+      const startBan = new Date(profile.startBanDate);
+      const endBan = new Date(profile.endBanDate);
+      const isBanned = startBan <= now && now <= endBan;
+
+      return isBanned;
+    } catch (error) {
+      console.error('Error in checkIfUserIsBanned:', error);
+      return false;
+    }
   }
+
+
 
 
   banTemp(username: string | null): void {
@@ -167,6 +209,23 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
+  demoteToUser(userName: string): void {
+    if (!userName) {
+      console.error('Username is undefined, cannot change role.');
+      return;
+    }
+    console.log(`Changing role of user: ${userName} to User`);
+    this.adminService.changeRoleToUser(userName).subscribe({
+      next: response => {
+        console.log('Moderator role updated to User successfully:', response);
+        // Verify the role change
+        this.verifyUserRole(userName);
+      },
+      error: error => {
+        console.error("Error changing user role:", error);
+      }
+    });
+  }
 
 
   unban(username: string | undefined): void {
@@ -189,6 +248,8 @@ export class AdminComponent implements OnDestroy {
       }
     });
   }
+
+
 
 
   showBanPopup(username: string): void {
