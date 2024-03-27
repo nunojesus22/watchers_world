@@ -22,7 +22,7 @@ namespace WatchersWorld.Server.Services
 
         Task<List<FollowNotificationDto>> GetFollowNotificationsForUserAsync(string targetUserId);
 
-        Task CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText);
+        Task<ReplyNotificationDto> CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText);
 
         Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string targetUserId);
 
@@ -72,7 +72,6 @@ namespace WatchersWorld.Server.Services
                 IsRead = false,
                 EventType = "NewFollower",
                 TargetUserId = targetUserId,
-                TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
             };
 
 
@@ -97,22 +96,35 @@ namespace WatchersWorld.Server.Services
         {
             var notifications = await _context.FollowNotifications
                 .Where(n => n.TargetUserId == targetUserId)
-                .Select(n => new FollowNotificationDto
-                {
-                    TriggeredByUserId = n.TriggeredByUserId,
-                    Message = n.Message,
-                    CreatedAt = n.CreatedAt,
-                    IsRead = n.IsRead,
-                    EventType = n.EventType,
-                    TargetUserId = n.TargetUserId,
-                    TriggeredByUserPhoto = n.TriggeredByUserPhoto
-                })
                 .ToListAsync();
 
-            return notifications;
+            var notificationDtos = new List<FollowNotificationDto>();
+
+            foreach (var notification in notifications)
+            {
+                var triggeredByUser = await _context.ProfileInfo
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.UserId == notification.TriggeredByUserId);
+
+                var notificationDto = new FollowNotificationDto
+                {
+                    TriggeredByUserId = notification.TriggeredByUserId,
+                    Message = notification.Message,
+                    CreatedAt = notification.CreatedAt,
+                    IsRead = notification.IsRead,
+                    EventType = notification.EventType,
+                    TargetUserId = notification.TargetUserId,
+                    TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+                };
+
+                notificationDtos.Add(notificationDto);
+            }
+
+            return notificationDtos;
         }
 
-        public async Task CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText)
+
+        public async Task<ReplyNotificationDto> CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText)
         {
             var triggeredByUser = await _context.ProfileInfo
                 .AsNoTracking()
@@ -126,9 +138,16 @@ namespace WatchersWorld.Server.Services
                 throw new Exception("Perfil de usuário não encontrado.");
             }
 
-            if (triggeredByUser == null || targetUser == null)
+            var mediaInfo = await _context.MediaInfoModel
+             .AsNoTracking()
+             .FirstOrDefaultAsync(p => p.IdMedia == mediaId);
+            var comment = await _context.Comments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == commentId);
+
+            if (mediaInfo == null || comment == null)
             {
-                throw new Exception("Não foi possível encontrar os perfis dos usuários envolvidos.");
+                throw new Exception("A mídia ou comentário relacionados não foram encontrados.");
             }
 
             string message = $"{triggeredByUser.UserName} respondeu ao seu comentário com: \"{commentText}\"";
@@ -142,42 +161,70 @@ namespace WatchersWorld.Server.Services
                 CreatedAt = DateTime.UtcNow,
                 IsRead = false,
                 EventType = "Reply",
-                MediaId = mediaId,
-                CommentId = commentId,
-                TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+                IdTableMedia = mediaInfo.IdTableMedia,
+                IdComment = commentId,
+            };
 
+            var replyNotificationDto = new ReplyNotificationDto
+            {
+                TriggeredByUserId = triggeredByUserId,
+                Message = replyNotification.Message,
+                CreatedAt = replyNotification.CreatedAt,
+                IsRead = replyNotification.IsRead,
+                EventType = replyNotification.EventType,
+                MediaId = mediaInfo.IdMedia,
+                MediaType = mediaInfo.Type,
+                CommentId = comment.Id,
+                TargetUserId = targetUserId,
+                TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
             };
 
             await _context.ReplyNotifications.AddAsync(replyNotification);
             await _context.SaveChangesAsync();
+
+            return replyNotificationDto;
         }
 
         public async Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string userId)
         {
             var notifications = await _context.ReplyNotifications
                 .Where(n => n.TargetUserId == userId)
-                .Join(_context.MediaInfoModel,
-                      notification => notification.MediaId,
-                      mediaInfo => mediaInfo.IdMedia,
-                      (notification, mediaInfo) => new { notification, mediaInfo })
-                .Select(joined => new ReplyNotificationDto
-                {
-                    TriggeredByUserId = joined.notification.TriggeredByUserId,
-                    Message = joined.notification.Message,
-                    CreatedAt = joined.notification.CreatedAt,
-                    IsRead = joined.notification.IsRead,
-                    EventType = joined.notification.EventType,
-                    MediaId = joined.notification.MediaId,
-                    CommentId = joined.notification.CommentId,
-                    TargetUserId = joined.notification.TargetUserId,
-                    TriggeredByUserPhoto = joined.notification.TriggeredByUserPhoto,
-
-                    MediaType = joined.mediaInfo.Type
-                })
                 .ToListAsync();
 
-            return notifications;
+            var notificationDtos = new List<ReplyNotificationDto>();
+
+            foreach (var notification in notifications)
+            {
+                var triggeredByUser = await _context.ProfileInfo
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.UserId == notification.TriggeredByUserId);
+                var mediaInfo = await _context.MediaInfoModel
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.IdTableMedia == notification.IdTableMedia);
+                var commentInfo = await _context.Comments
+                   .AsNoTracking()
+                   .FirstOrDefaultAsync(m => m.Id == notification.IdComment);
+
+                var notificationDto = new ReplyNotificationDto
+                {
+                    TriggeredByUserId = notification.TriggeredByUserId,
+                    Message = notification.Message,
+                    CreatedAt = notification.CreatedAt,
+                    IsRead = notification.IsRead,
+                    EventType = notification.EventType,
+                    MediaId = mediaInfo.IdMedia,
+                    MediaType = mediaInfo.Type,
+                    CommentId = commentInfo.Id,
+                    TargetUserId = notification.TargetUserId,
+                    TriggeredByUserPhoto = triggeredByUser.ProfilePhoto,
+                };
+
+                notificationDtos.Add(notificationDto);
+            }
+
+            return notificationDtos;
         }
+
 
         public async Task MarkAllFollowNotificationsAsReadAsync(string username)
         {

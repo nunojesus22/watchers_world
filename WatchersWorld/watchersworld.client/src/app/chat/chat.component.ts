@@ -34,16 +34,16 @@ export class ChatComponent implements AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
+    this.authService.user$.subscribe(user => {
+      this.loggedUserName = user ? user.username : null;
+    });
+
     this.route.params.subscribe(params => {
       this.myUsername = params['myUsername'];
       this.selectedUsername = params['otherUsername'];
       if (this.usersProfiles.length > 0) {
         this.updateSelectedUser();
       }
-    });
-
-    this.authService.user$.subscribe(user => {
-      this.loggedUserName = user ? user.username : null;
     });
 
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribe$)).subscribe(

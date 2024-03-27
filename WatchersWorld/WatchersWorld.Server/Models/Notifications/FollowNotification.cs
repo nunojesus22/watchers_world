@@ -8,10 +8,6 @@ namespace WatchersWorld.Server.Models.Notifications
         [ForeignKey(nameof(User.Id))]
         public string TargetUserId { get; set; }
 
-        /// <summary>
-        /// Nome de usuário que desencadeou a notificação.
-        /// </summary>
-        public string TriggeredByUserPhoto { get; set; }
 
         public FollowNotification()
         {

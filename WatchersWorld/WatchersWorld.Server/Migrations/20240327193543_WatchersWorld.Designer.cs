@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240327142312_WatchersWorld")]
+    [Migration("20240327193543_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -620,9 +620,6 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("TargetUserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TriggeredByUserPhoto")
-                        .HasColumnType("nvarchar(max)");
-
                     b.ToTable("FollowNotifications", (string)null);
                 });
 
@@ -630,16 +627,13 @@ namespace WatchersWorld.Server.Migrations
                 {
                     b.HasBaseType("WatchersWorld.Server.Models.Notifications.Notification");
 
-                    b.Property<int>("CommentId")
+                    b.Property<int>("IdComment")
                         .HasColumnType("int");
 
-                    b.Property<int>("MediaId")
+                    b.Property<int>("IdTableMedia")
                         .HasColumnType("int");
 
                     b.Property<string>("TargetUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TriggeredByUserPhoto")
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("ReplyNotifications", (string)null);

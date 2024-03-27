@@ -6,14 +6,14 @@
     public class ReplyNotificationDto : NotificationDto
     {
         /// <summary>
-        /// Identificador da mídia associada ao comentário.
+        /// Identificador da tabela associada à mídia do comentário.
         /// </summary>
         public int MediaId { get; set; }
 
         public string MediaType { get; set; }
 
         /// <summary>
-        /// Identificador do comentário que recebeu a resposta.
+        /// Identificador da tabela associada ao comentário.
         /// </summary>
         public int CommentId { get; set; }
 

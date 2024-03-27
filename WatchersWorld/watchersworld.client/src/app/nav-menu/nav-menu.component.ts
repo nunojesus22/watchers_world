@@ -52,7 +52,7 @@ export class NavMenuComponent {
         .subscribe({
           next: (response) => {
             console.log(response);
-           this.hasUnreadNotifications = response;
+           this.hasUnreadNotifications = response.hasUnread;
           },
           error: (err) => {
           }

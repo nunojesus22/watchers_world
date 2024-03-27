@@ -11,7 +11,7 @@
         <div *ngFor="let request of pendingFollowRequests" class="user">
           <div class="user-info">
             <img class="avatar" [src]="request.profilePhoto" [routerLink]="['/profile', request.username]">
-            <p class="name">{{ request.username }}</p>
+            <p>{{ request.username }}</p>
             <div class="actions">
               <button (click)="acceptFollowRequest(request.username)" class="accept-follow-request">Aceitar</button>
               <button (click)="rejectFollowRequest(request.username)" class="recuse-follow-request">Recusar</button>
@@ -34,7 +34,7 @@
           <div class="user-info">
             <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                  [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
-            <p class="name">{{ notification.message }}</p>
+            <p>{{ notification.message }}</p>
             <small>{{ notification.createdAt | date:'short' }}</small>
           </div>
         </div>
@@ -48,11 +48,11 @@
           <div class="user-info">
             <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                  [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
-            <p class="name">{{ notification.message }}</p>
+            <p>{{ notification.message }}</p>
             <small>{{ notification.createdAt | date:'short' }}</small>
             <button [routerLink]="['/' + notification.mediaType, notification.mediaId]"
                     [queryParams]="{commentId: notification.commentId}"
-                    class="btn btn-primary">
+                    class="btn btn-primary" style="margin-left: 20px">
               Ver Comentário
             </button>
           </div>

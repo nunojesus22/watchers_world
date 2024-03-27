@@ -400,8 +400,7 @@ namespace WatchersWorld.Server.Migrations
                 columns: table => new
                 {
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TriggeredByUserPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -419,10 +418,9 @@ namespace WatchersWorld.Server.Migrations
                 columns: table => new
                 {
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MediaId = table.Column<int>(type: "int", nullable: false),
-                    CommentId = table.Column<int>(type: "int", nullable: false),
-                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TriggeredByUserPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false),
+                    IdComment = table.Column<int>(type: "int", nullable: false),
+                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
