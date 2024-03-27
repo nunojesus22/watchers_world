@@ -295,29 +295,15 @@ export class ProfileComponent implements OnInit {
 
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
-      // Primeiro, chame o serviço para seguir o usuário
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
         next: () => {
-          if(this.loggedUserName && this.currentUsername)
-          this.notificationService.createFollowNotification(this.loggedUserName, this.currentUsername).subscribe({
-            next: (notificationResponse) => {
-              if (this.loggedUserName) {
-                const followNotification = new FollowNotificationModel(
-                  notificationResponse.triggeredByUserId, // Este agora vem do servidor
-                  notificationResponse.message,           // Mensagem vinda do servidor
-                  new Date(notificationResponse.createdAt), // Data de criação vinda do servidor
-                  notificationResponse.isRead,              // Estado de leitura vindo do servidor
-                  notificationResponse.eventType,           // Tipo de evento vindo do servidor
-                  notificationResponse.targetUserId,
-                  notificationResponse.triggeredByUserPhoto // URL da foto vindo do servidor
-                );
-                console.log(followNotification);
-              }
-            },
-            error: (error) => {
-              console.error('Erro ao criar notificação de seguir', error);
-            }
-          });
+          if (this.isProfilePublic === 'Private') {
+            this.isFollowing = false;
+            this.followRequestSent = true;
+          } else {
+            this.isFollowing = true;
+            this.followRequestSent = false;
+          }
         },
         error: (error) => {
           console.error('Erro ao seguir usuário', error);
@@ -328,19 +314,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
-
-
-
   unfollowUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.isFollowing = false;
-            console.log(this.isFollowing);
-            // this.getFollowers(this.currentUsername);
-            console.log('Usuário deixado de seguir com sucesso!', response.message);
           },
           error: (error) => {
             console.error('Erro ao deixar de seguir usuário', error);

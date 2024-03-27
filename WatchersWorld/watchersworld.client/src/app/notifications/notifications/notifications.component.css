@@ -65,14 +65,22 @@ h4, h3 {
   margin-top:20px;
 }
 
+.clear-notifications {
+  background-color: #f44336; /* Vermelho */
+  width:250px;
+  margin-right:50px;
+}
+
 /* Botão Aceitar */
 .accept-follow-request {
+    width:150px;
   background-color: #4CAF50; /* Verde */
   /* outras propriedades mantêm-se inalteradas */
 }
 
 /* Botão Recusar */
 .recuse-follow-request {
+    width:150px;
   background-color: #f44336; /* Vermelho */
   /* outras propriedades mantêm-se inalteradas */
 }
@@ -97,24 +105,11 @@ h4, h3 {
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
   margin-left: 5px;
   font-size: 16px;
-  width: 150px;
   height: 40px;
   font-weight: bold;
   margin-top:10px;
 }
 
-.clear-notifications {
-  padding: 8px 15px; /* Ajuste conforme necessário */
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-  margin-left: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-  background-color: #4CAEFE;
-}
  
 @media (max-width: 768px) {
   .user {

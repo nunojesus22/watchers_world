@@ -13,6 +13,8 @@ import { AuthenticationService } from '../authentication/services/authentication
 export class ChatComponent implements AfterViewChecked {
   loggedUserName: string | null = null;
   selectedUser: Profile | undefined;
+
+  myUsername: string | null = null;
   selectedUsername: string | null = null;
   private unsubscribe$ = new Subject<void>();
 
@@ -33,7 +35,8 @@ export class ChatComponent implements AfterViewChecked {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.selectedUsername = params['username'];
+      this.myUsername = params['myUsername'];
+      this.selectedUsername = params['otherUsername'];
       if (this.usersProfiles.length > 0) {
         this.updateSelectedUser();
       }
@@ -57,8 +60,6 @@ export class ChatComponent implements AfterViewChecked {
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef | undefined;
 
-  // Resto do seu código...
-
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
@@ -81,7 +82,7 @@ export class ChatComponent implements AfterViewChecked {
 
   selectUser(userProfile: Profile): void {
     this.selectedUser = userProfile;
-    this.router.navigate([`/chat/${userProfile.userName}`]);
+    this.router.navigate([`/chat/${this.loggedUserName}/${userProfile.userName}`]);
   }
 
   filterUsers(): void {

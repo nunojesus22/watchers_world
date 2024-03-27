@@ -32,12 +32,14 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService) : ControllerBase
+    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService, INotificationService notificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly UserManager<User> _userManager = userManager;
         private readonly ILogger<ProfileController> _logger = logger;
         private readonly IFollowersService _followersService = followersService;
+        private readonly INotificationService _notificationService = notificationService;
+
 
         /// <summary>
         /// Obtém informações de perfil para um utilizador especificado.
@@ -139,36 +141,27 @@ namespace WatchersWorld.Server.Controllers
             var userIdToFollow = userToFollow.Id;
 
             var result = await _followersService.Follow(userIdAuthenticated, userIdToFollow);
-            switch (result)
+            if (!result)
             {
-                case false:
-                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
-                case true:
-                    var isPending = await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
-
-                    if (!isPending)
-                    {
-                        var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
-                        var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
-
-                        currentUserProfile.Following++;
-                        userProfileToFollow.Followers++;
-                    }
-                    
-                    break;
+                return BadRequest("Não foi possível seguir o utilizador pretendido.");
             }
 
-            try
+            var isApproved = !await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
+            if (isApproved)
             {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Você agora segue " + usernameToFollow });
+                var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+
+                currentUserProfile.Following++;
+                userProfileToFollow.Followers++;
+
+                await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ocorreu um erro ao seguir o utilizador.");
-                return StatusCode(500, "Não foi possível seguir o utilizador.");
-            }
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
+
 
 
         /// <summary>
@@ -364,6 +357,8 @@ namespace WatchersWorld.Server.Controllers
 
                     currentUserProfile.Followers++;
                     userProfileToFollow.Following++;
+
+                    await _notificationService.CreateFollowNotificationAsync(userIdWhoSend, userIdAuthenticated);
 
                     break;
             }

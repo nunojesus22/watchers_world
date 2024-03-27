@@ -40,9 +40,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'notifications/:username', component: NotificationsComponent },
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
-  { path: 'chat', component: ChatComponent }, 
-  { path: 'chat/:username', component: ChatComponent },
-
+  { path: 'chat/:myUsername', component: ChatComponent }, 
+  { path: 'chat/:myUsername/:otherUsername', component: ChatComponent },
 
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm

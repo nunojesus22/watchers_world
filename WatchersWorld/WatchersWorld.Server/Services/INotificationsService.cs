@@ -54,9 +54,9 @@ namespace WatchersWorld.Server.Services
             var triggeredByUser = await _context.ProfileInfo
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
-            var targetUser = await _context.Users
+            var targetUser = await _context.ProfileInfo
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == targetUserId);
+                .FirstOrDefaultAsync(u => u.UserId == targetUserId);
 
             if (triggeredByUser == null || targetUser == null)
             {

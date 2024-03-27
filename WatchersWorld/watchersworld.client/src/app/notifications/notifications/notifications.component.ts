@@ -75,6 +75,7 @@ export class NotificationsComponent {
         .subscribe({
           next: () => {
             this.pendingFollowRequests = this.pendingFollowRequests.filter(profile => profile.username !== usernameWhoSend);
+            this.loadFollowNotifications();
           },
           error: (error) => {
             console.error('Error accepting follow request:', error);
