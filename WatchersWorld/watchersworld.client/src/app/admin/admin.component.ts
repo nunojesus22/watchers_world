@@ -5,6 +5,7 @@ import { Profile } from '../profile/models/profile';
 import { ProfileService } from '../profile/services/profile.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { AdminService } from '../admin/service/admin.service'
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,13 +23,30 @@ export class AdminComponent implements OnDestroy {
   isBanned?: boolean; 
 
 
-  constructor(private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService) { }
+  constructor(private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService, private router: Router) { }
 
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
-    // Fetch user profiles
-    this.getUserProfiles();
+    if (this.loggedUserName) {
+      // Obtem as roles do usuário atual
+      this.authService.getUserRole(this.loggedUserName).subscribe({
+        next: (roles) => {
+          // Verifica se o usuário tem a role de admin
+          if (!roles.includes('Admin')) {
+            this.router.navigate(['/']); // Redireciona para a página inicial se não for admin
+            return;
+          }
+          // Se for admin, executa as funções de busca
+          this.getUserProfiles();
+
+        },
+        error: (error) => console.error("Error fetching user roles:", error)
+      });
+    } else {
+      // Se não estiver logado ou se o nome do usuário não estiver disponível, redireciona
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnDestroy() {

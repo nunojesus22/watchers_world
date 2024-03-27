@@ -243,8 +243,41 @@ namespace WatchersWorld.Server.Controllers
             return Ok("User role updated to Moderator successfully.");
         }
 
+        [HttpGet("api/admin/total-registered-users")]
+        public async Task<ActionResult<int>> GetTotalRegisteredUsers()
+        {
+            var totalUsers = await _userManager.Users.CountAsync();
+            return Ok(totalUsers);
+        }
 
+        // In ProfileController.cs or a relevant controller
 
+        [HttpGet("api/admin/total-banned-users")]
+        public async Task<ActionResult<int>> GetTotalBannedUsers()
+        {
+            int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.IsBanned);
+            return Ok(totalBannedUsers);
+        }
 
+        [HttpGet("api/admin/total-private-profiles")]
+        public async Task<ActionResult<int>> GetTotalPrivateProfiles()
+        {
+            int totalPrivateProfiles = await _context.ProfileInfo.CountAsync(p => p.ProfileStatus == "Private");
+            return Ok(totalPrivateProfiles);
+        }
+
+        [HttpGet("api/admin/total-public-profiles")]
+        public async Task<ActionResult<int>> GetTotalPublicProfiles()
+        {
+            int totalPublicProfiles = await _context.ProfileInfo.CountAsync(p => p.ProfileStatus == "Public");
+            return Ok(totalPublicProfiles);
+        }
+
+        [HttpGet("api/admin/total-comments")]
+        public async Task<ActionResult<int>> GetTotalComments()
+        {
+            int totalComments = await _context.Comments.CountAsync();
+            return Ok(totalComments);
+        }
     }
 }
