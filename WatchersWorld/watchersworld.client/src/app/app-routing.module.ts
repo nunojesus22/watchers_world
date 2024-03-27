@@ -18,6 +18,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
 import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { GamificationComponent } from './gamification/gamification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
   { path: 'chat', component: ChatComponent }, 
   { path: 'chat/:username', component: ChatComponent },
+  { path: 'gamification', component: GamificationComponent }, 
 
 
   { path: 'search', component: SearchComponent },
