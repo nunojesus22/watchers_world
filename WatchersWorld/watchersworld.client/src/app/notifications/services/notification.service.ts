@@ -46,22 +46,31 @@ export class NotificationService {
     return this.http.get<FollowNotificationModel[]>(`${environment.appUrl}/api/notifications/followNotifications/${authenticatedUsername}`, { headers });
   }
 
-  // Método para buscar notificações de resposta
   getReplyNotifications(username: string): Observable<ReplyNotificationModel[]> {
     const headers = this.getHeaders();
     return this.http.get<ReplyNotificationModel[]>(`${environment.appUrl}/api/notifications/replyNotifications/${username}`, { headers });
   }
 
-  // Método para criar uma notificação de seguir um usuário
   markAllFollowNotificationsAsRead(username: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${environment.appUrl}/api/notifications/followNotifications/mark-all-as-read/${username}`, {}, { headers });
   }
 
-  // Método para criar uma notificação de seguir um usuário
   markAllReplyNotificationsAsRead(username: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${environment.appUrl}/api/notifications/replyNotifications/mark-all-as-read/${username}`, {}, { headers });
   }
+
+  clearNotifications(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete(`${environment.appUrl}/api/notifications/clearNotifications/${username}`, { headers });
+  }
+
+  hasUnreadNotifications(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/notifications/hasUnread/${username}`, { headers });
+  }
+
+
 
 }

@@ -44,6 +44,9 @@ export class NotificationsComponent {
 
     this.loadFollowNotifications();
     this.loadReplyNotifications();
+    setTimeout(() => {
+      this.markNotificationsAsRead();
+    }, 1000);
   }
 
   ngOnDestroy() {
@@ -71,9 +74,7 @@ export class NotificationsComponent {
       this.profileService.acceptFollowRequest(this.loggedUserName, usernameWhoSend)
         .subscribe({
           next: () => {
-            // Remove the accepted user from the pendingFollowRequests list
             this.pendingFollowRequests = this.pendingFollowRequests.filter(profile => profile.username !== usernameWhoSend);
-            // Additional UI feedback or actions can be done here
           },
           error: (error) => {
             console.error('Error accepting follow request:', error);
@@ -87,9 +88,7 @@ export class NotificationsComponent {
       this.profileService.rejectFollowRequest(this.loggedUserName, usernameWhoSend)
         .subscribe({
           next: () => {
-            // Remove the rejected user from the pendingFollowRequests list
             this.pendingFollowRequests = this.pendingFollowRequests.filter(profile => profile.username !== usernameWhoSend);
-            // Additional UI feedback or actions can be done here
           },
           error: (error) => {
             console.error('Error rejecting follow request:', error);
@@ -104,17 +103,23 @@ export class NotificationsComponent {
   }
 
   loadFollowNotifications(): void {
-    if(this.loggedUserName)
-    this.notificationService.getFollowNotificationsForUser(this.loggedUserName)
-      .subscribe({
-        next: (notifications) => {
-          console.log(notifications);
-          this.followNotifications = notifications;
-        },
-        error: (err) => {
-          console.error('Erro ao buscar notificações de seguimento:', err);
-        }
-      });
+    if (this.loggedUserName) {
+      this.notificationService.getFollowNotificationsForUser(this.loggedUserName)
+        .subscribe({
+          next: (notifications) => {
+            if (notifications && notifications.length > 0) {
+              this.followNotifications = notifications;
+              console.log('Notificações de seguimento recebidas:', notifications);
+            } else {
+              this.followNotifications = [];
+              console.log('Não há notificações de seguimento.');
+            }
+          },
+          error: (err) => {
+            console.error('Erro ao buscar notificações de seguimento:', err);
+          }
+        });
+    }
   }
 
   loadReplyNotifications(): void {
@@ -122,8 +127,13 @@ export class NotificationsComponent {
       this.notificationService.getReplyNotifications(this.loggedUserName)
         .subscribe({
           next: (notifications) => {
-            console.log(notifications);
-            this.replyNotifications = notifications;
+            if (notifications && notifications.length > 0) {
+              this.replyNotifications = notifications;
+              console.log('Notificações de resposta recebidas:', notifications);
+            } else {
+              this.replyNotifications = [];
+              console.log('Não há notificações de resposta.');
+            }
           },
           error: (err) => {
             console.error('Erro ao buscar notificações de resposta:', err);
@@ -132,22 +142,24 @@ export class NotificationsComponent {
     }
   }
 
-  clearAllFollowNotifications(): void {
+  markNotificationsAsRead(): void {
     if (this.loggedUserName) {
-      this.notificationService.markAllFollowNotificationsAsRead(this.loggedUserName)
-        .subscribe(() => {
-          this.loadFollowNotifications();
-        });
+      this.notificationService.markAllFollowNotificationsAsRead(this.loggedUserName).subscribe(() => {
+      });
+      this.notificationService.markAllReplyNotificationsAsRead(this.loggedUserName).subscribe(() => {
+      });
     }
   }
 
-  clearAllReplyNotifications(): void {
+  clearAllNotifications(): void {
     if (this.loggedUserName) {
-      this.notificationService.markAllReplyNotificationsAsRead(this.loggedUserName)
-        .subscribe(() => {
-          this.loadReplyNotifications();
-        });
+      this.notificationService.clearNotifications(this.loggedUserName).subscribe(() => {
+        this.followNotifications = [];
+        this.replyNotifications = [];
+        console.log('Todas as notificações foram limpas.');
+      });
     }
   }
+
 
 }

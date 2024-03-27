@@ -29,7 +29,11 @@ namespace WatchersWorld.Server.Services
         Task MarkAllFollowNotificationsAsReadAsync(string username);
 
         Task MarkAllReplyNotificationsAsReadAsync(string username);
-        }
+
+        Task ClearNotificationsForUserAsync(string username);
+
+        Task<bool> HasUnreadNotificationsAsync(string username);
+    }
 
     /// <summary>
     /// Implementa as operações definidas pela interface INotificationService, manipulando a lógica de negócios para notificações no sistema.
@@ -59,7 +63,6 @@ namespace WatchersWorld.Server.Services
                 throw new Exception("Perfil de usuário não encontrado.");
             }
 
-            // Criar notificação de follow
             var followNotification = new FollowNotification
             {
                 NotificationId = Guid.NewGuid(),
@@ -73,7 +76,6 @@ namespace WatchersWorld.Server.Services
             };
 
 
-            // Crie o DTO para a notificação criada
             var followNotificationDto = new FollowNotificationDto
             {
                 TriggeredByUserId = triggeredByUserId,
@@ -85,18 +87,16 @@ namespace WatchersWorld.Server.Services
                 TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
             };
 
-            // Adicionar e salvar a notificação no banco de dados
             await _context.FollowNotifications.AddAsync(followNotification);
             await _context.SaveChangesAsync();
-
-            // Retorne o DTO
+            
             return followNotificationDto;
         }
 
         public async Task<List<FollowNotificationDto>> GetFollowNotificationsForUserAsync(string targetUserId)
         {
             var notifications = await _context.FollowNotifications
-                .Where(n => n.TargetUserId == targetUserId && !n.IsRead)
+                .Where(n => n.TargetUserId == targetUserId)
                 .Select(n => new FollowNotificationDto
                 {
                     TriggeredByUserId = n.TriggeredByUserId,
@@ -114,7 +114,6 @@ namespace WatchersWorld.Server.Services
 
         public async Task CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText)
         {
-            // Buscar os perfis dos usuários com base nos IDs de usuário
             var triggeredByUser = await _context.ProfileInfo
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
@@ -132,8 +131,7 @@ namespace WatchersWorld.Server.Services
                 throw new Exception("Não foi possível encontrar os perfis dos usuários envolvidos.");
             }
 
-            // Construa a mensagem. Considere limitar o comprimento do texto do comentário incluído na notificação
-            string message = $"{triggeredByUser.UserName} respondeu ao seu comentário: \"{commentText}\"";
+            string message = $"{triggeredByUser.UserName} respondeu ao seu comentário com: \"{commentText}\"";
 
             var replyNotification = new ReplyNotification
             {
@@ -157,14 +155,13 @@ namespace WatchersWorld.Server.Services
         public async Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string userId)
         {
             var notifications = await _context.ReplyNotifications
-                .Where(n => n.TargetUserId == userId && !n.IsRead)
+                .Where(n => n.TargetUserId == userId)
                 .Join(_context.MediaInfoModel,
                       notification => notification.MediaId,
                       mediaInfo => mediaInfo.IdMedia,
                       (notification, mediaInfo) => new { notification, mediaInfo })
                 .Select(joined => new ReplyNotificationDto
                 {
-                    // Mapeie todos os campos necessários do notification para o DTO
                     TriggeredByUserId = joined.notification.TriggeredByUserId,
                     Message = joined.notification.Message,
                     CreatedAt = joined.notification.CreatedAt,
@@ -175,7 +172,6 @@ namespace WatchersWorld.Server.Services
                     TargetUserId = joined.notification.TargetUserId,
                     TriggeredByUserPhoto = joined.notification.TriggeredByUserPhoto,
 
-                    // E também inclua o MediaType do join
                     MediaType = joined.mediaInfo.Type
                 })
                 .ToListAsync();
@@ -224,6 +220,47 @@ namespace WatchersWorld.Server.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task ClearNotificationsForUserAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
+
+            if (user != null)
+            {
+                var followNotifications = await _context.FollowNotifications
+                    .Where(n => n.TargetUserId == user.Id)
+                    .ToListAsync();
+
+                var replyNotifications = await _context.ReplyNotifications
+                    .Where(n => n.TargetUserId == user.Id)
+                    .ToListAsync();
+
+                _context.FollowNotifications.RemoveRange(followNotifications);
+                _context.ReplyNotifications.RemoveRange(replyNotifications);
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> HasUnreadNotificationsAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
+
+            if (user == null) return false;
+
+            bool hasUnreadFollowNotifications = await _context.FollowNotifications
+                .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
+
+            bool hasUnreadReplyNotifications = await _context.ReplyNotifications
+                .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
+
+            return hasUnreadFollowNotifications || hasUnreadReplyNotifications;
+        }
+
 
 
 

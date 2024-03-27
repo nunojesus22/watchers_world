@@ -20,7 +20,7 @@ export class NavMenuComponent {
   searchQuery: any;
   unsubscribed$: Subject<void> = new Subject<void>();
   pendingFollowRequests: FollowerProfile[] = [];
-  notifications: NotificationModel[] = [];
+  hasUnreadNotifications: boolean = false;
 
 
   constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, private notificationService: NotificationService, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
@@ -28,7 +28,7 @@ export class NavMenuComponent {
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getPendingFollowRequests();
-   // this.getNotifications();
+    this.checkForUnreadNotifications();
   }
 
   getPendingFollowRequests() {
@@ -46,31 +46,19 @@ export class NavMenuComponent {
     }
   }
 
-  //getNotifications(): void {
-  //  if (this.loggedUserName) {
-  //    this.notificationService.getMyNotifications()
-  //      .pipe(takeUntil(this.unsubscribed$))
-  //      .subscribe({
-  //        next: (notifications) => {
-  //          this.notifications = notifications
-  //            .map(notification => new NotificationModel(
-  //              notification.id,
-  //              notification.triggeredByUserName,
-  //              notification.triggeredByUserPhoto,
-  //              notification.message,
-  //              new Date(notification.createdAt),
-  //              notification.isRead,
-  //              notification.eventType
-  //            ))
-  //            .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  //          console.log(this.notifications);
-  //        },
-  //        error: (error) => {
-  //          console.error('Error fetching notifications:', error);
-  //        }
-  //      });
-  //  }
-  //}
+  checkForUnreadNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.hasUnreadNotifications(this.loggedUserName)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+           this.hasUnreadNotifications = response;
+          },
+          error: (err) => {
+          }
+        });
+    }
+  }
 
   showMenu = false;
   @HostListener('document:click', ['$event'])

@@ -1,5 +1,6 @@
 <div class="title-panel" *ngIf="loggedUserName === currentUsername">
   <h3 class="title-center">Notificações</h3>
+  <button (click)="clearAllNotifications()" class="recuse-follow-request">Limpar Notificações</button>
   <hr class="divider">
   <!-- Verificação se existem pedidos pendentes -->
   <div *ngIf="pendingFollowRequests.length > 0">
@@ -26,12 +27,9 @@
 
   <div class="notification-panel" *ngIf="followNotifications.length > 0">
     <h4>Seguidores:</h4>
-    <button (click)="clearAllFollowNotifications()" class="btn btn-secondary">
-      Marcar notificações de seguimento como lidas
-    </button>
     <div class="user-list">
-      <div *ngFor="let notification of followNotifications" class="notification-item" >
-        <div class="user-info" *ngIf="!notification.isRead">
+      <div *ngFor="let notification of followNotifications" class="notification-item">
+        <div class="user-info">
           <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p class="name">{{ notification.message }}</p>
@@ -43,12 +41,9 @@
 
   <div class="notification-panel" *ngIf="replyNotifications.length > 0">
     <h4>Respostas aos seus comentários</h4>
-    <button (click)="clearAllReplyNotifications()" class="btn btn-secondary">
-      Marcar notificações de resposta como lidas
-    </button>
     <div class="user-list">
-      <div *ngFor="let notification of replyNotifications" class="notification-item" >
-        <div class="user-info" *ngIf="!notification.isRead">
+      <div *ngFor="let notification of replyNotifications" class="notification-item">
+        <div class="user-info">
           <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p class="name">{{ notification.message }}</p>
@@ -61,5 +56,8 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="followNotifications.length === 0 && replyNotifications.length === 0">
+    <p> Não existem notificações pendentes.</p>
   </div>
 </div>

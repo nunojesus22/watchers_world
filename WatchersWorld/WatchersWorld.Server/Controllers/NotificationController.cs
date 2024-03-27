@@ -60,12 +60,7 @@ namespace WatchersWorld.Server.Controllers
             var userIdAuthenticated = userAuthenticated.Id;
             var notifications = await _notificationService.GetFollowNotificationsForUserAsync(userIdAuthenticated);
 
-            if (notifications == null || notifications.Count == 0)
-            {
-                return NotFound(new { message = "Notificações não encontradas." });
-            }
-
-            return Ok(notifications);
+            return Ok(notifications ?? new List<FollowNotificationDto>());
         }
 
         [HttpGet("replyNotifications/{authenticatedUsername}")]
@@ -80,13 +75,9 @@ namespace WatchersWorld.Server.Controllers
             var userIdAuthenticated = userAuthenticated.Id;
             var notifications = await _notificationService.GetReplyNotificationsForUserAsync(userIdAuthenticated);
 
-            if (notifications == null || notifications.Count == 0)
-            {
-                return NotFound(new { message = "Notificações de resposta não encontradas." });
-            }
-
-            return Ok(notifications);
+            return Ok(notifications ?? new List<ReplyNotificationDto>());
         }
+
 
 
         [HttpPost("followNotifications/mark-all-as-read/{username}")]
@@ -102,6 +93,21 @@ namespace WatchersWorld.Server.Controllers
             await _notificationService.MarkAllReplyNotificationsAsReadAsync(username);
             return Ok(new { message = "Todas as notificações de resposta foram marcadas como lidas." });
         }
+
+        [HttpDelete("clearNotifications/{username}")]
+        public async Task<IActionResult> ClearNotifications(string username)
+        {
+            await _notificationService.ClearNotificationsForUserAsync(username);
+            return Ok(new { message = "Notificações limpas com sucesso." });
+        }
+
+        [HttpGet("hasUnread/{username}")]
+        public async Task<IActionResult> HasUnreadNotifications(string username)
+        {
+            bool hasUnread = await _notificationService.HasUnreadNotificationsAsync(username);
+            return Ok(new { HasUnread = hasUnread });
+        }
+
 
     }
 }
