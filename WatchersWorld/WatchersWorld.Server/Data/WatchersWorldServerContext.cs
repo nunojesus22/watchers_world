@@ -7,6 +7,7 @@ using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Chat.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WatchersWorld.Server.Data
 {
@@ -39,6 +40,8 @@ namespace WatchersWorld.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
+
+
             modelBuilder.Entity<MediaListModel>().HasData(
                 new MediaListModel { Id = 1, ListName = "Filmes" },
                 new MediaListModel { Id = 2, ListName = "Séries" },
@@ -55,33 +58,26 @@ namespace WatchersWorld.Server.Data
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
 
-            modelBuilder.Entity<Chat.Models.Chat>()
-                .HasIndex(c => c.User1Id)
-                .HasDatabaseName("IX_Chat_User1Id");
+            modelBuilder.Entity<Chat.Models.Chat>(entity =>
+            {
+                entity.HasOne(chat => chat.User1) 
+                    .WithMany() 
+                    .HasForeignKey(chat => chat.User1Id)
+                    .HasConstraintName("FK_Chat_User1")
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Chat.Models.Chat>()
-                .HasIndex(c => c.User2Id)
-                .HasDatabaseName("IX_Chat_User2Id");
-
-            modelBuilder.Entity<Messages>()
-                .HasIndex(m => m.ChatId)
-                .HasDatabaseName("IX_Messages_ChatId");
-
-            modelBuilder.Entity<Messages>()
-                .HasIndex(m => m.SendUserId)
-                .HasDatabaseName("IX_Messages_SendUserId");
-
-            modelBuilder.Entity<Messages>()
-                .HasIndex(m => m.SentAt)
-                .HasDatabaseName("IX_Messages_SentAt");
+                entity.HasOne(chat => chat.User2) // Specify the navigation property
+                    .WithMany() // Adjust as needed
+                    .HasForeignKey(chat => chat.User2Id)
+                    .HasConstraintName("FK_Chat_User2")
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
             modelBuilder.Entity<MessageStatus>()
-                .HasIndex(ms => ms.MessageId)
-                .HasDatabaseName("IX_MessageStatus_MessageId");
-
-            modelBuilder.Entity<MessageStatus>()
-                .HasIndex(ms => ms.RecipientUserId)
-                .HasDatabaseName("IX_MessageStatus_RecipientUserId");
+                    .HasOne(ms => ms.Message)
+                    .WithMany()
+                    .HasForeignKey(ms => ms.MessageId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

@@ -31,6 +31,7 @@ import { SeasonDetailsInfoComponent } from './season-details-info/season-details
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { ChatService } from './chat/services/chat.service';
 
 
 @NgModule({
@@ -64,8 +65,9 @@ import { StatisticsComponent } from './statistics/statistics.component';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MovieApiServiceComponent,
-    MovieApiServiceComponent, SearchServiceComponent
-
+    MovieApiServiceComponent,
+    SearchServiceComponent,
+    ChatService,
   ],
   bootstrap: [AppComponent]
 })

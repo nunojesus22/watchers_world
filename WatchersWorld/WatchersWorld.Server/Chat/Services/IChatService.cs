@@ -12,7 +12,7 @@ namespace WatchersWorld.Server.Chat.Services
         Task<bool> DeleteChat(string user1Id, string user2Id);
         Task<List<Models.Chat>> GetChatsByUser(string userId);
         Task<List<string>> GetUsersThatHaveChatWith(string userId);
-        Task<bool> SendMessage(string userSenderId, string userReceiverId, string textMessage);
+        Task<bool> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt);
         Task<bool> MarkMessageAsRead(string messageId);
         Task<List<Messages>> GetAllMessagesByChat(string chatId);
         Task<List<Messages>> GetAllMessagesByUsers(string user1Id, string user2Id);
@@ -97,10 +97,9 @@ namespace WatchersWorld.Server.Chat.Services
             return userIds;
         }
 
-        public async Task<bool> SendMessage(string userSenderId, string userReceiverId, string textMessage)
+        public async Task<bool> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt = null)
         {
             if (userSenderId.IsNullOrEmpty() || userReceiverId.IsNullOrEmpty() || userSenderId == userReceiverId || textMessage.IsNullOrEmpty()) return false;
-
 
             var chat = await GetChatByUsers(userSenderId, userReceiverId);
             if (chat == null)
@@ -118,14 +117,14 @@ namespace WatchersWorld.Server.Chat.Services
                     Id = Guid.NewGuid().ToString(),
                     ChatId = chat!.Id,
                     SendUserId = userSenderId,
-                    SentAt = DateTime.UtcNow,
+                    SentAt = sentAt ?? DateTime.UtcNow,
                     Text = textMessage
                 };
 
                 var messageStatus = new MessageStatus
                 {
                     MessageId = message.Id.ToString(),
-                    RecipientUserId = userReceiverId
+                    RecipientUserId = userReceiverId,
                 };
 
                 _context.Messages.Add(message);
