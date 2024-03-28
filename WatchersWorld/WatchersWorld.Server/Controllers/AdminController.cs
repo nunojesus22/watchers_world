@@ -23,13 +23,6 @@ namespace WatchersWorld.Server.Controllers
     public class AdminController : ControllerBase
     {
 
-
-        // Service for generating JWT tokens.
-        private readonly JWTService _jwtService;
-
-        // Manager for authentication processes.
-        private readonly SignInManager<User> _signInManager;
-
         // Manager for user-related operations.
         private readonly UserManager<User> _userManager;
         private readonly EmailService _emailService;
@@ -41,7 +34,7 @@ namespace WatchersWorld.Server.Controllers
         private WatchersWorldServerContext _context;
 
         // Constructor for dependency injection.
-        public AdminController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
+        public AdminController(UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
         /// <summary>
         /// Constructor for AccountController.
         /// </summary>
@@ -51,8 +44,7 @@ namespace WatchersWorld.Server.Controllers
         /// <param name="emailService">Service for handling email operations.</param>
         /// <param name="config">Application configuration settings.</param>
         {
-            _jwtService = jWTService;
-            _signInManager = signInManager;
+
             _userManager = userManager;
             _emailService = emailService;
             _config = config;

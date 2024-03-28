@@ -26,7 +26,7 @@ namespace WatchersWorld.Server.Controllers
     /// <param name="config">Application configuration settings.</param>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
-    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger) : ControllerBase
+    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger, GamificationService gamificationService) : ControllerBase
     {
         // Service for generating JWT tokens.
         private readonly JWTService _jwtService = jWTService;
@@ -43,6 +43,9 @@ namespace WatchersWorld.Server.Controllers
 
 
         private readonly WatchersWorldServerContext _context = context;
+
+        private readonly GamificationService _gamificationService = gamificationService;
+
 
         /// <summary>
         /// Renova o token de um utilizador autenticado.
@@ -256,6 +259,21 @@ namespace WatchersWorld.Server.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(userToAdd, "user");
+
+                try
+                {
+                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Account Creation");
+                    if (!medalAwarded)
+                    {
+                        // Handle the case where the medal is not awarded, if necessary
+                        _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while awarding a medal to user {UserName}.", userToAdd.UserName);
+                    // Decide how to handle the error. Do you want to return a failure response or log and continue?
+                }
             }
 
             _context.ProfileInfo.Add(profileInfoToAdd);
@@ -320,6 +338,21 @@ namespace WatchersWorld.Server.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(userToAdd, "user");
+
+                try
+                {
+                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Account Creation");
+                    if (!medalAwarded)
+                    {
+                        // Handle the case where the medal is not awarded, if necessary
+                        _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while awarding a medal to user {UserName}.", userToAdd.UserName);
+                    // Decide how to handle the error. Do you want to return a failure response or log and continue?
+                }
             }
 
             if (!result.Succeeded) return BadRequest(result.Errors);
