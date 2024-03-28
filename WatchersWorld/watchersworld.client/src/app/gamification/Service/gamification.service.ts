@@ -36,13 +36,6 @@ export class GamificationService {
 
 
 
-  /*
-  banUserPermanently(username: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post<any>(`${environment.appUrl}/api/admin/ban-user-permanently/${encodeURIComponent(username)}`, {}, { headers });
-  }
-  */
-
   getUnlockedMedals(userName: string): Observable<any[]> {
     const headers = this.getHeaders();
     return this.http.get<any[]>(`${environment.appUrl}/api/gamification/unlocked-medals/${userName}`, { headers });
@@ -53,4 +46,10 @@ export class GamificationService {
     const headers = this.getHeaders();
     return this.http.post<any>(`${environment.appUrl}/api/gamification/AwardMedal`, { userName, medalName }, { headers });
   }
+
+
+  getAvailableMedals(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.appUrl}/api/gamification/available-medals`);
+  }
+
 }

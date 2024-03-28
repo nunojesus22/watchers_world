@@ -56,5 +56,21 @@ namespace WatchersWorld.Server.Controllers
             return Ok(medals);
         }
 
+
+        [HttpGet("available-medals")]
+        public async Task<IActionResult> GetAvailableMedals()
+        {
+            var medals = await _context.Medals
+                .Select(m => new MedalsDto
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Description = m.Description,
+                    Image = m.Image
+                })
+                .ToListAsync();
+
+            return Ok(medals);
+        }
     }
 }
