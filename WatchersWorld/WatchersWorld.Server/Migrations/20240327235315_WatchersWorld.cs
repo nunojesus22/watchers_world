@@ -80,6 +80,22 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Medals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MediaInfoModel",
                 columns: table => new
                 {
@@ -597,6 +613,9 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Followers");
+
+            migrationBuilder.DropTable(
+                name: "Medals");
 
             migrationBuilder.DropTable(
                 name: "ProfileInfo");

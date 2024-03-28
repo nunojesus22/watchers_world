@@ -12,11 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240323194201_WatchersWorld.Designer.cs
-    [Migration("20240323194201_WatchersWorld")]
-========
-    [Migration("20240326201832_WatchersWorld")]
->>>>>>>> Admin:WatchersWorld/WatchersWorld.Server/Migrations/20240326201832_WatchersWorld.Designer.cs
+    [Migration("20240327235315_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -293,6 +289,31 @@ namespace WatchersWorld.Server.Migrations
                     b.HasKey("FollowersId");
 
                     b.ToTable("Followers");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.Medals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("AcquiredDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Medals");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>

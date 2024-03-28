@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Data
 {
@@ -28,9 +29,12 @@ namespace WatchersWorld.Server.Data
 
             // Seed test users
             await SeedTestUser(context, userManager, roleManager);
+
+            await SeedMedalsAsync(context);
+
         }
 
-        
+
         private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             string[] roles = ["Admin", "Moderator", "User"];
@@ -140,6 +144,23 @@ namespace WatchersWorld.Server.Data
             context.ProfileInfo.Add(userProfile);
             await context.SaveChangesAsync();
         }
+
+        public static async Task SeedMedalsAsync(WatchersWorldServerContext context)
+        {
+            if (!context.Medals.Any()) // Check if the Medals table is empty
+            {
+                var medals = new List<Medals>
+        {
+            new Medals { Name = "First Movie", Description = "Marcar 1 filme como visto", Image = "path_to_medal_image", AcquiredDate = null },
+            new Medals { Name = "Account Creation", Description = "Criar uma conta", Image = "path_to_medal_image", AcquiredDate = null },
+            // Add more medals as needed
+        };
+
+                context.Medals.AddRange(medals);
+                await context.SaveChangesAsync();
+            }
+        }
+
 
     }
 }

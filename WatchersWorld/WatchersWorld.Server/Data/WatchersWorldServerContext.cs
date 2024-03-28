@@ -9,6 +9,7 @@ using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
 using WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
+using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Data
 {
@@ -31,6 +32,9 @@ namespace WatchersWorld.Server.Data
 
         
         public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
+
+        public DbSet<Medals> Medals { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

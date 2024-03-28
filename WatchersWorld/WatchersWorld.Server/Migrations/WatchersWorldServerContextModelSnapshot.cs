@@ -288,6 +288,31 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("Followers");
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.Medals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("AcquiredDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Medals");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
                 {
                     b.Property<int>("Id")
