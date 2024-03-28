@@ -56,8 +56,9 @@ export class ProfileComponent implements OnInit {
 
   showFollowers: boolean = true;
   showFollowing: boolean = true;
-  showFavorites: boolean = false;
 
+  showFavorites: boolean = true;
+  showAllFavorites: boolean = false;
 
   showMoviesWatched: boolean = true;
   showAllMoviesWatched: boolean = false;
@@ -76,6 +77,8 @@ export class ProfileComponent implements OnInit {
   expandedFollowers: boolean = false;
   expandedFollowing: boolean = false;
 
+  expandedFavoritesList: boolean = false;
+
   expandedMoviesWatchList: boolean = false;
   expandedMoviesToWatchList: boolean = false;
 
@@ -92,6 +95,8 @@ export class ProfileComponent implements OnInit {
   showExpandedSuggestions = false;
 
   categories: MovieCategory[] = [];
+  favoriteMovies: any[] = [];
+  favoriteSeries: any[] = [];
   watchedMovies: any[] = [];
   watchedSeries: any[] = [];
   watchLaterMovies: any[] = [];
@@ -143,9 +148,9 @@ export class ProfileComponent implements OnInit {
         this.setImages(this.currentUsername);
         this.getFollowersList();
         this.getFollowingList();
+        this.getFavorites(this.currentUsername);
         this.getWatchedMedia(this.currentUsername);
         this.getWatchLaterMedia(this.currentUsername);
-
       }
 
 
@@ -387,6 +392,40 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  /*----------------------------------------------------------------  FAVORITOS ---------------------------------------------------------------- */
+
+
+  async getFavorites(username: string): Promise<void> {
+    try {
+      const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
+
+      this.favoriteMovies = favorites.filter(m => m.type === 'movie');
+      this.favoriteSeries = favorites.filter(m => m.type === 'serie');
+
+      for (const movie of this.favoriteMovies) {
+        try {
+          const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+          movie.details = details; // Adicionando detalhes ao objeto movie
+        } catch (error) {
+          console.error('Erro ao buscar detalhes do filme favorito', error);
+        }
+      }
+
+      // Buscar detalhes para séries favoritas
+      for (const series of this.favoriteSeries) {
+        try {
+          const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+          series.details = details; // Adicionando detalhes ao objeto series
+        } catch (error) {
+          console.error('Erro ao buscar detalhes da série favorita', error);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao buscar mídia favorita para usuário', username, error);
+    }
+  }
+
+
   /*----------------------------------------------------------------  MEDIA JÁ VISTA ---------------------------------------------------------------- */
 
   async getWatchedMedia(username: string): Promise<void> {
@@ -459,6 +498,27 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /*----------------------------------------------------------------  Favoritos ----------------------------------------------------------------------- */
+
+  toggleFavoritesList(): void {
+    this.showFavorites = !this.showFavorites;
+  }
+
+  toggleFavoritesListDisplay(): void {
+    this.showAllFavorites = !this.showAllFavorites;
+  }
+
+  toggleFavoritesScroll(): void {
+    this.expandedFavoritesList = !this.expandedFavoritesList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
+    this.toggleMoviesWatchedList();
+
+  }
+
   /*----------------------------------------------------------------  Filmes já vistos ---------------------------------------------------------------- */
 
   toggleMoviesWatchedList(): void {
@@ -476,6 +536,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
   }
 
   /*----------------------------------------------------------------  Filmes a ver -------------------------------------------------------------------- */
@@ -495,6 +556,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /*----------------------------------------------------------------  Séries já vistas ---------------------------------------------------------------- */
@@ -514,6 +577,8 @@ export class ProfileComponent implements OnInit {
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
@@ -534,6 +599,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /* Seguidores */
@@ -549,10 +616,13 @@ export class ProfileComponent implements OnInit {
   toggleFollowersScroll(): void {
     this.expandedFollowers = !this.expandedFollowers;
     this.toggleFollowersDisplay();
-    this.toggleMoviesWatchedListDisplay();
-    this.toggleSeriesWatchedListDisplay();
-    this.toggleSeriesToWatchListDisplay();
-    this.toggleMoviesToWatchListDisplay();
+    this.toggleFollowing();
+    this.toggleMoviesWatchedList();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /* A seguir */
@@ -573,6 +643,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   toggleAllFiveOtherUsers(): void {

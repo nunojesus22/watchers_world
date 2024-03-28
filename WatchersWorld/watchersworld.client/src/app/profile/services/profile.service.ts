@@ -75,6 +75,11 @@ export class ProfileService {
     return this.http.get<boolean>(`${environment.appUrl}/api/profile/alreadyFollows/${usernameAuthenticated}/${usernameToFollow}`, { headers });
   }
 
+  getFavoriteMedia(username: string): Observable<UserMedia[]> {
+    const headers = this.getHeaders();
+    return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-media-favorites-list/${username}`, { headers });
+  }
+
   getUserWatchedMedia(username: string): Observable<UserMedia[]> {
     const headers = this.getHeaders();
     return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-media-watched-list/${username}`, { headers });

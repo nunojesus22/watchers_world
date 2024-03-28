@@ -35,12 +35,13 @@
             <h1 class="mt-2 mb-2">{{getSerieDetailsResult?.name}}</h1>
 
             <div class="buttons-container" style="margin-right:-15%;">
+              <button class="expand-button" *ngIf="isWatched" (click)="toggleFavoriteMedia()">
+                {{ isFavorite ? 'Remover dos Favoritos' : 'Marcar como Favorito' }}
+              </button>
               <button class="expand-button" *ngIf="!isToWatchLater" (click)="markAsWatched()">{{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}</button>
               <button class="expand-button" *ngIf="!isWatched" (click)="markToWatchLater()">{{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}</button>
             </div>
           </div>
-
-
 
           <div class="container">
             <div class="row">
@@ -208,7 +209,16 @@
             <!-- Lista de Comentários -->
             <div class="comment-list" *ngIf="isWatched">
               <h2 class="mb-4">Comentários</h2>
-              <h5 *ngIf="comments.length > 0" class="mb-4"> Número total de comentários: {{comments.length}}</h5>
+              <div class="row-comments">
+                <h3 class="mb-4">Ordenar comentários</h3>
+                <select (change)="sortComments($event)" class="form-select">
+                  <option value="recentes">Mais recentes</option>
+                  <option value="likes">Mais Likes</option>
+                  <option value="antigos">Mais antigos</option>
+                </select>
+              </div>
+              <h5 *ngIf="comments.length > 0" class="mb-4" style="margin-top:10px;"> Número total de comentários: {{comments.length}}</h5>
+
               <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded" [id]="'comment-' + comment?.id">
                 <div class="d-flex justify-content-between">
                   <div class="user-info d-flex align-items-center">
