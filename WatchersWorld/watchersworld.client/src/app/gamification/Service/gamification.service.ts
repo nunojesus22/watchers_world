@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class GamificationserviceService {
+export class GamificationService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -43,8 +43,14 @@ export class GamificationserviceService {
   }
   */
 
+  getUnlockedMedals(userName: string): Observable<any[]> {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${environment.appUrl}/api/gamification/unlocked-medals/${userName}`, { headers });
+  }
 
-  awardMedal(userId: string, medalName: string): Observable<any> {
-    return this.http.post<any>('/api/gamification/AwardMedal', { userId, medalName });
+
+  awardMedal(userName: string, medalName: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post<any>(`${environment.appUrl}/api/gamification/AwardMedal`, { userName, medalName }, { headers });
   }
 }

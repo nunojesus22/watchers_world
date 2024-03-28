@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Data;
+using WatchersWorld.Server.DTOs.Gamification;
 using WatchersWorld.Server.Models.Gamification;
 using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
-    [Microsoft.AspNetCore.Components.Route("api/[controller]")]
+    [Authorize]
+    [Route("api/[controller]")]
     [ApiController]
     public class GamificationController : Controller
     {
@@ -41,5 +43,18 @@ namespace WatchersWorld.Server.Controllers
             public string UserName { get; set; }
             public string MedalName { get; set; }
         }
+
+        [HttpGet("unlocked-medals/{userName}")]
+        public async Task<ActionResult<List<MedalsDto>>> GetUnlockedMedals(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return BadRequest("User ID must be provided.");
+            }
+
+            var medals = await _gamificationService.GetUnlockedMedalsAsync(userName);
+            return Ok(medals);
+        }
+
     }
 }

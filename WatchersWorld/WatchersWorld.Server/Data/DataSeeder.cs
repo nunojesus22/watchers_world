@@ -154,8 +154,8 @@ namespace WatchersWorld.Server.Data
             {
                 var medals = new List<Medals>
         {
-            new Medals { Name = "First Movie", Description = "Marcar 1 filme como visto", Image = "path_to_medal_image", AcquiredDate = null },
-            new Medals { Name = "Account Creation", Description = "Criar uma conta", Image = "../../assets/img/public.png", AcquiredDate = null },
+            new Medals { Name = "First Movie", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
+            new Medals { Name = "Account Creation", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
             // Add more medals as needed
         };
 

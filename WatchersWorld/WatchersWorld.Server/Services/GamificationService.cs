@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Data;
+using WatchersWorld.Server.DTOs.Gamification;
 using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Services
@@ -36,8 +37,23 @@ namespace WatchersWorld.Server.Services
 
             _context.UserMedals.Add(userMedal);
             await _context.SaveChangesAsync();
-
             return true;
+        }
+
+        public async Task<List<MedalsDto>> GetUnlockedMedalsAsync(string userName)
+        {
+            var unlockedMedals = await _context.UserMedals
+            .Where(um => um.UserName == userName)
+                .Select(um => new MedalsDto
+                {
+                    Id = um.Medal.Id,
+                    Name = um.Medal.Name,
+                    Description = um.Medal.Description,
+                    Image = um.Medal.Image,
+                })
+                .ToListAsync();
+
+            return unlockedMedals;
         }
 
     }

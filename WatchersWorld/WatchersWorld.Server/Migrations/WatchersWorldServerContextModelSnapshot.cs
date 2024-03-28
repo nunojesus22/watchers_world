@@ -296,9 +296,6 @@ namespace WatchersWorld.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("AcquiredDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 

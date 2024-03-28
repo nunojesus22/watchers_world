@@ -12,8 +12,6 @@ namespace WatchersWorld.Server.DTOs.Gamification
 
         public string Image { get; set; }
 
-        public DateTime AcquiredDate { get; set; }
-
         public virtual ICollection<UserMedal> UserMedals { get; set; }
 
     }

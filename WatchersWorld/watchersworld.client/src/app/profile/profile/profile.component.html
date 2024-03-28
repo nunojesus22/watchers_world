@@ -10,17 +10,17 @@
           <h1 class="card-title"> </h1>
           <div *ngIf="(authService.user$ | async) as user">
             <div class="user-icons">
-              <a *ngIf="user.username === currentUsername" [routerLink]="['/statistics', user.username]" class="profile-icon">
+              <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
                 <img src="assets/img/statistic.png" alt="Estatísticas">
               </a>
-              <a *ngIf="user.username === currentUsername" routerLink="/chat" class="profile-icon">
+              <a *ngIf="user.username === currentUsername" [routerLink]="['/chat', user.username]" class="profile-icon">
                 <img src="assets/img/messenger.png" alt="Chat">
               </a>
               <a *ngIf="user.username === currentUsername" [routerLink]="['/editProfile', user.username]" class="profile-icon">
                 <img src="assets/img/edit profile.png" alt="Editar perfil">
               </a>
             </div>
-          
+
           </div>
           <div class="user-details">
             <form [formGroup]="profileForm" class="user-details">
@@ -74,7 +74,7 @@
 
               <!-- Botão para enviar mensagem -->
               <button *ngIf="user.username !== currentUsername"
-                      class="send-message-button" [routerLink]="['/chat', currentUsername]">
+                      class="send-message-button" [routerLink]="['/chat', loggedUserName, currentUsername]">
                 Enviar mensagem
               </button>
             </div>
@@ -127,7 +127,6 @@
             </div>
 
             <div class="user-media">
-
               <div class="watched-movies-section" *ngIf="showMoviesWatched">
                 <div class="movies-watched-section-header">
                   <div class="movies-watched-title">
@@ -204,10 +203,30 @@
                   <p class="text-center">Ainda não adicionou séries para ver mais tarde.</p>
                 </ng-template>
               </div>
+              <div class="medals-section">
+                <!--*ngIf="showMedals"-->
+                <div class="medals-section-header">
+                  <div class="medals-title">
+                    <h3>Medalhas:</h3>
+                  </div>
+                  <button *ngIf="medals.length > 0" class="expand-medals-button" [routerLink]="['/gamification']">
+                    Ver mais
+                  </button>
+                </div>
+                <div *ngIf="medals.length > 0; else noMedals" class="medals-user-media">
+                  <ng-container *ngFor="let medal of medals">
+                    <img [src]="medal.image" [alt]="medal.name" class="medal-image">
+                    <p> {{medal.name}}</p>
+                  </ng-container>
+                </div>
+                <ng-template #noMedals>
+                  <p>Ainda não desbloqueou medalhas.</p>
+                </ng-template>
+              </div>
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
     <div class="col-lg-4 side-divs">
       <div class="card mb-3">

@@ -10,6 +10,8 @@ import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movi
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
+import { GamificationService } from '../../gamification/Service/gamification.service';
+
 
 
 interface MovieCategory {
@@ -30,6 +32,7 @@ export class ProfileComponent implements OnInit {
   loggedUserName: string | null = null; // Nome de usuário do usuário logado
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
+  userPhoto: string | undefined;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -102,10 +105,15 @@ export class ProfileComponent implements OnInit {
   isBanned?: boolean;
   selectedUserForBan: string | null = null;
 
+  //MEDALHAS
+  medals: any[] = [];
+
+
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
-    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
+    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService,
+    private gamificationService: GamificationService) { }
 
   ngOnInit(): void {
 
@@ -140,7 +148,7 @@ export class ProfileComponent implements OnInit {
         this.getFollowingList();
         this.getWatchedMedia(this.currentUsername);
         this.getWatchLaterMedia(this.currentUsername);
-
+        this.getMedals(this.currentUsername);
       }
 
 
@@ -180,11 +188,12 @@ export class ProfileComponent implements OnInit {
           this.isProfilePublic = userData.profileStatus;
           this.followersCount = userData.followers;
           this.followingCount = userData.following;
+          this.userPhoto = userData.profilePhoto;
 
           if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
             this.profileService.alreadyFollows(this.loggedUserName, username)
               .subscribe(isFollowing => {
-                this.canViewData = isFollowing; 
+                this.canViewData = isFollowing;
                 resolve();
               }, error => {
                 console.error('Erro ao verificar o status de seguimento', error);
@@ -192,7 +201,7 @@ export class ProfileComponent implements OnInit {
                 reject(error);
               });
           } else {
-           
+
             this.canViewData = true;
             resolve();
           }
@@ -221,7 +230,7 @@ export class ProfileComponent implements OnInit {
   initializeForm() {
     this.profileForm = this.formBuilder.group({
       hobby: [''],
-      gender: ['', {disabled:true}],
+      gender: ['', { disabled: true }],
       date: [''],
     });
   }
@@ -275,8 +284,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
-
   checkFollowingStatus(usernameAuthenticated: string, usernameToCheck: string): void {
     this.profileService.alreadyFollows(usernameAuthenticated, usernameToCheck).subscribe(isFollowing => {
       this.isFollowing = isFollowing;
@@ -285,8 +292,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
   requestToFollow(): void {
     this.followRequestSent = true;
   }
@@ -294,17 +299,17 @@ export class ProfileComponent implements OnInit {
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: (response) => {
+        next: () => {
           if (this.isProfilePublic === 'Private') {
-            console.log('Pedido enviado. Aguardando aprovação.');
+            this.isFollowing = false;
             this.followRequestSent = true;
           } else {
-            console.log('Usuário seguido com sucesso!', response.message);
             this.isFollowing = true;
+            this.followRequestSent = false;
           }
         },
         error: (error) => {
-          console.error('Erro ao enviar pedido para seguir', error);
+          console.error('Erro ao seguir usuário', error);
         }
       });
     } else {
@@ -316,11 +321,8 @@ export class ProfileComponent implements OnInit {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.isFollowing = false;
-            console.log(this.isFollowing);
-            // this.getFollowers(this.currentUsername);
-            console.log('Usuário deixado de seguir com sucesso!', response.message);
           },
           error: (error) => {
             console.error('Erro ao deixar de seguir usuário', error);
@@ -583,6 +585,26 @@ export class ProfileComponent implements OnInit {
   toggleExpandedSuggestions() {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
   }
+
+
+  //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
+
+  getMedals(username: string) {
+    if (this.currentUsername) {
+      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
+        next: (medals) => {
+          this.medals = medals;
+        },
+        error: (err) => {
+          console.error('Error retrieving medals:', err);
+        }
+      });
+    } else {
+      console.error('User ID is not defined');
+    }
+  }
+  
+
 
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
   checkIfUserIsBanned(profile: Profile): boolean {

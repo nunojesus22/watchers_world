@@ -26,7 +26,7 @@
   height: 120px;
   border-radius: 50%;
   border: 3px solid #fff;
-  left:80px;
+  left: 80px;
 }
 
 
@@ -44,30 +44,30 @@
   flex-direction: column; /* Organiza os campos do formulário em coluna */
   justify-content: flex-start; /* Alinha ao início do container */
   align-items: flex-start;
-  padding-top:30px;
-  gap:5px;
-  overflow:hidden;
-  max-width:100%;
+  padding-top: 30px;
+  gap: 5px;
+  overflow: hidden;
+  max-width: 100%;
 }
 
-.user-details form {
-  width: 100%; /* Garante que o formulário ocupe todo o espaço horizontal disponível */
-  box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
-}
+  .user-details form {
+    width: 100%; /* Garante que o formulário ocupe todo o espaço horizontal disponível */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
+  }
 
 .user-icons {
   display: flex;
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
   position: absolute; /* Continua com posicionamento absoluto */
   top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
-  left:350px;
+  left: 550px;
   z-index: 2;
 }
 
 .action-icons {
   display: flex;
   gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
-  margin-bottom:2rem;
+  margin-bottom: 2rem;
 }
 
 /* Ajusta o posicionamento da área de informação do usuário */
@@ -97,7 +97,6 @@ input[type="text"],
 input[type="date"] {
   border: none; /* Remove as bordas */
   outline: none; /* Remove o contorno que aparece ao focar */
-
 }
 
 input[type="text"] {
@@ -183,7 +182,7 @@ input[type="text"] {
   flex-direction: row;
   justify-content: flex-start;
   font-weight: bold;
-  margin-right:300px;
+  margin-right: 300px;
 }
 
 .expand-followers-button,
@@ -279,10 +278,10 @@ input[type="text"] {
 .favorites-down-arrow,
 .movies-down-arrow,
 .series-down-arrow,
-.medals-down-arrow{
+.medals-down-arrow {
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
   color: #4CAEFE;
-  margin-left:20px;
+  margin-left: 20px;
 }
 
 .favorites-right-arrow,
@@ -297,8 +296,8 @@ input[type="text"] {
 .favorites-section-content,
 .movies-section-content,
 .series-section-content,
-.medals-section-content{
-    /* TODO */
+.medals-section-content {
+  /* TODO */
 }
 
 .expand-favorites-button,
@@ -311,7 +310,7 @@ input[type="text"] {
   overflow: hidden; /* Esconde qualquer texto que exceda o tamanho do botão */
   text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
   max-width: 100%; /* Evita que o botão seja maior que o contêiner */
-  margin-right: 50px; 
+  margin-right: 50px;
   margin-top: 10px; /* Espaço acima do botão */
   font-size: 16px;
   background-color: #4CAEFE;
@@ -343,7 +342,7 @@ input[type="text"] {
     flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
     max-width: calc(16.66% - 10px); /* Reduz o tamanho para contar com o padding */
     height: auto; /* Mantém a proporção da imagem */
-    margin-top:10px;
+    margin-top: 10px;
   }
 
 .expanded .rowposter-user-media {
@@ -461,7 +460,7 @@ input[type="text"] {
 /* --------------------------------------------------------------------------------------------------------------------------- */
 
 .side-div-suggestions {
-    width:100%;
+  width: 100%;
 }
 
 .rowposter {
@@ -475,11 +474,11 @@ input[type="text"] {
   height: auto; /* Mantém a proporção da imagem */
 }
 
-.rowposter img {
-  padding: 0 5px; /* Adiciona um pouco de espaço em torno de cada imagem */
-  flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
-  margin-top: 10px;
-}
+  .rowposter img {
+    padding: 0 5px; /* Adiciona um pouco de espaço em torno de cada imagem */
+    flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
+    margin-top: 10px;
+  }
 
 .rowimg {
   object-fit: contain;
@@ -488,11 +487,32 @@ input[type="text"] {
   height: auto; /* Altura auto para manter a proporção da imagem */
   transition: transform 450ms;
 }
+
   .rowimg:hover {
     transform: scale(1.09);
     cursor: pointer;
   }
 
+
+.medals-user-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  max-width: calc(16.66% - 10px); /* Reduz o tamanho para contar com o padding */
+  margin-top: 10px;
+}
+
+  .medals-user-media img {
+    width: 100%;
+    height: auto; /* Mantém a proporção da imagem */
+  }
+
+  .medals-user-media p{
+      margin-top: 8px;
+      text-align: center;
+      font-weight: bold;
+  }
 
 /*-----------------------------------------------MODERADOR----------------------------------------------------------------------*/
 .moderator-panel {

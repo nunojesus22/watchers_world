@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240328202347_WatchersWorld")]
+    [Migration("20240328222833_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -298,9 +298,6 @@ namespace WatchersWorld.Server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("AcquiredDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");

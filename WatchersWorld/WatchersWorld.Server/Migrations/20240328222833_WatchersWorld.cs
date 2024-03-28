@@ -87,8 +87,7 @@ namespace WatchersWorld.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
