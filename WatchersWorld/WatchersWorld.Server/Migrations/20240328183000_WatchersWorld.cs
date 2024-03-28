@@ -377,6 +377,31 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserMedals",
+                columns: table => new
+                {
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MedalId = table.Column<int>(type: "int", nullable: false),
+                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMedals", x => new { x.UserName, x.MedalId });
+                    table.ForeignKey(
+                        name: "FK_UserMedals_Medals_MedalId",
+                        column: x => x.MedalId,
+                        principalTable: "Medals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserMedals_ProfileInfo_UserName",
+                        column: x => x.UserName,
+                        principalTable: "ProfileInfo",
+                        principalColumn: "UserName",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FavoriteActorChoice",
                 columns: table => new
                 {
@@ -564,6 +589,11 @@ namespace WatchersWorld.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserMedals_MedalId",
+                table: "UserMedals",
+                column: "MedalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserMedia_IdListMedia",
                 table: "UserMedia",
                 column: "IdListMedia");
@@ -615,13 +645,10 @@ namespace WatchersWorld.Server.Migrations
                 name: "Followers");
 
             migrationBuilder.DropTable(
-                name: "Medals");
-
-            migrationBuilder.DropTable(
-                name: "ProfileInfo");
-
-            migrationBuilder.DropTable(
                 name: "QuizAttempts");
+
+            migrationBuilder.DropTable(
+                name: "UserMedals");
 
             migrationBuilder.DropTable(
                 name: "UserMedia");
@@ -637,6 +664,12 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "ActorMedia");
+
+            migrationBuilder.DropTable(
+                name: "Medals");
+
+            migrationBuilder.DropTable(
+                name: "ProfileInfo");
 
             migrationBuilder.DropTable(
                 name: "MediaListModel");

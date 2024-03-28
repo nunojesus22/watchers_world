@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Gamification;
 
@@ -31,6 +32,8 @@ namespace WatchersWorld.Server.Data
             await SeedTestUser(context, userManager, roleManager);
 
             await SeedMedalsAsync(context);
+            await SeedUserMedalsAsync(context, userManager);
+
 
         }
 
@@ -152,13 +155,57 @@ namespace WatchersWorld.Server.Data
                 var medals = new List<Medals>
         {
             new Medals { Name = "First Movie", Description = "Marcar 1 filme como visto", Image = "path_to_medal_image", AcquiredDate = null },
-            new Medals { Name = "Account Creation", Description = "Criar uma conta", Image = "path_to_medal_image", AcquiredDate = null },
+            new Medals { Name = "Account Creation", Description = "Criar uma conta", Image = "../../assets/img/public.png", AcquiredDate = null },
             // Add more medals as needed
         };
 
                 context.Medals.AddRange(medals);
                 await context.SaveChangesAsync();
             }
+        }
+
+        private static async Task SeedUserMedalsAsync(WatchersWorldServerContext context, UserManager<User> userManager)
+        {
+            // Assume you have a list of user email addresses and corresponding medals they should receive
+            var userMedalsInfo = new List<(string userEmail, string medalName)>
+        {
+            ("usertest1@gmail.com", "Account Creation"),
+            ("usertest2@gmail.com", "Account Creation"),
+            ("usertest3@gmail.com", "Account Creation"),
+            ("usertest4@gmail.com", "Account Creation"),
+            ("usertest5@gmail.com", "Account Creation"),
+            ("usertest6@gmail.com", "Account Creation"),
+            ("usertest7@gmail.com", "Account Creation"),
+            // Add more pairs as needed
+        };
+
+            foreach (var (userEmail, medalName) in userMedalsInfo)
+            {
+                var user = await userManager.FindByEmailAsync(userEmail);
+                if (user != null)
+                {
+                    var medal = await context.Medals.FirstOrDefaultAsync(m => m.Name == medalName);
+                    if (medal != null)
+                    {
+                        var userMedal = new UserMedal
+                        {
+                            UserName = user.UserName,
+                            MedalId = medal.Id,
+                            AcquiredDate = DateTime.UtcNow // or any other logic to set the date
+                        };
+
+                        // Prevent duplicate medals for the same user
+                        var existingUserMedal = await context.UserMedals
+                            .FirstOrDefaultAsync(um => um.UserName == user.UserName && um.MedalId == medal.Id);
+                        if (existingUserMedal == null)
+                        {
+                            context.UserMedals.Add(userMedal);
+                        }
+                    }
+                }
+            }
+
+            await context.SaveChangesAsync();
         }
 
 

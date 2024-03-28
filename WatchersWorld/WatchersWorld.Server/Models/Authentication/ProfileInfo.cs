@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Models.Authentication
 {
@@ -77,6 +78,9 @@ namespace WatchersWorld.Server.Models.Authentication
         /// Data de término de um eventual banimento do utilizador, se aplicável.
         /// </summary>
         public DateTime? EndBanDate { get; set;}
+
+        public virtual ICollection<UserMedal> UserMedals { get; set; }
+
 
     }
 }

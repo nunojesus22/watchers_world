@@ -1,4 +1,6 @@
-﻿namespace WatchersWorld.Server.DTOs.Gamification
+﻿using WatchersWorld.Server.Models.Gamification;
+
+namespace WatchersWorld.Server.DTOs.Gamification
 {
     public class MedalsDto
     {
@@ -11,6 +13,8 @@
         public string Image { get; set; }
 
         public DateTime AcquiredDate { get; set; }
+
+        public virtual ICollection<UserMedal> UserMedals { get; set; }
 
     }
 }

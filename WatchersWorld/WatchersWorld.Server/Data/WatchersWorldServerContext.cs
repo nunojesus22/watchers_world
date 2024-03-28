@@ -34,6 +34,7 @@ namespace WatchersWorld.Server.Data
         public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
 
         public DbSet<Medals> Medals { get; set; }
+        public DbSet<UserMedal> UserMedals { get; set; }
 
 
 
@@ -56,7 +57,22 @@ namespace WatchersWorld.Server.Data
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
-           
+
+
+
+            modelBuilder.Entity<UserMedal>()
+            .HasKey(um => new { um.UserName, um.MedalId });
+
+            modelBuilder.Entity<UserMedal>()
+                .HasOne(um => um.Profile)
+                .WithMany(u => u.UserMedals)
+                .HasForeignKey(um => um.UserName);
+
+            modelBuilder.Entity<UserMedal>()
+                .HasOne(um => um.Medal)
+                .WithMany(m => m.UserMedals)
+                .HasForeignKey(um => um.MedalId);
+
         }
     }
 }

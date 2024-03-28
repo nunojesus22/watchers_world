@@ -313,6 +313,24 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("Medals");
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.UserMedal", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("MedalId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("AcquiredDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserName", "MedalId");
+
+                    b.HasIndex("MedalId");
+
+                    b.ToTable("UserMedals");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -645,6 +663,25 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.UserMedal", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Gamification.Medals", "Medal")
+                        .WithMany("UserMedals")
+                        .HasForeignKey("MedalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.ProfileInfo", "Profile")
+                        .WithMany("UserMedals")
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medal");
+
+                    b.Navigation("Profile");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
                 {
                     b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "Media")
@@ -772,6 +809,16 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("MediaInfoModel");
 
                     b.Navigation("MediaListModel");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.ProfileInfo", b =>
+                {
+                    b.Navigation("UserMedals");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.Medals", b =>
+                {
+                    b.Navigation("UserMedals");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
