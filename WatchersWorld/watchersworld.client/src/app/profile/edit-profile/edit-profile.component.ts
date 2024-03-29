@@ -7,6 +7,7 @@ import { User } from '../../authentication/models/user';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { GamificationService } from '../../gamification/Service/gamification.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -50,7 +51,8 @@ export class EditProfileComponent {
 
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) {
+    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router,
+    private gamificationService: GamificationService) {
     const today = new Date();
     this.currentDate = today.toISOString().split('T')[0];
     const earliestDate = new Date('1900-01-01');
@@ -272,9 +274,22 @@ export class EditProfileComponent {
 
   }
 
-  saveButton(username: string) {
-    this.updateFormFields(username);
-  }
+ saveButton(username: string) {
+  this.updateFormFields(username);
+
+  // Call the service method to award the medal
+  this.gamificationService.awardMedal(username, 'Editar perfil').subscribe({
+    next: (response) => {
+      // Handle the response, maybe show a success message
+      console.log('Medal awarded successfully:', response);
+    },
+    error: (error) => {
+      // Handle errors, maybe show an error message
+      console.error('Failed to award medal:', error);
+    }
+  });
+ }
+
   
   sendEmailChangePassword() {
     this.authService.user$.pipe(take(1)).subscribe({
