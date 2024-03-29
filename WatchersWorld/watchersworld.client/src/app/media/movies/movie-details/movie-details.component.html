@@ -4,22 +4,39 @@
       <div class="row  position-relative">
         <!-- Backdrop -->
         <div style="position: relative; width: 100%;">
-          <img *ngIf="getMovieDetailResult?.backdrop_path" src="https://image.tmdb.org/t/p/original/{{ getMovieDetailResult.backdrop_path }}" class="backdrop-image" alt="Backdrop Image">
+          <img *ngIf="getMovieDetailResult?.backdrop_path; else defaultImage"
+               src="https://image.tmdb.org/t/p/original/{{ getMovieDetailResult.backdrop_path }}"
+               class="backdrop-image"
+               alt="Backdrop Image">
+
           <ng-template #defaultImage>
-            <img src="../assets/img/55b4a4b5-217a-4408-8934-c611fc89c423.jpg" class="backdrop-image" alt="Default Backdrop Image">
+            <img src="../assets/img/55b4a4b5-217a-4408-8934-c611fc89c423.jpg"
+                 class="backdrop-image"
+                 alt="Default Backdrop Image">
           </ng-template>
-          <img *ngIf="getMovieDetailResult?.poster_path" src="https://image.tmdb.org/t/p/original/{{ getMovieDetailResult.poster_path }}" class="poster-image" alt="Poster Image">
+
+          <img *ngIf="getMovieDetailResult?.poster_path; else defaultPoster"
+               src="https://image.tmdb.org/t/p/original/{{ getMovieDetailResult.poster_path }}"
+               class="poster-image"
+               alt="Poster Image">
+
           <ng-template #defaultPoster>
-            <img src="../assets/img/default_media_pic.jpg" class="poster-image" alt="Default Poster Image">
+            <img src="../assets/img/default_media_pic.jpg"
+                 class="poster-image"
+                 alt="Default Poster Image">
           </ng-template>
         </div>
+
 
         <!-- Movie Details -->
         <div class="col-lg-10 mt-5 p-4">
           <div class="d-flex justify-content-between align-items-center">
             <h1 class="mt-2 mb-2">{{getMovieDetailResult?.title}}</h1>
 
-            <div class="buttons-container" style="margin-right:-15%;" *ngIf="currentUser">
+            <div class="buttons-container" style="margin-right:-15%;">
+              <button class="expand-button" *ngIf="isWatched" (click)="toggleFavoriteMedia()">
+                {{ isFavorite ? 'Remover dos Favoritos' : 'Marcar como Favorito' }}
+              </button>
               <button class="expand-button" *ngIf="!isToWatchLater" (click)="markAsWatched()">{{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}</button>
               <button class="expand-button" *ngIf="!isWatched" (click)="markToWatchLater()">{{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}</button>
             </div>
@@ -180,11 +197,19 @@
             <!-- Lista de Comentários -->
             <div class="comment-list" *ngIf="isWatched">
               <h2 class="mb-4">Comentários</h2>
+              <div class="row-comments">
+                <h3 class="mb-4">Ordenar comentários</h3>
+                <select (change)="sortComments($event)" class="form-select">
+                  <option value="recentes">Mais recentes</option>
+                  <option value="likes">Mais Likes</option>
+                  <option value="antigos">Mais antigos</option>
+                </select>
+              </div>
               <h5 *ngIf="comments.length > 0" class="mb-4"> Número total de comentários: {{comments.length}}</h5>
-              <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded">
+              <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded" [id]="'comment-' + comment?.id">
                 <div class="d-flex justify-content-between">
                   <div class="user-info d-flex align-items-center">
-                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image">
+                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image" [routerLink]="['/profile', comment.userName]">
                     <ng-template #defaultProfile>
                       <img src="../assets/img/joao-pfp.png" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
                     </ng-template>
@@ -213,7 +238,7 @@
                     <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
                       <div class="d-flex justify-content-between" style="margin-top:15px">
                         <div class="user-info d-flex align-items-center">
-                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image">
+                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image" [routerLink]="['/profile', reply.userName]">
                           <strong>{{ reply?.userName }}</strong>
                           <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
                         </div>
@@ -239,5 +264,3 @@
     </div>
   </div>
 </div>
-<br />
-<br />

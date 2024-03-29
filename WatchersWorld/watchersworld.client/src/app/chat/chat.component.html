@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="loggedUserName === myUsername">
   <!-- Chat Section -->
   <div class="row">
     <!-- Contact List -->
@@ -50,6 +50,22 @@
 
         <!-- Messages Area -->
         <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>
+          <div class="message incoming">
+            <span class="message-content">Olá, tudo bem?</span>
+            <span class="message-timestamp">10:35</span>
+          </div>
+          <div class="message outgoing">
+            <span class="message-content">Olá, sim e contigo?</span>
+            <span class="message-timestamp">10:36</span>
+          </div>
+          <div class="message incoming">
+            <span class="message-content">Olá, tudo bem?</span>
+            <span class="message-timestamp">10:35</span>
+          </div>
+          <div class="message outgoing">
+            <span class="message-content">Olá, sim e contigo?</span>
+            <span class="message-timestamp">10:36</span>
+          </div>
           <div class="message incoming">
             <span class="message-content">Olá, tudo bem?</span>
             <span class="message-timestamp">10:35</span>

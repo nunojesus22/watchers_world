@@ -13,7 +13,7 @@
   border-radius: 15px; /* Arredonda os cantos */
   margin-bottom: 1rem; /* Espaço entre os elementos */
   height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
-  background-color: transparent; /* Fundo branco para ambos os painéis */
+  background-color: white; /* Fundo branco para ambos os painéis */
   overflow-y: auto;
   border: 1px solid #f0f0f0;
 }
@@ -51,14 +51,14 @@
 }
 
 .incoming {
-  background-color: white;
+  background-color: #4CAEFE;
   color: black;
   text-align: left;
   float: left;
 }
 
 .outgoing {
-  background-color: white;
+  background-color: #4CAEFE;
   color: black;
   text-align: right;
   float: right;

@@ -65,14 +65,22 @@ h4, h3 {
   margin-top:20px;
 }
 
+.clear-notifications {
+  background-color: #f44336; /* Vermelho */
+  width:250px;
+  margin-right:50px;
+}
+
 /* Botão Aceitar */
 .accept-follow-request {
+    width:150px;
   background-color: #4CAF50; /* Verde */
   /* outras propriedades mantêm-se inalteradas */
 }
 
 /* Botão Recusar */
 .recuse-follow-request {
+    width:150px;
   background-color: #f44336; /* Vermelho */
   /* outras propriedades mantêm-se inalteradas */
 }
@@ -97,7 +105,6 @@ h4, h3 {
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
   margin-left: 5px;
   font-size: 16px;
-  width: 150px;
   height: 40px;
   font-weight: bold;
   margin-top:10px;
@@ -115,3 +122,37 @@ h4, h3 {
     margin-left: 0;
   }
 }
+
+.notification-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center; /* Alinha os itens verticalmente */
+  padding: 10px;
+}
+
+  .notification-item img.avatar {
+    width: 40px; /* Ou o tamanho desejado */
+    height: 40px; /* Mantenha igual à largura para um círculo perfeito */
+    border-radius: 50%; /* Para tornar a imagem redonda */
+    margin-right: 15px;
+  }
+
+  .notification-item p {
+    margin: 0;
+    margin-right: auto; /* Empurra tudo após o parágrafo para a direita */
+  }
+
+  .notification-item small {
+    margin-left: 15px; /* Espaçamento antes da data */
+    white-space: nowrap; /* Previne a quebra de linha da data */
+  }
+
+.no-notifications,
+.user-list h4 {
+  text-align: center; /* Centraliza o texto se não houver notificações ou para o título da lista de pedidos */
+}
+

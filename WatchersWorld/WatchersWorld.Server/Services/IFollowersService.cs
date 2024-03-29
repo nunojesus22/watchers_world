@@ -234,7 +234,7 @@ namespace WatchersWorld.Server.Services
 
             return false;
         }
-
+        
         /// <inheritdoc />
         public async Task<bool> FollowIsPending(string followerId, string followingId)
         {

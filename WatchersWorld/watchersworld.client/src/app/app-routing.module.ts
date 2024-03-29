@@ -14,10 +14,10 @@ import { SearchComponent } from './media/search/search.component';
 import { AdminComponent } from './admin/admin.component';
 import { SeasonDetailsComponent } from './season-details/season-details.component';
 import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
-import { NotificationsComponent } from './notifications/notifications.component';
 import { SuspendedAccountComponent } from './authentication/suspended-account/suspended-account.component';
 import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { NotificationsComponent } from './notifications/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -41,12 +41,11 @@ const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'notifications/:username', component: NotificationsComponent },
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
-  { path: 'chat', component: ChatComponent }, 
-  { path: 'chat/:username', component: ChatComponent },
-
+  { path: 'chat/:myUsername', component: ChatComponent }, 
+  { path: 'chat/:myUsername/:otherUsername', component: ChatComponent },
 
   { path: 'search', component: SearchComponent },
-  { path: 'search/:searchTerm', component: SearchComponent }, // Adiciona esse novo caminho para a pesquisa com o parâmetro searchTerm
+  { path: 'search/:searchTerm', component: SearchComponent },
   { path: 'serie/:id/season', component: SeasonDetailsComponent },
   { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent },
   { path: 'statistics/:username', component: StatisticsComponent },

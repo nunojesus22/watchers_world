@@ -5,7 +5,7 @@ using System.Security.Claims;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.Models.Media;
-using static WatchersWorld.Server.Controllers.MediaController;
+using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
@@ -20,9 +20,96 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MediaController(WatchersWorldServerContext context) : Controller
+    public class MediaController(WatchersWorldServerContext context, INotificationService notificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
+        private readonly INotificationService _notificationService = notificationService;
+
+        /// <summary>
+        /// Marca uma media como favorita por um utilizador.
+        /// </summary>
+        /// <param name="request">Dados da media a ser marcada como favorita.</param>
+        /// <returns>Um resultado indicando se a operação foi bem-sucedida.</returns>
+        [Authorize]
+        [HttpPost("/api/media/mark-as-favorite")]
+        public IActionResult MarkAsFavorite([FromBody] UserMediaDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var mediaInfo = _context.MediaInfoModel.FirstOrDefault(mi => mi.IdMedia == request.MediaId && mi.Type == request.Type);
+            if (mediaInfo == null)
+            {
+                mediaInfo = new MediaInfoModel { IdMedia = request.MediaId, Type = request.Type };
+                _context.MediaInfoModel.Add(mediaInfo);
+                _context.SaveChanges();
+            }
+
+            var existingFavorite = _context.UserMedia
+                .FirstOrDefault(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia && um.IdListMedia == 5);
+
+            if (existingFavorite == null)
+            {
+                var userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = 5 };
+                _context.UserMedia.Add(userMedia);
+                _context.SaveChanges();
+
+                return Ok(new { isFavorite = true });
+            }
+            else
+            {
+                return Ok(new { isFavorite = true, message = "Media já selecionado como favorito." });
+            }
+        }
+
+        /// <summary>
+        /// Remove a marcação de favorito de uma media para um utilizador.
+        /// </summary>
+        /// <param name="request">Dados da media a ser removida da lista de favoritos.</param>
+        /// <returns>Um resultado indicando se a operação foi bem-sucedida.</returns>
+        [Authorize]
+        [HttpPost("/api/media/unmark-favorite")]
+        public IActionResult UnmarkAsFavorite([FromBody] UserMediaDto request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var userMedia = _context.UserMedia
+                .FirstOrDefault(um => um.UserId == userId && um.MediaInfoModel.IdMedia == request.MediaId && um.MediaInfoModel.Type == request.Type && um.IdListMedia == 5);
+
+            if (userMedia == null)
+            {
+                return NotFound(new { message = "Media não encontrado ou já foi removido dos favoritos." });
+            }
+
+            _context.UserMedia.Remove(userMedia);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Media removido dos favoritos com sucesso." });
+        }
+
+
+        /// <summary>
+        /// Verifica se uma media específica foi marcada como favorita por um utilizador.
+        /// </summary>
+        /// <param name="mediaId">Identificador da media.</param>
+        /// <param name="mediaType">Tipo da media (ex: filme ou série).</param>
+        /// <returns>Um resultado indicando se a media foi marcada como favorita.</returns>
+        [Authorize]
+        [HttpGet("/api/media/is-favorite/{mediaId}/{mediaType}")]
+        public IActionResult IsMediaFavorite(int mediaId, string mediaType)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var isFavorite = _context.UserMedia
+                .Any(um => um.UserId == userId && um.MediaInfoModel.IdMedia == mediaId && um.MediaInfoModel.Type == mediaType && um.IdListMedia == 5);
+
+            return Ok(new { isFavorite });
+        }
 
         /// <summary>
         /// Marca uma media como assistida por um utilizador.
@@ -205,6 +292,34 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
+        /// Obtém a lista de medias favoritas de um utilizador.
+        /// </summary>
+        /// <param name="username">Nome de utilizador.</param>
+        /// <returns>Uma lista de medias favoritas do utilizador.</returns>
+        [Authorize]
+        [HttpGet("/api/media/get-media-favorites-list/{username}")]
+        public async Task<ActionResult<IEnumerable<UserMediaDto>>> GetFavoritesMedia(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("Utilizador não encontrado.");
+            }
+
+            var favoritesMedia = await _context.UserMedia
+                .Where(um => um.UserId == user.Id && um.IdListMedia == 5) // IdListMedia 5 para favoritos
+                .Select(um => new UserMediaDto
+                {
+                    MediaId = um.MediaInfoModel.IdMedia,
+                    Type = um.MediaInfoModel.Type,
+                    // Adicione outras propriedades que você precisa enviar de volta ao cliente se necessário
+                })
+                .ToListAsync();
+
+            return Ok(favoritesMedia);
+        }
+
+        /// <summary>
         /// Obtém a lista de medias assistidas por um utilizador.
         /// </summary>
         /// <param name="username">Nome de utilizador.</param>
@@ -325,22 +440,29 @@ namespace WatchersWorld.Server.Controllers
         // Para postar uma resposta a um comentário
         [Authorize]
         [HttpPost("/api/media/add-comment-reply")]
-        public IActionResult ReplyComment([FromBody] CreateCommentDto request)
+        public async Task<IActionResult> ReplyCommentAsync([FromBody] CreateCommentDto request)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
+
+            var parentComment = await _context.Comments
+                .FirstOrDefaultAsync(c => c.Id == request.ParentCommentId);
+            if (parentComment == null) return NotFound("Comentário original não encontrado.");
 
             var reply = new Comment
             {
                 UserId = userId,
                 MediaId = request.MediaId,
                 Text = request.Text,
-                CreatedAt = DateTime.Now,
-                ParentCommentId = request.ParentCommentId // Adicione o ID do comentário pai
+                CreatedAt = DateTime.UtcNow,
+                ParentCommentId = request.ParentCommentId
             };
 
             _context.Comments.Add(reply);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            // Cria a notificação de resposta
+            await _notificationService.CreateReplyNotificationAsync(userId, parentComment.UserId, request.MediaId, parentComment.Id, request.Text);
 
             return Ok(new { message = "Resposta adicionada com sucesso." });
         }
@@ -381,8 +503,6 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Comentário excluído com sucesso." });
         }
-
-
 
 
         // Método auxiliar para remover comentários filhos
@@ -484,33 +604,40 @@ namespace WatchersWorld.Server.Controllers
         }
 
         [Authorize]
-        [HttpGet("/api/media/get-total-comments/{username}")]
-        public async Task<ActionResult<int>> GetTotalCommentsByUser(string username)
+        [HttpGet("/api/media/get-sorted-comments-by-likes/{mediaId}")]
+        public ActionResult<IEnumerable<CommentDto>> GetSortedMostLikedComments(int mediaId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            if (user == null)
+            var result = GetComments(mediaId);
+
+            if (result.Result is OkObjectResult okResult && okResult.Value is IEnumerable<CommentDto> comments)
             {
-                return NotFound("User not found.");
+                var sortedComments = comments
+                    .OrderByDescending(c => c.LikesCount)
+                    .ToList();
+
+                return Ok(sortedComments);
             }
 
-            var totalComments = await _context.Comments.CountAsync(c => c.UserId == user.Id);
-
-            return Ok(totalComments);
+            return result.Result;
         }
 
-        [HttpGet("/api/media/get-total-likes-received/{username}")]
-        public async Task<ActionResult<int>> GetTotalLikesReceived(string username)
+        [HttpGet("/api/media/get-sorted-comments-by-date/{mediaId}")]
+        public ActionResult<IEnumerable<CommentDto>> GetSortedMostOldComments(int mediaId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
-            if (user == null)
+            var result = GetComments(mediaId);
+
+            if (result.Result is OkObjectResult okResult && okResult.Value is IEnumerable<CommentDto> comments)
             {
-                return NotFound("User not found.");
+                var sortedComments = comments
+                    .OrderBy(c => c.CreatedAt)
+                    .ToList();
+
+                return Ok(sortedComments);
             }
 
-            var totalLikesReceived = await _context.CommentLikes.CountAsync(cl => cl.Comment.UserId == user.Id);
-
-            return Ok(totalLikesReceived);
+            return result.Result;
         }
+
     }
 
 

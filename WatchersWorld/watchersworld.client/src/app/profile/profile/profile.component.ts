@@ -10,6 +10,9 @@ import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movi
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
+import { NotificationService } from '../../notifications/services/notification.service';
+import { NotificationModel } from '../../notifications/models/notification-model';
+import { FollowNotificationModel } from '../../notifications/models/follow-notification-model';
 
 
 interface MovieCategory {
@@ -30,6 +33,7 @@ export class ProfileComponent implements OnInit {
   loggedUserName: string | null = null; // Nome de usuário do usuário logado
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
+  userPhoto: string | undefined;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -52,8 +56,9 @@ export class ProfileComponent implements OnInit {
 
   showFollowers: boolean = true;
   showFollowing: boolean = true;
-  showFavorites: boolean = false;
 
+  showFavorites: boolean = true;
+  showAllFavorites: boolean = false;
 
   showMoviesWatched: boolean = true;
   showAllMoviesWatched: boolean = false;
@@ -72,6 +77,8 @@ export class ProfileComponent implements OnInit {
   expandedFollowers: boolean = false;
   expandedFollowing: boolean = false;
 
+  expandedFavoritesList: boolean = false;
+
   expandedMoviesWatchList: boolean = false;
   expandedMoviesToWatchList: boolean = false;
 
@@ -88,6 +95,8 @@ export class ProfileComponent implements OnInit {
   showExpandedSuggestions = false;
 
   categories: MovieCategory[] = [];
+  favoriteMovies: any[] = [];
+  favoriteSeries: any[] = [];
   watchedMovies: any[] = [];
   watchedSeries: any[] = [];
   watchLaterMovies: any[] = [];
@@ -105,6 +114,7 @@ export class ProfileComponent implements OnInit {
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
+    private notificationService: NotificationService,
     private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
 
   ngOnInit(): void {
@@ -138,9 +148,9 @@ export class ProfileComponent implements OnInit {
         this.setImages(this.currentUsername);
         this.getFollowersList();
         this.getFollowingList();
+        this.getFavorites(this.currentUsername);
         this.getWatchedMedia(this.currentUsername);
         this.getWatchLaterMedia(this.currentUsername);
-
       }
 
 
@@ -180,6 +190,7 @@ export class ProfileComponent implements OnInit {
           this.isProfilePublic = userData.profileStatus;
           this.followersCount = userData.followers;
           this.followingCount = userData.following;
+          this.userPhoto = userData.profilePhoto;
 
           if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
             this.profileService.alreadyFollows(this.loggedUserName, username)
@@ -275,8 +286,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
-
   checkFollowingStatus(usernameAuthenticated: string, usernameToCheck: string): void {
     this.profileService.alreadyFollows(usernameAuthenticated, usernameToCheck).subscribe(isFollowing => {
       this.isFollowing = isFollowing;
@@ -285,8 +294,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
   requestToFollow(): void {
     this.followRequestSent = true;
   }
@@ -294,17 +301,17 @@ export class ProfileComponent implements OnInit {
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: (response) => {
+        next: () => {
           if (this.isProfilePublic === 'Private') {
-            console.log('Pedido enviado. Aguardando aprovação.');
+            this.isFollowing = false;
             this.followRequestSent = true;
           } else {
-            console.log('Usuário seguido com sucesso!', response.message);
             this.isFollowing = true;
+            this.followRequestSent = false;
           }
         },
         error: (error) => {
-          console.error('Erro ao enviar pedido para seguir', error);
+          console.error('Erro ao seguir usuário', error);
         }
       });
     } else {
@@ -316,11 +323,8 @@ export class ProfileComponent implements OnInit {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.isFollowing = false;
-            console.log(this.isFollowing);
-            // this.getFollowers(this.currentUsername);
-            console.log('Usuário deixado de seguir com sucesso!', response.message);
           },
           error: (error) => {
             console.error('Erro ao deixar de seguir usuário', error);
@@ -387,6 +391,40 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
+  /*----------------------------------------------------------------  FAVORITOS ---------------------------------------------------------------- */
+
+
+  async getFavorites(username: string): Promise<void> {
+    try {
+      const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
+
+      this.favoriteMovies = favorites.filter(m => m.type === 'movie');
+      this.favoriteSeries = favorites.filter(m => m.type === 'serie');
+
+      for (const movie of this.favoriteMovies) {
+        try {
+          const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+          movie.details = details; // Adicionando detalhes ao objeto movie
+        } catch (error) {
+          console.error('Erro ao buscar detalhes do filme favorito', error);
+        }
+      }
+
+      // Buscar detalhes para séries favoritas
+      for (const series of this.favoriteSeries) {
+        try {
+          const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+          series.details = details; // Adicionando detalhes ao objeto series
+        } catch (error) {
+          console.error('Erro ao buscar detalhes da série favorita', error);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao buscar mídia favorita para usuário', username, error);
+    }
+  }
+
 
   /*----------------------------------------------------------------  MEDIA JÁ VISTA ---------------------------------------------------------------- */
 
@@ -460,6 +498,27 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /*----------------------------------------------------------------  Favoritos ----------------------------------------------------------------------- */
+
+  toggleFavoritesList(): void {
+    this.showFavorites = !this.showFavorites;
+  }
+
+  toggleFavoritesListDisplay(): void {
+    this.showAllFavorites = !this.showAllFavorites;
+  }
+
+  toggleFavoritesScroll(): void {
+    this.expandedFavoritesList = !this.expandedFavoritesList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
+    this.toggleMoviesWatchedList();
+
+  }
+
   /*----------------------------------------------------------------  Filmes já vistos ---------------------------------------------------------------- */
 
   toggleMoviesWatchedList(): void {
@@ -477,6 +536,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
   }
 
   /*----------------------------------------------------------------  Filmes a ver -------------------------------------------------------------------- */
@@ -496,6 +556,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /*----------------------------------------------------------------  Séries já vistas ---------------------------------------------------------------- */
@@ -515,6 +577,8 @@ export class ProfileComponent implements OnInit {
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
@@ -535,6 +599,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /* Seguidores */
@@ -550,10 +616,13 @@ export class ProfileComponent implements OnInit {
   toggleFollowersScroll(): void {
     this.expandedFollowers = !this.expandedFollowers;
     this.toggleFollowersDisplay();
-    this.toggleMoviesWatchedListDisplay();
-    this.toggleSeriesWatchedListDisplay();
-    this.toggleSeriesToWatchListDisplay();
-    this.toggleMoviesToWatchListDisplay();
+    this.toggleFollowing();
+    this.toggleMoviesWatchedList();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /* A seguir */
@@ -574,6 +643,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   toggleAllFiveOtherUsers(): void {

@@ -23,7 +23,8 @@ export class SeriesDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "serie";
-  isWatched: boolean = false; // Adicione esta linha
+  isFavorite: boolean = false;
+  isWatched: boolean = false; 
   isToWatchLater: boolean = false;
   actorIsFavorite: boolean = false;
   comments: any[] = [];
@@ -50,6 +51,7 @@ export class SeriesDetailsComponent {
   isQuizActive: boolean = false;
   showLastScore: boolean = false;
   currentQuestionIndex: number = 0;
+  commentId: string | null = null;
 
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
@@ -60,10 +62,9 @@ export class SeriesDetailsComponent {
       this.getVideo(getParamId);
       this.getSerieCast(getParamId);
       this.getSerieProviders(getParamId);
+      this.checkIfFavorite(getParamId);
       this.checkIfWatched(getParamId);
-      this.checkIfWatched(getParamId); // Novo método para verificar se o filme foi assistido
       this.checkIfWatchedLater(getParamId);
-
       this.checkQuizCompleted(getParamId);
     }
     this.auth.user$.subscribe(user => { this.currentUser = user ? user.username.toLowerCase() : null });
@@ -73,6 +74,21 @@ export class SeriesDetailsComponent {
     this.getFavoriteActorChoicesForMedia(getParamId);
     this.fetchComments();
     this.loadQuizQuestions();
+
+    this.router.queryParams.subscribe(params => {
+      const commentId = params['commentId'];
+      if (commentId) {
+        setTimeout(() => {
+          this.scrollToComment(commentId);
+        }, 100);
+      }
+    });
+  }
+
+  // Método para fazer scroll até o comentário
+  scrollToComment(commentId: string): void {
+    const commentElement = document.getElementById(`comment-${commentId}`);
+    commentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Mostra o pop-up do quiz
@@ -380,6 +396,67 @@ export class SeriesDetailsComponent {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
 
+  checkIfFavorite(mediaId: any) {
+    this.service.checkIfIsFavorite(mediaId, this.type).subscribe({
+      next: (response: any) => {
+        this.isFavorite = response.isFavorite;
+      },
+      error: (error) => {
+        console.error('Erro ao verificar se a mídia é favorita', error);
+      }
+    });
+  }
+
+  toggleFavoriteMedia() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (!mediaId) {
+      console.error('ID de mídia não encontrado');
+      return;
+    }
+
+    if (this.isFavorite) {
+      this.unmarkAsFavorite();
+    } else {
+      this.markAsFavorite();
+    }
+  }
+
+
+  markAsFavorite() {
+    if (!this.isWatched) {
+      alert('Você precisa marcar a mídia como assistida antes de adicioná-la aos favoritos.');
+      return;
+    }
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      // Chama o serviço para marcar como favorito
+      this.service.markMediaAsFavorite(+mediaId, this.type).subscribe({
+        next: (response) => {
+          this.isFavorite = true;
+          console.log('Mídia adicionada aos favoritos com sucesso!');
+        },
+        error: (error) => {
+          console.error('Erro ao marcar a mídia como favorita', error);
+        }
+      });
+    }
+  }
+
+  unmarkAsFavorite() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.service.unmarkMediaAsFavorite(+mediaId, this.type).subscribe({
+        next: (response) => {
+          this.isFavorite = false;
+          console.log('Mídia removida dos favoritos com sucesso!');
+        },
+        error: (error) => {
+          console.error('Erro ao desmarcar a mídia como favorita', error);
+        }
+      });
+    }
+  }
+
   markToWatchLater() {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -430,9 +507,9 @@ export class SeriesDetailsComponent {
       } else {
         this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
           next: (result) => {
-            // Após a ação, atualize os estados e verifique novamente
             this.checkIfWatched(mediaId);
             this.checkIfWatchedLater(mediaId);
+            this.unmarkAsFavorite();
             this.isWatched = false;
             this.showComments = false;
           },
@@ -468,6 +545,71 @@ export class SeriesDetailsComponent {
       });
     }
   }
+
+  getMostLikedComments(mediaId: any): void {
+    this.service.getMostLikedComments(mediaId).subscribe({
+      next: (response: any) => {
+        this.comments = response;
+      },
+      error: (error) => {
+        console.error('Erro ao buscar comentários mais curtidos', error);
+      }
+    });
+  }
+
+  fetchMostLikedComments(): void {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.getMostLikedComments(+mediaId);
+    }
+  }
+
+  getMostOldComments(mediaId: any): void {
+    this.service.getCommentsSortedByDate(mediaId).subscribe({
+      next: (response: any) => {
+        this.comments = response;
+      },
+      error: (error) => {
+      }
+    });
+  }
+
+  fetchCommentsSortedByDate(): void {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.getMostOldComments(+mediaId);
+    }
+  }
+
+  sortComments(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+
+    if (!selectElement.value) {
+      console.error('Valor de ordenação é nulo');
+      return;
+    }
+
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (!mediaId) {
+      console.error('ID de mídia não encontrado');
+      return;
+    }
+
+    switch (selectElement.value) {
+      case 'recentes':
+        this.fetchComments();
+        break;
+      case 'likes':
+        this.fetchMostLikedComments();
+        break;
+      case 'antigos':
+        this.fetchCommentsSortedByDate();
+        break;
+      default:
+        console.error('Opção de ordenação desconhecida:', selectElement.value);
+    }
+  }
+
   newCommentText: string = '';
 
   addComment(): void {
@@ -522,7 +664,6 @@ export class SeriesDetailsComponent {
   likeComment(commentId: number): void {
     this.service.likeComment(commentId).subscribe({
       next: () => {
-        // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
         this.fetchComments();
       },
       error: (error) => console.error('Erro ao curtir o comentário', error)

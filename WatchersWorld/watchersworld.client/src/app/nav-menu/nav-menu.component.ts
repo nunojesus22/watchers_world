@@ -6,6 +6,8 @@ import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-a
 import { ProfileService } from '../profile/services/profile.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FollowerProfile } from '../profile/models/follower-profile';
+import { NotificationService } from '../notifications/services/notification.service';
+import { NotificationModel } from '../notifications/models/notification-model';
 
 @Component({
   selector: 'app-nav-menu',
@@ -18,13 +20,15 @@ export class NavMenuComponent {
   searchQuery: any;
   unsubscribed$: Subject<void> = new Subject<void>();
   pendingFollowRequests: FollowerProfile[] = [];
+  hasUnreadNotifications: boolean = false;
 
-  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+
+  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, private notificationService: NotificationService, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getPendingFollowRequests();
-
+    this.checkForUnreadNotifications();
   }
 
   getPendingFollowRequests() {
@@ -37,6 +41,20 @@ export class NavMenuComponent {
           },
           error: (error) => {
             console.error('Error fetching pending follow requests:', error);
+          }
+        });
+    }
+  }
+
+  checkForUnreadNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.hasUnreadNotifications(this.loggedUserName)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+           this.hasUnreadNotifications = response.hasUnread;
+          },
+          error: (err) => {
           }
         });
     }

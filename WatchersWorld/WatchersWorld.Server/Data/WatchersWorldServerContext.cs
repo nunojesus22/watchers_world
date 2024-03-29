@@ -9,6 +9,7 @@ using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
 using WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
+using WatchersWorld.Server.Models.Notifications;
 
 namespace WatchersWorld.Server.Data
 {
@@ -29,8 +30,11 @@ namespace WatchersWorld.Server.Data
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<CommentDislike> CommentDislikes { get; set; }
 
-        
-        public DbSet<QuizAttempt> QuizAttempts { get; set; } // Adicionado
+        public DbSet<QuizAttempt> QuizAttempts { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<FollowNotification> FollowNotifications { get; set; }
+        public DbSet<ReplyNotification> ReplyNotifications { get; set; }
+        public DbSet<AchievementNotification> AchievementNotifications { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,7 +56,19 @@ namespace WatchersWorld.Server.Data
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)
                 .ValueGeneratedNever();
-           
+
+            modelBuilder.Entity<Notification>()
+                .ToTable("Notifications");
+
+            modelBuilder.Entity<FollowNotification>()
+                .ToTable("FollowNotifications");
+
+            modelBuilder.Entity<ReplyNotification>()
+                .ToTable("ReplyNotifications");
+
+            modelBuilder.Entity<AchievementNotification>()
+                 .ToTable("AchievementNotifications");
+
         }
     }
 }

@@ -1,0 +1,315 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WatchersWorld.Server.Data;
+using WatchersWorld.Server.DTOs.Notifications;
+using WatchersWorld.Server.Models.Notifications;
+
+namespace WatchersWorld.Server.Services
+{
+    /// <summary>
+    /// Define as operações relacionadas à gestão de notificações no sistema.
+    /// </summary>
+    public interface INotificationService
+    {
+        /// <summary>
+        /// Cria uma nova notificação de seguimento.
+        /// </summary>
+        /// <param name="triggeredByUserId">O identificador do usuário que desencadeou o evento (por exemplo, quem começou a seguir).</param>
+        /// <param name="targetUserId">O identificador do usuário que deve receber a notificação.</param>
+        Task<FollowNotificationDto> CreateFollowNotificationAsync(string triggeredByUserId, string targetUserId);
+
+        Task<List<FollowNotificationDto>> GetFollowNotificationsForUserAsync(string targetUserId);
+
+        Task<ReplyNotificationDto> CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText);
+
+        Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string targetUserId);
+
+        Task MarkAllFollowNotificationsAsReadAsync(string username);
+
+        Task MarkAllReplyNotificationsAsReadAsync(string username);
+
+        Task ClearNotificationsForUserAsync(string username);
+
+        Task<bool> HasUnreadNotificationsAsync(string username);
+    }
+
+    /// <summary>
+    /// Implementa as operações definidas pela interface INotificationService, manipulando a lógica de negócios para notificações no sistema.
+    /// </summary>
+    public class NotificationService : INotificationService
+    {
+        private readonly WatchersWorldServerContext _context;
+
+        public NotificationService(WatchersWorldServerContext context)
+        {
+            _context = context;
+        }
+
+
+        public async Task<FollowNotificationDto> CreateFollowNotificationAsync(string triggeredByUserId, string targetUserId)
+        {
+            // Buscar os perfis dos usuários com base nos IDs de usuário
+            var triggeredByUser = await _context.ProfileInfo
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
+            var targetUser = await _context.ProfileInfo
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.UserId == targetUserId);
+
+            if (triggeredByUser == null || targetUser == null)
+            {
+                throw new Exception("Perfil de usuário não encontrado.");
+            }
+
+            var followNotification = new FollowNotification
+            {
+                NotificationId = Guid.NewGuid(),
+                TriggeredByUserId = triggeredByUserId,
+                Message = $"{triggeredByUser.UserName} começou-te a seguir!",
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false,
+                EventType = "NewFollower",
+                TargetUserId = targetUserId,
+            };
+
+
+            var followNotificationDto = new FollowNotificationDto
+            {
+                TriggeredByUserId = triggeredByUserId,
+                Message = followNotification.Message,
+                CreatedAt = followNotification.CreatedAt,
+                IsRead = followNotification.IsRead,
+                EventType = followNotification.EventType,
+                TargetUserId = targetUserId,
+                TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+            };
+
+            await _context.FollowNotifications.AddAsync(followNotification);
+            await _context.SaveChangesAsync();
+            
+            return followNotificationDto;
+        }
+
+        public async Task<List<FollowNotificationDto>> GetFollowNotificationsForUserAsync(string targetUserId)
+        {
+            var notifications = await _context.FollowNotifications
+                .Where(n => n.TargetUserId == targetUserId)
+                .ToListAsync();
+
+            var notificationDtos = new List<FollowNotificationDto>();
+
+            foreach (var notification in notifications)
+            {
+                var triggeredByUser = await _context.ProfileInfo
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.UserId == notification.TriggeredByUserId);
+
+                var notificationDto = new FollowNotificationDto
+                {
+                    TriggeredByUserId = notification.TriggeredByUserId,
+                    Message = notification.Message,
+                    CreatedAt = notification.CreatedAt,
+                    IsRead = notification.IsRead,
+                    EventType = notification.EventType,
+                    TargetUserId = notification.TargetUserId,
+                    TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+                };
+
+                notificationDtos.Add(notificationDto);
+            }
+
+            return notificationDtos;
+        }
+
+
+        public async Task<ReplyNotificationDto> CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText)
+        {
+            var triggeredByUser = await _context.ProfileInfo
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
+            var targetUser = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == targetUserId);
+
+            if (triggeredByUser == null || targetUser == null)
+            {
+                throw new Exception("Perfil de usuário não encontrado.");
+            }
+
+            var mediaInfo = await _context.MediaInfoModel
+             .AsNoTracking()
+             .FirstOrDefaultAsync(p => p.IdMedia == mediaId);
+            var comment = await _context.Comments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == commentId);
+
+            if (mediaInfo == null || comment == null)
+            {
+                throw new Exception("A mídia ou comentário relacionados não foram encontrados.");
+            }
+
+            string message = $"{triggeredByUser.UserName} respondeu ao seu comentário com: \"{commentText}\"";
+
+            var replyNotification = new ReplyNotification
+            {
+                NotificationId = Guid.NewGuid(),
+                TriggeredByUserId = triggeredByUserId,
+                TargetUserId = targetUserId,
+                Message = message,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false,
+                EventType = "Reply",
+                IdTableMedia = mediaInfo.IdTableMedia,
+                IdComment = commentId,
+            };
+
+            var replyNotificationDto = new ReplyNotificationDto
+            {
+                TriggeredByUserId = triggeredByUserId,
+                Message = replyNotification.Message,
+                CreatedAt = replyNotification.CreatedAt,
+                IsRead = replyNotification.IsRead,
+                EventType = replyNotification.EventType,
+                MediaId = mediaInfo.IdMedia,
+                MediaType = mediaInfo.Type,
+                CommentId = comment.Id,
+                TargetUserId = targetUserId,
+                TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+            };
+
+            await _context.ReplyNotifications.AddAsync(replyNotification);
+            await _context.SaveChangesAsync();
+
+            return replyNotificationDto;
+        }
+
+        public async Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string userId)
+        {
+            var notifications = await _context.ReplyNotifications
+                .Where(n => n.TargetUserId == userId)
+                .ToListAsync();
+
+            var notificationDtos = new List<ReplyNotificationDto>();
+
+            foreach (var notification in notifications)
+            {
+                var triggeredByUser = await _context.ProfileInfo
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.UserId == notification.TriggeredByUserId);
+                var mediaInfo = await _context.MediaInfoModel
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.IdTableMedia == notification.IdTableMedia);
+                var commentInfo = await _context.Comments
+                   .AsNoTracking()
+                   .FirstOrDefaultAsync(m => m.Id == notification.IdComment);
+
+                var notificationDto = new ReplyNotificationDto
+                {
+                    TriggeredByUserId = notification.TriggeredByUserId,
+                    Message = notification.Message,
+                    CreatedAt = notification.CreatedAt,
+                    IsRead = notification.IsRead,
+                    EventType = notification.EventType,
+                    MediaId = mediaInfo.IdMedia,
+                    MediaType = mediaInfo.Type,
+                    CommentId = commentInfo.Id,
+                    TargetUserId = notification.TargetUserId,
+                    TriggeredByUserPhoto = triggeredByUser.ProfilePhoto,
+                };
+
+                notificationDtos.Add(notificationDto);
+            }
+
+            return notificationDtos;
+        }
+
+
+        public async Task MarkAllFollowNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
+
+            if (user != null)
+            {
+                var followNotifications = await _context.FollowNotifications
+                    .Where(n => n.TargetUserId == user.Id && !n.IsRead)
+                    .ToListAsync();
+
+                foreach (var notification in followNotifications)
+                {
+                    notification.IsRead = true;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task MarkAllReplyNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
+
+            if (user != null)
+            {
+                var replyNotifications = await _context.ReplyNotifications
+                    .Where(n => n.TargetUserId == user.Id && !n.IsRead)
+                    .ToListAsync();
+
+                foreach (var notification in replyNotifications)
+                {
+                    notification.IsRead = true;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task ClearNotificationsForUserAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
+
+            if (user != null)
+            {
+                var followNotifications = await _context.FollowNotifications
+                    .Where(n => n.TargetUserId == user.Id)
+                    .ToListAsync();
+
+                var replyNotifications = await _context.ReplyNotifications
+                    .Where(n => n.TargetUserId == user.Id)
+                    .ToListAsync();
+
+                _context.FollowNotifications.RemoveRange(followNotifications);
+                _context.ReplyNotifications.RemoveRange(replyNotifications);
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> HasUnreadNotificationsAsync(string username)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserName == username)
+                .SingleOrDefaultAsync();
+
+            if (user == null) return false;
+
+            bool hasUnreadFollowNotifications = await _context.FollowNotifications
+                .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
+
+            bool hasUnreadReplyNotifications = await _context.ReplyNotifications
+                .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
+
+            return hasUnreadFollowNotifications || hasUnreadReplyNotifications;
+        }
+
+
+
+
+    }
+}

@@ -23,7 +23,7 @@
               <div class="season-image-container">
                 <img *ngIf="season.poster_path; else defaultPoster" src="https://image.tmdb.org/t/p/w200/{{ season.poster_path }}" class="img-fluid rounded" alt="Poster da Temporada">
                 <ng-template #defaultPoster >
-                  <img src="../assets/img/default_media_pic.jpg" class="img-fluid rounded" alt="Poster Padrão da Temporada">
+                  <img src="../assets/img/default_media_pic.jpg" class="img-fluid rounded" alt="Poster Padrão da Temporada" style="height:300px; width:200px;">
                 </ng-template>
               </div>
               <div class="season-info p-3">

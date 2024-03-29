@@ -19,7 +19,9 @@ interface MovieCategory {
 export class HomeComponent {
   categories: MovieCategory[] = [];
 
-  constructor(public authService: AuthenticationService, private router: Router, private service: MovieApiServiceComponent, private title: Title, private meta: Meta) { }
+  constructor(public authService: AuthenticationService, private router: Router, private service: MovieApiServiceComponent, private title: Title, private meta: Meta) {
+ 
+}
 
   ngOnInit(): void {
     this.initCategories();
