@@ -32,12 +32,14 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService) : ControllerBase
+    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService, GamificationService gamificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly UserManager<User> _userManager = userManager;
         private readonly ILogger<ProfileController> _logger = logger;
         private readonly IFollowersService _followersService = followersService;
+        private readonly GamificationService _gamificationService = gamificationService;
+
 
         /// <summary>
         /// Obtém informações de perfil para um utilizador especificado.
@@ -153,6 +155,13 @@ namespace WatchersWorld.Server.Controllers
 
                         currentUserProfile.Following++;
                         userProfileToFollow.Followers++;
+
+                        var medalAwarded = await _gamificationService.AwardMedalAsync(userAuthenticated.UserName, "Seguir um utilizador");
+                        if (!medalAwarded)
+                        {
+                            // Handle the case where the medal was not awarded. You may log this or take another action.
+                            _logger.LogWarning("The medal for following a user was not awarded to user with ID {UserId}.", userIdAuthenticated);
+                        }
                     }
                     
                     break;
@@ -160,6 +169,7 @@ namespace WatchersWorld.Server.Controllers
 
             try
             {
+
                 await _context.SaveChangesAsync();
                 return Ok(new { message = "Você agora segue " + usernameToFollow });
             }

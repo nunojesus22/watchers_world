@@ -28,6 +28,14 @@ namespace WatchersWorld.Server.Services
                 return false;
             }
 
+            // Check if the user already has this medal
+            bool alreadyAwarded = await _context.UserMedals
+                .AnyAsync(um => um.UserName == userName && um.MedalId == medal.Id);
+            if (alreadyAwarded)
+            {
+                return false; // User already has this medal, so we don't award it again
+            }
+
             var userMedal = new UserMedal
             {
                 UserName = userName,
@@ -37,8 +45,10 @@ namespace WatchersWorld.Server.Services
 
             _context.UserMedals.Add(userMedal);
             await _context.SaveChangesAsync();
+
             return true;
         }
+
 
         public async Task<List<MedalsDto>> GetUnlockedMedalsAsync(string userName)
         {

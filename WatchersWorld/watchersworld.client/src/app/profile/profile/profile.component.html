@@ -213,11 +213,11 @@
                     Ver mais
                   </button>
                 </div>
-                <div *ngIf="medals.length > 0; else noMedals" class="medals-user-media">
-                  <ng-container *ngFor="let medal of medals">
+                <div *ngIf="medals.length > 0; else noMedals" class="medals-container">
+                  <div *ngFor="let medal of medals" class="medals-user-media">
                     <img [src]="medal.image" [alt]="medal.name" class="medal-image">
-                    <p> {{medal.name}}</p>
-                  </ng-container>
+                    <p>{{ medal.name }}</p>
+                  </div>
                 </div>
                 <ng-template #noMedals>
                   <p>Ainda não desbloqueou medalhas.</p>

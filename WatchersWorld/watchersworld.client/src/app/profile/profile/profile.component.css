@@ -493,25 +493,31 @@ input[type="text"] {
     cursor: pointer;
   }
 
+/*-----------------------------------------------MEDALHAS----------------------------------------------------------------------*/
+
+.medals-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left; /* Center the medals horizontally */
+  gap: 10px; /* Adds space between the medals */
+}
 
 .medals-user-media {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
-  max-width: calc(16.66% - 10px); /* Reduz o tamanho para contar com o padding */
-  margin-top: 10px;
+  max-width: 150px; /* Set a max-width for each medal container */
 }
 
   .medals-user-media img {
-    width: 100%;
-    height: auto; /* Mantém a proporção da imagem */
+    width: 100%; /* Make the image responsive to the container width */
+    height: auto;
   }
 
-  .medals-user-media p{
-      margin-top: 8px;
-      text-align: center;
-      font-weight: bold;
+  .medals-user-media p {
+    margin-top: 8px;
+    text-align: center;
+    font-weight: bold;
   }
 
 /*-----------------------------------------------MODERADOR----------------------------------------------------------------------*/

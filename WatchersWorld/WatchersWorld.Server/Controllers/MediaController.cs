@@ -60,7 +60,13 @@ namespace WatchersWorld.Server.Controllers
                 userMedia.IdListMedia = request.Type == "movie" ? 1 : 2; // Update if already exists
             }
             _context.SaveChanges();
+
+
+
+
             bool isToWatchLater = false;
+
+
 
             return Ok(new { isWatched = true, isToWatchLater });
         }

@@ -154,8 +154,9 @@ namespace WatchersWorld.Server.Data
             {
                 var medals = new List<Medals>
         {
-            new Medals { Name = "Account Creation", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
-            new Medals { Name = "First Movie", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
+            new Medals { Name = "Conta Criada", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
+            new Medals { Name = "Primeiro Filme", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
+            new Medals { Name = "Seguir um utilizador", Description = "Seguir o seu primeiro utilizador", Image = "../../assets/img/medal.png"},
             // Add more medals as needed
         };
 
@@ -169,13 +170,13 @@ namespace WatchersWorld.Server.Data
             // Assume you have a list of user email addresses and corresponding medals they should receive
             var userMedalsInfo = new List<(string userEmail, string medalName)>
         {
-            ("usertest1@gmail.com", "Account Creation"),
-            ("usertest2@gmail.com", "Account Creation"),
-            ("usertest3@gmail.com", "Account Creation"),
-            ("usertest4@gmail.com", "Account Creation"),
-            ("usertest5@gmail.com", "Account Creation"),
-            ("usertest6@gmail.com", "Account Creation"),
-            ("usertest7@gmail.com", "Account Creation"),
+            ("usertest1@gmail.com", "Conta Criada"),
+            ("usertest2@gmail.com", "Conta Criada"),
+            ("usertest3@gmail.com", "Conta Criada"),
+            ("usertest4@gmail.com", "Conta Criada"),
+            ("usertest5@gmail.com", "Conta Criada"),
+            ("usertest6@gmail.com", "Conta Criada"),
+            ("usertest7@gmail.com", "Conta Criada"),
             // Add more pairs as needed
         };
 
