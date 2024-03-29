@@ -7,7 +7,6 @@ import { ProfileService } from '../profile/services/profile.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FollowerProfile } from '../profile/models/follower-profile';
 import { NotificationService } from '../notifications/services/notification.service';
-import { NotificationModel } from '../notifications/models/notification-model';
 
 @Component({
   selector: 'app-nav-menu',

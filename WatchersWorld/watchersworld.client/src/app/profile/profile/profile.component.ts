@@ -11,8 +11,6 @@ import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
 import { NotificationService } from '../../notifications/services/notification.service';
-import { NotificationModel } from '../../notifications/models/notification-model';
-import { FollowNotificationModel } from '../../notifications/models/follow-notification-model';
 
 
 interface MovieCategory {
