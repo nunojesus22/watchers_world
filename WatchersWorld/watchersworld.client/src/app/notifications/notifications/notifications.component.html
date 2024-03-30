@@ -2,64 +2,82 @@
   <h3 class="title-center">Notificações</h3>
   <div class="actions">
     <button (click)="clearAllNotifications()" class="clear-notifications">Limpar Notificações</button>
-    </div>
-    <hr class="divider">
-    <!-- Verificação se existem pedidos pendentes -->
-    <div *ngIf="pendingFollowRequests.length > 0">
-      <div class="user-list">
-        <h4>Número de pedidos para seguir: {{pendingFollowRequests.length}}</h4>
-        <div *ngFor="let request of pendingFollowRequests" class="user">
-          <div class="user-info">
-            <img class="avatar" [src]="request.profilePhoto" [routerLink]="['/profile', request.username]">
-            <p>{{ request.username }}</p>
-            <div class="actions">
-              <button (click)="acceptFollowRequest(request.username)" class="accept-follow-request">Aceitar</button>
-              <button (click)="rejectFollowRequest(request.username)" class="recuse-follow-request">Recusar</button>
-            </div>
+  </div>
+  <hr class="divider">
+  <!-- Verificação se existem pedidos pendentes -->
+  <div *ngIf="pendingFollowRequests.length > 0">
+    <div class="user-list">
+      <h4>Número de pedidos para seguir: {{pendingFollowRequests.length}}</h4>
+      <div *ngFor="let request of pendingFollowRequests" class="user">
+        <div class="user-info">
+          <img class="avatar" [src]="request.profilePhoto" [routerLink]="['/profile', request.username]">
+          <p>{{ request.username }}</p>
+          <div class="actions">
+            <button (click)="acceptFollowRequest(request.username)" class="accept-follow-request">Aceitar</button>
+            <button (click)="rejectFollowRequest(request.username)" class="recuse-follow-request">Recusar</button>
           </div>
         </div>
       </div>
-    </div>
-
-    <!--<div *ngIf="notifications && notifications.length > 0">
-      <button class="clear-notifications" (click)="clearAllNotifications()">
-        Marcar todas como lidas
-      </button>
-    </div>-->
-
-    <div class="notification-panel" *ngIf="followNotifications.length > 0">
-      <h4>Seguidores:</h4>
-      <div class="user-list">
-        <div *ngFor="let notification of followNotifications" class="notification-item">
-          <div class="user-info">
-            <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
-                 [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
-            <p>{{ notification.message }}</p>
-            <small>{{ notification.createdAt | date:'short' }}</small>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="notification-panel" *ngIf="replyNotifications.length > 0">
-      <h4>Respostas aos seus comentários</h4>
-      <div class="user-list">
-        <div *ngFor="let notification of replyNotifications" class="notification-item">
-          <div class="user-info">
-            <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
-                 [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
-            <p>{{ notification.message }}</p>
-            <small>{{ notification.createdAt | date:'short' }}</small>
-            <button [routerLink]="['/' + notification.mediaType, notification.mediaId]"
-                    [queryParams]="{commentId: notification.commentId}"
-                    class="btn btn-primary" style="margin-left: 20px">
-              Ver Comentário
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="followNotifications.length === 0 && replyNotifications.length === 0">
-      <p> Não existem notificações pendentes.</p>
     </div>
   </div>
+
+  <!--<div *ngIf="notifications && notifications.length > 0">
+    <button class="clear-notifications" (click)="clearAllNotifications()">
+      Marcar todas como lidas
+    </button>
+  </div>-->
+
+  <div class="notification-panel" *ngIf="followNotifications.length > 0">
+    <h4>Seguidores:</h4>
+    <div class="user-list">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
+        <div class="user-info">
+          <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
+               [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
+          <p>{{ notification.message }}</p>
+          <small>{{ notification.createdAt | date:'short' }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification-panel" *ngIf="replyNotifications.length > 0">
+    <h4>Respostas aos seus comentários</h4>
+    <div class="user-list">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
+        <div class="user-info">
+          <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
+               [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
+          <p>{{ notification.message }}</p>
+          <small>{{ notification.createdAt | date:'short' }}</small>
+          <button [routerLink]="['/' + notification.mediaType, notification.mediaId]"
+                  [queryParams]="{commentId: notification.commentId}"
+                  class="btn btn-primary" style="margin-left: 20px">
+            Ver Comentário
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification-panel" *ngIf="achievementNotifications.length > 0">
+    <h4>Conquistas:</h4>
+    <div class="user-list">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
+        <div class="user-info">
+          <img class="avatar" [src]="notification.achievementPhoto">
+          <p>{{ notification.message }}</p>
+          <small>{{ notification.createdAt | date:'short' }}</small>
+          <button routerLink="/gamification"
+                  class="btn btn-primary" style="margin-left: 20px">
+            Ver Medalhas
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="pendingFollowRequests.length === 0 && followNotifications.length === 0 && replyNotifications.length === 0 && achievementNotifications.length === 0">
+    <p> Não existem notificações pendentes.</p>
+  </div>
+</div>

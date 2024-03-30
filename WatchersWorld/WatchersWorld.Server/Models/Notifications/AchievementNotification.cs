@@ -1,8 +1,11 @@
-﻿namespace WatchersWorld.Server.Models.Notifications
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WatchersWorld.Server.Models.Notifications
 {
     public class AchievementNotification : Notification
     {
-        public string AchievementName { get; set; }
+        [ForeignKey("UserMedals")]
+        public int UserMedalId { get; set; }
 
         public AchievementNotification()
         {

@@ -210,8 +210,8 @@
             <div class="comment-list" *ngIf="isWatched">
               <h2 class="mb-4">Comentários</h2>
               <div class="row-comments">
-                <h3 class="mb-4">Ordenar comentários</h3>
-                <select (change)="sortComments($event)" class="form-select">
+                <h3 class="mb-4" *ngIf="comments.length > 0">Ordenar comentários</h3>
+                <select *ngIf="comments.length > 0" (change)="sortComments($event)" class="form-select">
                   <option value="recentes">Mais recentes</option>
                   <option value="likes">Mais Likes</option>
                   <option value="antigos">Mais antigos</option>

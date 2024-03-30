@@ -1,4 +1,5 @@
 using Google.Apis.Auth;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Account;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using User = WatchersWorld.Server.Models.Authentication.User;
 
 namespace WatchersWorld.Server.Controllers
 {
@@ -26,7 +29,7 @@ namespace WatchersWorld.Server.Controllers
     /// <param name="config">Application configuration settings.</param>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
-    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger, GamificationService gamificationService) : ControllerBase
+    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger, GamificationService gamificationService, INotificationService notificationService) : ControllerBase
     {
         // Service for generating JWT tokens.
         private readonly JWTService _jwtService = jWTService;
@@ -45,7 +48,7 @@ namespace WatchersWorld.Server.Controllers
         private readonly WatchersWorldServerContext _context = context;
 
         private readonly GamificationService _gamificationService = gamificationService;
-
+        private readonly INotificationService _notificationService = notificationService;
 
         /// <summary>
         /// Renova o token de um utilizador autenticado.
@@ -254,8 +257,6 @@ namespace WatchersWorld.Server.Controllers
                 Followers = 0
             };
 
-            //fazer verificacoes
-
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(userToAdd, "user");
@@ -263,16 +264,21 @@ namespace WatchersWorld.Server.Controllers
                 try
                 {
                     bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Conta Criada");
-                    if (!medalAwarded)
+                    if (medalAwarded)
+                    {
+                        await _notificationService.CreateAchievementNotificationAsync(userToAdd.Id, 1);
+
+                    }
+                    else
                     {
                         // Handle the case where the medal is not awarded, if necessary
                         _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
                     }
+
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "An error occurred while awarding a medal to user {UserName}.", userToAdd.UserName);
-                    // Decide how to handle the error. Do you want to return a failure response or log and continue?
                 }
             }
 
@@ -300,28 +306,20 @@ namespace WatchersWorld.Server.Controllers
         {
             if (model.Provider.Equals(SD.Google))
             {
-                try
+                if (!await GoogleValidatedAsync(model.AccessToken, model.UserId))
                 {
-
-                    if (!GoogleValidatedAsync(model.AccessToken, model.UserId).GetAwaiter().GetResult())
-                    {
-                        return Unauthorized("Unable to register with google");
-                    }
+                    return Unauthorized("Unable to register with Google.");
                 }
-                catch (Exception)
-                {
-                    return Unauthorized("Unable to Register with google");
-                }
-
             }
             else
             {
                 return BadRequest("Invalid Provider");
             }
 
+            // Verificar se o email já está em uso
             if (await CheckEmailExistsAsync(model.Email))
             {
-                return BadRequest(new { Message = "Já existe uma conta associada a esse email. Volte atrás e escolha outro email!", Field = "ThirdPartyEmail" });
+                return BadRequest(new { Message = "Email already associated with an account. Please use a different email!", Field = "Email" });
             }
 
             var userToAdd = new User
@@ -332,36 +330,17 @@ namespace WatchersWorld.Server.Controllers
                 Email = model.Email.ToLower(),
             };
 
-
             var result = await _userManager.CreateAsync(userToAdd);
-
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(userToAdd, "user");
-
-                try
-                {
-                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Conta Criada");
-                    if (!medalAwarded)
-                    {
-                        // Handle the case where the medal is not awarded, if necessary
-                        _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "An error occurred while awarding a medal to user {UserName}.", userToAdd.UserName);
-                    // Decide how to handle the error. Do you want to return a failure response or log and continue?
-                }
+                return BadRequest(result.Errors);
             }
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
-
-            var user = await _userManager.FindByNameAsync(model.Username);
+            await _userManager.AddToRoleAsync(userToAdd, "user");
 
             var profileInfoToAdd = new ProfileInfo
             {
-                UserId = user.Id,
+                UserId = userToAdd.Id, 
                 UserName = model.Username,
                 Description = "Por definir!",
                 Gender = 'M',
@@ -373,12 +352,34 @@ namespace WatchersWorld.Server.Controllers
                 Followers = 0
             };
 
-            //fazer verificacoes
             _context.ProfileInfo.Add(profileInfoToAdd);
             await _context.SaveChangesAsync();
 
+            try
+            {
+                bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Conta Criada");
+                if (medalAwarded)
+                {
+                    await _notificationService.CreateAchievementNotificationAsync(userToAdd.Id, 1);
+
+                }
+                else
+                {
+                    // Handle the case where the medal is not awarded, if necessary
+                    _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while awarding a medal or creating a notification for user {UserName}.", userToAdd.UserName);
+                // Pode optar por retornar uma resposta indicando falha ou simplesmente registrar o erro e continuar
+            }
+
+            // Retornar o DTO do usuário criado
             return CreateApplicationUserDto(userToAdd);
         }
+
 
         /// <summary>
         /// Confirma o endereço de email de um utilizador.

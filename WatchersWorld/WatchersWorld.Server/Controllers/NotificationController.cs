@@ -108,6 +108,29 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { HasUnread = hasUnread });
         }
 
+        [HttpGet("achievementNotifications/{authenticatedUsername}")]
+        public async Task<IActionResult> GetMyAchievementNotifications(string authenticatedUsername)
+        {
+            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+            if (userAuthenticated == null)
+            {
+                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+            }
+
+            var userIdAuthenticated = userAuthenticated.Id;
+            var notifications = await _notificationService.GetAchievementNotificationsForUserAsync(userIdAuthenticated);
+
+            return Ok(notifications);
+        }
+
+        [HttpPost("achievementNotifications/mark-all-as-read/{username}")]
+        public async Task<IActionResult> MarkAllAchievementNotificationsAsRead(string username)
+        {
+            await _notificationService.MarkAllAchievementNotificationsAsReadAsync(username);
+            return Ok(new { message = "All achievement notifications have been marked as read." });
+        }
+
+
 
     }
 }

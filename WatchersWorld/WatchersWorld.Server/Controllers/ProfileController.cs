@@ -114,6 +114,11 @@ namespace WatchersWorld.Server.Controllers
                 var result = await _context.SaveChangesAsync();
 
                 bool medalAwarded = await _gamificationService.AwardMedalAsync(data.UserName, "Editar perfil");
+                if (medalAwarded)
+                {
+                    await _notificationService.CreateAchievementNotificationAsync(data.UserId, 5);
+                }
+
                 if (!medalAwarded)
                 {
                     // Handle the case where the medal is not awarded, if necessary
@@ -164,6 +169,11 @@ namespace WatchersWorld.Server.Controllers
                 userProfileToFollow.Followers++;
 
                 var medalAwarded = await _gamificationService.AwardMedalAsync(userAuthenticated.UserName, "Seguir um utilizador");
+                if (medalAwarded)
+                {
+                    await _notificationService.CreateAchievementNotificationAsync(userIdAuthenticated, 4);
+
+                }
                 if (!medalAwarded)
                 {
                     // Handle the case where the medal was not awarded. You may log this or take another action.
@@ -171,6 +181,7 @@ namespace WatchersWorld.Server.Controllers
                 }
 
                 await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
+
             }
 
             await _context.SaveChangesAsync();

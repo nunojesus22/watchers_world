@@ -6,6 +6,7 @@ import { NotificationModel } from '../models/notification-model';
 import { User } from '../../authentication/models/user';
 import { FollowNotificationModel } from '../models/follow-notification-model';
 import { ReplyNotificationModel } from '../models/reply-notification-model';
+import { AchievementNotificationModel } from '../models/achievement-notification-model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,12 @@ export class NotificationService {
     return this.http.get<ReplyNotificationModel[]>(`${environment.appUrl}/api/notifications/replyNotifications/${username}`, { headers });
   }
 
+  getAchievementNotifications(username: string): Observable<AchievementNotificationModel[]> {
+    const headers = this.getHeaders();
+    return this.http.get<AchievementNotificationModel[]>(`${environment.appUrl}/api/notifications/achievementNotifications/${username}`, { headers });
+  }
+
+
   markAllFollowNotificationsAsRead(username: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${environment.appUrl}/api/notifications/followNotifications/mark-all-as-read/${username}`, {}, { headers });
@@ -59,6 +66,11 @@ export class NotificationService {
   markAllReplyNotificationsAsRead(username: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${environment.appUrl}/api/notifications/replyNotifications/mark-all-as-read/${username}`, {}, { headers });
+  }
+
+  markAllAchievementNotificationsAsRead(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/notifications/achievementNotifications/mark-all-as-read/${username}`, {}, { headers });
   }
 
   clearNotifications(username: string): Observable<any> {

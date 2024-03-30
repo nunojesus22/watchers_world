@@ -26,6 +26,8 @@ namespace WatchersWorld_Teste
         private readonly JWTService _jwtService;
         private readonly EmailService _emailService;
         private readonly GamificationService _gamificationService;
+        private readonly NotificationService _notificationService;
+
 
         public AccountControllerTests(IntegrationTestsFixture fixture)
         {
@@ -36,8 +38,10 @@ namespace WatchersWorld_Teste
             _emailService = fixture.ServiceProvider.GetRequiredService<EmailService>();
             var logger = fixture.ServiceProvider.GetRequiredService<ILogger<AccountController>>();
             _gamificationService = fixture.ServiceProvider.GetService<GamificationService>();
-            
-            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context, logger, _gamificationService);
+            _notificationService = fixture.ServiceProvider.GetService<NotificationService>();
+
+
+            _accountController = new AccountController(_jwtService, _signInManager, _userManager, _emailService, fixture.Configuration, _context, logger, _gamificationService, _notificationService);
             
             fixture.ApplySeedAsync(new AccountControllerTestSeedConfiguration(fixture.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>())).Wait();
         }
