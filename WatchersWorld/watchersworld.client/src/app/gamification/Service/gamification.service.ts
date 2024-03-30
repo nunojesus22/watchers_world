@@ -1,16 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { User } from '../../authentication/models/user';
 import { Observable } from 'rxjs';
+import { MedalsDto } from '../models/MedalsDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GamificationService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  
+
+  constructor(private http: HttpClient) { }
+
+ 
 
   getJWT() {
     const key = localStorage.getItem(environment.userKey);
@@ -36,20 +41,25 @@ export class GamificationService {
 
 
 
-  getUnlockedMedals(userName: string): Observable<any[]> {
+  getUnlockedMedals(userName: string): Observable<MedalsDto[]> {
     const headers = this.getHeaders();
-    return this.http.get<any[]>(`${environment.appUrl}/api/gamification/unlocked-medals/${userName}`, { headers });
+    return this.http.get<MedalsDto[]>(`${environment.appUrl}/api/gamification/unlocked-medals/${userName}`, { headers });
   }
 
 
-  awardMedal(userName: string, medalName: string): Observable<any> {
+  awardMedal(userName: string, medalName: string): Observable<MedalsDto[]> {
     const headers = this.getHeaders();
-    return this.http.post<any>(`${environment.appUrl}/api/gamification/AwardMedal`, { userName, medalName }, { headers });
+    return this.http.post<MedalsDto[]>(`${environment.appUrl}/api/gamification/AwardMedal`, { userName, medalName }, { headers });
   }
 
 
-  getAvailableMedals(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.appUrl}/api/gamification/available-medals`);
+  getAvailableMedals(): Observable<MedalsDto[]> {
+    return this.http.get<MedalsDto[]>(`${environment.appUrl}/api/gamification/available-medals`);
+  }
+
+  getLockedMedals(userName: string): Observable<MedalsDto[]> {
+    const headers = this.getHeaders();
+    return this.http.get<MedalsDto[]>(`${environment.appUrl}/api/gamification/locked-medals/${userName}`, { headers });
   }
 
 }

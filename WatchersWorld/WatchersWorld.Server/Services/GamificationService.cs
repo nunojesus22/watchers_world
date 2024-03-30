@@ -66,5 +66,27 @@ namespace WatchersWorld.Server.Services
             return unlockedMedals;
         }
 
+        public async Task<List<MedalsDto>> GetLockedMedalsAsync(string userName)
+        {
+            // Get a list of all medal IDs that the user has unlocked.
+            var unlockedMedalIds = await _context.UserMedals
+                .Where(um => um.UserName == userName)
+                .Select(um => um.MedalId)
+                .ToListAsync();
+
+            // Get a list of all medals that the user has NOT unlocked.
+            var lockedMedals = await _context.Medals
+                .Where(m => !unlockedMedalIds.Contains(m.Id)) // Filter out medals the user has unlocked
+                .Select(m => new MedalsDto
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Description = m.Description,
+                    Image = m.Image,
+                })
+                .ToListAsync();
+
+            return lockedMedals;
+        }
     }
 }

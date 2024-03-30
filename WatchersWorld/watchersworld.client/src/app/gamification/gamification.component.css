@@ -20,6 +20,7 @@ hr {
   margin-top: 0; /* Optionally remove the top margin if required */
   margin-bottom: 20px; /* Add some space below the line */
   border-radius: 5px;
+  opacity: 1;
 }
 
 
@@ -55,3 +56,26 @@ hr {
   display: block; /* Make the image a block element to allow for margin usage */
   margin: 0 auto; /* Center the image horizontally */
 }
+
+
+.medal.unlocked img {
+  max-width: 100px;
+  height: auto;
+}
+
+.medal.locked {
+  opacity: 0.5; /* Dim the locked medals for visual distinction */
+}
+
+  .medal.locked img {
+    filter: grayscale(100%); /* Optional: make the medal image grayscale */
+  }
+
+.lock-icon {
+  width: 20px; /* Lock icon size */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Align block for margin */
+  margin-top: 5px; /* Space above the icon */
+  margin-bottom: 5px; /* Space below the icon */
+}
+

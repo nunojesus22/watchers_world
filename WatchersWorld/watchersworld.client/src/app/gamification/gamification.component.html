@@ -1,14 +1,24 @@
 <div class="medals-panel">
   <h1>Medalhas</h1>
-  <hr> <!-- Horizontal line -->
+  <hr>
   <div class="medals-list">
-    <div *ngIf="availableMedals?.length">
-      <div class="medal" *ngFor="let medal of availableMedals">
+    <ng-container *ngIf="unlockedMedals.length; else noMedals">
+      <!-- Loop for unlocked medals -->
+      <div *ngFor="let medal of unlockedMedals" class="medal unlocked">
         <img [src]="medal.image" [alt]="medal.name">
         <h3>{{ medal.name }}</h3>
         <p>{{ medal.description }}</p>
       </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="lockedMedals.length; else noMedals">
+      <!-- Loop for locked medals -->
+      <div *ngFor="let medal of lockedMedals" class="medal locked">
+        <img [src]="medal.image" [alt]="medal.name">
+        <h3>{{ medal.name }}</h3>
+        <p>{{ medal.description }}</p>
+        
+      </div>
+    </ng-container>
     <ng-template #noMedals>
       <p>No medals available.</p>
     </ng-template>

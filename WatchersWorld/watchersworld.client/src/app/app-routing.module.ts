@@ -44,7 +44,7 @@ const routes: Routes = [
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
   { path: 'chat/:myUsername', component: ChatComponent }, 
   { path: 'chat/:myUsername/:otherUsername', component: ChatComponent },
-  { path: 'gamification', component: GamificationComponent }, 
+  { path: 'gamification/:username', component: GamificationComponent }, 
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent },
   { path: 'serie/:id/season', component: SeasonDetailsComponent },

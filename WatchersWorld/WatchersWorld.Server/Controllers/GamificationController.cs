@@ -72,5 +72,19 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(medals);
         }
+
+        [HttpGet("locked-medals/{userName}")]
+        public async Task<ActionResult<List<MedalsDto>>> GetLockedMedals(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return BadRequest("User name must be provided.");
+            }
+
+            var lockedMedals = await _gamificationService.GetLockedMedalsAsync(userName);
+            return Ok(lockedMedals);
+        }
+
+
     }
 }
