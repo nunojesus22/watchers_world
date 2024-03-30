@@ -31,6 +31,7 @@ import { SeasonDetailsInfoComponent } from './season-details-info/season-details
 import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
+import { GamificationComponent } from './gamification/gamification.component';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { NotificationsComponent } from './notifications/notifications/notificati
     NotificationsComponent,
     ChatComponent,
     StatisticsComponent,
+    GamificationComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

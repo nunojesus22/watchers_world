@@ -20,7 +20,7 @@
                 <img src="assets/img/edit profile.png" alt="Editar perfil">
               </a>
             </div>
-          
+
           </div>
           <div class="user-details">
             <form [formGroup]="profileForm" class="user-details">
@@ -225,10 +225,30 @@
                   <p class="text-center">Ainda não adicionou séries para ver mais tarde.</p>
                 </ng-template>
               </div>
+              <div class="medals-section">
+                <!--*ngIf="showMedals"-->
+                <div class="medals-section-header">
+                  <div class="medals-title">
+                    <h3>Medalhas:</h3>
+                  </div>
+                  <button *ngIf="medals.length > 0" class="expand-medals-button" [routerLink]="['/gamification']">
+                    Ver mais
+                  </button>
+                </div>
+                <div *ngIf="medals.length > 0; else noMedals" class="medals-container">
+                  <div *ngFor="let medal of medals" class="medals-user-media">
+                    <img [src]="medal.image" [alt]="medal.name" class="medal-image">
+                    <p>{{ medal.name }}</p>
+                  </div>
+                </div>
+                <ng-template #noMedals>
+                  <p>Ainda não desbloqueou medalhas.</p>
+                </ng-template>
+              </div>
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
     <div class="col-lg-4 side-divs">
       <div class="card mb-3">

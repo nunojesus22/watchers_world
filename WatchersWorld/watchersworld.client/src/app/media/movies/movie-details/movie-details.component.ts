@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { FavoriteActor } from '../../media-models/fav-actor';
 import { Actor } from '../../media-models/actor';
+import { GamificationService } from '../../../gamification/Service/gamification.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -15,7 +16,7 @@ import { Actor } from '../../media-models/actor';
   styleUrl: './movie-details.component.css'
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService) {
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService, private gamificationService: GamificationService) {
     this.setUserRole();
   }
 
@@ -427,6 +428,20 @@ export class MovieDetailsComponent {
             this.checkIfWatchedLater(mediaId);
             this.isWatched = true;
             this.showComments = true;
+            if (this.currentUser) {
+              this.gamificationService.awardMedal(this.currentUser, 'Primeiro Filme').subscribe({
+                next: (response) => {
+                  // Handle the response, maybe show a success message
+                  console.log('Medal awarded successfully:', response);
+                },
+                error: (error) => {
+                  // Handle errors, maybe show an error message
+                  console.error('Failed to award medal:', error);
+                }
+              });
+            } else {
+              console.error('Current user is null, cannot award medal.');
+            }
           },
           error: (error) => {
             console.error('Erro ao marcar filme como assistido', error);

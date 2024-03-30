@@ -18,6 +18,7 @@ import { SuspendedAccountComponent } from './authentication/suspended-account/su
 import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
+import { GamificationComponent } from './gamification/gamification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -43,7 +44,7 @@ const routes: Routes = [
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
   { path: 'chat/:myUsername', component: ChatComponent }, 
   { path: 'chat/:myUsername/:otherUsername', component: ChatComponent },
-
+  { path: 'gamification', component: GamificationComponent }, 
   { path: 'search', component: SearchComponent },
   { path: 'search/:searchTerm', component: SearchComponent },
   { path: 'serie/:id/season', component: SeasonDetailsComponent },

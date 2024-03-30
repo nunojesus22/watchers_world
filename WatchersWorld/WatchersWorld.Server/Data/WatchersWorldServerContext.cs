@@ -10,6 +10,7 @@ using WatchersWorld.Server.Models.Media.RatingMedia;
 using WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Notifications;
+using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Data
 {
@@ -35,6 +36,10 @@ namespace WatchersWorld.Server.Data
         public DbSet<FollowNotification> FollowNotifications { get; set; }
         public DbSet<ReplyNotification> ReplyNotifications { get; set; }
         public DbSet<AchievementNotification> AchievementNotifications { get; set; }
+
+        public DbSet<Medals> Medals { get; set; }
+        public DbSet<UserMedal> UserMedals { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,6 +73,20 @@ namespace WatchersWorld.Server.Data
 
             modelBuilder.Entity<AchievementNotification>()
                  .ToTable("AchievementNotifications");
+
+
+            modelBuilder.Entity<UserMedal>()
+            .HasKey(um => new { um.UserName, um.MedalId });
+
+            modelBuilder.Entity<UserMedal>()
+                .HasOne(um => um.Profile)
+                .WithMany(u => u.UserMedals)
+                .HasForeignKey(um => um.UserName);
+
+            modelBuilder.Entity<UserMedal>()
+                .HasOne(um => um.Medal)
+                .WithMany(m => m.UserMedals)
+                .HasForeignKey(um => um.MedalId);
 
         }
     }

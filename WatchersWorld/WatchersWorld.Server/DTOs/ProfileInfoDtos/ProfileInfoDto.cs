@@ -1,4 +1,6 @@
-﻿namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
+﻿using WatchersWorld.Server.Models.Gamification;
+
+namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
 {
     /// <summary>
     /// DTO (Objeto de Transferência de Dados) que representa as informações de perfil de um utilizador.
@@ -61,6 +63,8 @@
         /// </summary>
         public DateTime EndBanDate { get; set; }
 
+
+        public virtual ICollection<UserMedal> UserMedals { get; set; }
 
     }
 }

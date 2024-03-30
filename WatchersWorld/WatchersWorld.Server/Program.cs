@@ -21,6 +21,7 @@ builder.Services.AddScoped<IFollowersService, FollowersService>();
 builder.Services.AddScoped<IFavoriteActorService, FavoriteActorService>();
 builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<GamificationService>();
 
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
@@ -35,7 +36,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddIdentityCore<User>(options =>
 {
-    //configurações email
+    //configuraï¿½ï¿½es email
     options.Password.RequiredLength = 8;
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -50,9 +51,9 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddEntityFrameworkStores<WatchersWorldServerContext>() //usar o nosso context
     .AddSignInManager<SignInManager<User>>() //usar o SignInManager
     .AddUserManager<UserManager<User>>() //usar o UserManager
-    .AddDefaultTokenProviders(); //Usado para criar os tokens de confirmação de email
+    .AddDefaultTokenProviders(); //Usado para criar os tokens de confirmaï¿½ï¿½o de email
 
-//Permite fazer a autenticação usando os JWT
+//Permite fazer a autenticaï¿½ï¿½o usando os JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -62,7 +63,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                                                 ValidateIssuerSigningKey = true,
                                                 //o issuer signing key baseada na JWT:Key
                                                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-                                                //o issuer é o link do projeto api 
+                                                //o issuer ï¿½ o link do projeto api 
                                                 ValidIssuer = builder.Configuration["JWT:Issuer"],
                                                 ValidateIssuer = true,
                                                 ValidateAudience = false,

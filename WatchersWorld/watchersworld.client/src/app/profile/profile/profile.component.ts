@@ -11,6 +11,8 @@ import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
 import { NotificationService } from '../../notifications/services/notification.service';
+import { GamificationService } from '../../gamification/Service/gamification.service';
+
 
 
 interface MovieCategory {
@@ -109,11 +111,16 @@ export class ProfileComponent implements OnInit {
   isBanned?: boolean;
   selectedUserForBan: string | null = null;
 
+  //MEDALHAS
+  medals: any[] = [];
+
+
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
     private notificationService: NotificationService,
-    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
+    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService, 
+    private gamificationService: GamificationService) { }
 
   ngOnInit(): void {
 
@@ -149,6 +156,7 @@ export class ProfileComponent implements OnInit {
         this.getFavorites(this.currentUsername);
         this.getWatchedMedia(this.currentUsername);
         this.getWatchLaterMedia(this.currentUsername);
+        this.getMedals(this.currentUsername);
       }
 
 
@@ -193,7 +201,7 @@ export class ProfileComponent implements OnInit {
           if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
             this.profileService.alreadyFollows(this.loggedUserName, username)
               .subscribe(isFollowing => {
-                this.canViewData = isFollowing; 
+                this.canViewData = isFollowing;
                 resolve();
               }, error => {
                 console.error('Erro ao verificar o status de seguimento', error);
@@ -201,7 +209,7 @@ export class ProfileComponent implements OnInit {
                 reject(error);
               });
           } else {
-           
+
             this.canViewData = true;
             resolve();
           }
@@ -230,7 +238,7 @@ export class ProfileComponent implements OnInit {
   initializeForm() {
     this.profileForm = this.formBuilder.group({
       hobby: [''],
-      gender: ['', {disabled:true}],
+      gender: ['', { disabled: true }],
       date: [''],
     });
   }
@@ -652,6 +660,26 @@ export class ProfileComponent implements OnInit {
   toggleExpandedSuggestions() {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
   }
+
+
+  //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
+
+  getMedals(username: string) {
+    if (this.currentUsername) {
+      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
+        next: (medals) => {
+          this.medals = medals;
+        },
+        error: (err) => {
+          console.error('Error retrieving medals:', err);
+        }
+      });
+    } else {
+      console.error('User ID is not defined');
+    }
+  }
+  
+
 
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
   checkIfUserIsBanned(profile: Profile): boolean {
