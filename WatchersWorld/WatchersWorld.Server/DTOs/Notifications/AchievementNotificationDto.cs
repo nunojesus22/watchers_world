@@ -5,10 +5,13 @@
     /// </summary>
     public class AchievementNotificationDto : NotificationDto
     {
+
+        public int UserMedalId { get; set; }
+
         /// <summary>
-        /// Nome da conquista.
+        /// Nome de usuário que desencadeou a notificação.
         /// </summary>
-        public string AchievementName { get; set; }
+        public string AchievementPhoto { get; set; }
 
         public AchievementNotificationDto()
         {

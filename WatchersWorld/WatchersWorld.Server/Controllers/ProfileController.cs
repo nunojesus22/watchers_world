@@ -164,6 +164,8 @@ namespace WatchersWorld.Server.Controllers
                 }
 
                 await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
+                await _notificationService.CreateAchievementNotificationAsync(userIdAuthenticated, 4);
+
             }
 
             await _context.SaveChangesAsync();

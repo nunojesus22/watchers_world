@@ -1,7 +1,8 @@
 import { NotificationModel } from "./notification-model";
 
 export class AchievementNotificationModel extends NotificationModel {
-  achievementName: string;
+  userMedalId: number;
+  achievementPhoto: string;
 
   constructor(
     triggeredByUserId: string,
@@ -9,9 +10,11 @@ export class AchievementNotificationModel extends NotificationModel {
     createdAt: Date,
     isRead: boolean,
     eventType: string,
-    achievementName: string
+    userMedalId: number,
+    achievementPhoto: string
   ) {
     super(triggeredByUserId, message, createdAt, isRead, eventType);
-    this.achievementName = achievementName;
+    this.achievementPhoto = achievementPhoto;
+    this.userMedalId = userMedalId;
   }
 }

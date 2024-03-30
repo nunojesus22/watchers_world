@@ -209,7 +209,7 @@ namespace WatchersWorld.Server.Controllers
         /// <returns>Um resultado indicando se a operação foi bem-sucedida.</returns>
         [Authorize]
         [HttpPost("/api/media/mark-to-watch-later")]
-        public IActionResult MarkToWatchLater([FromBody] UserMediaDto request)
+        public async Task<IActionResult> MarkToWatchLater([FromBody] UserMediaDto request)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();

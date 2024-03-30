@@ -33,6 +33,12 @@ namespace WatchersWorld.Server.Services
         Task ClearNotificationsForUserAsync(string username);
 
         Task<bool> HasUnreadNotificationsAsync(string username);
+
+        Task<AchievementNotificationDto> CreateAchievementNotificationAsync(string triggeredByUserId, int userMedalId);
+
+        Task<List<AchievementNotificationDto>> GetAchievementNotificationsForUserAsync(string userId);
+
+        Task MarkAllAchievementNotificationsAsReadAsync(string username);
     }
 
     /// <summary>
@@ -268,6 +274,24 @@ namespace WatchersWorld.Server.Services
             }
         }
 
+        public async Task MarkAllAchievementNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            if (user != null)
+            {
+                var achievementNotifications = await _context.AchievementNotifications
+                    .Where(n => n.TriggeredByUserId == user.Id && !n.IsRead)
+                    .ToListAsync();
+
+                foreach (var notification in achievementNotifications)
+                {
+                    notification.IsRead = true;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task ClearNotificationsForUserAsync(string username)
         {
             var user = await _context.Users
@@ -284,8 +308,12 @@ namespace WatchersWorld.Server.Services
                     .Where(n => n.TargetUserId == user.Id)
                     .ToListAsync();
 
+                var achievementNotifications = await _context.AchievementNotifications
+            .Where(n => n.TriggeredByUserId == user.Id).ToListAsync();
+
                 _context.FollowNotifications.RemoveRange(followNotifications);
                 _context.ReplyNotifications.RemoveRange(replyNotifications);
+                _context.AchievementNotifications.RemoveRange(achievementNotifications);
 
                 await _context.SaveChangesAsync();
             }
@@ -305,8 +333,92 @@ namespace WatchersWorld.Server.Services
             bool hasUnreadReplyNotifications = await _context.ReplyNotifications
                 .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
 
-            return hasUnreadFollowNotifications || hasUnreadReplyNotifications;
+            bool hasUnreadAchievementyNotifications = await _context.AchievementNotifications
+            .AnyAsync(n => n.TriggeredByUserId == user.Id && !n.IsRead);
+
+            return hasUnreadFollowNotifications || hasUnreadReplyNotifications || hasUnreadAchievementyNotifications;
         }
+
+        public async Task<AchievementNotificationDto> CreateAchievementNotificationAsync(string triggeredByUserId, int medalId)
+        {
+            var user = await _context.ProfileInfo
+              .AsNoTracking()
+              .FirstOrDefaultAsync(u => u.UserId == triggeredByUserId);
+
+            var medal = await _context.Medals
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == medalId);
+
+            if (medal == null || user == null)
+            {
+                throw new Exception("Medalha ou usuário não encontrados.");
+            }
+
+            string message = $"Desbloqueaste a medalha: {medal.Name}";
+
+            var notification = new AchievementNotification
+            {
+                NotificationId = Guid.NewGuid(),
+                TriggeredByUserId = triggeredByUserId,
+                Message = message,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false,
+                EventType = "Achievement",
+                UserMedalId = medalId
+            };
+
+            var achievementNotificationDto = new AchievementNotificationDto
+            {
+                TriggeredByUserId = notification.TriggeredByUserId,
+                Message = notification.Message,
+                CreatedAt = notification.CreatedAt,
+                IsRead = notification.IsRead,
+                EventType = notification.EventType,
+                UserMedalId = medalId,
+                AchievementPhoto = medal.Image
+            };
+
+            await _context.AchievementNotifications.AddAsync(notification);
+            await _context.SaveChangesAsync();
+
+            return achievementNotificationDto;
+        }
+
+        public async Task<List<AchievementNotificationDto>> GetAchievementNotificationsForUserAsync(string userId)
+        {
+            var notifications = await _context.AchievementNotifications
+                .Where(n => n.TriggeredByUserId == userId)
+                .ToListAsync();
+
+            var notificationDtos = new List<AchievementNotificationDto>();
+
+            foreach (var notification in notifications)
+            {
+                var triggeredByUser = await _context.ProfileInfo
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.UserId == notification.TriggeredByUserId);
+                var medal = await _context.Medals
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.Id == notification.UserMedalId);
+
+                var notificationDto = new AchievementNotificationDto
+                {
+                    TriggeredByUserId = notification.TriggeredByUserId,
+                    Message = notification.Message,
+                    CreatedAt = notification.CreatedAt,
+                    IsRead = notification.IsRead,
+                    EventType = notification.EventType,
+                    UserMedalId = medal.Id,
+                    AchievementPhoto = medal.Image
+                };
+
+                notificationDtos.Add(notificationDto);
+            }
+
+            return notificationDtos;
+        }
+
+
 
 
 

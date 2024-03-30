@@ -9,6 +9,7 @@ import { NotificationService } from '../services/notification.service';
 import { NotificationModel } from '../models/notification-model';
 import { FollowNotificationModel } from '../models/follow-notification-model';
 import { ReplyNotificationModel } from '../models/reply-notification-model';
+import { AchievementNotificationModel } from '../models/achievement-notification-model';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class NotificationsComponent {
   pendingFollowRequests: FollowerProfile[] = [];
   followNotifications: FollowNotificationModel[] = [];
   replyNotifications: ReplyNotificationModel[] = [];
+  achievementNotifications: AchievementNotificationModel[] = [];
 
 
   constructor(private profileService: ProfileService, public authService: AuthenticationService, public notificationService: NotificationService, private route: ActivatedRoute) { }
@@ -44,6 +46,7 @@ export class NotificationsComponent {
 
     this.loadFollowNotifications();
     this.loadReplyNotifications();
+    this.loadAchievementNotifications();
     setTimeout(() => {
       this.markNotificationsAsRead();
     }, 1000);
@@ -143,11 +146,33 @@ export class NotificationsComponent {
     }
   }
 
+  loadAchievementNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.getAchievementNotifications(this.loggedUserName)
+        .subscribe({
+          next: (notifications) => {
+            if (notifications && notifications.length > 0) {
+              this.achievementNotifications = notifications;
+              console.log('Notificações de conquista recebidas:', notifications);
+            } else {
+              this.achievementNotifications = [];
+              console.log('Não há notificações de conquista.');
+            }
+          },
+          error: (err) => {
+            console.error('Erro ao buscar notificações de conquista:', err);
+          }
+        });
+    }
+  }
+
   markNotificationsAsRead(): void {
     if (this.loggedUserName) {
       this.notificationService.markAllFollowNotificationsAsRead(this.loggedUserName).subscribe(() => {
       });
       this.notificationService.markAllReplyNotificationsAsRead(this.loggedUserName).subscribe(() => {
+      });
+      this.notificationService.markAllAchievementNotificationsAsRead(this.loggedUserName).subscribe(() => {
       });
     }
   }
@@ -157,6 +182,7 @@ export class NotificationsComponent {
       this.notificationService.clearNotifications(this.loggedUserName).subscribe(() => {
         this.followNotifications = [];
         this.replyNotifications = [];
+        this.achievementNotifications = [];
         console.log('Todas as notificações foram limpas.');
       });
     }
