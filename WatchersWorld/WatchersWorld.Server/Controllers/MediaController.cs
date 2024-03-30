@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -20,10 +21,13 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MediaController(WatchersWorldServerContext context, INotificationService notificationService) : ControllerBase
+    public class MediaController(WatchersWorldServerContext context, INotificationService notificationService, ILogger<MediaController> logger, GamificationService gamificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly INotificationService _notificationService = notificationService;
+        private readonly GamificationService _gamificationService = gamificationService;
+        private readonly ILogger<MediaController> _logger = logger;
+
 
         /// <summary>
         /// Marca uma media como favorita por um utilizador.
@@ -118,25 +122,30 @@ namespace WatchersWorld.Server.Controllers
         /// <returns>Um resultado indicando se a operação foi bem-sucedida.</returns>
         [Authorize]
         [HttpPost("/api/media/mark-watched")]
-        public IActionResult MarkAsWatched([FromBody] UserMediaDto request)
+        public async Task<IActionResult> MarkAsWatched([FromBody] UserMediaDto request)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
 
-            var mediaInfo = _context.MediaInfoModel.FirstOrDefault(mi => mi.IdMedia == request.MediaId && mi.Type == request.Type);
+            var mediaInfo = await _context.MediaInfoModel
+                .FirstOrDefaultAsync(mi => mi.IdMedia == request.MediaId && mi.Type == request.Type);
+
             if (mediaInfo == null)
             {
                 mediaInfo = new MediaInfoModel { IdMedia = request.MediaId, Type = request.Type };
                 _context.MediaInfoModel.Add(mediaInfo);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             // Remove from 'watch later' list if exists
-            var existingWatchLaterEntry = _context.UserMedia.FirstOrDefault(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia && (um.IdListMedia == 3 || um.IdListMedia == 4));
+            var existingWatchLaterEntry = await _context.UserMedia
+                .FirstOrDefaultAsync(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia && (um.IdListMedia == 3 || um.IdListMedia == 4));
             if (existingWatchLaterEntry != null) _context.UserMedia.Remove(existingWatchLaterEntry);
 
             // Add to 'watched' list or update existing entry
-            var userMedia = _context.UserMedia.FirstOrDefault(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia);
+            var userMedia = await _context.UserMedia
+                .FirstOrDefaultAsync(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia);
+
             if (userMedia == null)
             {
                 userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 1 : 2 };
@@ -146,17 +155,29 @@ namespace WatchersWorld.Server.Controllers
             {
                 userMedia.IdListMedia = request.Type == "movie" ? 1 : 2; // Update if already exists
             }
-            _context.SaveChanges();
 
+            await _context.SaveChangesAsync(); // Make sure changes are saved before awarding medals
 
+            var user = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
+            // Determine which medal to award based on the type of media
+            string medalName = request.Type == "movie" ? "Primeiro Filme" : "Primeira Série";
 
-            bool isToWatchLater = false;
+            // Award the appropriate medal
+            var medalAwarded = await _gamificationService.AwardMedalAsync(user.UserName, medalName);
+            if (!medalAwarded)
+            {
+                // Log this information or handle it accordingly
+                _logger.LogWarning("Failed to award medal {MedalName} to user {UserName}.", medalName, user.UserName);
+            }
 
-
+            bool isToWatchLater = false; // Determine if it is to watch later
 
             return Ok(new { isWatched = true, isToWatchLater });
         }
+
 
         /// <summary>
         /// Verifica se uma media específica foi marcada como assistida por um utilizador.

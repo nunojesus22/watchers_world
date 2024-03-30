@@ -262,7 +262,7 @@ namespace WatchersWorld.Server.Controllers
 
                 try
                 {
-                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Account Creation");
+                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Conta Criada");
                     if (!medalAwarded)
                     {
                         // Handle the case where the medal is not awarded, if necessary

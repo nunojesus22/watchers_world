@@ -500,20 +500,6 @@ export class SeriesDetailsComponent {
             this.checkIfWatchedLater(mediaId);
             this.isWatched = true;
             this.showComments = true;
-            if (this.currentUser) {
-              this.gamificationService.awardMedal(this.currentUser, 'Primeira Série').subscribe({
-                next: (response) => {
-                  // Handle the response, maybe show a success message
-                  console.log('Medal awarded successfully:', response);
-                },
-                error: (error) => {
-                  // Handle errors, maybe show an error message
-                  console.error('Failed to award medal:', error);
-                }
-              });
-            } else {
-              console.error('Current user is null, cannot award medal.');
-            }
           },
           error: (error) => {
             console.error('Erro ao marcar filme como assistido', error);
