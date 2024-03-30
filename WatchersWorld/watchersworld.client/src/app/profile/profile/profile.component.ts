@@ -113,6 +113,7 @@ export class ProfileComponent implements OnInit {
 
   //MEDALHAS
   medals: any[] = [];
+  showAllMedals = false;
 
 
   constructor(private profileService: ProfileService,
@@ -679,7 +680,7 @@ export class ProfileComponent implements OnInit {
     }
   }
   
-
+ 
 
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
   checkIfUserIsBanned(profile: Profile): boolean {

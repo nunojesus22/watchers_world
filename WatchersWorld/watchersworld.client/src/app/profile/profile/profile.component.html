@@ -236,7 +236,7 @@
                   </button>
                 </div>
                 <div *ngIf="medals.length > 0; else noMedals" class="medals-container">
-                  <div *ngFor="let medal of medals" class="medals-user-media">
+                  <div *ngFor="let medal of showAllMedals ? medals : medals.slice(0, 4)" class="medals-user-media">
                     <img [src]="medal.image" [alt]="medal.name" class="medal-image">
                     <p>{{ medal.name }}</p>
                   </div>
