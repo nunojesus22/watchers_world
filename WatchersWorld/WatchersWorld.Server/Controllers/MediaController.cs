@@ -174,13 +174,14 @@ namespace WatchersWorld.Server.Controllers
                 await _notificationService.CreateAchievementNotificationAsync(userId, medalId);
 
             }
-            else
+
+            if (!medalAwarded)
             {
                 // Log this information or handle it accordingly
                 _logger.LogWarning("Failed to award medal {MedalName} to user {UserName}.", medalName, user.UserName);
             }
 
-            bool isToWatchLater = false; // Determine if it is to watch later
+            bool isToWatchLater = false; 
 
             return Ok(new { isWatched = true, isToWatchLater });
         }

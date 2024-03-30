@@ -234,7 +234,6 @@ export class EditProfileComponent {
         });
         if(this.loggedUserName)
         this.getUserProfileInfo(this.loggedUserName);
-
       },
       error => {
         if (error.error.errors) {

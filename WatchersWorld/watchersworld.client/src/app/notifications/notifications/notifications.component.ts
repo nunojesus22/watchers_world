@@ -31,6 +31,7 @@ export class NotificationsComponent {
   replyNotifications: ReplyNotificationModel[] = [];
   achievementNotifications: AchievementNotificationModel[] = [];
 
+  allNotifications: any[] = [];
 
   constructor(private profileService: ProfileService, public authService: AuthenticationService, public notificationService: NotificationService, private route: ActivatedRoute) { }
 
@@ -113,6 +114,7 @@ export class NotificationsComponent {
           next: (notifications) => {
             if (notifications && notifications.length > 0) {
               this.followNotifications = notifications;
+              this.combineAndSortNotifications();
               console.log('Notificações de seguimento recebidas:', notifications);
             } else {
               this.followNotifications = [];
@@ -133,6 +135,7 @@ export class NotificationsComponent {
           next: (notifications) => {
             if (notifications && notifications.length > 0) {
               this.replyNotifications = notifications;
+              this.combineAndSortNotifications();
               console.log('Notificações de resposta recebidas:', notifications);
             } else {
               this.replyNotifications = [];
@@ -153,6 +156,7 @@ export class NotificationsComponent {
           next: (notifications) => {
             if (notifications && notifications.length > 0) {
               this.achievementNotifications = notifications;
+              this.combineAndSortNotifications();
               console.log('Notificações de conquista recebidas:', notifications);
             } else {
               this.achievementNotifications = [];
@@ -186,6 +190,18 @@ export class NotificationsComponent {
         console.log('Todas as notificações foram limpas.');
       });
     }
+  }
+
+  combineAndSortNotifications(): void {
+    const allNotifications = [
+      ...this.followNotifications,
+      ...this.replyNotifications,
+      ...this.achievementNotifications,
+    ];
+
+    allNotifications.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    this.allNotifications = allNotifications;
   }
 
 

@@ -30,7 +30,7 @@
   <div class="notification-panel" *ngIf="followNotifications.length > 0">
     <h4>Seguidores:</h4>
     <div class="user-list">
-      <div *ngFor="let notification of followNotifications" class="notification-item">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
         <div class="user-info">
           <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
@@ -44,7 +44,7 @@
   <div class="notification-panel" *ngIf="replyNotifications.length > 0">
     <h4>Respostas aos seus comentários</h4>
     <div class="user-list">
-      <div *ngFor="let notification of replyNotifications" class="notification-item">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
         <div class="user-info">
           <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
@@ -63,7 +63,7 @@
   <div class="notification-panel" *ngIf="achievementNotifications.length > 0">
     <h4>Conquistas:</h4>
     <div class="user-list">
-      <div *ngFor="let notification of achievementNotifications" class="notification-item">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
         <div class="user-info">
           <img class="avatar" [src]="notification.achievementPhoto">
           <p>{{ notification.message }}</p>
@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <div *ngIf="followNotifications.length === 0 && replyNotifications.length === 0 || achievementNotifications.length === 0">
+  <div *ngIf="pendingFollowRequests.length === 0 && followNotifications.length === 0 && replyNotifications.length === 0 && achievementNotifications.length === 0">
     <p> Não existem notificações pendentes.</p>
   </div>
 </div>
