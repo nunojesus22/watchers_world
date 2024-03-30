@@ -113,6 +113,13 @@ namespace WatchersWorld.Server.Controllers
 
                 var result = await _context.SaveChangesAsync();
 
+                bool medalAwarded = await _gamificationService.AwardMedalAsync(data.UserName, "Editar perfil");
+                if (!medalAwarded)
+                {
+                    // Handle the case where the medal is not awarded, if necessary
+                    _logger.LogWarning("Medal was not awarded for user {UserName}.", data.UserName);
+                }
+
                 if (result > 0)
                     return Ok(new JsonResult(new { title = "Perfil atualizado", 
                         message = "Os seus dados foram alterados com sucesso." }));

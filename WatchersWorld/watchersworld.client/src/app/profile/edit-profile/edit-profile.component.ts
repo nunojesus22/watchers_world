@@ -49,6 +49,9 @@ export class EditProfileComponent {
   currentDate: string;
   minDate: string;
 
+  medals: any[] = [];
+
+
   constructor(private profileService: ProfileService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService, private router: Router,
@@ -275,19 +278,8 @@ export class EditProfileComponent {
   }
 
  saveButton(username: string) {
-  this.updateFormFields(username);
-
-  // Call the service method to award the medal
-  this.gamificationService.awardMedal(username, 'Editar perfil').subscribe({
-    next: (response) => {
-      // Handle the response, maybe show a success message
-      console.log('Medal awarded successfully:', response);
-    },
-    error: (error) => {
-      // Handle errors, maybe show an error message
-      console.error('Failed to award medal:', error);
-    }
-  });
+   this.updateFormFields(username);
+   this.getMedals(username);
  }
 
   
@@ -326,5 +318,21 @@ export class EditProfileComponent {
 
   toggleMedals() {
     this.showMedals = !this.showMedals;
+  }
+
+
+  getMedals(username: string) {
+    if (this.currentUsername) {
+      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
+        next: (medals) => {
+          this.medals = medals;
+        },
+        error: (err) => {
+          console.error('Error retrieving medals:', err);
+        }
+      });
+    } else {
+      console.error('User ID is not defined');
+    }
   }
 }
