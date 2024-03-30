@@ -144,28 +144,7 @@ namespace WatchersWorld.Server.Controllers
             var result = await _followersService.Follow(userIdAuthenticated, userIdToFollow);
             if (!result)
             {
-                case false:
-                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
-                case true:
-                    var isPending = await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
-
-                    if (!isPending)
-                    {
-                        var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
-                        var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
-
-                        currentUserProfile.Following++;
-                        userProfileToFollow.Followers++;
-
-                        var medalAwarded = await _gamificationService.AwardMedalAsync(userAuthenticated.UserName, "Seguir um utilizador");
-                        if (!medalAwarded)
-                        {
-                            // Handle the case where the medal was not awarded. You may log this or take another action.
-                            _logger.LogWarning("The medal for following a user was not awarded to user with ID {UserId}.", userIdAuthenticated);
-                        }
-                    }
-                    
-                    break;
+                return BadRequest("Não foi possível seguir o utilizador pretendido.");
             }
 
             var isApproved = !await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
@@ -177,15 +156,14 @@ namespace WatchersWorld.Server.Controllers
                 currentUserProfile.Following++;
                 userProfileToFollow.Followers++;
 
-                await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
+                var medalAwarded = await _gamificationService.AwardMedalAsync(userAuthenticated.UserName, "Seguir um utilizador");
+                if (!medalAwarded)
+                {
+                    // Handle the case where the medal was not awarded. You may log this or take another action.
+                    _logger.LogWarning("The medal for following a user was not awarded to user with ID {UserId}.", userIdAuthenticated);
+                }
 
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Você agora segue " + usernameToFollow });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ocorreu um erro ao seguir o utilizador.");
-                return StatusCode(500, "Não foi possível seguir o utilizador.");
+                await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
             }
 
             await _context.SaveChangesAsync();
