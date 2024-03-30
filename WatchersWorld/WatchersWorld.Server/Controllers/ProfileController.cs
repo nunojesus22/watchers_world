@@ -114,6 +114,8 @@ namespace WatchersWorld.Server.Controllers
                 var result = await _context.SaveChangesAsync();
 
                 bool medalAwarded = await _gamificationService.AwardMedalAsync(data.UserName, "Editar perfil");
+                await _notificationService.CreateAchievementNotificationAsync(data.UserId, 5);
+
                 if (!medalAwarded)
                 {
                     // Handle the case where the medal is not awarded, if necessary

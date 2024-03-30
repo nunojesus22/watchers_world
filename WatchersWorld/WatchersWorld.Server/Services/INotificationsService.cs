@@ -349,6 +349,11 @@ namespace WatchersWorld.Server.Services
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == medalId);
 
+            bool alreadyAwarded = await _context.UserMedals
+                .AnyAsync(um => um.UserName == user.UserName && um.MedalId == medal.Id);
+           
+            if (alreadyAwarded) { throw new Exception("Medalha já conquistada."); }
+
             if (medal == null || user == null)
             {
                 throw new Exception("Medalha ou usuário não encontrados.");

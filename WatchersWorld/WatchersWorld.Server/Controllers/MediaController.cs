@@ -7,6 +7,7 @@ using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Media;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WatchersWorld.Server.Controllers
 {
@@ -164,10 +165,16 @@ namespace WatchersWorld.Server.Controllers
 
             // Determine which medal to award based on the type of media
             string medalName = request.Type == "movie" ? "Primeiro Filme" : "Primeira Série";
+            int medalId = request.Type == "movie" ? 2 : 3;
 
             // Award the appropriate medal
             var medalAwarded = await _gamificationService.AwardMedalAsync(user.UserName, medalName);
-            if (!medalAwarded)
+            if (medalAwarded)
+            {
+                await _notificationService.CreateAchievementNotificationAsync(userId, medalId);
+
+            }
+            else
             {
                 // Log this information or handle it accordingly
                 _logger.LogWarning("Failed to award medal {MedalName} to user {UserName}.", medalName, user.UserName);

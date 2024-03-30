@@ -11,6 +11,7 @@ using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Account;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using User = WatchersWorld.Server.Models.Authentication.User;
 
 namespace WatchersWorld.Server.Controllers
@@ -256,19 +257,19 @@ namespace WatchersWorld.Server.Controllers
                 Followers = 0
             };
 
-            var createdUser = await _userManager.FindByNameAsync(userToAdd.UserName);
-            var userId = createdUser.Id;
-
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(userToAdd, "user");
 
                 try
                 {
-                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Account Creation");
-                    var achievementNotification = await _notificationService.CreateAchievementNotificationAsync(userId, 1);
+                    bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Conta Criada");
+                    if (medalAwarded)
+                    {
+                        await _notificationService.CreateAchievementNotificationAsync(userToAdd.Id, 1);
 
-                    if (!medalAwarded)
+                    }
+                    else
                     {
                         // Handle the case where the medal is not awarded, if necessary
                         _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
@@ -356,15 +357,18 @@ namespace WatchersWorld.Server.Controllers
 
             try
             {
-                bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Account Created");
+                bool medalAwarded = await _gamificationService.AwardMedalAsync(userToAdd.UserName, "Conta Criada");
                 if (medalAwarded)
                 {
-                    await _notificationService.CreateAchievementNotificationAsync(userToAdd.Id, 1); // Supondo que '1' seja o ID da medalha
+                    await _notificationService.CreateAchievementNotificationAsync(userToAdd.Id, 1);
+
                 }
                 else
                 {
+                    // Handle the case where the medal is not awarded, if necessary
                     _logger.LogWarning("Medal was not awarded for user {UserName}.", userToAdd.UserName);
                 }
+
             }
             catch (Exception ex)
             {
