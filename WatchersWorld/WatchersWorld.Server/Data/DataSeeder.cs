@@ -156,7 +156,7 @@ namespace WatchersWorld.Server.Data
         {
             new Medals { Name = "Conta Criada", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
             new Medals { Name = "Primeiro Filme", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
-            new Medals { Name = "Primeira Série", Description = "Editar o perfil pela primeira vez", Image = "../../assets/img/medal.png"},
+            new Medals { Name = "Primeira Série", Description = "Marcar 1 série como visto", Image = "../../assets/img/medal.png"},
             new Medals { Name = "Seguir um utilizador", Description = "Seguir o seu primeiro utilizador", Image = "../../assets/img/medal.png"},
             new Medals { Name = "Editar perfil", Description = "Editar o perfil pela primeira vez", Image = "../../assets/img/medal.png"},
             // Add more medals as needed
