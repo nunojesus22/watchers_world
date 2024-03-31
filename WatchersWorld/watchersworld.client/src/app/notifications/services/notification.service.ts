@@ -7,6 +7,7 @@ import { User } from '../../authentication/models/user';
 import { FollowNotificationModel } from '../models/follow-notification-model';
 import { ReplyNotificationModel } from '../models/reply-notification-model';
 import { AchievementNotificationModel } from '../models/achievement-notification-model';
+import { MessageNotificationModel } from '../models/message-notification-model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,12 +37,6 @@ export class NotificationService {
     return headers;
   }
 
-  // Método para criar uma notificação de seguir um usuário
-  createFollowNotification(usernameAuthenticated: string, usernameToFollow: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.post(`${environment.appUrl}/api/notifications/create-notification/${usernameAuthenticated}/${usernameToFollow}`, {}, { headers });
-  }
-
   getFollowNotificationsForUser(authenticatedUsername: string): Observable<FollowNotificationModel[]> {
     const headers = this.getHeaders();
     return this.http.get<FollowNotificationModel[]>(`${environment.appUrl}/api/notifications/followNotifications/${authenticatedUsername}`, { headers });
@@ -57,6 +52,10 @@ export class NotificationService {
     return this.http.get<AchievementNotificationModel[]>(`${environment.appUrl}/api/notifications/achievementNotifications/${username}`, { headers });
   }
 
+  getMessageNotificationsForUser(authenticatedUsername: string): Observable<MessageNotificationModel[]> {
+    const headers = this.getHeaders();
+    return this.http.get<MessageNotificationModel[]>(`${environment.appUrl}/api/notifications/messageNotifications/${authenticatedUsername}`, { headers });
+  }
 
   markAllFollowNotificationsAsRead(username: string): Observable<any> {
     const headers = this.getHeaders();
@@ -71,6 +70,11 @@ export class NotificationService {
   markAllAchievementNotificationsAsRead(username: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post(`${environment.appUrl}/api/notifications/achievementNotifications/mark-all-as-read/${username}`, {}, { headers });
+  }
+
+  markAllMessageNotificationsAsRead(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/notifications/messageNotifications/mark-all-as-read/${username}`, {}, { headers });
   }
 
   clearNotifications(username: string): Observable<any> {

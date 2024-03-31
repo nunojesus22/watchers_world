@@ -35,6 +35,8 @@ namespace WatchersWorld.Server.Data
         public DbSet<FollowNotification> FollowNotifications { get; set; }
         public DbSet<ReplyNotification> ReplyNotifications { get; set; }
         public DbSet<AchievementNotification> AchievementNotifications { get; set; }
+        public DbSet<MessageNotification> MessageNotifications { get; set; }
+
 
         public DbSet<Medals> Medals { get; set; }
         public DbSet<UserMedal> UserMedals { get; set; }

@@ -21,12 +21,6 @@
     </div>
   </div>
 
-  <!--<div *ngIf="notifications && notifications.length > 0">
-    <button class="clear-notifications" (click)="clearAllNotifications()">
-      Marcar todas como lidas
-    </button>
-  </div>-->
-
   <div class="notification-panel" *ngIf="followNotifications.length > 0">
     <h4>Seguidores:</h4>
     <div class="user-list">
@@ -77,7 +71,24 @@
     </div>
   </div>
 
-  <div *ngIf="pendingFollowRequests.length === 0 && followNotifications.length === 0 && replyNotifications.length === 0 && achievementNotifications.length === 0">
+  <div class="notification-panel" *ngIf="messageNotifications.length > 0">
+    <h4>Mensagens:</h4>
+    <div class="user-list">
+      <div *ngFor="let notification of allNotifications" class="notification-item">
+        <div class="user-info">
+          <img class="avatar" [src]="notification.triggeredByUserPhoto">
+          <p>{{ notification.message }}</p>
+          <small>{{ notification.createdAt | date:'short' }}</small>
+          <button routerLink="/"
+                  class="btn btn-primary" style="margin-left: 20px">
+            Ver Mensagem
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="pendingFollowRequests.length === 0 && followNotifications.length === 0 && replyNotifications.length === 0 && achievementNotifications.length === 0 && messageNotifications.length === 0">
     <p> Não existem notificações pendentes.</p>
   </div>
 </div>
