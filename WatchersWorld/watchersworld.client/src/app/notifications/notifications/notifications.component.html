@@ -24,12 +24,16 @@
   <div class="notification-panel" *ngIf="followNotifications.length > 0">
     <h4>Seguidores:</h4>
     <div class="user-list">
-      <div *ngFor="let notification of allNotifications" class="notification-item">
+      <div *ngFor="let notification of followNotifications" class="notification-item">
         <div class="user-info">
-          <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
+          <img class="avatar" [src]="notification.triggeredByUserPhoto"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p>{{ notification.message }}</p>
           <small>{{ notification.createdAt | date:'short' }}</small>
+          <button [routerLink]="['/profile', getUserNameFromMessage(notification.message)]"
+                  class="btn btn-primary" style="margin-left: 20px">
+            Ver Perfil
+          </button>
         </div>
       </div>
     </div>
@@ -38,9 +42,9 @@
   <div class="notification-panel" *ngIf="replyNotifications.length > 0">
     <h4>Respostas aos seus comentários</h4>
     <div class="user-list">
-      <div *ngFor="let notification of allNotifications" class="notification-item">
+      <div *ngFor="let notification of replyNotifications" class="notification-item">
         <div class="user-info">
-          <img class="avatar" [src]="notification.triggeredByUserPhoto || 'default-avatar.png'"
+          <img class="avatar" [src]="notification.triggeredByUserPhoto"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p>{{ notification.message }}</p>
           <small>{{ notification.createdAt | date:'short' }}</small>
@@ -57,12 +61,12 @@
   <div class="notification-panel" *ngIf="achievementNotifications.length > 0">
     <h4>Conquistas:</h4>
     <div class="user-list">
-      <div *ngFor="let notification of allNotifications" class="notification-item">
+      <div *ngFor="let notification of achievementNotifications" class="notification-item">
         <div class="user-info">
-          <img class="avatar" [src]="notification.achievementPhoto">
+          <img class="avatar" [src]="notification.achievementPhoto"  [routerLink]="['/gamification', currentUsername]">
           <p>{{ notification.message }}</p>
           <small>{{ notification.createdAt | date:'short' }}</small>
-          <button routerLink="/gamification"
+          <button [routerLink]="['/gamification', currentUsername]"
                   class="btn btn-primary" style="margin-left: 20px">
             Ver Medalhas
           </button>
@@ -74,12 +78,12 @@
   <div class="notification-panel" *ngIf="messageNotifications.length > 0">
     <h4>Mensagens:</h4>
     <div class="user-list">
-      <div *ngFor="let notification of allNotifications" class="notification-item">
+      <div *ngFor="let notification of messageNotifications" class="notification-item">
         <div class="user-info">
-          <img class="avatar" [src]="notification.triggeredByUserPhoto">
+          <img class="avatar" [src]="notification.triggeredByUserPhoto"  [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p>{{ notification.message }}</p>
           <small>{{ notification.createdAt | date:'short' }}</small>
-          <button routerLink="/"
+          <button [routerLink]="['/chat', getUserNameFromMessage(notification.message)]"
                   class="btn btn-primary" style="margin-left: 20px">
             Ver Mensagem
           </button>
