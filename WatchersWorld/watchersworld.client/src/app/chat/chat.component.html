@@ -23,7 +23,7 @@
                 <div class="user-item">
                   <img class="other-users-user-photo" [src]="userProfile.profilePhoto">
                   <span class="other-users-user-name">{{ userProfile.userName }}</span>
-                  <span class="last-message-time">14:00</span>
+                  <span class="last-message-time">{{ userProfile.lastMessage!.sentAt | date:'HH:mm' }}</span>
                 </div>
               </li>
             </ng-container>
@@ -50,33 +50,10 @@
 
         <!-- Messages Area -->
         <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>
-          <div class="message incoming">
-            <span class="message-content">Olá, tudo bem?</span>
-            <span class="message-timestamp">10:35</span>
-          </div>
-          <div class="message outgoing">
-            <span class="message-content">Olá, sim e contigo?</span>
-            <span class="message-timestamp">10:36</span>
-          </div>
-          <div class="message incoming">
-            <span class="message-content">Olá, tudo bem?</span>
-            <span class="message-timestamp">10:35</span>
-          </div>
-          <div class="message outgoing">
-            <span class="message-content">Olá, sim e contigo?</span>
-            <span class="message-timestamp">10:36</span>
-          </div>
-          <div class="message incoming">
-            <span class="message-content">Olá, tudo bem?</span>
-            <span class="message-timestamp">10:35</span>
-          </div>
-          <div class="message outgoing">
-            <span class="message-content">Olá, sim e contigo?</span>
-            <span class="message-timestamp">10:36</span>
-          </div>
-          <div *ngFor="let message of messages" class="message" [class.outgoing]="message.outgoing">
-            <span class="message-content">{{ message.content }}</span>
-            <span class="message-timestamp">{{ message.timestamp }}</span>
+
+          <div *ngFor="let message of messages" class="message" [ngClass]="{'incoming': message.sendUsername === selectedUsername, 'outgoing': message.sendUsername !== selectedUsername}">
+            <span class="message-content">{{ message.text }}</span>
+            <span class="message-timestamp">{{ message.sentAt | date:'HH:mm, dd/MM/yyyy' }}</span>
           </div>
           <!-- More messages here -->
         </div>

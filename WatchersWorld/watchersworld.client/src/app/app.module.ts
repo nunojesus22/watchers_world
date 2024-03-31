@@ -32,6 +32,7 @@ import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
 import { GamificationComponent } from './gamification/gamification.component';
+import { ChatService } from './chat/services/chat.service';
 
 
 @NgModule({
@@ -66,8 +67,9 @@ import { GamificationComponent } from './gamification/gamification.component';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MovieApiServiceComponent,
-    MovieApiServiceComponent, SearchServiceComponent
-
+    MovieApiServiceComponent,
+    SearchServiceComponent,
+    ChatService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { Profile } from '../profile/models/profile';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ProfileService } from '../profile/services/profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/services/authentication.service';
+import { ChatService } from './services/chat.service';
+import { Message } from './models/messages';
+import { ProfileChat } from './models/profileChat';
+import { Profile } from '../profile/models/profile';
 
 @Component({
   selector: 'app-chat',
@@ -12,14 +15,14 @@ import { AuthenticationService } from '../authentication/services/authentication
 })
 export class ChatComponent implements AfterViewChecked {
   loggedUserName: string | null = null;
-  selectedUser: Profile | undefined;
+  selectedUser: ProfileChat | undefined;
 
   myUsername: string | null = null;
   selectedUsername: string | null = null;
   private unsubscribe$ = new Subject<void>();
 
-  usersProfiles: Profile[] = [];
-  filteredUsersProfiles: Profile[] = [];
+  usersProfiles: ProfileChat[] = [];
+  filteredUsersProfiles: ProfileChat[] = [];
   newMessage: string = '';
   messages: any[] = [];
 
@@ -27,41 +30,73 @@ export class ChatComponent implements AfterViewChecked {
   showNoResults: boolean = false;
 
   constructor(
-    private profileService: ProfileService,
     private route: ActivatedRoute,
     private router: Router,
-    public authService: AuthenticationService
+    private authService: AuthenticationService,
+    private chatService: ChatService,
   ) { }
 
   ngOnInit(): void {
+    this.setupContactItems();
+
+    this.chatService.chats$.pipe(
+      switchMap(chats => this.route.params),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(params => {
+      const newUsername = params['username'];
+      if (newUsername !== this.selectedUsername || this.selectedUser === undefined) {
+        this.updateSelectedUser(newUsername);
+      }
+    });
+
     this.authService.user$.subscribe(user => {
       this.loggedUserName = user ? user.username : null;
     });
-
-    this.route.params.subscribe(params => {
-      this.myUsername = params['myUsername'];
-      this.selectedUsername = params['otherUsername'];
-      if (this.usersProfiles.length > 0) {
-        this.updateSelectedUser();
-      }
-    });
-
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (profiles: Profile[]) => {
-        this.usersProfiles = profiles;
-        this.filteredUsersProfiles = profiles;
-        this.updateSelectedUser();
-      },
-      error => {
-        console.error("Error while fetching users' profiles:", error);
-      }
-    );
+    
+    if (this.selectedUsername) {
+      this.setupMessages();
+    }
   }
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef | undefined;
 
   ngAfterViewChecked(): void {
     this.scrollToBottom();
+  }
+
+  setupContactItems(): void {
+    this.chatService.chats$.subscribe(chats => {
+      const sortedChats = chats.sort((a, b) => {
+        const lastMessageA = a.messages[a.messages.length - 1];
+        const lastMessageB = b.messages[b.messages.length - 1];
+
+        const dateA = lastMessageA ? new Date(lastMessageA.sentAt!).getTime() : 0;
+        const dateB = lastMessageB ? new Date(lastMessageB.sentAt!).getTime() : 0;
+
+        return dateB - dateA;
+      });
+
+      const nonEmptyChats = sortedChats.filter(chat => chat.messages.length > 0 && chat.messages[chat.messages.length - 1].sentAt);
+
+      this.usersProfiles = nonEmptyChats.map(chat => ({
+        userName: chat.username,
+        profilePhoto: chat.profilePhoto,
+        lastMessage: chat.messages[chat.messages.length - 1]
+      })) as ProfileChat[];
+
+      this.filteredUsersProfiles = [...this.usersProfiles];
+      this.setupMessages();
+    });
+  }
+
+  setupMessages(): void {
+    if (this.selectedUsername) {
+      var chat = this.chatService.getChat(this.selectedUsername);
+      if (chat != undefined) {
+        var messagesOfChat = chat!.messages;
+        this.messages = messagesOfChat;
+      }
+    }
   }
 
   scrollToBottom(): void {
@@ -76,13 +111,21 @@ export class ChatComponent implements AfterViewChecked {
     this.unsubscribe$.complete();
   }
 
-  updateSelectedUser(): void {
+  updateSelectedUser(newUsername:string): void {
+    this.selectedUsername = newUsername;
     this.selectedUser = this.usersProfiles.find(u => u.userName === this.selectedUsername);
+    if (this.selectedUser === undefined) {
+      const userProfileString = sessionStorage.getItem('selectedUserProfile');
+      if (userProfileString) {
+        this.selectedUser = JSON.parse(userProfileString) as ProfileChat;
+        sessionStorage.removeItem('selectedUserProfile')
+      }
+    }
+    this.setupMessages();
   }
 
-  selectUser(userProfile: Profile): void {
-    this.selectedUser = userProfile;
-    this.router.navigate([`/chat/${this.loggedUserName}/${userProfile.userName}`]);
+  selectUser(userProfile: ProfileChat): void {
+    this.router.navigate([`/chat/${userProfile.userName}`]);
   }
 
   filterUsers(): void {
@@ -99,14 +142,22 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   sendMessage(): void {
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const message = {
-      content: this.newMessage,
-      timestamp: currentTime,
-      outgoing: true
-    };
-    this.messages.push(message);
-    this.newMessage = '';
-    this.scrollToBottom();
+    if (!this.selectedUsername || !this.newMessage.trim()) {
+      console.log('Nome do usuário destinatário e mensagem são necessários.');
+      return;
+    }
+
+    var messageToSent: Message = {
+      sendUsername: this.authService.getLoggedInUserName()!,
+      text: this.newMessage.trim(),
+      sentAt: undefined,
+    }
+
+    this.chatService.sendMessage(this.selectedUsername, messageToSent)
+      .then(() => {
+        this.newMessage = "";
+        this.scrollToBottom();
+      })
+      .catch(error => console.error('Erro ao enviar mensagem:', error));
   }
 }

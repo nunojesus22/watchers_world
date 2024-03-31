@@ -16,6 +16,7 @@ using WatchersWorld.Server.Models.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using WatchersWorld.Server.Controllers;
+using WatchersWorld.Server.Chat.Services;
 
 namespace WatchersWorld_Teste.FixtureConfiguration
 {
@@ -55,6 +56,8 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             services.AddScoped<RatingMediaService>();
             services.AddScoped<IFavoriteActorService, FavoriteActorService>();
             services.AddScoped<FavoriteActorService>();
+            services.AddSingleton<IChatService, ChatService>();
+            services.AddSingleton<ChatService>();
             services.AddTransient(typeof(ILogger<AccountController>), provider => NullLogger<AccountController>.Instance);
 
             services.AddDbContext<WatchersWorldServerContext>(options =>

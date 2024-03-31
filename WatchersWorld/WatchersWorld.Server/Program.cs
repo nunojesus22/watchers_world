@@ -12,8 +12,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using WatchersWorld.Server.Chat;
+using WatchersWorld.Server.Chat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
 
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
@@ -23,6 +27,7 @@ builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<GamificationService>();
 
+builder.Services.AddScoped<IChatService, ChatService>(); 
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
@@ -135,15 +140,13 @@ app.UseCors("AllowAllOrigins");
     }
 
 //}
-
-
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chathub");
 
 app.MapFallbackToFile("/index.html");
 

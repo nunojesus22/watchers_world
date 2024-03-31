@@ -233,8 +233,8 @@ namespace WatchersWorld.Server.Controllers
 
             var userToAdd = new User
             {
-                UserName = model.Username.ToLower(),
-                Email = model.Email.ToLower(),
+                UserName = model.Username,
+                Email = model.Email,
                 Provider = "Credentials"
             };
 
@@ -324,10 +324,10 @@ namespace WatchersWorld.Server.Controllers
 
             var userToAdd = new User
             {
-                UserName = model.Username.ToLower(),
+                UserName = model.Username,
                 EmailConfirmed = true,
                 Provider = model.Provider,
-                Email = model.Email.ToLower(),
+                Email = model.Email,
             };
 
             var result = await _userManager.CreateAsync(userToAdd);

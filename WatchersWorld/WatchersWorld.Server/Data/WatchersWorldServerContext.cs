@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Followers;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media.RatingMedia;
-using WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Notifications;
 using WatchersWorld.Server.Models.Gamification;
+using WatchersWorld.Server.Chat.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WatchersWorld.Server.Data
 {
@@ -41,10 +40,16 @@ namespace WatchersWorld.Server.Data
         public DbSet<UserMedal> UserMedals { get; set; }
 
 
+        public DbSet<Chat.Models.Chat> Chats { get; set; }
+        public DbSet<Messages> Messages { get; set; }
+        public DbSet<MessageStatus> MessagesStatus { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+
 
             modelBuilder.Entity<MediaListModel>().HasData(
                 new MediaListModel { Id = 1, ListName = "Filmes" },
@@ -87,6 +92,27 @@ namespace WatchersWorld.Server.Data
                 .HasOne(um => um.Medal)
                 .WithMany(m => m.UserMedals)
                 .HasForeignKey(um => um.MedalId);
+
+            modelBuilder.Entity<Chat.Models.Chat>(entity =>
+            {
+                entity.HasOne(chat => chat.User1) 
+                    .WithMany() 
+                    .HasForeignKey(chat => chat.User1Id)
+                    .HasConstraintName("FK_Chat_User1")
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(chat => chat.User2) 
+                    .WithMany() 
+                    .HasForeignKey(chat => chat.User2Id)
+                    .HasConstraintName("FK_Chat_User2")
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<MessageStatus>()
+                    .HasOne(ms => ms.Message)
+                    .WithMany()
+                    .HasForeignKey(ms => ms.MessageId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

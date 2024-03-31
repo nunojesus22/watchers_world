@@ -13,6 +13,8 @@ import { AdminService } from '../../admin/service/admin.service';
 import { NotificationService } from '../../notifications/services/notification.service';
 import { GamificationService } from '../../gamification/Service/gamification.service';
 
+import { ChatService } from '../../chat/services/chat.service';
+import { ProfileChat } from '../../chat/models/profileChat';
 
 
 interface MovieCategory {
@@ -33,7 +35,7 @@ export class ProfileComponent implements OnInit {
   loggedUserName: string | null = null; // Nome de usuário do usuário logado
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
-  userPhoto: string | undefined;
+  userPhoto: string | null = null;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -117,6 +119,7 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(private profileService: ProfileService,
+    private chatService: ChatService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
     private notificationService: NotificationService,
@@ -337,6 +340,19 @@ export class ProfileComponent implements OnInit {
             console.error('Erro ao deixar de seguir usuário', error);
           }
         });
+    } else {
+      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
+    }
+  }
+
+  sendMessageToUser(): void {
+    if (this.currentUsername && this.loggedUserName) {
+      var profile = {
+        userName: this.currentUsername,
+        profilePhoto: this.userPhoto,
+        lastMessage: undefined,
+      } as ProfileChat;
+      this.chatService.selectUser(profile);
     } else {
       console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
     }

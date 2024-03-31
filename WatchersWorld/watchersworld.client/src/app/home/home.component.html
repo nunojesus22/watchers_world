@@ -9,6 +9,14 @@
   </span>
   <button (click)="logout()" class="logout-button">Terminar sessão</button>
 </div>
+<div *ngIf="(authService.user$ | async) as user">
+  <div class="chat-container mt-4 p-4">
+    <h5 class="text-white">Enviar Mensagem</h5>
+    <input type="text" [(ngModel)]="usernameReceiver" placeholder="Nome do Usuário Destinatário" class="form-control my-2">
+    <textarea [(ngModel)]="messageText" placeholder="Digite sua mensagem aqui..." class="form-control my-2"></textarea>
+    <button (click)="sendMessage()" class="btn btn-primary">Enviar Mensagem</button>
+  </div>
+</div>
 
 <div class="contain-fluid ">
   <div id="" class="carousel carousel-dark slide" data-bs-ride="carousel">

@@ -8,6 +8,7 @@ import { CredentialResponse } from 'google-one-tap';
 import { LoginWithExternal } from '../models/loginWithExternals';
 import { jwtDecode } from 'jwt-decode';
 import { DOCUMENT } from '@angular/common';
+import { ChatService } from '../../chat/services/chat.service';
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,7 @@ export class LoginComponent {
     private activatedRoute: ActivatedRoute,
     private _renderer2: Renderer2,
     private ngZone: NgZone,
+    private chatService: ChatService,
 
     @Inject(DOCUMENT) private _document: Document
   ) {
@@ -83,8 +85,10 @@ export class LoginComponent {
             this.router.navigateByUrl('/account/confirm-email');
           } else if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
+            this.connectChatHub();
           } else {
             this.router.navigateByUrl('/home');
+            this.connectChatHub();
           }
         },
         error: (error) => {
@@ -141,8 +145,10 @@ export class LoginComponent {
           this.ngZone.run(() => {
             if (this.returnUrl) {
               this.router.navigateByUrl(this.returnUrl);
+              this.connectChatHub();
             } else {
               this.router.navigateByUrl('/');
+              this.connectChatHub();
             }
           });
         },
@@ -185,6 +191,10 @@ export class LoginComponent {
   private saveSubmittedValues(): void {
     this.submittedValues["email"] = this.loginForm.get("email")!.value;
     this.submittedValues["password"] = this.loginForm.get("password")!.value;
+  }
+
+  private connectChatHub(): void {
+    this.chatService.startConnectionAndListen();
   }
 
 }

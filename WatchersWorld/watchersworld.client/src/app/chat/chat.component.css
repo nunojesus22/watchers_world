@@ -59,7 +59,7 @@
 
 .outgoing {
   background-color: #4CAEFE;
-  color: black;
+  color: white;
   text-align: right;
   float: right;
 }
@@ -98,7 +98,7 @@
 
 .message-timestamp {
   display: block; /* ou inline-block, dependendo do seu layout desejado */
-  color: black; /* Cor cinza para a data/hora */
+  color: white; /* Cor cinza para a data/hora */
   font-size: 0.85em; /* Um tamanho de fonte menor */
   margin-top: 5px; /* Espaçamento no topo */
   text-align: right; /* Alinha a data/hora à direita */
@@ -106,6 +106,7 @@
 
 .message.incoming .message-timestamp {
   text-align: left; /* Alinha a data/hora à esquerda para mensagens recebidas */
+  color: black
 }
 
 .user-item {
