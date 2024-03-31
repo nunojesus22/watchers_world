@@ -233,7 +233,7 @@ namespace WatchersWorld.Server.Controllers
                 // Map the users to ProfileInfo with selected properties
                 var profilesList = userProfiles.Select(profile => new ProfileInfo
                 {
-                    UserName = profile.UserName.ToLower(),
+                    UserName = profile.UserName,
                     ProfilePhoto = profile.ProfilePhoto
                 });
 

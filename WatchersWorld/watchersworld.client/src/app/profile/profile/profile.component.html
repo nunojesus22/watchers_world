@@ -74,7 +74,7 @@
 
               <!-- Botão para enviar mensagem -->
               <button *ngIf="user.username !== currentUsername"
-                      class="send-message-button" [routerLink]="['/chat', currentUsername]">
+                      class="send-message-button" (click)="sendMessageToUser()">
                 Enviar mensagem
               </button>
             </div>

@@ -6,6 +6,7 @@ import { AuthenticationService } from '../authentication/services/authentication
 import { ChatService } from './services/chat.service';
 import { Message } from './models/messages';
 import { ProfileChat } from './models/profileChat';
+import { Profile } from '../profile/models/profile';
 
 @Component({
   selector: 'app-chat',
@@ -27,7 +28,6 @@ export class ChatComponent implements AfterViewChecked {
   showNoResults: boolean = false;
 
   constructor(
-    private profileService: ProfileService,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthenticationService,
@@ -42,7 +42,7 @@ export class ChatComponent implements AfterViewChecked {
       takeUntil(this.unsubscribe$)
     ).subscribe(params => {
       const newUsername = params['username'];
-      if (this.usersProfiles.length > 0 && newUsername !== this.selectedUsername) {
+      if (newUsername !== this.selectedUsername || this.selectedUser === undefined) {
         this.updateSelectedUser(newUsername);
       }
     });
@@ -68,21 +68,22 @@ export class ChatComponent implements AfterViewChecked {
         const lastMessageA = a.messages[a.messages.length - 1];
         const lastMessageB = b.messages[b.messages.length - 1];
 
-        const dateA = new Date(lastMessageA.sentAt!).getTime();
-        const dateB = new Date(lastMessageB.sentAt!).getTime();
+        const dateA = lastMessageA ? new Date(lastMessageA.sentAt!).getTime() : 0;
+        const dateB = lastMessageB ? new Date(lastMessageB.sentAt!).getTime() : 0;
 
         return dateB - dateA;
       });
 
-      this.usersProfiles = sortedChats.map(chat => {
-        return {
-          userName: chat.username,
-          profilePhoto: chat.profilePhoto,
-          lastMessage: chat.messages[chat.messages.length - 1]
-        } as ProfileChat;
-      });
+      const nonEmptyChats = sortedChats.filter(chat => chat.messages.length > 0 && chat.messages[chat.messages.length - 1].sentAt);
+
+      this.usersProfiles = nonEmptyChats.map(chat => ({
+        userName: chat.username,
+        profilePhoto: chat.profilePhoto,
+        lastMessage: chat.messages[chat.messages.length - 1]
+      })) as ProfileChat[];
 
       this.filteredUsersProfiles = [...this.usersProfiles];
+      this.setupMessages();
     });
   }
 
@@ -111,6 +112,13 @@ export class ChatComponent implements AfterViewChecked {
   updateSelectedUser(newUsername:string): void {
     this.selectedUsername = newUsername;
     this.selectedUser = this.usersProfiles.find(u => u.userName === this.selectedUsername);
+    if (this.selectedUser === undefined) {
+      const userProfileString = sessionStorage.getItem('selectedUserProfile');
+      if (userProfileString) {
+        this.selectedUser = JSON.parse(userProfileString) as ProfileChat;
+        sessionStorage.removeItem('selectedUserProfile')
+      }
+    }
     this.setupMessages();
   }
 

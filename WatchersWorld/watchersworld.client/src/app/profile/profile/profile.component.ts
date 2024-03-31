@@ -10,6 +10,8 @@ import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movi
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
+import { ChatService } from '../../chat/services/chat.service';
+import { ProfileChat } from '../../chat/models/profileChat';
 
 
 interface MovieCategory {
@@ -30,6 +32,7 @@ export class ProfileComponent implements OnInit {
   loggedUserName: string | null = null; // Nome de usuário do usuário logado
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
+  userPhoto: string | null = null;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -103,6 +106,7 @@ export class ProfileComponent implements OnInit {
   selectedUserForBan: string | null = null;
 
   constructor(private profileService: ProfileService,
+    private chatService: ChatService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
     private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
@@ -180,6 +184,7 @@ export class ProfileComponent implements OnInit {
           this.isProfilePublic = userData.profileStatus;
           this.followersCount = userData.followers;
           this.followingCount = userData.following;
+          this.userPhoto = userData.profilePhoto;
 
           if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
             this.profileService.alreadyFollows(this.loggedUserName, username)
@@ -326,6 +331,19 @@ export class ProfileComponent implements OnInit {
             console.error('Erro ao deixar de seguir usuário', error);
           }
         });
+    } else {
+      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
+    }
+  }
+
+  sendMessageToUser(): void {
+    if (this.currentUsername && this.loggedUserName) {
+      var profile = {
+        userName: this.currentUsername,
+        profilePhoto: this.userPhoto,
+        lastMessage: undefined,
+      } as ProfileChat;
+      this.chatService.selectUser(profile);
     } else {
       console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
     }

@@ -23,7 +23,7 @@
                 <div class="user-item">
                   <img class="other-users-user-photo" [src]="userProfile.profilePhoto">
                   <span class="other-users-user-name">{{ userProfile.userName }}</span>
-                  <span class="last-message-time">{{ userProfile.lastMessage.sentAt | date:'HH:mm' }}</span>
+                  <span class="last-message-time">{{ userProfile.lastMessage!.sentAt | date:'HH:mm' }}</span>
                 </div>
               </li>
             </ng-container>

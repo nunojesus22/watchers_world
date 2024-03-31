@@ -4,6 +4,8 @@ import { BehaviorSubject, firstValueFrom, map } from 'rxjs';
 import { ChatWithMessages } from '../models/chatWithMessages';
 import { Message } from '../models/messages';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
+import { ProfileChat } from '../models/profileChat';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class ChatService {
   private chatsSubject = new BehaviorSubject<ChatWithMessages[]>([]);
   public chats$ = this.chatsSubject.asObservable();
 
-  constructor(private authService : AuthenticationService) { }
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   startConnection(username : string) {
     this.hubConnection = new HubConnectionBuilder()
@@ -159,5 +161,10 @@ export class ChatService {
       return currentChats[chatWantedIndex];
     }
     return undefined;
+  }
+
+  selectUser(userProfile: ProfileChat): void {
+    sessionStorage.setItem('selectedUserProfile', JSON.stringify(userProfile));
+    this.router.navigate([`/chat/${userProfile.userName}`]);
   }
 }
