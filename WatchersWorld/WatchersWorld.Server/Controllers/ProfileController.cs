@@ -258,6 +258,39 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
+        /// Obtém a lista de perfis de todos os utilizadores excepto o logado.
+        /// </summary>
+        /// <returns>Uma lista de informações de perfil.</returns>
+        [HttpGet("get-users-profiles-not-logged-in/{loggedUserName}")]
+        public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfileNotLoggedIn(string loggedUserName)
+        {
+            try
+            {
+                // Query all users from the database excluding the logged in user
+                var userProfiles = await _context.ProfileInfo
+                                        .Where(u => u.UserName.ToLower() != loggedUserName)
+                                        .ToListAsync();
+
+                // Map the users to ProfileInfo with selected properties
+                var profilesList = userProfiles.Select(profile => new ProfileInfo
+                {
+                    UserName = profile.UserName.ToLower(),
+                    ProfilePhoto = profile.ProfilePhoto,
+                    StartBanDate = profile.StartBanDate,
+                    EndBanDate = profile.EndBanDate
+                });
+
+                return Ok(profilesList);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as appropriate for your application
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
         /// Obtém os seguidores de um utilizador especificado.
         /// </summary>
         /// <param name="username">O nome do utilizador para o qual os seguidores serão obtidos.</param>

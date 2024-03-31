@@ -50,6 +50,11 @@ export class ProfileService {
     return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-users-profiles`, {headers});
   }
 
+  getUserProfilesNotLoggedIn(username: string): Observable<Profile[]> {
+    const headers = this.getHeaders();
+    return this.http.get<Profile[]>(`${environment.appUrl}/api/profile/get-users-profiles-not-logged-in/${username}`, { headers });
+  }
+
   followUser(usernameAuthenticated : string, usernameToFollow: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.post<any>(`${environment.appUrl}/api/profile/follow/${usernameAuthenticated}/${usernameToFollow}`, {}, { headers });

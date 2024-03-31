@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { Subject, catchError, firstValueFrom, forkJoin, map, mergeMap, of, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { FollowerProfile } from '../models/follower-profile';
@@ -43,7 +43,6 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] = [];
-  usersProfilesMod: Profile[] = [];
 
 
   followersCount: number | undefined;
@@ -111,6 +110,19 @@ export class ProfileComponent implements OnInit {
   isBanned?: boolean;
   selectedUserForBan: string | null = null;
 
+  usersProfilesMod: Profile[] = [];
+  filteredUsersProfiles: Profile[] = [];
+  searchTerm: string = '';
+  showNoResults: boolean = false;
+  selectedUser: Profile | undefined;
+  selectedUsername: string | null = null;
+
+  page: number = 1;
+  pageSize: number = 5; // Quantidade de usuários por página
+  collectionSize!: number; // O total de usuários disponíveis
+
+
+
   //MEDALHAS
   medals: any[] = [];
   showAllMedals = false;
@@ -163,7 +175,32 @@ export class ProfileComponent implements OnInit {
 
     });
 
+    //-------------MODERADOR-----------------------------------------------------------------------------------
+    this.loggedUserName = this.authService.getLoggedInUserName();
     this.getUserProfilesMod();
+    if (this.loggedUserName)
+    this.profileService.getUserProfilesNotLoggedIn(this.loggedUserName).pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (profiles: Profile[]) => {
+        this.usersProfilesMod = profiles; 
+        this.filteredUsersProfiles = profiles;
+        this.collectionSize = profiles.length;
+        this.updateSelectedUser();
+        this.sortAlphabetically(); 
+        this.filterUsers(); 
+      },
+      error => {
+        console.error("Error while fetching users' profiles:", error);
+      }
+    );
+
+    if (this.usersProfilesMod.length > 0) {
+      this.updateSelectedUser();
+    }
+
+    this.collectionSize = this.filteredUsersProfiles.length;
+    //--------------------------------------------------------------------------------------------------------
+
+
     this.getUserProfiles();
     this.initializeForm();
     this.categories = [
@@ -684,9 +721,21 @@ export class ProfileComponent implements OnInit {
 
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
   checkIfUserIsBanned(profile: Profile): boolean {
-    // Directly return the isBanned status from the profile
-    // If the property could be undefined, provide a default value
-    return profile.isBanned ?? false;
+    try {
+      if (!profile.startBanDate || !profile.endBanDate) {
+        return false;
+      }
+
+      const now = new Date();
+      const startBan = new Date(profile.startBanDate);
+      const endBan = new Date(profile.endBanDate);
+      const isBanned = startBan <= now && now <= endBan;
+
+      return isBanned;
+    } catch (error) {
+      console.error('Error in checkIfUserIsBanned:', error);
+      return false;
+    }
   }
 
 
@@ -704,12 +753,12 @@ export class ProfileComponent implements OnInit {
     this.adminService.BanUserTemporarily(username, this.banDuration).subscribe({
       next: () => {
         console.log(`User banned temporarily for ${this.banDuration} days`);
-        const user = this.usersProfiles?.find(u => u.userName === username);
+        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
         this.hideBanPopup();
         if (user) {
           user.isBanned = true;
           // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
+          this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
         }
       },
       error: error => {
@@ -726,17 +775,16 @@ export class ProfileComponent implements OnInit {
       return;
     }
     console.log(`Attempting to ban user permanently: ${username}`);
-
     this.adminService.banUserPermanently(username).subscribe({
       next: () => {
         console.log('User banned permanently');
-        const user = this.usersProfiles?.find(u => u.userName === username);
+        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
         this.hideBanPopup();
         if (user) {
           user.isBanned = true;
-          // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
         }
+        // This will trigger change detection and update the UI
+        this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: error => {
         console.error("Error banning user:", error);
@@ -752,12 +800,12 @@ export class ProfileComponent implements OnInit {
     this.adminService.unbanUser(username).subscribe({
       next: (response) => {
         console.log(response.message);
-        const user = this.usersProfiles?.find(u => u.userName === username);
+        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
         if (user) {
           user.isBanned = false;
         }
         // This will trigger change detection and update the UI
-        this.usersProfiles = [...this.usersProfiles!];
+        this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: (error) => {
         console.error("Error unbanning user:", error);
@@ -776,15 +824,106 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserProfilesMod() {
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        const currentUsername = this.authService.getLoggedInUserName();
-        // Filter out the logged-in user's profile from the list
-        this.usersProfilesMod = profiles.filter(profile => profile.userName !== currentUsername);
+    this.profileService.getUserProfiles().pipe(
+      takeUntil(this.unsubscribed$),
+      map(profiles => profiles.filter(profile => profile.userName !== this.loggedUserName)),
+      mergeMap(profiles => {
+        // Filtrar fora o usuário logado antes de buscar as funções.
+        const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
+        const profilesWithRoles$ = filteredProfiles.map(profile => {
+          return this.adminService.getUserRole(profile.userName).pipe(
+            map(roles => ({
+              ...profile,
+              isBanned: this.checkIfUserIsBanned(profile),
+              isModerator: roles.includes('Moderator'),
+            })),
+            catchError(error => {
+              console.error('Error fetching roles:', profile.userName, error);
+              return of({ ...profile, isModerator: false }); // default to false on error
+            })
+          );
+        });
+        return forkJoin(profilesWithRoles$);
+      })
+    ).subscribe(
+      (profiles) => {
+        this.filteredUsersProfiles = profiles;
+        this.collectionSize = profiles.length;
+        this.sortAlphabetically();
+        this.filterUsers();
+
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
       }
     );
+  }
+
+
+  updateSelectedUser(): void {
+    this.selectedUser = this.usersProfilesMod.find(u => u.userName === this.selectedUsername);
+  }
+
+  filterUsers(): void {
+    let filtered = this.searchTerm ? this.usersProfilesMod.filter(user =>
+      user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())) : this.usersProfilesMod;
+
+    this.showNoResults = filtered.length === 0;
+    this.collectionSize = filtered.length;
+
+    // Aplica a paginação
+    filtered = filtered.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
+    this.filteredUsersProfiles = filtered;
+  }
+
+  previousPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.filterUsers();
+    }
+  }
+
+  nextPage() {
+    if (this.page * this.pageSize < this.collectionSize) {
+      this.page++;
+      this.filterUsers();
+      this.sortAlphabetically();
+    }
+  }
+
+  get hasPreviousPage(): boolean {
+    return this.page > 1;
+  }
+
+  get hasNextPage(): boolean {
+    return this.page * this.pageSize < this.collectionSize;
+  }
+
+  naturalSort(a: Profile, b: Profile): number {
+    const ax: [number | typeof Infinity, string][] = [];
+    const bx: [number | typeof Infinity, string][] = [];
+
+    a.userName.replace(/(\d+)|(\D+)/g, function (_, $1, $2): string {
+      ax.push([$1 ? Number($1) : Infinity, $2 || ""]);
+      return "";
+    });
+    b.userName.replace(/(\d+)|(\D+)/g, function (_, $1, $2): string {
+      bx.push([$1 ? Number($1) : Infinity, $2 || ""]);
+      return "";
+    });
+
+    while (ax.length && bx.length) {
+      const an = ax.shift()!;
+      const bn = bx.shift()!;
+      const nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+      if (nn) return nn;
+    }
+
+    return ax.length - bx.length;
+  }
+
+  sortAlphabetically(): void {
+    this.usersProfilesMod.sort((a, b) => this.naturalSort(a, b));
+    this.filterUsers(); // Reaplica a filtragem e paginação após a ordenação
   }
 }
