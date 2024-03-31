@@ -73,9 +73,11 @@ export class ChatService {
           });
         }
       })
-      .catch(err =>
-      {
-        console.log(err);
+      .catch(error => {
+        if (error.message.includes("ID do usuário receptor não pode ser null.")) {
+          return Promise.reject("O ID do usuário receptor é nulo.");
+        }
+        return Promise.reject();
       });
   }
 

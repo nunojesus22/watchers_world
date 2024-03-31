@@ -1,3 +1,14 @@
+.error-message {
+  color: #d32f2f; /* Cor vermelha para a mensagem de erro */
+  background-color: #f9e0e0; /* Fundo sutil para a mensagem de erro */
+  border-color: #f9e0e0;
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Espaço antes do próximo campo de texto */
+  box-sizing: border-box;
+  font-size: 0.9em;
+}
+
 .container {
   margin-top: 1rem; /* ajuste se necessário para a sua página */
 }

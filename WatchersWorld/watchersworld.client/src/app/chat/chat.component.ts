@@ -11,7 +11,7 @@ import { Profile } from '../profile/models/profile';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'] // Corrigido de styleUrl para styleUrls
+  styleUrls: ['./chat.component.css'] 
 })
 export class ChatComponent implements AfterViewChecked {
   loggedUserName: string | null = null;
@@ -28,6 +28,11 @@ export class ChatComponent implements AfterViewChecked {
 
   searchTerm: string = '';
   showNoResults: boolean = false;
+
+  messageForm: boolean = false;
+  usernameOfNewReceiver: string = "";
+  messageTextToNewUser: string = "";
+  errorMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -159,5 +164,40 @@ export class ChatComponent implements AfterViewChecked {
         this.scrollToBottom();
       })
       .catch(error => console.error('Erro ao enviar mensagem:', error));
+  }
+
+  toggleMessageForm(): void {
+    this.messageForm = this.messageForm ? false : true;
+    this.messageTextToNewUser = "";
+    this.usernameOfNewReceiver = "";
+  }
+
+  sendMessageToNewUser(): void {
+    if (!this.usernameOfNewReceiver || !this.messageTextToNewUser.trim()) {
+      console.log('Nome do usuário destinatário e mensagem são necessários.');
+      return;
+    }
+
+    var messageToSend: Message = {
+      sendUsername: this.authService.getLoggedInUserName()!,
+      text: this.messageTextToNewUser.trim(),
+      sentAt: undefined,
+    }
+
+    this.chatService.sendMessage(this.usernameOfNewReceiver, messageToSend)
+      .then(() => {
+        this.toggleMessageForm();
+      })
+      .catch(error => {
+        if (error && error.includes("O ID do usuário receptor é nulo.")) {
+          this.errorMessage = "Utilizador não encontrado!";
+        } else {
+          console.error("Erro ao enviar mensagem:", error);
+        }
+      });
+  }
+
+  clearErrorMessage(): void {
+    this.errorMessage = "";
   }
 }
