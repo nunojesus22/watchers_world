@@ -1,3 +1,16 @@
+<button *ngIf="!this.messageForm" class="btn btn-primary" (click)="toggleMessageForm()">Enviar mensagem</button>
+
+<div *ngIf="this.messageForm" class="chat-container mt-4 p-4">
+  <h5 class="text-white">Enviar Mensagem</h5>
+  <input type="text" [(ngModel)]="usernameOfNewReceiver" placeholder="Nome do Usuário Destinatário" class="form-control my-2" (input)="clearErrorMessage()">
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <textarea [(ngModel)]="messageTextToNewUser" placeholder="Digite sua mensagem aqui..." class="form-control my-2"></textarea>
+  <div class="d-flex justify-content-between">
+    <button (click)="sendMessageToNewUser()" class="btn btn-primary">Enviar Mensagem</button>
+    <button (click)="toggleMessageForm()" class="btn btn-danger">Cancelar</button>
+  </div>
+</div>
+
 <div class="container">
   <!-- Chat Section -->
   <div class="row">
@@ -65,7 +78,7 @@
               <input type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Escrever mensagem..." required>
               <div class="input-group-append">
                 <img src="assets/img/Send.png" class="send-button" (click)="sendMessage()" alt="Enviar">
-            </div>
+              </div>
             </div>
           </form>
         </div>

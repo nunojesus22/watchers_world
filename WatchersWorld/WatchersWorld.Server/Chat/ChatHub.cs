@@ -61,7 +61,12 @@ namespace WatchersWorld.Server.Chat
             var userSenderId = userSender.Id;
 
             var userReceiver = await _userManager.FindByNameAsync(usernameReceiver);
-            var userReceiverId = userReceiver.Id;
+            var userReceiverId = userReceiver?.Id; 
+
+            if (userReceiverId == null)
+            {
+                throw new HubException("ID do usuário receptor não pode ser null.");
+            }
 
             var time = DateTime.UtcNow;
             message.SentAt = time;
