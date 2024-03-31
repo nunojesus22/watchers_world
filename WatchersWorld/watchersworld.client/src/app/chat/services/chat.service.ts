@@ -69,7 +69,6 @@ export class ChatService {
         } else {
           this.getMissingChats().then(missingChats => {
             this.addMissingChats(missingChats);
-            this.addMessageToChat(usernameReceiver, message);
           });
         }
       })
@@ -95,7 +94,6 @@ export class ChatService {
       } else {
         this.getMissingChats().then(missingChats => {
           this.addMissingChats(missingChats);
-          this.addMessageToChat(dataMessage.sendUsername, dataMessage);
         });
       }
 
