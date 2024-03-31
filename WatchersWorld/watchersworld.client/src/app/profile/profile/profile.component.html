@@ -13,7 +13,7 @@
               <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
                 <img src="assets/img/statistic.png" alt="Estatísticas">
               </a>
-              <a *ngIf="user.username === currentUsername" [routerLink]="['/chat', user.username]" class="profile-icon">
+              <a *ngIf="user.username === currentUsername" routerLink="/chat" class="profile-icon">
                 <img src="assets/img/messenger.png" alt="Chat">
               </a>
               <a *ngIf="user.username === currentUsername" [routerLink]="['/editProfile', user.username]" class="profile-icon">

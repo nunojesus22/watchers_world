@@ -24,7 +24,7 @@
   border-radius: 15px; /* Arredonda os cantos */
   margin-bottom: 1rem; /* Espaço entre os elementos */
   height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
-  background-color: white; /* Fundo branco para ambos os painéis */
+  background-color: transparent; /* Fundo branco para ambos os painéis */
   overflow-y: auto;
   border: 1px solid #f0f0f0;
 }
@@ -62,7 +62,7 @@
 }
 
 .incoming {
-  background-color: #4CAEFE;
+  background-color: white;
   color: black;
   text-align: left;
   float: left;
@@ -84,8 +84,8 @@
   cursor: pointer; /* Muda o cursor para o símbolo de clique */
   width: 30px; /* Largura da imagem */
   height: auto; /* Altura automática para manter a proporção */
-  margin-left:10px;
-  margin-top:5px;
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
 .input-group .form-control {
@@ -104,7 +104,6 @@
   padding: 8px 20px; /* Espaço interno para evitar que mensagens toquem as bordas */
   overflow-y: auto;
   height: calc(100vh - 160px); /* Ajuste a altura conforme necessário */
-
 }
 
 .message-timestamp {
@@ -163,8 +162,8 @@
   overflow-y: auto; /* Ativa a barra de rolagem */
 }
 
-.list-group-item{
-    border-radius:0%;
+.list-group-item {
+  border-radius: 0%;
 }
 
 .search-icon {
@@ -215,4 +214,3 @@
 ::-webkit-scrollbar-thumb {
   background: #4CAEFE; /* Cor do "thumb" da barra de rolagem */
 }
-
