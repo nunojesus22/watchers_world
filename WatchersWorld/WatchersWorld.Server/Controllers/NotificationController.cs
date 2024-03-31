@@ -23,31 +23,6 @@ namespace WatchersWorld.Server.Controllers
             _notificationService = notificationService;
         }
 
-        [HttpPost("create-notification/{authenticatedUsername}/{usernameToFollow}")]
-        public async Task<IActionResult> CreateFollowNotification(string authenticatedUsername, string usernameToFollow)
-        {
-            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
-            if (userAuthenticated == null)
-            {
-                return NotFound($"Usuário autenticado '{authenticatedUsername}' não encontrado.");
-            }
-
-            var userIdAuthenticated = userAuthenticated.Id;
-
-            var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
-            if (userToFollow == null)
-            {
-                return NotFound($"Usuário a ser seguido '{usernameToFollow}' não encontrado.");
-            }
-
-            var userIdToFollow = userToFollow.Id;
-
-            // Crie a notificação de seguimento e obtenha o DTO resultante
-            var followNotificationDto = await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
-            // Agora você pode retornar o DTO diretamente
-            return Ok(followNotificationDto);
-        }
-
         [HttpGet("followNotifications/{authenticatedUsername}")]
         public async Task<IActionResult> GetMyFollowNotifications(string authenticatedUsername)
         {
@@ -77,7 +52,6 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(notifications ?? new List<ReplyNotificationDto>());
         }
-
 
 
         [HttpPost("followNotifications/mark-all-as-read/{username}")]
@@ -123,6 +97,21 @@ namespace WatchersWorld.Server.Controllers
             return Ok(notifications);
         }
 
+        [HttpGet("messageNotifications/{authenticatedUsername}")]
+        public async Task<IActionResult> GetMyMessageNotifications(string authenticatedUsername)
+        {
+            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+            if (userAuthenticated == null)
+            {
+                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+            }
+
+            var userIdAuthenticated = userAuthenticated.Id;
+            var notifications = await _notificationService.GetMessageNotificationsForUserAsync(userIdAuthenticated);
+
+            return Ok(notifications);
+        }
+
         [HttpPost("achievementNotifications/mark-all-as-read/{username}")]
         public async Task<IActionResult> MarkAllAchievementNotificationsAsRead(string username)
         {
@@ -130,7 +119,12 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "All achievement notifications have been marked as read." });
         }
 
-
+        [HttpPost("messageNotifications/mark-all-as-read/{username}")]
+        public async Task<IActionResult> MarkAllMessageNotificationsAsRead(string username)
+        {
+            await _notificationService.MarkAllMessageNotificationsAsReadAsync(username);
+            return Ok(new { message = "All message notifications have been marked as read." });
+        }
 
     }
 }

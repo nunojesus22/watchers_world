@@ -39,6 +39,12 @@ namespace WatchersWorld.Server.Services
         Task<List<AchievementNotificationDto>> GetAchievementNotificationsForUserAsync(string userId);
 
         Task MarkAllAchievementNotificationsAsReadAsync(string username);
+
+        Task<MessageNotificationDto> CreateMessageNotificationAsync(string triggeredByUserId, string targetUserId);
+
+        Task<List<MessageNotificationDto>> GetMessageNotificationsForUserAsync(string targetUserId);
+
+        Task MarkAllMessageNotificationsAsReadAsync(string username);
     }
 
     /// <summary>
@@ -94,7 +100,7 @@ namespace WatchersWorld.Server.Services
 
             await _context.FollowNotifications.AddAsync(followNotification);
             await _context.SaveChangesAsync();
-            
+
             return followNotificationDto;
         }
 
@@ -292,6 +298,25 @@ namespace WatchersWorld.Server.Services
             }
         }
 
+        public async Task MarkAllMessageNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            if (user != null)
+            {
+                var messageNotifications = await _context.MessageNotifications
+                    .Where(n => n.TriggeredByUserId == user.Id && !n.IsRead)
+                    .ToListAsync();
+
+                foreach (var notification in messageNotifications)
+                {
+                    notification.IsRead = true;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
         public async Task ClearNotificationsForUserAsync(string username)
         {
             var user = await _context.Users
@@ -309,11 +334,17 @@ namespace WatchersWorld.Server.Services
                     .ToListAsync();
 
                 var achievementNotifications = await _context.AchievementNotifications
-            .Where(n => n.TriggeredByUserId == user.Id).ToListAsync();
+                    .Where(n => n.TriggeredByUserId == user.Id)
+                    .ToListAsync();
+
+                var messagetNotifications = await _context.MessageNotifications
+                   .Where(n => n.TargetUserId == user.Id)
+                   .ToListAsync();
 
                 _context.FollowNotifications.RemoveRange(followNotifications);
                 _context.ReplyNotifications.RemoveRange(replyNotifications);
                 _context.AchievementNotifications.RemoveRange(achievementNotifications);
+                _context.MessageNotifications.RemoveRange(messagetNotifications);
 
                 await _context.SaveChangesAsync();
             }
@@ -334,9 +365,12 @@ namespace WatchersWorld.Server.Services
                 .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
 
             bool hasUnreadAchievementyNotifications = await _context.AchievementNotifications
-            .AnyAsync(n => n.TriggeredByUserId == user.Id && !n.IsRead);
+                .AnyAsync(n => n.TriggeredByUserId == user.Id && !n.IsRead);
 
-            return hasUnreadFollowNotifications || hasUnreadReplyNotifications || hasUnreadAchievementyNotifications;
+            bool hasUnreadMessageNotifications = await _context.MessageNotifications
+                .AnyAsync(n => n.TriggeredByUserId == user.Id && !n.IsRead);
+
+            return hasUnreadFollowNotifications || hasUnreadReplyNotifications || hasUnreadAchievementyNotifications || hasUnreadMessageNotifications;
         }
 
         public async Task<AchievementNotificationDto> CreateAchievementNotificationAsync(string triggeredByUserId, int medalId)
@@ -348,11 +382,6 @@ namespace WatchersWorld.Server.Services
             var medal = await _context.Medals
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == medalId);
-
-            //bool alreadyAwarded = await _context.UserMedals
-            //    .AnyAsync(um => um.UserName == user.UserName && um.MedalId == medal.Id);
-           
-            //if (alreadyAwarded) { throw new Exception("Medalha já conquistada."); }
 
             if (medal == null || user == null)
             {
@@ -422,6 +451,102 @@ namespace WatchersWorld.Server.Services
 
             return notificationDtos;
         }
+
+
+        public async Task<MessageNotificationDto> CreateMessageNotificationAsync(string triggeredByUserId, string targetUserId)
+        {
+            var triggeredByUser = await _context.ProfileInfo
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
+            var targetUser = await _context.ProfileInfo
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.UserId == targetUserId);
+
+            if (triggeredByUser == null || targetUser == null)
+            {
+                throw new Exception("Perfil de usuário não encontrado.");
+            }
+
+            var lastMessage = await _context.Messages
+                .Where(m => m.SendUserId == triggeredByUserId)
+                .OrderByDescending(m => m.SentAt)
+                .FirstOrDefaultAsync();
+
+            if (lastMessage == null)
+            {
+                throw new Exception("Nenhuma mensagem encontrada para criar notificação.");
+            }
+
+            var messageStatus = await _context.MessagesStatus
+                .FirstOrDefaultAsync(ms => ms.MessageId == lastMessage.Id);
+
+            if (messageStatus == null)
+            {
+                throw new Exception("Status da mensagem não encontrado.");
+            }
+
+            var notification = new MessageNotification
+            {
+                NotificationId = Guid.NewGuid(),
+                TriggeredByUserId = triggeredByUserId,
+                Message = $"{lastMessage.SendUser.UserName} enviou-te uma mensagem",
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false,
+                EventType = "Message",
+                MessageId = lastMessage.Id,
+                TargetUserId = messageStatus.RecipientUserId,
+
+
+            };
+
+            await _context.MessageNotifications.AddAsync(notification);
+            await _context.SaveChangesAsync();
+
+            return new MessageNotificationDto
+            {
+                TriggeredByUserId = notification.TriggeredByUserId,
+                Message = notification.Message,
+                CreatedAt = notification.CreatedAt,
+                IsRead = notification.IsRead,
+                EventType = notification.EventType,
+                TargetUserId = notification.TargetUserId,
+                TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+            };
+        }
+
+
+        public async Task<List<MessageNotificationDto>> GetMessageNotificationsForUserAsync(string targetUserId)
+        {
+            var notifications = await _context.MessageNotifications
+                .Where(n => n.TargetUserId == targetUserId)
+                .ToListAsync();
+
+            var notificationDtos = new List<MessageNotificationDto>();
+
+            foreach (var notification in notifications)
+            {
+                var triggeredByUser = await _context.ProfileInfo
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.UserId == notification.TriggeredByUserId);
+
+                var notificationDto = new MessageNotificationDto
+                {
+                    TriggeredByUserId = notification.TriggeredByUserId,
+                    Message = notification.Message,
+                    CreatedAt = notification.CreatedAt,
+                    IsRead = notification.IsRead,
+                    EventType = notification.EventType,
+                    TargetUserId = notification.TargetUserId,
+                    TriggeredByUserPhoto = triggeredByUser.ProfilePhoto
+                };
+
+                notificationDtos.Add(notificationDto);
+            }
+
+            return notificationDtos;
+        }
+
+
 
 
 

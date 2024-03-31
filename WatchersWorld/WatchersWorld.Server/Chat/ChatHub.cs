@@ -5,20 +5,24 @@ using WatchersWorld.Server.Chat.DTOs;
 using WatchersWorld.Server.Chat.Services;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Chat
 {
     public class ChatHub : Hub
     {
         private readonly IChatService _chatService;
+        private readonly INotificationService _notificationService;
+
         private readonly UserManager<User> _userManager;
         private readonly WatchersWorldServerContext _context;
 
         private static readonly Dictionary<string, string> _userConnections = new Dictionary<string, string>();
 
-        public ChatHub(IChatService chatService, UserManager<User> userManager, WatchersWorldServerContext context)
+        public ChatHub(IChatService chatService, INotificationService notificationsService, UserManager<User> userManager, WatchersWorldServerContext context)
         {
             _chatService = chatService;
+            _notificationService = notificationsService;
             _userManager = userManager;
             _context = context;
         }
@@ -72,6 +76,7 @@ namespace WatchersWorld.Server.Chat
             message.SentAt = time;
 
             var result = await _chatService.SendMessage(userSenderId, userReceiverId, message.Text, message.SentAt);
+            await _notificationService.CreateMessageNotificationAsync(userSenderId, userReceiverId);
             if (result)
             {
                 if (_userConnections.ContainsKey(userReceiverId))
