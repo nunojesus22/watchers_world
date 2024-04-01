@@ -164,11 +164,16 @@ export class LoginComponent {
               // Handle other errors by displaying them to the user
               if (error.error.errors) {
                 // If there are multiple error messages, process them
+                console.log(error.error.errors);
                 error.error.errors.forEach((value: any) => {
                   this.errorMessages[value.field] = value.message;
                 });
               } else {
                 // If there's a single error message, display it
+                if (error.error.message === "Não existe nenhuma conta associada a esse email!") {
+                  const decodedToken: any = jwtDecode(response.credential);
+                  this.router.navigateByUrl(`/account/register/third-party/google?access_token=${response.credential}&userId=${decodedToken.sub}&email=${decodedToken.email}`);
+                }
                 this.errorMessages[error.error.field] = error.error.message;
               }
               this.saveSubmittedValues();
