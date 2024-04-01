@@ -37,7 +37,7 @@ export class AdminComponent implements OnDestroy {
   collectionSize!: number; // O total de usuários disponíveis
 
 
-  constructor(private cdRef: ChangeDetectorRef, private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService) { }
+  constructor(private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService) { }
 
 
   ngOnInit(): void {
@@ -47,6 +47,8 @@ export class AdminComponent implements OnDestroy {
 
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
+        console.log("Perfis recebidos:", profiles);
+
         this.usersProfiles = profiles;
         this.filteredUsersProfiles = profiles;
         this.updateSelectedUser();
@@ -70,43 +72,60 @@ export class AdminComponent implements OnDestroy {
 
   }
 
+
+
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(
       takeUntil(this.unsubscribed$),
       mergeMap(profiles => {
-        const profilesWithRoles$ = profiles.map(profile => {
-          if (!profile.userName) {
+        // Filtra fora o perfil do usuário logado
+        const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
 
-            console.warn(`Profile with undefined userName encountered: `, profile);
+        // Mapeia os perfis filtrados para chamadas de Observable do getUserRole
+        return forkJoin(filteredProfiles.map(profile => {
+          // Verifique se o nome de usuário está definido para evitar erros
+          if (!profile.userName) {
+            console.warn(`Perfil sem nome de usuário encontrado:`, profile);
             return of({ ...profile, isModerator: false });
           }
-          // Now it's safe to call getUserRole because we've ensured userName is defined
+
+          // Chama getUserRole e mapeia os resultados para cada perfil
           return this.adminService.getUserRole(profile.userName).pipe(
-            map(roles => ({
-              ...profile,
-              isBanned: this.checkIfUserIsBanned(profile),
-              isModerator: roles.includes('Moderator'),
-            })),
+            map(roles => {
+              console.log(`Roles for ${profile.userName}:`, roles);
+              // Retorna o perfil com a propriedade adicional isModerator
+              return {
+                ...profile,
+                isBanned: this.checkIfUserIsBanned(profile),
+                isModerator: roles.includes('Moderator')
+              };
+            }),
             catchError(error => {
-              console.error('Error fetching roles:', profile.userName, error);
-              return of({ ...profile, isModerator: false }); // default to false on error
+              console.error('Error fetching roles for user:', profile.userName, error);
+              return of({ ...profile, isModerator: false }); // Retorna isModerator como false em caso de erro
             })
           );
-        });
-        return forkJoin(profilesWithRoles$);
+        }));
       })
     ).subscribe(
-      (profiles: Profile[]) => {
+      (profiles) => {
+        // Os perfis aqui são os perfis completos com as informações de isModerator
+        console.log("Perfis com informação de moderador:", profiles);
+
+        // Atualiza o estado do componente com os novos perfis
         this.filteredUsersProfiles = profiles;
         this.collectionSize = profiles.length;
+
+        // Classifica e filtra os perfis atualizados
         this.sortAlphabetically();
         this.filterUsers();
       },
       (error) => {
-        console.error("Error while fetching users' profiles:", error);
+        console.error("Erro ao buscar perfis de usuários:", error);
       }
     );
   }
+
 
 
 
