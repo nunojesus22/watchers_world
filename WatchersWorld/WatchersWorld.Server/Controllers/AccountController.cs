@@ -665,7 +665,6 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
-
         #region Private Helper Methods
         /// <summary>
         /// Creates a UserDto from the provided user information.

@@ -19,6 +19,7 @@ import { ChatComponent } from './chat/chat.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
 import { GamificationComponent } from './gamification/gamification.component';
+import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -50,7 +51,7 @@ const routes: Routes = [
   { path: 'serie/:id/season', component: SeasonDetailsComponent },
   { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent },
   { path: 'statistics/:username', component: StatisticsComponent },
-  
+  { path: 'admin-statistics',component: AdminStatisticsComponent}
 ];
 
 @NgModule({

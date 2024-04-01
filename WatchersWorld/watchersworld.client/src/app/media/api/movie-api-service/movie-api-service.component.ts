@@ -38,6 +38,15 @@ export class MovieApiServiceComponent {
     return headers;
   }
 
+  getSimilarMovie(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/movie/${data}/similar?api_key=${this.apikey}`)
+
+  }
+
+  getSimilarSerie(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${data}/similar?api_key=${this.apikey}`)
+
+  }
 
   //getStreamingProvider
   getStreamingProvider(data: any): Observable<any> {

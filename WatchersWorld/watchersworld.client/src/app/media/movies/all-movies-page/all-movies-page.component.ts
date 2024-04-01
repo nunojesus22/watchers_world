@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { AuthenticationService } from '../../../authentication/services/authentication.service';
+import { ProfileService } from '../../../profile/services/profile.service';
+import { flatMap, forkJoin, map, switchMap } from 'rxjs';
 
 
 
@@ -18,11 +21,19 @@ interface MovieCategory {
 })
 export class AllMoviesPageComponent {
   categories: MovieCategory[] = [];
+  currentUser: any;
 
-  constructor(private route: Router, private service: MovieApiServiceComponent) { }
+  constructor(private route: Router,
+    private service: MovieApiServiceComponent,
+    private authService: AuthenticationService,
+    private profileService: ProfileService,
+
+) { }
 
   ngOnInit(): void {
+    this.currentUser = this.authService.getLoggedInUserName();
     this.initCategories();
+    this.fetchRecommendedMovies();
   }
 
   initCategories() {
@@ -42,6 +53,7 @@ export class AllMoviesPageComponent {
 
   fetchMovies() {
     const fetchMethods = [
+     
       this.service.trendingMovieApiData(),
       this.service.fetchActionMovies(),
       this.service.fetchAdventureMovies(),
@@ -58,6 +70,49 @@ export class AllMoviesPageComponent {
       });
     });
   }
+
+  fetchRecommendedMovies(): void {
+    this.profileService.getUserWatchedMedia(this.currentUser).pipe(
+      switchMap((watchedMedia: any[]) => {
+        const movieIds = watchedMedia
+          .filter(media => media.type === 'movie')
+          .map(media => media.mediaId);
+        return forkJoin(movieIds.map(id => this.service.getSimilarMovie(id)));
+      }),
+      map(movieArrays => movieArrays.flatMap(movies => movies.results)),
+      map(recommendedMovies => {
+        const uniqueMovieIds = new Set();
+        const uniqueMovies = [];
+        console.log(recommendedMovies);
+        for (const movie of recommendedMovies) {
+          if (movie.poster_path && !uniqueMovieIds.has(movie.id)) {
+            uniqueMovieIds.add(movie.id);
+            uniqueMovies.unshift(movie); 
+          }
+        }
+
+        return uniqueMovies.slice(0, 100);
+      })
+    ).subscribe((uniqueRecommendedMovies: any[]) => {
+      const recommendedCategoryIndex = this.categories.findIndex(category => category.name === 'Filmes Sugeridos');
+      if (recommendedCategoryIndex !== -1) {
+
+        this.categories[recommendedCategoryIndex].results = [
+          ...uniqueRecommendedMovies,
+          ...this.categories[recommendedCategoryIndex].results,
+        ];
+      } else {
+
+        this.categories.unshift({
+          name: 'Filmes Sugeridos',
+          results: uniqueRecommendedMovies,
+          activeIndex: 0,
+          showAll: false
+        });
+      }
+    });
+  }
+
 
 
   getCategoryResults(categoryName: string): any[] {
