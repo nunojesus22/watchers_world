@@ -153,7 +153,6 @@
   position: sticky;
   top: 0; /* Fica no topo dentro do .contact-list */
   background: white; /* Cor de fundo para cobrir o conteúdo por baixo quando rolar */
-  z-index: 10;
 }
 
 /* Adicione um contêiner em torno da lista de usuários para permitir rolagem apenas nessa seção */

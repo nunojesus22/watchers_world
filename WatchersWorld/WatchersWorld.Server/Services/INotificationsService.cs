@@ -304,7 +304,7 @@ namespace WatchersWorld.Server.Services
             if (user != null)
             {
                 var messageNotifications = await _context.MessageNotifications
-                    .Where(n => n.TriggeredByUserId == user.Id && !n.IsRead)
+                    .Where(n => n.TargetUserId == user.Id && !n.IsRead)
                     .ToListAsync();
 
                 foreach (var notification in messageNotifications)
@@ -368,7 +368,7 @@ namespace WatchersWorld.Server.Services
                 .AnyAsync(n => n.TriggeredByUserId == user.Id && !n.IsRead);
 
             bool hasUnreadMessageNotifications = await _context.MessageNotifications
-                .AnyAsync(n => n.TriggeredByUserId == user.Id && !n.IsRead);
+                .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
 
             return hasUnreadFollowNotifications || hasUnreadReplyNotifications || hasUnreadAchievementyNotifications || hasUnreadMessageNotifications;
         }
