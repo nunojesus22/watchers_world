@@ -21,10 +21,7 @@
            [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
            alt="User Icon"
            class="user-icon" />
-
-
     </ng-container>
-
     <ng-template #notLoggedIn>
       <img [routerLink]="['/account/login']"
            [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
@@ -35,13 +32,13 @@
 
 
 
-  <div id="sidebar" class="sidebar">
+  <div id="sidebar" class="sidebar" *ngIf="(authService.user$ | async) as user; else notLoggedIn">
     <img class="wwimage" src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />
     <a href="#"> <i class="fas fa-envelope"></i> Mensagens</a>
     <a [routerLink]="['/notifications', loggedUserName]">
       <i class="fas fa-bell" [ngClass]="{'notification-icon': pendingFollowRequests.length > 0 || hasUnreadNotifications}"></i> Notificações
     </a>
-    <a [routerLink]="['/profile', loggedUserName]"> <i class="fas fa-user"></i> Perfil </a>
+    <a (click)="navigateBasedOnRole(user.username)"> <i class="fas fa-user"></i> Perfil </a>
     <a [routerLink]="['/all-series-page']"> <i class="fas fa-tv"></i> Séries </a>
     <a [routerLink]="['/all-movies-page']"> <i class="fas fa-film"></i> Filmes </a>
     <a href="#"> <i class="fas fa-cog"></i> Definições </a>

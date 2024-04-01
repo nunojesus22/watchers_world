@@ -33,6 +33,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
 import { GamificationComponent } from './gamification/gamification.component';
 import { ChatService } from './chat/services/chat.service';
+import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ChatService } from './chat/services/chat.service';
     ChatComponent,
     StatisticsComponent,
     GamificationComponent,
+    AdminStatisticsComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

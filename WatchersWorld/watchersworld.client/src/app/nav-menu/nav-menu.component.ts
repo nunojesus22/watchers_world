@@ -104,11 +104,14 @@ export class NavMenuComponent {
   }
 
   navigateBasedOnRole(username: string) {
+    this.isActive = false;
     this.authService.getUserRole(username).subscribe((roles: string[]) => {
       if (roles.includes('Admin')) {
         this.router.navigate(['/admin']);
+        this.isActive = true;
       } else if (roles.includes('User') || roles.includes('Moderator')) {
         this.router.navigate(['/profile', username]);
+        this.isActive = true;
       } else {
         // Handle case for users without Admin or User roles or redirect to a default route
         this.router.navigate(['/home']);
@@ -122,8 +125,6 @@ export class NavMenuComponent {
   logout() {
     this.authService.logout();
   }
-
-
 }
 
 

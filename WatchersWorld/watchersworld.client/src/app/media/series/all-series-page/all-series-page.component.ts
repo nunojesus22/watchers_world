@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
+import { AuthenticationService } from '../../../authentication/services/authentication.service';
+import { ProfileService } from '../../../profile/services/profile.service';
+import { forkJoin, map, switchMap } from 'rxjs';
 
 
 interface MovieCategory {
@@ -19,13 +22,61 @@ interface MovieCategory {
 
 export class AllSeriesPageComponent {
   categories: MovieCategory[] = [];
+  currentUser: any;
 
-  constructor(private route: Router, private service: MovieApiServiceComponent) { }
+  constructor(private route: Router,
+    private service: MovieApiServiceComponent,
+    private authService: AuthenticationService,
+    private profileService: ProfileService) { }
 
   ngOnInit(): void {
+    this.currentUser = this.authService.getLoggedInUserName();
     this.initCategories();
+    this.fetchRecommendedSeries();
   }
 
+
+  fetchRecommendedSeries(): void {
+    this.profileService.getUserWatchedMedia(this.currentUser).pipe(
+      switchMap((watchedMedia: any[]) => {
+        const movieIds = watchedMedia
+          .filter(media => media.type === 'serie')
+          .map(media => media.mediaId);
+        return forkJoin(movieIds.map(id => this.service.getSimilarSerie(id)));
+      }),
+      map(movieArrays => movieArrays.flatMap(movies => movies.results)),
+      map(recommendedMovies => {
+        const uniqueMovieIds = new Set();
+        const uniqueMovies = [];
+        console.log(recommendedMovies);
+        for (const movie of recommendedMovies) {
+          if (movie.poster_path && !uniqueMovieIds.has(movie.id)) {
+            uniqueMovieIds.add(movie.id);
+            uniqueMovies.unshift(movie);
+          }
+        }
+
+        return uniqueMovies.slice(0, 100);
+      })
+    ).subscribe((uniqueRecommendedMovies: any[]) => {
+      const recommendedCategoryIndex = this.categories.findIndex(category => category.name === 'Series Sugeridas');
+      if (recommendedCategoryIndex !== -1) {
+
+        this.categories[recommendedCategoryIndex].results = [
+          ...uniqueRecommendedMovies,
+          ...this.categories[recommendedCategoryIndex].results,
+        ];
+      } else {
+
+        this.categories.unshift({
+          name: 'Series Sugeridas',
+          results: uniqueRecommendedMovies,
+          activeIndex: 0,
+          showAll: false
+        });
+      }
+    });
+  }
   initCategories() {
     this.categories = [
       { name: 'Séries em Destaque', results: [], activeIndex: 0, showAll: false },

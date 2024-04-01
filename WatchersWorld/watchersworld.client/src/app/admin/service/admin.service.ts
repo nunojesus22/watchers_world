@@ -78,4 +78,26 @@ export class AdminService {
       responseType: 'text'  // Expect a text response
     });
   }
+  //ESTATISTICAS
+  getTotalRegisteredUsers(): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-registered-users`, { headers });
+  }
+
+  getTotalBannedUsers(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-banned-users`);
+  }
+
+  getTotalPrivateProfiles(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-private-profiles`);
+  }
+
+  getTotalPublicProfiles(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-public-profiles`);
+  }
+
+  getTotalComments(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-comments`);
+  }
+
 }
