@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Data;
-using WatchersWorld.Server.Models.Media.FavoriteActor;
 
 namespace WatchersWorld.Server.Chat.Services
 {
@@ -65,7 +64,17 @@ namespace WatchersWorld.Server.Chat.Services
 
             try
             {
-                _context.Chats.Remove(chat);
+                var messages = await GetAllMessagesByChat(chat.Id.ToString());
+
+                var messagesIds = messages.Select(m => m.Id).ToList();
+
+                var userMessageVisibilities = _context.MessagesVisibility
+                     .Where(v => messagesIds.Contains(v.MessageId) && v.UserId == user1Id);
+
+                foreach (var vis in userMessageVisibilities)
+                {
+                    vis.Visibility = false;
+                }
 
                 await _context.SaveChangesAsync();
                 return true;
@@ -127,8 +136,25 @@ namespace WatchersWorld.Server.Chat.Services
                     RecipientUserId = userReceiverId,
                 };
 
+                var messageSenderVisibility = new MessagesVisibility
+                {
+                    Id = Guid.NewGuid(),
+                    MessageId = message.Id,
+                    UserId = userSenderId,
+                    Visibility = true
+                };
+
+                var messageReceiverVisibility = new MessagesVisibility
+                {
+                    Id = Guid.NewGuid(),
+                    MessageId = message.Id,
+                    UserId = userReceiverId,
+                    Visibility = true
+                };
+
                 _context.Messages.Add(message);
                 _context.MessagesStatus.Add(messageStatus);
+                _context.MessagesVisibility.AddRange(messageSenderVisibility, messageReceiverVisibility);
 
                 await _context.SaveChangesAsync();
                 return true;

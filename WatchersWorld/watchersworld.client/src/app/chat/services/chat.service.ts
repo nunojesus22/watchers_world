@@ -17,9 +17,11 @@ export class ChatService {
 
   constructor(private authService: AuthenticationService, private router: Router) { }
 
-  startConnection(username : string) {
+  startConnection(username: string) {
+    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(`https://localhost:7232/chathub?username=${username}`, {
+      .withUrl(`https://localhost:7232/chathub?username=${username}&timeZone=${encodeURIComponent(timeZone)}`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets
       })
@@ -36,6 +38,8 @@ export class ChatService {
         });
       })
       .catch(err => console.log('Error while starting connection: ' + err));
+
+    
   }
 
   startConnectionAndListen(): void {
@@ -58,8 +62,10 @@ export class ChatService {
     }
   }
 
-  sendMessage(usernameReceiver: string, message: Message) : Promise<void> {
-    return this.hubConnection!.invoke('SendMessage', usernameReceiver, message)
+  sendMessage(usernameReceiver: string, message: Message): Promise<void> {
+    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    return this.hubConnection!.invoke('SendMessage', usernameReceiver, message, timeZone)
       .then(async (sentAtFromServer) => {
         message.sentAt = sentAtFromServer;
 
@@ -78,6 +84,15 @@ export class ChatService {
         }
         return Promise.reject();
       });
+  }
+
+  deleteChat(usernameReceiver: string): Promise<void> {
+    return this.hubConnection!.invoke('DeleteChat', usernameReceiver)
+      .then(async (chats) => {
+        this.chatsSubject.next(chats);
+        console.log(this.chats$);
+      })
+      .catch(error => {return Promise.reject(); });
   }
 
   onMessageReceived(listener: (message : Message) => void): void {
@@ -140,7 +155,9 @@ export class ChatService {
   }
 
   getMissingChats(): Promise<ChatWithMessages[]> {
-    return this.hubConnection!.invoke('GetMissingChats', this.chatsSubject.value);
+    var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    return this.hubConnection!.invoke('GetMissingChats', this.chatsSubject.value, timeZone);
   }
 
   addMissingChats(missingChats: ChatWithMessages[]): void {

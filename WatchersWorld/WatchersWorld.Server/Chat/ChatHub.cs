@@ -17,20 +17,25 @@ namespace WatchersWorld.Server.Chat
         private readonly UserManager<User> _userManager;
         private readonly WatchersWorldServerContext _context;
 
+        private readonly ITimeZoneConverterService _timeZoneConverterService;
+
         private static readonly Dictionary<string, string> _userConnections = new Dictionary<string, string>();
 
-        public ChatHub(IChatService chatService, INotificationService notificationsService, UserManager<User> userManager, WatchersWorldServerContext context)
+        public ChatHub(IChatService chatService, INotificationService notificationsService, UserManager<User> userManager, WatchersWorldServerContext context, ITimeZoneConverterService timeZoneConverterService)
         {
             _chatService = chatService;
             _notificationService = notificationsService;
             _userManager = userManager;
             _context = context;
+            _timeZoneConverterService = timeZoneConverterService;
         }
 
         public override async Task OnConnectedAsync()
         {
             var username = Context.GetHttpContext().Request.Query["username"].ToString();
             var user = await _userManager.FindByNameAsync(username);
+            var timeZone = Context.GetHttpContext().Request.Query["timeZone"].ToString();
+
             Console.WriteLine($"Utilizador logado: {user.Id}, {user.UserName}");
 
             lock (_userConnections)
@@ -38,7 +43,7 @@ namespace WatchersWorld.Server.Chat
                 _userConnections[user.Id] = Context.ConnectionId;
             }
 
-            var chats = await GetUserChatsWithMessages(user.Id);
+            var chats = await GetUserChatsWithMessages(user.Id, timeZone);
 
             await Clients.Caller.SendAsync("ReceiveChatList", chats);
 
@@ -58,7 +63,7 @@ namespace WatchersWorld.Server.Chat
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task<DateTime?> SendMessage(string usernameReceiver, MessageDto message)
+        public async Task<DateTime?> SendMessage(string usernameReceiver, MessageDto message, string timeZone)
         {
             var username = Context.GetHttpContext().Request.Query["username"].ToString();
             var userSender = await _userManager.FindByNameAsync(username);
@@ -69,11 +74,12 @@ namespace WatchersWorld.Server.Chat
 
             if (userReceiverId == null)
             {
-                throw new HubException("ID do usuário receptor não pode ser null.");
+                throw new HubException("ID do utilizador receptor não pode ser null.");
             }
 
             var time = DateTime.UtcNow;
             message.SentAt = time;
+            DateTime messageSentAt = time!; 
 
             var result = await _chatService.SendMessage(userSenderId, userReceiverId, message.Text, message.SentAt);
             await _notificationService.CreateMessageNotificationAsync(userSenderId, userReceiverId);
@@ -85,7 +91,7 @@ namespace WatchersWorld.Server.Chat
                     {
                         SendUsername = username,
                         Text = message.Text,
-                        SentAt = message.SentAt,
+                        SentAt = _timeZoneConverterService.ConvertUtcToTimeZone(messageSentAt, timeZone)
                     });
                 }
             }
@@ -93,19 +99,19 @@ namespace WatchersWorld.Server.Chat
             return message.SentAt;
         }
 
-        public async Task<IEnumerable<ChatWithMessagesDto>> GetMissingChats(IEnumerable<ChatWithMessagesDto> chatsThatAlreadyHad)
+        public async Task<IEnumerable<ChatWithMessagesDto>> GetMissingChats(IEnumerable<ChatWithMessagesDto> chatsThatAlreadyHad, string timeZone)
         {
             var username = Context.GetHttpContext().Request.Query["username"].ToString();
             var userSender = await _userManager.FindByNameAsync(username);
             var userSenderId = userSender.Id;
-            var allChats = await GetUserChatsWithMessages(userSenderId);
+            var allChats = await GetUserChatsWithMessages(userSenderId, timeZone);
 
             var missingChats = allChats.Where(ac => !chatsThatAlreadyHad.Any(c => c.Username == ac.Username)).ToList();
 
             return missingChats;
         }
 
-        public async Task<IEnumerable<ChatWithMessagesDto>> GetUserChatsWithMessages(string userSenderId) 
+        public async Task<IEnumerable<ChatWithMessagesDto>> GetUserChatsWithMessages(string userSenderId, string timeZone) 
         {
             var chats = await _chatService.GetChatsByUser(userSenderId);
             var chatsWithMessages = new List<ChatWithMessagesDto>();
@@ -120,20 +126,43 @@ namespace WatchersWorld.Server.Chat
 
                 var profilePhoto = await _context.ProfileInfo.Where(u => u.UserId == otherUserId).Select(u => u.ProfilePhoto).FirstOrDefaultAsync();
 
+                var visibleMessages = messages.Where(m => _context.MessagesVisibility.Any(v => v.MessageId == m.Id && v.UserId == userSenderId && v.Visibility)).ToList();
+
                 chatsWithMessages.Add(new ChatWithMessagesDto
                 {
                     Username = otherUserUsername,
                     ProfilePhoto = profilePhoto,
-                    Messages = messages.Select(m => new MessageDto
+                    Messages = visibleMessages.Select(m => new MessageDto
                     {
                         SendUsername = _context.Users.Where(u => u.Id == m.SendUserId).Select(u => u.UserName).FirstOrDefault(),
-                        SentAt = m.SentAt,
+                        SentAt = _timeZoneConverterService.ConvertUtcToTimeZone(m.SentAt, timeZone),
                         Text = m.Text
                     }).ToList()
                 });
             }
 
             return chatsWithMessages;
+        }
+
+        public async Task<IEnumerable<ChatWithMessagesDto>> DeleteChat(string usernameReceiver, string timeZone)
+        {
+            var username = Context.GetHttpContext().Request.Query["username"].ToString();
+            var userSender = await _userManager.FindByNameAsync(username);
+            var userSenderId = userSender.Id;
+
+            var userReceiver = await _userManager.FindByNameAsync(usernameReceiver);
+            var userReceiverId = userReceiver?.Id;
+
+            var result = await _chatService.DeleteChat(userSenderId, userReceiverId);
+
+            if (result)
+            {
+                return await GetUserChatsWithMessages(userSenderId, timeZone);
+            } else
+            {
+                throw new HubException("ID do usuário receptor não pode ser null.");
+            }
+
         }
     }
 }

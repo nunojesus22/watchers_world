@@ -34,7 +34,10 @@ import { NotificationsComponent } from './notifications/notifications/notificati
 import { GamificationComponent } from './gamification/gamification.component';
 import { ChatService } from './chat/services/chat.service';
 import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DialogService } from './confirm-dialog/services/dialog.service';
+import { ConfirmBoxConfigModule, DialogConfigModule, NgxAwesomePopupModule, ToastNotificationConfigModule } from '@costlydeveloper/ngx-awesome-popup';
 
 @NgModule({
   declarations: [
@@ -60,10 +63,25 @@ import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.co
     StatisticsComponent,
     GamificationComponent,
     AdminStatisticsComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule 
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule, MatDialogModule,
+    NgxAwesomePopupModule.forRoot({
+      colorList: {
+        success: '#3caea3', 
+        info: '#2f8ee5', 
+        warning: '#ffc107', 
+        danger: '#e46464', 
+        customOne: '#3ebb1a',
+        customTwo: '#bd47fa',
+      },
+    }),
+    ConfirmBoxConfigModule.forRoot(),
+
+    DialogConfigModule.forRoot(), 
+    ToastNotificationConfigModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -72,6 +90,7 @@ import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.co
     MovieApiServiceComponent,
     SearchServiceComponent,
     ChatService,
+    DialogService,
   ],
   bootstrap: [AppComponent]
 })

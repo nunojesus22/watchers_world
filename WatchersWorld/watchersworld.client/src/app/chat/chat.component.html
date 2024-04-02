@@ -58,7 +58,14 @@
         <div *ngIf="selectedUser; else noUserSelected" class="card-header d-flex justify-content-between align-items-center">
           <img class="other-users-user-photo" [src]="selectedUser.profilePhoto" [routerLink]="['/profile', selectedUser.userName]">
           <span class="other-users-user-name">{{ selectedUser.userName }}</span>
-          <button class="btn btn-outline-secondary" style="background-color: #4CAEFE; color:white; border:none" type="button">Opções</button>
+          <!-- <button class="btn btn-danger" (click)="deleteChat()">Eliminar conversa</button>  -->
+          <app-confirm-dialog [classCss]="'btn btn-danger'"
+                              [titleButton]="'Eliminar Conversa'"
+                              [titlePopup]="'Confirmação'"
+                              [messagePopup]="'Tem certeza que deseja eliminar esta conversa?'"
+                              [confirmationTextButton]="'Confirmar'"
+                              [cancelTextButton]="'Cancelar'"
+                              (confirmAction)="performDeleteAction($event)"></app-confirm-dialog>
         </div>
 
         <!-- Messages Area -->

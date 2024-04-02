@@ -1,12 +1,11 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
 import { Subject, switchMap, takeUntil } from 'rxjs';
-import { ProfileService } from '../profile/services/profile.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { ChatService } from './services/chat.service';
 import { Message } from './models/messages';
 import { ProfileChat } from './models/profileChat';
-import { Profile } from '../profile/models/profile';
+import { DialogService } from '../confirm-dialog/services/dialog.service';
 
 @Component({
   selector: 'app-chat',
@@ -39,6 +38,7 @@ export class ChatComponent implements AfterViewChecked {
     private router: Router,
     private authService: AuthenticationService,
     private chatService: ChatService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +70,8 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   setupContactItems(): void {
+    console.log(this.chatService.chats$);
+
     this.chatService.chats$.subscribe(chats => {
       const sortedChats = chats.sort((a, b) => {
         const lastMessageA = a.messages[a.messages.length - 1];
@@ -133,6 +135,10 @@ export class ChatComponent implements AfterViewChecked {
     this.router.navigate([`/chat/${userProfile.userName}`]);
   }
 
+  resetUser(): void {
+    this.router.navigate([`/chat`]);
+  }
+
   filterUsers(): void {
     if (!this.searchTerm) {
       this.filteredUsersProfiles = this.usersProfiles;
@@ -189,7 +195,7 @@ export class ChatComponent implements AfterViewChecked {
         this.toggleMessageForm();
       })
       .catch(error => {
-        if (error && error.includes("O ID do usuário receptor é nulo.")) {
+        if (error && error.includes("ID do utilizador receptor não pode ser null.")) {
           this.errorMessage = "Utilizador não encontrado!";
         } else {
           console.error("Erro ao enviar mensagem:", error);
@@ -199,5 +205,14 @@ export class ChatComponent implements AfterViewChecked {
 
   clearErrorMessage(): void {
     this.errorMessage = "";
+  }
+
+  performDeleteAction(event: any): void {
+    this.deleteChat();
+  }
+
+  deleteChat(): void {
+    this.chatService.deleteChat(this.selectedUsername!); 
+    this.resetUser();
   }
 }

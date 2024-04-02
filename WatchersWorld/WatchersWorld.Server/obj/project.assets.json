@@ -2843,6 +2843,22 @@
           }
         }
       },
+      "NodaTime/3.1.11": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.7.1"
+        },
+        "compile": {
+          "lib/net6.0/NodaTime.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/NodaTime.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "NuGet.Common/6.3.1": {
         "type": "package",
         "dependencies": {
@@ -9778,6 +9794,23 @@
         "packageIcon.png"
       ]
     },
+    "NodaTime/3.1.11": {
+      "sha512": "AYSiCHp1PLzWKVf7hEL3MJ0q9kzOWMNIaTVysXk4XKrDBzK5PF2wpd4LsAl+EIQ2Hbvu+vw4oFaexcXzCuY1lQ==",
+      "type": "package",
+      "path": "nodatime/3.1.11",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/NodaTime.dll",
+        "lib/net6.0/NodaTime.pdb",
+        "lib/net6.0/NodaTime.xml",
+        "lib/netstandard2.0/NodaTime.dll",
+        "lib/netstandard2.0/NodaTime.pdb",
+        "lib/netstandard2.0/NodaTime.xml",
+        "nodatime.3.1.11.nupkg.sha512",
+        "nodatime.nuspec"
+      ]
+    },
     "NuGet.Common/6.3.1": {
       "sha512": "/WgxNyc9dXl+ZrQJDf5BXaqtMbl0CcDC5GEQITecbHZBQHApTMuxeTMMEqa0Y+PD1CIxTtbRY4jmotKS5dsLuA==",
       "type": "package",
@@ -14452,29 +14485,25 @@
       "Microsoft.Identity.Web >= 2.15.2",
       "Microsoft.Identity.Web.DownstreamApi >= 2.15.2",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.0",
+      "NodaTime >= 3.1.11",
       "Swashbuckle.AspNetCore >= 6.4.0",
       "System.IdentityModel.Tokens.Jwt >= 7.2.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\johnn\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\nunoj\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "projectUniqueName": "C:\\Users\\nunoj\\OneDrive\\Ambiente de Trabalho\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
       "projectName": "WatchersWorld.Server",
-      "projectPath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
-      "packagesPath": "C:\\Users\\johnn\\.nuget\\packages\\",
-      "outputPath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\obj\\",
+      "projectPath": "C:\\Users\\nunoj\\OneDrive\\Ambiente de Trabalho\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
+      "packagesPath": "C:\\Users\\nunoj\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nunoj\\OneDrive\\Ambiente de Trabalho\\watchers_world\\WatchersWorld\\WatchersWorld.Server\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\johnn\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\nunoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14568,6 +14597,10 @@
             "target": "Package",
             "version": "[8.0.0, )"
           },
+          "NodaTime": {
+            "target": "Package",
+            "version": "[3.1.11, )"
+          },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[6.4.0, )"
@@ -14596,7 +14629,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
