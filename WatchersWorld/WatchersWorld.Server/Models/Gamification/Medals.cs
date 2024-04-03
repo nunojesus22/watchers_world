@@ -10,7 +10,5 @@
         
         public string Image { get; set; }
 
-        public virtual ICollection<UserMedal> UserMedals { get; set; }
-
     }
 }

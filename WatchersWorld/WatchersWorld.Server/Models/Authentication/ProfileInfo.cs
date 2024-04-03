@@ -79,7 +79,6 @@ namespace WatchersWorld.Server.Models.Authentication
         /// </summary>
         public DateTime? EndBanDate { get; set;}
 
-        public virtual ICollection<UserMedal> UserMedals { get; set; }
 
 
     }
