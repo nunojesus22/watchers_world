@@ -2,7 +2,7 @@
   <h1>Medalhas</h1>
   <hr>
   <div class="medals-list">
-    <ng-container *ngIf="unlockedMedals.length; else noMedals">
+    <ng-container *ngIf="unlockedMedals.length">
       <!-- Loop for unlocked medals -->
       <div *ngFor="let medal of unlockedMedals" class="medal unlocked">
         <img [src]="medal.image" [alt]="medal.name">
@@ -10,7 +10,7 @@
         <p>{{ medal.description }}</p>
       </div>
     </ng-container>
-    <ng-container *ngIf="lockedMedals.length; else noMedals">
+    <ng-container *ngIf="lockedMedals.length">
       <!-- Loop for locked medals -->
       <div *ngFor="let medal of lockedMedals" class="medal locked">
         <img [src]="medal.image" [alt]="medal.name">
@@ -19,8 +19,5 @@
         
       </div>
     </ng-container>
-    <ng-template #noMedals>
-      <p>No medals available.</p>
-    </ng-template>
   </div>
 </div>

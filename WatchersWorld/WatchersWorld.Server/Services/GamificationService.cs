@@ -53,18 +53,22 @@ namespace WatchersWorld.Server.Services
         public async Task<List<MedalsDto>> GetUnlockedMedalsAsync(string userName)
         {
             var unlockedMedals = await _context.UserMedals
-            .Where(um => um.UserName == userName)
-                .Select(um => new MedalsDto
-                {
-                    Id = um.Medal.Id,
-                    Name = um.Medal.Name,
-                    Description = um.Medal.Description,
-                    Image = um.Medal.Image,
-                })
+                .Where(um => um.UserName == userName)
+                .Join(_context.Medals, // The table you want to join with
+                      userMedal => userMedal.MedalId, // The foreign key
+                      medal => medal.Id, // The primary key in the medals table
+                      (userMedal, medal) => new MedalsDto // Result selector
+                      {
+                          Id = medal.Id,
+                          Name = medal.Name,
+                          Description = medal.Description,
+                          Image = medal.Image
+                      })
                 .ToListAsync();
 
             return unlockedMedals;
         }
+
 
         public async Task<List<MedalsDto>> GetLockedMedalsAsync(string userName)
         {

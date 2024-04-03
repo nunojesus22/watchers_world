@@ -64,7 +64,5 @@ namespace WatchersWorld.Server.DTOs.ProfileInfoDtos
         public DateTime EndBanDate { get; set; }
 
 
-        public virtual ICollection<UserMedal> UserMedals { get; set; }
-
     }
 }
