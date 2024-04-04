@@ -41,8 +41,9 @@ export class ProfileService {
     return this.http.get<Profile>(`${environment.appUrl}/api/profile/get-user-info/${username}`, {headers});
   }
 
-  setUserData(model: Profile) {
-    return this.http.put<Profile>(`${environment.appUrl}/api/profile/update-user-info`, model);
+  setUserData(model: Profile): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put<Profile>(`${environment.appUrl}/api/profile/update-user-info`, model, { headers });
   }
 
   getUserProfiles(): Observable<Profile[]> {

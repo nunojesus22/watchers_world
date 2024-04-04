@@ -62,7 +62,6 @@ namespace WatchersWorld.Server.Services
 
         public async Task<FollowNotificationDto> CreateFollowNotificationAsync(string triggeredByUserId, string targetUserId)
         {
-            // Buscar os perfis dos usuários com base nos IDs de usuário
             var triggeredByUser = await _context.ProfileInfo
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
@@ -72,7 +71,7 @@ namespace WatchersWorld.Server.Services
 
             if (triggeredByUser == null || targetUser == null)
             {
-                throw new Exception("Perfil de usuário não encontrado.");
+                throw new NullReferenceException("Perfil de utilizador não encontrado.");
             }
 
             var followNotification = new FollowNotification
@@ -147,7 +146,7 @@ namespace WatchersWorld.Server.Services
 
             if (triggeredByUser == null || targetUser == null)
             {
-                throw new Exception("Perfil de usuário não encontrado.");
+                throw new NullReferenceException("Perfil de usuário não encontrado.");
             }
 
             var mediaInfo = await _context.MediaInfoModel
@@ -159,7 +158,7 @@ namespace WatchersWorld.Server.Services
 
             if (mediaInfo == null || comment == null)
             {
-                throw new Exception("A mídia ou comentário relacionados não foram encontrados.");
+                throw new NullReferenceException("A mídia ou comentário relacionados não foram encontrados.");
             }
 
             string message = $"{triggeredByUser.UserName} respondeu ao seu comentário com: \"{commentText}\"";
@@ -356,7 +355,10 @@ namespace WatchersWorld.Server.Services
                 .Where(u => u.UserName == username)
                 .SingleOrDefaultAsync();
 
-            if (user == null) return false;
+            if (user == null)
+            {
+                throw new NullReferenceException("Perfil de usuário não encontrado.");
+            }
 
             bool hasUnreadFollowNotifications = await _context.FollowNotifications
                 .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
@@ -385,7 +387,7 @@ namespace WatchersWorld.Server.Services
 
             if (medal == null || user == null)
             {
-                throw new Exception("Medalha ou usuário não encontrados.");
+                throw new NullReferenceException("Medalha ou usuário não encontrados.");
             }
 
             string message = $"Desbloqueaste a medalha: {medal.Name}";
@@ -464,7 +466,7 @@ namespace WatchersWorld.Server.Services
 
             if (triggeredByUser == null || targetUser == null)
             {
-                throw new Exception("Perfil de usuário não encontrado.");
+                throw new NullReferenceException("Perfil de utilizador não encontrado.");
             }
 
             var lastMessage = await _context.Messages
@@ -474,7 +476,7 @@ namespace WatchersWorld.Server.Services
 
             if (lastMessage == null)
             {
-                throw new Exception("Nenhuma mensagem encontrada para criar notificação.");
+                throw new NullReferenceException("Nenhuma mensagem encontrada para criar notificação.");
             }
 
             var messageStatus = await _context.MessagesStatus
@@ -482,7 +484,7 @@ namespace WatchersWorld.Server.Services
 
             if (messageStatus == null)
             {
-                throw new Exception("Status da mensagem não encontrado.");
+                throw new NullReferenceException("Status da mensagem não encontrado.");
             }
 
             var notification = new MessageNotification

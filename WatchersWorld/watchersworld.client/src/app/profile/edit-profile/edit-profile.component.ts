@@ -216,6 +216,7 @@ export class EditProfileComponent {
     this.profileForm.get('gender')?.disable();
     this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
+        console.log(userData);
         //if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
         if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
         if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
@@ -254,26 +255,21 @@ export class EditProfileComponent {
     const profileStatus = this.profileLocked;
     const numberOfFollowers = this.followersCount || 0;
     const numberOfFollowing = this.followingCount || 0;
-
     
     const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus, numberOfFollowers, numberOfFollowing);
-    
+    console.log(data);
     if (this.profileForm.valid) {
       this.profileService.setUserData(data).subscribe({
         next: (response: any) => {
+          console.log(response);
           this.setFormFields(username);
         },
         error: (error) => {
-          if (error.error.errors) {
-            this.errorMessages = error.error.errors;
-          } else {
-            this.errorMessages.push(error.error);
-          }
+          console.error("Error during setUserData", error); 
         }
       },
       );
     }
-
   }
 
  saveButton(username: string) {

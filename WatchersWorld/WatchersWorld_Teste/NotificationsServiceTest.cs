@@ -49,7 +49,28 @@ namespace WatchersWorld_Teste
             Assert.Equal(user1.Id, followNotificationDto.TriggeredByUserId);
             Assert.Equal(user2.Id, followNotificationDto.TargetUserId);
             Assert.Contains("começou-te a seguir", followNotificationDto.Message);
+
         }
+
+        [Fact]
+        public async Task CreateFollowNotification_ThrowsException_WhenUserProfileNotFound()
+        {
+            // Arrange
+            var validUser = await _userManager.FindByNameAsync("UserTest1");
+            string invalidUserId = "UserTest8";
+
+            // Act & Assert
+            var exception = await Record.ExceptionAsync(() =>
+                _notificationService.CreateFollowNotificationAsync(validUser!.Id, invalidUserId));
+
+            Assert.IsType<NullReferenceException>(exception);
+
+            exception = await Record.ExceptionAsync(() =>
+                _notificationService.CreateFollowNotificationAsync(invalidUserId, validUser!.Id));
+
+            Assert.IsType<NullReferenceException>(exception);
+        }
+
 
         [Fact]
         public async Task GetFollowNotificationsForUser_ReturnsListOfNotifications()
@@ -78,7 +99,7 @@ namespace WatchersWorld_Teste
             var receiverUser = await _userManager.FindByNameAsync("UserTest7");
 
             // Act
-            var messageNotificationDto = await _notificationService.CreateMessageNotificationAsync(senderUser.Id, receiverUser.Id);
+            var messageNotificationDto = await _notificationService.CreateMessageNotificationAsync(senderUser!.Id, receiverUser!.Id);
 
             // Assert
             Assert.NotNull(messageNotificationDto);
@@ -88,6 +109,21 @@ namespace WatchersWorld_Teste
             Assert.False(messageNotificationDto.IsRead);
             Assert.Equal("Message", messageNotificationDto.EventType);
             Assert.NotNull(messageNotificationDto.TriggeredByUserPhoto);
+        }
+
+        [Fact]
+        public async Task CreateMessageNotification_ThrowsException_WhenUserProfileNotFound()
+        {
+            // Arrange
+            var validUser = await _userManager.FindByNameAsync("UserTest1");
+            string invalidUserId = "InvalidUser";
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+                await _notificationService.CreateMessageNotificationAsync(invalidUserId, validUser!.Id));
+
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+                await _notificationService.CreateMessageNotificationAsync(validUser!.Id, invalidUserId));
         }
 
         [Fact]
@@ -141,6 +177,38 @@ namespace WatchersWorld_Teste
         }
 
         [Fact]
+        public async Task CreateReplyNotification_ThrowsException_WhenAnyEntityNotFound()
+        {
+            // Arrange
+            var nonExistingUserId = "UserTest8";
+            var nonExistingMediaId = 999999;
+            var nonExistingCommentId = 999999;
+            string replyText = "Reply Text";
+
+            // Act & Assert 
+            var exceptionTriggeringUserNotFound = await Record.ExceptionAsync(() =>
+                _notificationService.CreateReplyNotificationAsync(nonExistingUserId, "ValidUserId", 1, 1, replyText));
+
+            Assert.IsType<NullReferenceException>(exceptionTriggeringUserNotFound);
+
+            var exceptionTargetUserNotFound = await Record.ExceptionAsync(() =>
+                _notificationService.CreateReplyNotificationAsync("ValidUserId", nonExistingUserId, 1, 1, replyText));
+
+            Assert.IsType<NullReferenceException>(exceptionTargetUserNotFound);
+
+            var exceptionMediaNotFound = await Record.ExceptionAsync(() =>
+                _notificationService.CreateReplyNotificationAsync("ValidUserId", "ValidUserId", nonExistingMediaId, 1, replyText));
+
+            Assert.IsType<NullReferenceException>(exceptionMediaNotFound);
+
+            var exceptionCommentNotFound = await Record.ExceptionAsync(() =>
+                _notificationService.CreateReplyNotificationAsync("ValidUserId", "ValidUserId", 1, nonExistingCommentId, replyText));
+
+            Assert.IsType<NullReferenceException>(exceptionCommentNotFound);
+        }
+
+
+        [Fact]
         public async Task GetReplyNotificationsForUser_ReturnsListOfNotifications()
         {
             // Arrange
@@ -164,10 +232,10 @@ namespace WatchersWorld_Teste
         {
             // Arrange
             var user4 = await _userManager.FindByNameAsync("UserTest4");
-            int medalId = 1;
+            var medal = await _context.Medals.FirstOrDefaultAsync(m => m.Id == 1);
 
             // Act
-            var achievementNotificationDto = await _notificationService.CreateAchievementNotificationAsync(user4!.Id, medalId);
+            var achievementNotificationDto = await _notificationService.CreateAchievementNotificationAsync(user4!.Id, medal.Id);
 
             // Assert
             Assert.NotNull(achievementNotificationDto);
@@ -175,8 +243,28 @@ namespace WatchersWorld_Teste
             Assert.Contains("Desbloqueaste a medalha:", achievementNotificationDto.Message);
             Assert.False(achievementNotificationDto.IsRead);
             Assert.Equal("Achievement", achievementNotificationDto.EventType);
-            Assert.Equal(medalId, achievementNotificationDto.UserMedalId);
+            Assert.Equal(medal.Id, achievementNotificationDto.UserMedalId);
         }
+
+        [Fact]
+        public async Task CreateAchievementNotification_ThrowsException_WhenUserOrMedalNotFound()
+        {
+            // Arrange
+            var nonExistingUserId = "UserTest8";
+            var nonExistingMedalId = 999999;
+
+            // Act & Assert
+            var exceptionUserNotFound = await Record.ExceptionAsync(() =>
+                _notificationService.CreateAchievementNotificationAsync(nonExistingUserId, 1));
+
+            Assert.IsType<NullReferenceException>(exceptionUserNotFound);
+
+            var exceptionMedalNotFound = await Record.ExceptionAsync(() =>
+                _notificationService.CreateAchievementNotificationAsync("ValidUserId", nonExistingMedalId));
+
+            Assert.IsType<NullReferenceException>(exceptionMedalNotFound);
+        }
+
 
         [Fact]
         public async Task GetAchievementNotificationsForUser_ReturnsListOfNotifications()
@@ -295,6 +383,43 @@ namespace WatchersWorld_Teste
             Assert.Empty(replyNotifications);
             Assert.Empty(achievementNotifications);
             Assert.Empty(messageNotifications);
+        }
+
+        [Fact]
+        public async Task HasUnreadNotificationsAsync_ReturnsTrue_WhenThereAreUnreadNotifications()
+        {
+            // Arrange
+            var userWithUnread = await _userManager.FindByNameAsync("UserTest2");
+
+            // Act
+            var hasUnread = await _notificationService.HasUnreadNotificationsAsync(userWithUnread!.UserName);
+
+            // Assert
+            Assert.True(hasUnread);
+        }
+
+        [Fact]
+        public async Task HasUnreadNotificationsAsync_ReturnsFalse_WhenThereAreNoUnreadNotifications()
+        {
+            // Arrange
+            var userWithoutUnread = await _userManager.FindByNameAsync("UserTest1");
+
+            // Act
+            var hasUnread = await _notificationService.HasUnreadNotificationsAsync(userWithoutUnread!.UserName);
+
+            // Assert
+            Assert.False(hasUnread);
+        }
+
+        [Fact]
+        public async Task HasUnreadNotificationsAsync_ThrowsException_WhenUserNotFound()
+        {
+            // Arrange
+            string nonExistentUserName = "NonExistentUser";
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+                await _notificationService.HasUnreadNotificationsAsync(nonExistentUserName));
         }
 
     }

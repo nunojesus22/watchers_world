@@ -32,11 +32,12 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService, INotificationService notificationService, GamificationService gamificationService) : ControllerBase
+    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IProfileService profileService, IFollowersService followersService, INotificationService notificationService, GamificationService gamificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly UserManager<User> _userManager = userManager;
         private readonly ILogger<ProfileController> _logger = logger;
+        private readonly IProfileService _profileService = profileService;
         private readonly IFollowersService _followersService = followersService;
         private readonly INotificationService _notificationService = notificationService;
         private readonly GamificationService _gamificationService = gamificationService;
@@ -50,28 +51,12 @@ namespace WatchersWorld.Server.Controllers
         [HttpGet("get-user-info/{username}")]
         public async Task<ActionResult<ProfileInfoDto>> GetUser(string username)
         {
-            var user = await _userManager.Users
-                 .FirstOrDefaultAsync(u => u.UserName == username);
+            var userProfileDto = await _profileService.GetUserProfileAsync(username);
 
-            if (user == null)
+            if (userProfileDto == null)
             {
                 return NotFound("Não foi possível encontrar o utilizador");
             }
-
-            var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
-
-            ProfileInfoDto userProfileDto = new()
-            {
-                UserName = data.UserName,
-                Description = data.Description,
-                BirthDate = data.BirthDate,
-                Gender = data.Gender,
-                ProfilePhoto = data.ProfilePhoto,
-                CoverPhoto = data.CoverPhoto,
-                ProfileStatus = data.ProfileStatus,
-                Followers = data.Followers,
-                Following = data.Following
-            };
 
             return userProfileDto;
         }
@@ -98,43 +83,31 @@ namespace WatchersWorld.Server.Controllers
                 return NotFound("Não foi possível encontrar o utilizador");
             }
 
+            var updateSuccessful = await _profileService.UpdateUserProfileAsync(userIdClaim, model);
+
+            if (!updateSuccessful)
+            {
+                return BadRequest("Não foi possível atualizar o perfil do utilizador");
+            }
+
             var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
 
-            try
+            // Logic to handle the medal awarding if needed
+            bool medalAwarded = await _gamificationService.AwardMedalAsync(data.UserName, "Editar perfil");
+            if (medalAwarded)
             {
-                data.Description = model.Description;
-                data.Gender = model.Gender;
-                data.BirthDate = model.BirthDate;
-                data.CoverPhoto = model.CoverPhoto;
-                data.ProfilePhoto = model.ProfilePhoto;
-                data.ProfileStatus = model.ProfileStatus;
-
-                _context.ProfileInfo.Update(data);
-
-                var result = await _context.SaveChangesAsync();
-
-                bool medalAwarded = await _gamificationService.AwardMedalAsync(data.UserName, "Editar perfil");
-                if (medalAwarded)
-                {
-                    await _notificationService.CreateAchievementNotificationAsync(data.UserId, 5);
-                }
-
-                if (!medalAwarded)
-                {
-                    // Handle the case where the medal is not awarded, if necessary
-                    _logger.LogWarning("Medal was not awarded for user {UserName}.", data.UserName);
-                }
-
-                if (result > 0)
-                    return Ok(new JsonResult(new { title = "Perfil atualizado", 
-                        message = "Os seus dados foram alterados com sucesso." }));
-                return BadRequest("Não foi possivel alterar os seus dados.Tente Novamente.");
-
+                await _notificationService.CreateAchievementNotificationAsync(data.UserId, 5);
             }
-            catch (Exception)
+            else
             {
-                return BadRequest("Não foi possivel alterar os seus dados.Tente Novamente.");
+                _logger.LogWarning("Medal was not awarded for user {UserName}.", model.UserName);
             }
+
+            return Ok(new JsonResult(new
+            {
+                title = "Perfil atualizado",
+                message = "Os seus dados foram alterados com sucesso."
+            }));
         }
 
         /// <summary>

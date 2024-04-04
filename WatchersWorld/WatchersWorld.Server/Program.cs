@@ -21,6 +21,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IFollowersService, FollowersService>();
 builder.Services.AddScoped<IFavoriteActorService, FavoriteActorService>();
 builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();

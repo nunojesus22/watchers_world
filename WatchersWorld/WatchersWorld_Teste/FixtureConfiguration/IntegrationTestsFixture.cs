@@ -26,6 +26,8 @@ namespace WatchersWorld_Teste.FixtureConfiguration
         public IConfiguration Configuration { get; private set; }
         public WatchersWorldServerContext Context { get; private set; }
         public UserManager<User> UserManager { get; private set; }
+        public IProfileService ProfileService { get; private set; }
+
         public IFollowersService FollowersService { get; private set; }
         public INotificationService NotificationsService { get; private set; }
 
@@ -52,6 +54,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration
 
             services.AddScoped<JWTService>();
             services.AddScoped<EmailService>();
+            services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFollowersService, FollowersService>();
             services.AddScoped<IRatingMediaService, RatingMediaService>();
             services.AddScoped<RatingMediaService>();
@@ -118,8 +121,10 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             ServiceProvider = services.BuildServiceProvider();
             Context = ServiceProvider.GetRequiredService<WatchersWorldServerContext>();
             UserManager = ServiceProvider.GetRequiredService<UserManager<User>>();
+            ProfileService = ServiceProvider.GetRequiredService<IProfileService>();
             FollowersService = ServiceProvider.GetRequiredService<IFollowersService>();
             NotificationsService = ServiceProvider.GetRequiredService<INotificationService>();
+
             Context.Database.EnsureCreated();
         }
 
@@ -167,6 +172,12 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             Context.ProfileInfo.Add(userProfile);
             await Context.SaveChangesAsync();
         }*/
+    }
+
+    [CollectionDefinition("Profile Collection")]
+    public class ProfileCollection : ICollectionFixture<IntegrationTestsFixture>
+    {
+        // Nada precisa estar aqui
     }
 
     [CollectionDefinition("Followers Collection")]
