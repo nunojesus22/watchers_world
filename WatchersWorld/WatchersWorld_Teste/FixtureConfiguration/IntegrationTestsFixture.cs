@@ -27,6 +27,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration
         public WatchersWorldServerContext Context { get; private set; }
         public UserManager<User> UserManager { get; private set; }
         public IFollowersService FollowersService { get; private set; }
+        public INotificationService NotificationsService { get; private set; }
 
         public IntegrationTestsFixture() 
         {
@@ -59,6 +60,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             services.AddSingleton<IChatService, ChatService>();
             services.AddSingleton<ChatService>();
             services.AddTransient(typeof(ILogger<AccountController>), provider => NullLogger<AccountController>.Instance);
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddDbContext<WatchersWorldServerContext>(options =>
                 options.UseInMemoryDatabase("TestDb"));
@@ -117,6 +119,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             Context = ServiceProvider.GetRequiredService<WatchersWorldServerContext>();
             UserManager = ServiceProvider.GetRequiredService<UserManager<User>>();
             FollowersService = ServiceProvider.GetRequiredService<IFollowersService>();
+            NotificationsService = ServiceProvider.GetRequiredService<INotificationService>();
             Context.Database.EnsureCreated();
         }
 
@@ -168,6 +171,12 @@ namespace WatchersWorld_Teste.FixtureConfiguration
 
     [CollectionDefinition("Followers Collection")]
     public class FollowersCollection : ICollectionFixture<IntegrationTestsFixture>
+    {
+        // Nada precisa estar aqui
+    }
+
+    [CollectionDefinition("Notifications Collection")]
+    public class NotificationsCollection : ICollectionFixture<IntegrationTestsFixture>
     {
         // Nada precisa estar aqui
     }
