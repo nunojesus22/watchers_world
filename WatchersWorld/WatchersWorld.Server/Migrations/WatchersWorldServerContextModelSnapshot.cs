@@ -728,6 +728,16 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("FollowNotifications", (string)null);
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.MediaNotification", b =>
+                {
+                    b.HasBaseType("WatchersWorld.Server.Models.Notifications.Notification");
+
+                    b.Property<int>("UserMediaId")
+                        .HasColumnType("int");
+
+                    b.ToTable("MediaNotifications");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.MessageNotification", b =>
                 {
                     b.HasBaseType("WatchersWorld.Server.Models.Notifications.Notification");
@@ -1010,6 +1020,15 @@ namespace WatchersWorld.Server.Migrations
                     b.HasOne("WatchersWorld.Server.Models.Notifications.Notification", null)
                         .WithOne()
                         .HasForeignKey("WatchersWorld.Server.Models.Notifications.FollowNotification", "NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.MediaNotification", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Notifications.Notification", null)
+                        .WithOne()
+                        .HasForeignKey("WatchersWorld.Server.Models.Notifications.MediaNotification", "NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

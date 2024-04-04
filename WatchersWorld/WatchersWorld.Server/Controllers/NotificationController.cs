@@ -126,5 +126,36 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "All message notifications have been marked as read." });
         }
 
+        [HttpPost("notify-new-episode")]
+        public async Task<IActionResult> NotifyNewEpisode([FromBody] MediaNotificationDto notificationDto)
+        {
+            try
+            {
+                await _notificationService.CreateMediaNotificationAsync(notificationDto.TriggeredByUserId, notificationDto.UserMediaId, notificationDto.MediaName, notificationDto.MediaPhoto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Trate a exceção conforme necessário
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("mediaNotifications/{authenticatedUsername}")]
+        public async Task<IActionResult> GetMyMediaNotifications(string authenticatedUsername, [FromQuery] string mediaName, [FromQuery] string mediaPhoto)
+        {
+            var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
+            if (userAuthenticated == null)
+            {
+                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+            }
+
+            var userIdAuthenticated = userAuthenticated.Id;
+            var notifications = await _notificationService.GetMediaNotificationsForUserAsync(userIdAuthenticated, mediaName, mediaPhoto);
+
+            return Ok(notifications);
+        }
+
+
     }
 }

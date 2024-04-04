@@ -467,6 +467,24 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MediaNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserMediaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_MediaNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MessageNotifications",
                 columns: table => new
                 {
@@ -828,6 +846,9 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Medals");
+
+            migrationBuilder.DropTable(
+                name: "MediaNotifications");
 
             migrationBuilder.DropTable(
                 name: "MessageNotifications");

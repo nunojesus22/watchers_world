@@ -11,6 +11,7 @@ import { FollowNotificationModel } from '../models/follow-notification-model';
 import { ReplyNotificationModel } from '../models/reply-notification-model';
 import { AchievementNotificationModel } from '../models/achievement-notification-model';
 import { MessageNotificationModel } from '../models/message-notification-model';
+import { MediaNotificationModel } from '../models/media-notification-model';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class NotificationsComponent {
   replyNotifications: ReplyNotificationModel[] = [];
   achievementNotifications: AchievementNotificationModel[] = [];
   messageNotifications: MessageNotificationModel[] = [];
+  mediaNotifications: MediaNotificationModel[] = [];
 
   allNotifications: any[] = [];
 
@@ -51,6 +53,7 @@ export class NotificationsComponent {
     this.loadReplyNotifications();
     this.loadAchievementNotifications();
     this.loadMessageNotifications();
+    this.loadMediaNotifications();
     setTimeout(() => {
       this.markNotificationsAsRead();
     }, 1000);
@@ -189,6 +192,27 @@ export class NotificationsComponent {
           },
           error: (err) => {
             console.error('Erro ao buscar notificações de conquista:', err);
+          }
+        });
+    }
+  }
+
+  loadMediaNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.getMediaNotifications(this.loggedUserName)
+        .subscribe({
+          next: (notifications) => {
+            if (notifications && notifications.length > 0) {
+              this.mediaNotifications = notifications;
+              this.combineAndSortNotifications();
+              console.log('Notificações de media recebidas:', notifications);
+            } else {
+              this.messageNotifications = [];
+              console.log('Não há notificações de media.');
+            }
+          },
+          error: (err) => {
+            console.error('Erro ao buscar notificações de media:', err);
           }
         });
     }

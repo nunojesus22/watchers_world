@@ -8,6 +8,7 @@ import { FollowNotificationModel } from '../models/follow-notification-model';
 import { ReplyNotificationModel } from '../models/reply-notification-model';
 import { AchievementNotificationModel } from '../models/achievement-notification-model';
 import { MessageNotificationModel } from '../models/message-notification-model';
+import { MediaNotificationModel } from '../models/media-notification-model';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,23 @@ export class NotificationService {
     return this.http.get(`${environment.appUrl}/api/notifications/hasUnread/${username}`, { headers });
   }
 
+  notifyNewEpisode(notification: MediaNotificationModel): Observable<any> {
+    const headers = this.getHeaders();
+    const body = {
+      triggeredByUserId: notification.triggeredByUserId,
+      message: notification.message,
+      createdAt: notification.createdAt,
+      isRead: notification.isRead,
+      eventType: notification.eventType,
+      mediaName: notification.mediaName,
+      mediaPhoto: notification.mediaPhoto,
+      userMediaId: notification.userMediaId
+    };
+    return this.http.post(`${environment.appUrl}/api/notifications/notify-new-episode`, body, { headers });
+  }
 
-
+  getMediaNotifications(username: string): Observable<MediaNotificationModel[]> {
+    const headers = this.getHeaders();
+    return this.http.get<MediaNotificationModel[]>(`${environment.appUrl}/api/notifications/mediaNotifications/${username}`, { headers });
+  }
 }

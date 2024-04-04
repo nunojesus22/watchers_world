@@ -4,6 +4,8 @@ import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
 import { ProfileService } from '../../../profile/services/profile.service';
 import { forkJoin, map, switchMap } from 'rxjs';
+import { NotificationService } from '../../../notifications/services/notification.service';
+import { MediaNotificationModel } from '../../../notifications/models/media-notification-model';
 
 
 interface MovieCategory {
@@ -27,12 +29,14 @@ export class AllSeriesPageComponent {
   constructor(private route: Router,
     private service: MovieApiServiceComponent,
     private authService: AuthenticationService,
+    private notificationService: NotificationService,
     private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.currentUser = this.authService.getLoggedInUserName();
     this.initCategories();
     this.fetchRecommendedSeries();
+    this.fetchAiringAndWatchedSeriesAndNotify();
   }
 
 
@@ -80,10 +84,12 @@ export class AllSeriesPageComponent {
   initCategories() {
     this.categories = [
       { name: 'Séries em Destaque', results: [], activeIndex: 0, showAll: false },
+      { name: 'Séries em Produção', results: [], activeIndex: 0, showAll: false },
       { name: 'Séries de Ação e Aventura', results: [], activeIndex: 0, showAll: false },
       { name: 'Séries de Drama', results: [], activeIndex: 0, showAll: false },
       { name: 'Séries de Mistério', results: [], activeIndex: 0, showAll: false },
       { name: 'Séries de Animação', results: [], activeIndex: 0, showAll: false },
+
     ];
 
     this.fetchMovies();
@@ -93,12 +99,11 @@ export class AllSeriesPageComponent {
   fetchMovies() {
     const fetchMethods = [
       this.service.fetchTopRatedSeries(),
+      this.service.getAiringSeries(),
       this.service.fetchActionAndAdvetureSeries(),
       this.service.fetchDramaSeries(),
       this.service.fetchMysterySeries(),
       this.service.fetchAnimationSeries(),
-
-
   ];
 
     fetchMethods.forEach((fetchMethod, index) => {
@@ -142,6 +147,7 @@ export class AllSeriesPageComponent {
       category.showAll = !category.showAll;
     }
   }
+
   getRows(movies: any[]) {
     const rows = [];
     for (let i = 0; i < movies.length; i += 4) {
@@ -149,4 +155,44 @@ export class AllSeriesPageComponent {
     }
     return rows;
   }
+
+  fetchAiringAndWatchedSeriesAndNotify(): void {
+    forkJoin({
+      airingToday: this.service.getAiringSeries(),
+      watchedMedia: this.profileService.getUserWatchedMedia(this.currentUser)
+    }).pipe(
+      switchMap(results => {
+        const watchedSeriesIds = new Set(results.watchedMedia.map(media => media.mediaId));
+        const airingSeriesToNotify = results.airingToday.results.filter(
+          (series: any) => watchedSeriesIds.has(series.id)
+        );
+
+        return forkJoin(
+          airingSeriesToNotify.map((series: any) => 
+            this.notificationService.notifyNewEpisode(
+              new MediaNotificationModel(
+                this.currentUser,
+                `Novo episódio disponível para ${series.name}!`,
+                new Date(),
+                false,
+                'NewMedia',
+                series.name,
+                series.poster_path,
+                series.id 
+              )
+            )
+          )
+        );
+      })
+    ).subscribe({
+      next: () => console.log('Notificações para novos episódios enviadas com sucesso.'),
+      error: (error) => console.error('Erro ao enviar notificações para novos episódios', error)
+    });
+  }
+
+
+
+
+
+
 }

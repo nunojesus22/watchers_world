@@ -45,6 +45,10 @@ namespace WatchersWorld.Server.Services
         Task<List<MessageNotificationDto>> GetMessageNotificationsForUserAsync(string targetUserId);
 
         Task MarkAllMessageNotificationsAsReadAsync(string username);
+
+        Task<MediaNotificationDto> CreateMediaNotificationAsync(string triggeredByUserId, int idTableMedia, string mediaName, string mediaPhoto);
+
+        Task<List<MediaNotificationDto>> GetMediaNotificationsForUserAsync(string userId, string mediaName, string mediaPhoto);
     }
 
     /// <summary>
@@ -547,6 +551,74 @@ namespace WatchersWorld.Server.Services
 
             return notificationDtos;
         }
+
+        public async Task<MediaNotificationDto> CreateMediaNotificationAsync(string triggeredByUserId, int mediaId, string mediaName, string mediaPhoto)
+        {
+            // Aqui estamos obtendo todas as UserMedia que correspondem ao mediaId fornecido
+            var userMediaEntries = await _context.UserMedia
+                .AsNoTracking()
+                .Where(um => um.MediaInfoModel.IdMedia == mediaId)
+                .ToListAsync();
+
+            if (!userMediaEntries.Any())
+            {
+                throw new NullReferenceException("UserMedia correspondente ao mediaId não encontrado.");
+            }
+
+            // Aqui você pode escolher uma lógica específica. Por exemplo, notificar todos os usuários que têm esse mediaId em UserMedia
+            // ou apenas notificar o primeiro, dependendo da sua regra de negócio.
+            var userMedia = userMediaEntries.FirstOrDefault(); // ou alguma outra lógica de seleção
+
+            var notification = new MediaNotification
+            {
+                NotificationId = Guid.NewGuid(),
+                TriggeredByUserId = triggeredByUserId,
+                Message = $"Um novo episódio de {mediaName} está disponível!",
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false,
+                EventType = "NewMedia",
+                UserMediaId = userMedia.Id // Assumindo que você quer a chave primária da UserMedia aqui
+            };
+
+            await _context.MediaNotifications.AddAsync(notification);
+            await _context.SaveChangesAsync();
+
+            return new MediaNotificationDto
+            {
+                TriggeredByUserId = triggeredByUserId,
+                Message = notification.Message,
+                CreatedAt = notification.CreatedAt,
+                IsRead = notification.IsRead,
+                EventType = notification.EventType,
+                MediaName = mediaName,
+                MediaPhoto = mediaPhoto,
+                UserMediaId = userMedia.Id
+            };
+        }
+
+        public async Task<List<MediaNotificationDto>> GetMediaNotificationsForUserAsync(string userId, string mediaName, string mediaPhoto)
+        {
+            var notifications = await _context.MediaNotifications
+                .Where(n => n.UserMedia.UserId == userId && !n.IsRead)
+                .Include(n => n.UserMedia)
+                .ThenInclude(um => um.MediaInfoModel)
+                .Select(n => new MediaNotificationDto
+                {
+                    TriggeredByUserId = n.TriggeredByUserId,
+                    Message = n.Message,
+                    CreatedAt = n.CreatedAt,
+                    IsRead = n.IsRead,
+                    EventType = n.EventType,
+                    MediaName = mediaName,
+                    MediaPhoto = mediaPhoto,
+                    UserMediaId = n.UserMediaId
+                })
+                .ToListAsync();
+
+            return notifications;
+        }
+
+
 
 
 

@@ -183,6 +183,12 @@ export class MovieApiServiceComponent {
     return this.http.get(`${this.baseurl}/discover/tv?api_key=${this.apikey}&with_genres=16`);
   }
 
+  // SERIES AIRING TODAY
+
+  getAiringSeries(): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/airing_today?api_key=${this.apikey}`)
+  }
+
   // FAVORITOS
 
   checkIfIsFavorite(mediaId: number, mediaType: string): Observable<any> {
