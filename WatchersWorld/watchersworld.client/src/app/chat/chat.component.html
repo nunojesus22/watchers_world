@@ -32,10 +32,10 @@
         <div class="user-list-container">
           <ul *ngIf="filteredUsersProfiles.length > 0 && !showNoResults; else noResults" class="list-group">
             <ng-container *ngFor="let userProfile of filteredUsersProfiles">
-              <li *ngIf="userProfile.userName !== loggedUserName" (click)="selectUser(userProfile)" class="list-group-item">
+              <li *ngIf="userProfile.userName !== loggedUserName" (click)="onUserSelected(userProfile)" class="list-group-item">
                 <div class="user-item">
                   <img class="other-users-user-photo" [src]="userProfile.profilePhoto">
-                  <span class="other-users-user-name">{{ userProfile.userName }}</span>
+                  <span class="other-users-user-name" [ngClass]="{'unread-message': isUnread(userProfile.unreadMessages)}">{{ userProfile.userName }}</span>
                   <span class="last-message-time">{{ userProfile.lastMessage!.sentAt | date:'HH:mm' }}</span>
                 </div>
               </li>

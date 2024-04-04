@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WatchersWorld.Server.Chat.DTOs;
 using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Data;
 
@@ -11,10 +12,10 @@ namespace WatchersWorld.Server.Chat.Services
         Task<bool> DeleteChat(string user1Id, string user2Id);
         Task<List<Models.Chat>> GetChatsByUser(string userId);
         Task<List<string>> GetUsersThatHaveChatWith(string userId);
-        Task<bool> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt);
-        Task<bool> MarkMessageAsRead(string messageId);
-        Task<List<Messages>> GetAllMessagesByChat(string chatId);
-        Task<List<Messages>> GetAllMessagesByUsers(string user1Id, string user2Id);
+        Task<MessageDto> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt);
+        Task<MessageDto> MarkMessageAsRead(string messageId);
+        Task<List<MessageDto>> GetAllMessagesByChat(string chatId);
+        Task<List<MessageDto>> GetAllMessagesByUsers(string user1Id, string user2Id);
         Task<Models.Chat> GetChatByUsers(string user1Id, string user2Id);
     }
 
@@ -66,7 +67,7 @@ namespace WatchersWorld.Server.Chat.Services
             {
                 var messages = await GetAllMessagesByChat(chat.Id.ToString());
 
-                var messagesIds = messages.Select(m => m.Id).ToList();
+                var messagesIds = messages.Select(m => m.MessageId).ToList();
 
                 var userMessageVisibilities = _context.MessagesVisibility
                      .Where(v => messagesIds.Contains(v.MessageId) && v.UserId == user1Id);
@@ -106,15 +107,15 @@ namespace WatchersWorld.Server.Chat.Services
             return userIds;
         }
 
-        public async Task<bool> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt = null)
+        public async Task<MessageDto> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt = null)
         {
-            if (userSenderId.IsNullOrEmpty() || userReceiverId.IsNullOrEmpty() || userSenderId == userReceiverId || textMessage.IsNullOrEmpty()) return false;
+            if (userSenderId.IsNullOrEmpty() || userReceiverId.IsNullOrEmpty() || userSenderId == userReceiverId || textMessage.IsNullOrEmpty()) return null;
 
             var chat = await GetChatByUsers(userSenderId, userReceiverId);
             if (chat == null)
             {
                 var result = await CreateChat(userSenderId, userReceiverId);
-                if (!result) return false;
+                if (!result) return null;
                 chat = await GetChatByUsers(userSenderId, userReceiverId);
             }
 
@@ -134,6 +135,7 @@ namespace WatchersWorld.Server.Chat.Services
                 {
                     MessageId = message.Id.ToString(),
                     RecipientUserId = userReceiverId,
+                    ReadAt = null
                 };
 
                 var messageSenderVisibility = new MessagesVisibility
@@ -157,44 +159,79 @@ namespace WatchersWorld.Server.Chat.Services
                 _context.MessagesVisibility.AddRange(messageSenderVisibility, messageReceiverVisibility);
 
                 await _context.SaveChangesAsync();
-                return true;
+                var messageToReturn = new MessageDto
+                {
+                    MessageId = message.Id,
+                    SendUsername = message.SendUserId,
+                    Text = message.Text,
+                    SentAt = message.SentAt,
+                    ReadAt = messageStatus.ReadAt
+                };
+
+                return messageToReturn;
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
-                return false;
+                return null;
             }
 
         }
 
-        public async Task<bool> MarkMessageAsRead(string messageId)
+        public async Task<MessageDto> MarkMessageAsRead(string messageId)
         {
-            if(messageId.IsNullOrEmpty()) return false;
+            if(messageId.IsNullOrEmpty()) return null;
             var messageStatus = await _context.MessagesStatus.Where(ms => ms.MessageId == messageId).FirstOrDefaultAsync();
-            if (messageStatus == null) return false;
+            if (messageStatus == null) return null;
             try
             {
                 messageStatus.ReadAt = DateTime.UtcNow;
                 _context.MessagesStatus.Update(messageStatus);
                 await _context.SaveChangesAsync();
-                return true;
+
+                var message = _context.Messages.Where(m => m.Id == messageId).FirstOrDefault();
+
+                var messageToReturn = new MessageDto
+                {
+                    MessageId = messageId,
+                    SendUsername = message.SendUserId,
+                    Text = message.Text,
+                    SentAt = message.SentAt,
+                    ReadAt = messageStatus.ReadAt
+                };
+
+                return messageToReturn; ;
             } catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
-                return false;
+                return null;
             }
         }
 
-        public async Task<List<Messages>> GetAllMessagesByChat(string chatId)
+        public async Task<List<MessageDto>> GetAllMessagesByChat(string chatId)
         {
             if(chatId.IsNullOrEmpty()) return [];
             
             var messages = await _context.Messages.Where(m => m.ChatId.ToString() == chatId).OrderBy(m => m.SentAt).ToListAsync();
 
-            return messages;
+            var messageIds = messages.Select(m => m.Id).ToList();
+            var messageStatuses = await _context.MessagesStatus
+                .Where(ms => messageIds.Contains(ms.MessageId))
+                .ToListAsync();
+
+            var messageDtos = messages.Select(m => new MessageDto
+            {
+                MessageId = m.Id,
+                SendUsername = _context.Users.Where(u => m.SendUserId == u.Id).Select(u => u.UserName).Single(),
+                Text = m.Text,
+                SentAt = m.SentAt,
+                ReadAt = messageStatuses.FirstOrDefault(ms => ms.MessageId == m.Id)?.ReadAt
+            }).ToList();
+
+            return messageDtos;
         }
 
-        public async Task<List<Messages>> GetAllMessagesByUsers(string user1Id, string user2Id)
+        public async Task<List<MessageDto>> GetAllMessagesByUsers(string user1Id, string user2Id)
         {
             if (user1Id.IsNullOrEmpty() || user2Id.IsNullOrEmpty() || user1Id == user2Id) return [];
 

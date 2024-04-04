@@ -5,13 +5,15 @@ namespace WatchersWorld.Server.Services
 {
     public interface ITimeZoneConverterService
     {
-        DateTime ConvertUtcToTimeZone(DateTime utcDateTime, string timeZoneId);
+        DateTime? ConvertUtcToTimeZone(DateTime? utcDateTime, string timeZoneId);
     }
 
     public class TimeZoneConverterService : ITimeZoneConverterService
     {
-        public DateTime ConvertUtcToTimeZone(DateTime utcDateTime, string timeZoneId)
+        public DateTime? ConvertUtcToTimeZone(DateTime? utcDateTime, string timeZoneId)
         {
+            if(utcDateTime == null) return null;
+
             var dateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
 
             if (!dateTimeZoneProvider.Ids.Contains(timeZoneId) &&
@@ -23,7 +25,7 @@ namespace WatchersWorld.Server.Services
 
             var dateTimeZone = dateTimeZoneProvider[timeZoneId];
 
-            DateTime utcDateTimeAfter = DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc);
+            DateTime utcDateTimeAfter = DateTime.SpecifyKind(utcDateTime.Value, DateTimeKind.Utc);
             var instant = Instant.FromDateTimeUtc(utcDateTimeAfter);
             var zonedDateTime = instant.InZone(dateTimeZone);
             return zonedDateTime.ToDateTimeUnspecified();

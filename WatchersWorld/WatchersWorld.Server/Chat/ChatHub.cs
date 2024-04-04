@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Chat.DTOs;
+using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Chat.Services;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
@@ -63,7 +64,7 @@ namespace WatchersWorld.Server.Chat
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task<DateTime?> SendMessage(string usernameReceiver, MessageDto message, string timeZone)
+        public async Task<MessageDto> SendMessage(string usernameReceiver, MessageDto message, string timeZone)
         {
             var username = Context.GetHttpContext().Request.Query["username"].ToString();
             var userSender = await _userManager.FindByNameAsync(username);
@@ -83,20 +84,29 @@ namespace WatchersWorld.Server.Chat
 
             var result = await _chatService.SendMessage(userSenderId, userReceiverId, message.Text, message.SentAt);
             await _notificationService.CreateMessageNotificationAsync(userSenderId, userReceiverId);
-            if (result)
+
+            var readAt = (result?.ReadAt != null) ? _timeZoneConverterService.ConvertUtcToTimeZone(result.ReadAt.Value, timeZone) : null;
+            var messageToReturn = new MessageDto
             {
+                MessageId = "",
+                SendUsername = username,
+                Text = message.Text,
+                SentAt = _timeZoneConverterService.ConvertUtcToTimeZone(messageSentAt, timeZone),
+                ReadAt = readAt
+            };
+
+
+            if (result != null)
+            {
+                messageToReturn.MessageId = result.MessageId;
                 if (_userConnections.ContainsKey(userReceiverId))
                 {
-                    await Clients.Client(_userConnections[userReceiverId]).SendAsync("ReceiveMessage", new MessageDto
-                    {
-                        SendUsername = username,
-                        Text = message.Text,
-                        SentAt = _timeZoneConverterService.ConvertUtcToTimeZone(messageSentAt, timeZone)
-                    });
+                    await Clients.Client(_userConnections[userReceiverId]).SendAsync("ReceiveMessage", messageToReturn);
                 }
+                return messageToReturn;
             }
-
-            return message.SentAt;
+            return null;
+            
         }
 
         public async Task<IEnumerable<ChatWithMessagesDto>> GetMissingChats(IEnumerable<ChatWithMessagesDto> chatsThatAlreadyHad, string timeZone)
@@ -126,7 +136,7 @@ namespace WatchersWorld.Server.Chat
 
                 var profilePhoto = await _context.ProfileInfo.Where(u => u.UserId == otherUserId).Select(u => u.ProfilePhoto).FirstOrDefaultAsync();
 
-                var visibleMessages = messages.Where(m => _context.MessagesVisibility.Any(v => v.MessageId == m.Id && v.UserId == userSenderId && v.Visibility)).ToList();
+                var visibleMessages = messages.Where(m => _context.MessagesVisibility.Any(v => v.MessageId == m.MessageId && v.UserId == userSenderId && v.Visibility)).ToList();
 
                 chatsWithMessages.Add(new ChatWithMessagesDto
                 {
@@ -134,9 +144,11 @@ namespace WatchersWorld.Server.Chat
                     ProfilePhoto = profilePhoto,
                     Messages = visibleMessages.Select(m => new MessageDto
                     {
-                        SendUsername = _context.Users.Where(u => u.Id == m.SendUserId).Select(u => u.UserName).FirstOrDefault(),
-                        SentAt = _timeZoneConverterService.ConvertUtcToTimeZone(m.SentAt, timeZone),
-                        Text = m.Text
+                        MessageId = m.MessageId,
+                        SendUsername = m.SendUsername,
+                        SentAt = _timeZoneConverterService.ConvertUtcToTimeZone(m.SentAt.Value, timeZone),
+                        Text = m.Text,
+                        ReadAt = m.ReadAt != null ? _timeZoneConverterService.ConvertUtcToTimeZone(m.ReadAt.Value, timeZone) : null
                     }).ToList()
                 });
             }
@@ -163,6 +175,24 @@ namespace WatchersWorld.Server.Chat
                 throw new HubException("ID do usuário receptor não pode ser null.");
             }
 
+        }
+
+        public async Task<IEnumerable<ChatWithMessagesDto>> MarkMessagesAsRead(IEnumerable<MessageDto> messages, string timeZone)
+        {
+            var username = Context.GetHttpContext().Request.Query["username"].ToString();
+            var userSender = await _userManager.FindByNameAsync(username);
+            var userSenderId = userSender.Id;
+
+            foreach (var message in messages)
+            {
+                var result = await _chatService.MarkMessageAsRead(message.MessageId);
+                if (result == null)
+                {
+                    throw new HubException("ID do usuário receptor não pode ser null.");
+                }
+            }
+
+            return await GetUserChatsWithMessages(userSenderId, timeZone);
         }
     }
 }

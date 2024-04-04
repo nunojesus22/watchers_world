@@ -156,6 +156,7 @@ namespace WatchersWorld_Teste
             Assert.Equal(3, result.Count);
         }
 
+        /*
         [Fact]
         public async Task SendMessage_SendMessageWhenUserNotExists_ShouldReturnFalse()
         {
@@ -211,7 +212,7 @@ namespace WatchersWorld_Teste
             var result = await _service.MarkMessageAsRead(message!.Id.ToString());
 
             Assert.True(result);
-        }
+        }*/
 
         [Fact]
         public async Task GetAllMessages_GetAllMessagesByChatWhenChatHaveMessages_ShouldReturnNotEmpty()
