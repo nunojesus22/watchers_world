@@ -1,3 +1,7 @@
+.unread-message {
+  color: red!important;
+}
+
 .error-message {
   color: #d32f2f; /* Cor vermelha para a mensagem de erro */
   background-color: #f9e0e0; /* Fundo sutil para a mensagem de erro */

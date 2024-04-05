@@ -36,9 +36,11 @@ export class HomeComponent {
     }
 
     var messageToSent: Message = {
+      messageId: undefined,
       sendUsername: this.authService.getLoggedInUserName()!,
       text: this.messageText.trim(),
       sentAt: undefined,
+      readAt: undefined
     }
 
     this.chatService.sendMessage(this.usernameReceiver, messageToSent)

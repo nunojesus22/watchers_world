@@ -228,6 +228,32 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessagesVisibility", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MessageId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Visibility")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MessagesVisibility");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.ProfileInfo", b =>
                 {
                     b.Property<string>("UserName")
@@ -877,6 +903,46 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("Chat");
 
                     b.Navigation("SendUser");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessagesVisibility", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Chat.Models.Messages", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_MessageVisibility_Message");
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_MessageVisibility_User");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.UserMedal", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Gamification.Medals", "Medal")
+                        .WithMany("UserMedals")
+                        .HasForeignKey("MedalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.ProfileInfo", "Profile")
+                        .WithMany("UserMedals")
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medal");
+
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>

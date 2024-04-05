@@ -20,6 +20,6 @@ namespace WatchersWorld.Server.Chat.Models
         [ForeignKey("RecipientUserId")]
         public virtual User RecipientUser { get; set; }
 
-        public DateTime ReadAt { get; set; }
+        public DateTime? ReadAt { get; set; }
     }
 }

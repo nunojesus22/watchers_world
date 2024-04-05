@@ -47,7 +47,7 @@ namespace WatchersWorld.Server.Data
         public DbSet<Chat.Models.Chat> Chats { get; set; }
         public DbSet<Messages> Messages { get; set; }
         public DbSet<MessageStatus> MessagesStatus { get; set; }
-
+        public DbSet<MessagesVisibility> MessagesVisibility { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,7 +85,7 @@ namespace WatchersWorld.Server.Data
 
 
             modelBuilder.Entity<UserMedal>()
-            .HasKey(um => new { um.UserName, um.MedalId });
+                .HasKey(um => new { um.UserName, um.MedalId });
 
           
 
@@ -110,6 +110,22 @@ namespace WatchersWorld.Server.Data
                     .WithMany()
                     .HasForeignKey(ms => ms.MessageId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MessagesVisibility>(entity =>
+            {
+                entity.HasOne(mv => mv.Message)
+                    .WithMany()
+                    .HasForeignKey(mv => mv.MessageId)
+                    .HasConstraintName("FK_MessageVisibility_Message")
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(mv => mv.User)
+                    .WithMany()
+                    .HasForeignKey(mv => mv.UserId)
+                    .HasConstraintName("FK_MessageVisibility_User")
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+                    
 
         }
     }

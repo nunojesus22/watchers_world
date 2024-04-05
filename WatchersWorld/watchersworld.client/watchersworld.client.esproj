@@ -10,10 +10,12 @@
   <ItemGroup>
     <Folder Include="src\app\authentication\send-email\" />
     <Folder Include="src\app\authentication\services\" />
+    <Folder Include="src\app\confirm-dialog\services\" />
     <Folder Include="src\app\gamification\models\" />
     <Folder Include="src\app\guards\" />
     <Folder Include="src\app\interceptors\" />
     <Folder Include="src\app\notifications\models\" />
+    <Folder Include="src\app\confirmation-dialog\" />
     <Folder Include="src\app\profile\services\" />
     <Folder Include="src\assets\img\icons\" />
   </ItemGroup>
