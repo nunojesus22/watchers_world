@@ -55,7 +55,7 @@ namespace WatchersWorld.Server.Controllers
 
             if (existingFavorite == null)
             {
-                var userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = 5 };
+                var userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = 5, DateMarked = DateTime.Now };
                 _context.UserMedia.Add(userMedia);
                 _context.SaveChanges();
 
@@ -149,7 +149,7 @@ namespace WatchersWorld.Server.Controllers
 
             if (userMedia == null)
             {
-                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 1 : 2 };
+                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 1 : 2, DateMarked = DateTime.Now };
                 _context.UserMedia.Add(userMedia);
             }
             else
@@ -259,7 +259,7 @@ namespace WatchersWorld.Server.Controllers
             var userMedia = _context.UserMedia.FirstOrDefault(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia);
             if (userMedia == null)
             {
-                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 4 : 3 };
+                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 4 : 3 , DateMarked=DateTime.Now};
                 _context.UserMedia.Add(userMedia);
             }
             else
