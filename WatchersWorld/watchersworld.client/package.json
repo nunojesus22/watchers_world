@@ -15,23 +15,19 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.0",
-    "@angular/cdk": "^17.3.2",
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",
     "@angular/forms": "^17.0.0",
-    "@angular/material": "^17.3.2",
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
-    "@costlydeveloper/ngx-awesome-popup": "^3.2.1",
     "@fortawesome/angular-fontawesome": "^0.14.1",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@material/dialog": "^14.0.0",
-    "@microsoft/signalr": "^8.0.0",
+    "@microsoft/signalr": "^7.0.14",
     "@types/google-one-tap": "^1.2.6",
     "angular-font-awesome": "^3.1.2",
     "font-awesome": "^4.7.0",
@@ -54,5 +50,11 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.2.2"
+  },
+  "browser": {
+    "http": false,
+    "https": false,
+    "url": false,
+    "util": false
   }
 }
