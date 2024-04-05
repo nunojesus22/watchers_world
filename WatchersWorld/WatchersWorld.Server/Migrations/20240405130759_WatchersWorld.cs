@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WatchersWorld.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class ww : Migration
+    public partial class WatchersWorld : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -467,24 +467,6 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MediaNotifications",
-                columns: table => new
-                {
-                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserMediaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MediaNotifications", x => x.NotificationId);
-                    table.ForeignKey(
-                        name: "FK_MediaNotifications_Notifications_NotificationId",
-                        column: x => x.NotificationId,
-                        principalTable: "Notifications",
-                        principalColumn: "NotificationId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MessageNotifications",
                 columns: table => new
                 {
@@ -621,6 +603,30 @@ namespace WatchersWorld.Server.Migrations
                         name: "FK_CommentLikes_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MediaNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserMediaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_MediaNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MediaNotifications_UserMedia_UserMediaId",
+                        column: x => x.UserMediaId,
+                        principalTable: "UserMedia",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -773,6 +779,11 @@ namespace WatchersWorld.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_MediaNotifications_UserMediaId",
+                table: "MediaNotifications",
+                column: "UserMediaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatId",
                 table: "Messages",
                 column: "ChatId");
@@ -869,9 +880,6 @@ namespace WatchersWorld.Server.Migrations
                 name: "UserMedals");
 
             migrationBuilder.DropTable(
-                name: "UserMedia");
-
-            migrationBuilder.DropTable(
                 name: "UserRatingMedia");
 
             migrationBuilder.DropTable(
@@ -884,19 +892,22 @@ namespace WatchersWorld.Server.Migrations
                 name: "ActorMedia");
 
             migrationBuilder.DropTable(
+                name: "UserMedia");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
-                name: "MediaListModel");
-
-            migrationBuilder.DropTable(
                 name: "Actor");
 
             migrationBuilder.DropTable(
                 name: "MediaInfoModel");
+
+            migrationBuilder.DropTable(
+                name: "MediaListModel");
 
             migrationBuilder.DropTable(
                 name: "Chats");

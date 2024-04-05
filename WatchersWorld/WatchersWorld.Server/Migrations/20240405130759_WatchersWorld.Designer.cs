@@ -12,8 +12,8 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240404183257_ww")]
-    partial class ww
+    [Migration("20240405130759_WatchersWorld")]
+    partial class WatchersWorld
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -738,6 +738,8 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<int>("UserMediaId")
                         .HasColumnType("int");
 
+                    b.HasIndex("UserMediaId");
+
                     b.ToTable("MediaNotifications");
                 });
 
@@ -1034,6 +1036,14 @@ namespace WatchersWorld.Server.Migrations
                         .HasForeignKey("WatchersWorld.Server.Models.Notifications.MediaNotification", "NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Media.UserMedia", "UserMedia")
+                        .WithMany()
+                        .HasForeignKey("UserMediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserMedia");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.MessageNotification", b =>

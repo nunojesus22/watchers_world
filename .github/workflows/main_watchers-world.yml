@@ -49,7 +49,7 @@ jobs:
       run:
         working-directory: WatchersWorld/WatchersWorld.Server
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.1
       - name: Set up .NET
         uses: actions/setup-dotnet@v4.0.0
         with:

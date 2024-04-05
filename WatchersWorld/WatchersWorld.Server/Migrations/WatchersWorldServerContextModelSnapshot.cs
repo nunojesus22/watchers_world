@@ -735,6 +735,8 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<int>("UserMediaId")
                         .HasColumnType("int");
 
+                    b.HasIndex("UserMediaId");
+
                     b.ToTable("MediaNotifications");
                 });
 
@@ -1031,6 +1033,14 @@ namespace WatchersWorld.Server.Migrations
                         .HasForeignKey("WatchersWorld.Server.Models.Notifications.MediaNotification", "NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WatchersWorld.Server.Models.Media.UserMedia", "UserMedia")
+                        .WithMany()
+                        .HasForeignKey("UserMediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserMedia");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Notifications.MessageNotification", b =>
