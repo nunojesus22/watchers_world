@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./WatchersWorld/watchersworld.client
+        working-directory: WatchersWorld/watchersworld.client
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Set up Node.js
@@ -43,7 +43,7 @@ jobs:
         with:
           app-name: 'WatchersWorldFrontEnd'
           slot-name: 'Production'
-          package: ./WatchersWorld/watchersworld.client/dist
+          package: WatchersWorld/watchersworld.client/dist
           publish-profile: ${{ secrets.CLIENT_PUBLISH_PROFILE }}
 
   build_server:
@@ -117,5 +117,5 @@ jobs:
         with:
           app-name: 'WatchersWorld'
           slot-name: 'Production'
-          package: ./publish
+          package: ./WatchersWorld/WatchersWorld.Server/publish
           publish-profile: ${{ secrets.SERVER_PUBLISH_PROFILE }}
