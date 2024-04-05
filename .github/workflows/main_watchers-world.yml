@@ -43,7 +43,7 @@ jobs:
         with:
           app-name: 'WatchersWorldFrontEnd'
           slot-name: 'Production'
-          package: ./dist/watchersworld.client
+          package: WatchersWorld/watchersworld.client/dist
           publish-profile: ${{ secrets.CLIENT_PUBLISH_PROFILE }}
 
   build_server:
@@ -117,5 +117,5 @@ jobs:
         with:
           app-name: 'WatchersWorld'
           slot-name: 'Production'
-          package: ./WatchersWorld/WatchersWorld.Server/Properties/PublishProfiles
+          package: WatchersWorld/WatchersWorld.Server/Properties/PublishProfiles
           publish-profile: ${{ secrets.SERVER_PUBLISH_PROFILE }}
