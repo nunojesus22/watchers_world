@@ -22,6 +22,8 @@
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
+    "@angular/material": "^17.3.2",
+    "@costlydeveloper/ngx-awesome-popup": "^3.2.1",
     "@fortawesome/angular-fontawesome": "^0.14.1",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",

@@ -15,7 +15,6 @@
     <Folder Include="src\app\guards\" />
     <Folder Include="src\app\interceptors\" />
     <Folder Include="src\app\notifications\models\" />
-    <Folder Include="src\app\confirmation-dialog\" />
     <Folder Include="src\app\profile\services\" />
     <Folder Include="src\assets\img\icons\" />
   </ItemGroup>
@@ -24,5 +23,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="src\app\profile-service\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\app\confirmation-dialog\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\confirmation-dialog\**" />
   </ItemGroup>
 </Project>
