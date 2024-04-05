@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install   
       - name: Build client
-        run: ng build --output-path=dist
+        run: npm run build -- --output-path=dist
 
   deploy_client:
     runs-on: ubuntu-latest
@@ -54,6 +54,8 @@ jobs:
         uses: actions/setup-dotnet@v4.0.0
         with:
           dotnet-version: '8.x'
+      - name: Restore dependencies
+        run: dotnet restore
       - name: Set up server environment
         run: |
           echo '{
