@@ -53,7 +53,8 @@ export class ChatService {
   }
 
   startConnection(username: string): void {
-    if (this.hubConnection) {
+    let isDisconnected = this.hubConnection?.state === 'Disconnected';
+    if (this.hubConnection && !isDisconnected) {
       return; // Prevent multiple connections.
     }
 
@@ -129,7 +130,12 @@ export class ChatService {
 
   stopConnection(): void {
     if (this.hubConnection) {
-      this.hubConnection.stop().then(this.clearChats).catch(this.handleError);
+      this.hubConnection.stop()
+        .then(() => {
+          this.clearChats();
+          console.log("Connection stopped");
+        })
+        .catch(err => console.log("Error while stopping connection: " + err));
     }
   }
 

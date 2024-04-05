@@ -78,10 +78,6 @@ export class ChatComponent implements AfterViewChecked {
       .subscribe(chats => this.setupContactItems(chats));
   }
 
-  private processChats(chats: ChatWithMessages[]): void {
-    console.log(chats);
-  }
-
   private subscribeToRouteParams(): void {
     this.route.params
       .pipe(takeUntil(this.unsubscribe$))
