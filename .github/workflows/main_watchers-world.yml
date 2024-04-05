@@ -35,8 +35,10 @@ jobs:
     needs: build_client
     environment:
       name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
       - name: Deploy client
+        id: deploy-to-webapp
         uses: Azure/webapps-deploy@v3.0.0
         with:
           app-name: 'WatchersWorldFrontEnd'
@@ -106,9 +108,11 @@ jobs:
     needs: build_server
     environment:
       name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     steps:
       - uses: actions/checkout@v2
       - name: Deploy to Azure Web App
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3.0.0
         with:
           app-name: 'WatchersWorld'
