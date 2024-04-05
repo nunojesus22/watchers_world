@@ -1757,6 +1757,7 @@ D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\Watche
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Mono.TextTemplating.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NodaTime.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NuGet.Common.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NuGet.Configuration.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NuGet.DependencyResolver.Core.dll

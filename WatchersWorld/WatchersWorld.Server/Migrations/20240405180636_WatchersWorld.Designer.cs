@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240405130759_WatchersWorld")]
+    [Migration("20240405180636_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -189,7 +189,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("MessageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("ReadAt")
+                    b.Property<DateTime?>("ReadAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RecipientUserId")
@@ -229,6 +229,32 @@ namespace WatchersWorld.Server.Migrations
                     b.HasIndex("SendUserId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessagesVisibility", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MessageId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Visibility")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MessagesVisibility");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.ProfileInfo", b =>
@@ -880,6 +906,27 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("Chat");
 
                     b.Navigation("SendUser");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessagesVisibility", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Chat.Models.Messages", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_MessageVisibility_Message");
+
+                    b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_MessageVisibility_User");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>

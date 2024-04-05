@@ -186,7 +186,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<string>("MessageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("ReadAt")
+                    b.Property<DateTime?>("ReadAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("RecipientUserId")
@@ -924,25 +924,6 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("Message");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Models.Gamification.UserMedal", b =>
-                {
-                    b.HasOne("WatchersWorld.Server.Models.Gamification.Medals", "Medal")
-                        .WithMany("UserMedals")
-                        .HasForeignKey("MedalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WatchersWorld.Server.Models.Authentication.ProfileInfo", "Profile")
-                        .WithMany("UserMedals")
-                        .HasForeignKey("UserName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medal");
-
-                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>

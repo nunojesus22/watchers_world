@@ -637,7 +637,7 @@ namespace WatchersWorld.Server.Migrations
                 {
                     MessageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RecipientUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ReadAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ReadAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -652,6 +652,32 @@ namespace WatchersWorld.Server.Migrations
                         name: "FK_MessagesStatus_Messages_MessageId",
                         column: x => x.MessageId,
                         principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MessagesVisibility",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MessageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Visibility = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessagesVisibility", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MessageVisibility_Message",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MessageVisibility_User",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -799,6 +825,16 @@ namespace WatchersWorld.Server.Migrations
                 column: "RecipientUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MessagesVisibility_MessageId",
+                table: "MessagesVisibility",
+                column: "MessageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessagesVisibility_UserId",
+                table: "MessagesVisibility",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserMedia_IdListMedia",
                 table: "UserMedia",
                 column: "IdListMedia");
@@ -866,6 +902,9 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "MessagesStatus");
+
+            migrationBuilder.DropTable(
+                name: "MessagesVisibility");
 
             migrationBuilder.DropTable(
                 name: "ProfileInfo");

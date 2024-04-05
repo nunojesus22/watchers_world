@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "G87hMlzb18nq4COFMSDJA3XZPbsXDc7c2G/1L40jF+kN7eRAVSoYa8aKSFiXFiujHt2lrJ1uQFYmilNXtCg7wQ==",
+  "dgSpecHash": "qWenie5cYREZlSoEZWiRkXdwnFYxIoPOl/3nDZ46ZTXu+Jw6bdEusUz8JUFOmAeYD4aS0sSJlDVsc6ZbUsroOA==",
   "success": true,
   "projectFilePath": "D:\\Escola\\uni\\3 ANO 1 SEMESTRE\\ESA\\Projeto\\watchers_world_1\\WatchersWorld\\WatchersWorld.Server\\WatchersWorld.Server.csproj",
   "expectedPackageFiles": [
@@ -165,6 +165,7 @@
     "C:\\Users\\johnn\\.nuget\\packages\\mono.texttemplating\\2.3.1\\mono.texttemplating.2.3.1.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\johnn\\.nuget\\packages\\nodatime\\3.1.11\\nodatime.3.1.11.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\nuget.common\\6.3.1\\nuget.common.6.3.1.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\nuget.configuration\\6.3.1\\nuget.configuration.6.3.1.nupkg.sha512",
     "C:\\Users\\johnn\\.nuget\\packages\\nuget.dependencyresolver.core\\6.3.1\\nuget.dependencyresolver.core.6.3.1.nupkg.sha512",
