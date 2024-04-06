@@ -8,6 +8,11 @@
         /// <summary>
         /// Nome da série ou mídia à qual o novo episódio pertence.
         /// </summary>
+        public int MediaId { get; set; }
+
+        /// <summary>
+        /// Nome da série ou mídia à qual o novo episódio pertence.
+        /// </summary>
         public string MediaName { get; set; }
 
         /// <summary>

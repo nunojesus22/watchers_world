@@ -379,10 +379,16 @@ namespace WatchersWorld_Teste
                 .Where(n => n.TargetUserId == user.Id)
                 .ToListAsync();
 
+            var mediaNotifications = await _context.MediaNotifications
+                .Where(n => n.TriggeredByUserId == user.Id)
+                .ToListAsync();
+
             Assert.Empty(followNotifications);
             Assert.Empty(replyNotifications);
             Assert.Empty(achievementNotifications);
             Assert.Empty(messageNotifications);
+            Assert.Empty(mediaNotifications);
+
         }
 
         [Fact]
@@ -420,6 +426,75 @@ namespace WatchersWorld_Teste
             // Act & Assert
             await Assert.ThrowsAsync<NullReferenceException>(async () =>
                 await _notificationService.HasUnreadNotificationsAsync(nonExistentUserName));
+        }
+
+        [Fact]
+        public async Task CreateMediaNotification_ReturnsCorrectDto()
+        {
+            // Arrange
+            var user6 = await _userManager.FindByNameAsync("UserTest6");
+            var media = await _context.MediaInfoModel.FirstOrDefaultAsync(m => m.IdMedia == 787699);
+
+            // Act
+            var mediaNotificationDto = await _notificationService.CreateMediaNotificationAsync(user6!.Id, media!.IdMedia, "Nome do Filme", "Caminho/Para/Imagem.jpg");
+
+            // Assert
+            Assert.NotNull(mediaNotificationDto);
+            Assert.Equal(user6.Id, mediaNotificationDto.TriggeredByUserId);
+            Assert.Equal("Um novo episódio de Nome do Filme está disponível!", mediaNotificationDto.Message);
+            Assert.False(mediaNotificationDto.IsRead);
+            Assert.Equal("NewMedia", mediaNotificationDto.EventType);
+        }
+
+        [Fact]
+        public async Task CreateMediaNotification_ThrowsException_WhenUserOrMediaNotFound()
+        {
+            // Arrange
+            string nonExistingUserId = "UserTest8";
+            int nonExistingMediaId = 999999;
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+                await _notificationService.CreateMediaNotificationAsync(nonExistingUserId, nonExistingMediaId, "Nome do Filme", "Caminho/Para/Imagem.jpg"));
+
+            var existingUser = await _userManager.FindByNameAsync("UserTest6");
+            await Assert.ThrowsAsync<NullReferenceException>(async () =>
+                await _notificationService.CreateMediaNotificationAsync(existingUser!.Id, nonExistingMediaId, "Nome do Filme", "Caminho/Para/Imagem.jpg"));
+        }
+
+        [Fact]
+        public async Task GetMediaNotificationsForUser_ReturnsListOfNotifications()
+        {
+            // Arrange
+            var user6 = await _userManager.FindByNameAsync("UserTest6");
+
+            // Act
+            var mediaNotifications = await _notificationService.GetMediaNotificationsForUserAsync(user6!.Id, "Nome do Filme", "Caminho/Para/Imagem.jpg");
+
+            // Assert
+            Assert.NotNull(mediaNotifications);
+            foreach (var notification in mediaNotifications)
+            {
+                Assert.Equal(user6.Id, notification.TriggeredByUserId);
+                Assert.Contains("Um novo episódio está disponível!", notification.Message);
+            }
+        }
+
+        [Fact]
+        public async Task MarkAllMediaNotificationsAsRead_ShouldSetIsReadToTrue()
+        {
+            // Arrange
+            var user = await _userManager.FindByNameAsync("UserTest6");
+
+            // Act
+            await _notificationService.MarkAllMediaNotificationsAsReadAsync(user!.UserName);
+
+            // Assert
+            var notifications = await _context.MediaNotifications
+                .Where(n => n.TriggeredByUserId == user.Id)
+                .ToListAsync();
+
+            Assert.All(notifications, n => Assert.True(n.IsRead));
         }
 
     }
