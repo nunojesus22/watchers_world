@@ -49,6 +49,8 @@ namespace WatchersWorld.Server.Services
         Task<MediaNotificationDto> CreateMediaNotificationAsync(string triggeredByUserId, int idTableMedia, string mediaName, string mediaPhoto);
 
         Task<List<MediaNotificationDto>> GetMediaNotificationsForUserAsync(string userId, string mediaName, string mediaPhoto);
+
+        Task MarkAllMediaNotificationsAsReadAsync(string username);
     }
 
     /// <summary>
@@ -319,6 +321,8 @@ namespace WatchersWorld.Server.Services
             }
         }
 
+     
+
 
         public async Task ClearNotificationsForUserAsync(string username)
         {
@@ -344,10 +348,16 @@ namespace WatchersWorld.Server.Services
                    .Where(n => n.TargetUserId == user.Id)
                    .ToListAsync();
 
+                var mediaNotifications = await _context.MediaNotifications
+                  .Where(n => n.UserMedia.UserId == user.Id)
+                  .ToListAsync();
+
                 _context.FollowNotifications.RemoveRange(followNotifications);
                 _context.ReplyNotifications.RemoveRange(replyNotifications);
                 _context.AchievementNotifications.RemoveRange(achievementNotifications);
                 _context.MessageNotifications.RemoveRange(messagetNotifications);
+                _context.MediaNotifications.RemoveRange(mediaNotifications);
+
 
                 await _context.SaveChangesAsync();
             }
@@ -361,7 +371,7 @@ namespace WatchersWorld.Server.Services
 
             if (user == null)
             {
-                throw new NullReferenceException("Perfil de usuário não encontrado.");
+                throw new NullReferenceException("Perfil de utilizador não encontrado.");
             }
 
             bool hasUnreadFollowNotifications = await _context.FollowNotifications
@@ -376,7 +386,10 @@ namespace WatchersWorld.Server.Services
             bool hasUnreadMessageNotifications = await _context.MessageNotifications
                 .AnyAsync(n => n.TargetUserId == user.Id && !n.IsRead);
 
-            return hasUnreadFollowNotifications || hasUnreadReplyNotifications || hasUnreadAchievementyNotifications || hasUnreadMessageNotifications;
+            bool hasUnreadMediaNotifications = await _context.MediaNotifications
+                .AnyAsync(n => n.UserMedia.UserId == user.Id && !n.IsRead);
+
+            return hasUnreadFollowNotifications || hasUnreadReplyNotifications || hasUnreadAchievementyNotifications || hasUnreadMessageNotifications || hasUnreadMediaNotifications;
         }
 
         public async Task<AchievementNotificationDto> CreateAchievementNotificationAsync(string triggeredByUserId, int medalId)
@@ -554,20 +567,26 @@ namespace WatchersWorld.Server.Services
 
         public async Task<MediaNotificationDto> CreateMediaNotificationAsync(string triggeredByUserId, int mediaId, string mediaName, string mediaPhoto)
         {
-            // Aqui estamos obtendo todas as UserMedia que correspondem ao mediaId fornecido
             var userMediaEntries = await _context.UserMedia
-                .AsNoTracking()
-                .Where(um => um.MediaInfoModel.IdMedia == mediaId)
-                .ToListAsync();
+          .AsNoTracking()
+          .Include(um => um.MediaInfoModel)
+          .Where(um => um.MediaInfoModel.IdMedia == mediaId)
+          .ToListAsync();
 
             if (!userMediaEntries.Any())
             {
                 throw new NullReferenceException("UserMedia correspondente ao mediaId não encontrado.");
             }
 
-            // Aqui você pode escolher uma lógica específica. Por exemplo, notificar todos os usuários que têm esse mediaId em UserMedia
-            // ou apenas notificar o primeiro, dependendo da sua regra de negócio.
-            var userMedia = userMediaEntries.FirstOrDefault(); // ou alguma outra lógica de seleção
+            var userMedia = userMediaEntries.FirstOrDefault();
+
+            var existingNotification = await _context.MediaNotifications
+                .AnyAsync(n => n.TriggeredByUserId == triggeredByUserId && n.Message == $"Um novo episódio de {mediaName} está disponível!" && n.UserMediaId == userMedia.Id);
+
+            if (existingNotification)
+            {
+                return null;
+            }
 
             var notification = new MediaNotification
             {
@@ -577,7 +596,7 @@ namespace WatchersWorld.Server.Services
                 CreatedAt = DateTime.UtcNow,
                 IsRead = false,
                 EventType = "NewMedia",
-                UserMediaId = userMedia.Id // Assumindo que você quer a chave primária da UserMedia aqui
+                UserMediaId = userMedia.Id
             };
 
             await _context.MediaNotifications.AddAsync(notification);
@@ -592,14 +611,16 @@ namespace WatchersWorld.Server.Services
                 EventType = notification.EventType,
                 MediaName = mediaName,
                 MediaPhoto = mediaPhoto,
-                UserMediaId = userMedia.Id
+                UserMediaId = userMedia.Id,
+                MediaId = userMedia.MediaInfoModel.IdMedia
             };
         }
+
 
         public async Task<List<MediaNotificationDto>> GetMediaNotificationsForUserAsync(string userId, string mediaName, string mediaPhoto)
         {
             var notifications = await _context.MediaNotifications
-                .Where(n => n.UserMedia.UserId == userId && !n.IsRead)
+                .Where(n => n.UserMedia.UserId == userId)
                 .Include(n => n.UserMedia)
                 .ThenInclude(um => um.MediaInfoModel)
                 .Select(n => new MediaNotificationDto
@@ -611,11 +632,30 @@ namespace WatchersWorld.Server.Services
                     EventType = n.EventType,
                     MediaName = mediaName,
                     MediaPhoto = mediaPhoto,
-                    UserMediaId = n.UserMediaId
+                    UserMediaId = n.UserMediaId,
+                    MediaId = n.UserMedia.MediaInfoModel.IdMedia
                 })
                 .ToListAsync();
 
             return notifications;
+        }
+
+        public async Task MarkAllMediaNotificationsAsReadAsync(string username)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            if (user != null)
+            {
+                var mediaNotifications = await _context.MediaNotifications
+                    .Where(n => n.UserMedia.UserId == user.Id && !n.IsRead)
+                    .ToListAsync();
+
+                foreach (var notification in mediaNotifications)
+                {
+                    notification.IsRead = true;
+                }
+
+                await _context.SaveChangesAsync();
+            }
         }
 
 
