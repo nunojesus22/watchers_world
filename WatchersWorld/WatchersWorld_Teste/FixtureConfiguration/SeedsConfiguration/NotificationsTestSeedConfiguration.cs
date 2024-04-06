@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity;
 using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
@@ -12,6 +7,7 @@ using WatchersWorld.Server.Models.Gamification;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Notifications;
 using WatchersWorld.Server.Services;
+using User = WatchersWorld.Server.Models.Authentication.User;
 
 namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
 {
@@ -71,6 +67,9 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
                 var messageStatus = new MessageStatus { MessageId = message.Id, RecipientUserId = user7ToGetId.Id, ReadAt = DateTime.MaxValue };
                 context.MessagesStatus.Add(messageStatus);
 
+                var userMedia = new UserMedia { UserId = user6ToGetId!.Id, IdTableMedia = 1 };
+                context.UserMedia.Add(userMedia);
+
                 var firstMovieMedal = new Medals
                 {
                     Id = 1,
@@ -81,7 +80,6 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
 
                 context.Medals.Add(firstMovieMedal);
 
-                // Adicionando UserMedals
                 var userMedal = new UserMedal
                 {
                     UserName = user4ToGetId!.UserName,
@@ -136,10 +134,23 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
                     MessageId = message.Id,
                 };
 
+                var mediaNotification = new MediaNotification
+                {
+                    NotificationId = Guid.NewGuid(),
+                    TriggeredByUserId = user6ToGetId!.Id,
+                    Message = $"Um novo episódio está disponível!",
+                    CreatedAt = DateTime.UtcNow,
+                    IsRead = false,
+                    EventType = "NewMedia",
+                    UserMediaId = userMedia.Id
+                };
+
+
                 context.FollowNotifications.Add(followNotification);
                 context.ReplyNotifications.Add(replyNotification);
                 context.AchievementNotifications.Add(achievementNotification);
                 context.MessageNotifications.Add(messageNotification);
+                context.MediaNotifications.Add(mediaNotification);
 
                 await context.SaveChangesAsync();
 

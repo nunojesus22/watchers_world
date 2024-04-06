@@ -156,6 +156,13 @@ namespace WatchersWorld.Server.Controllers
             return Ok(notifications);
         }
 
+        [HttpPost("mediaNotifications/mark-all-as-read/{username}")]
+        public async Task<IActionResult> MarkAllMediaNotificationsAsRead(string username)
+        {
+            await _notificationService.MarkAllMediaNotificationsAsReadAsync(username);
+            return Ok(new { message = "Todas as notificações de media foram marcadas como lidas." });
+        }
+
 
     }
 }

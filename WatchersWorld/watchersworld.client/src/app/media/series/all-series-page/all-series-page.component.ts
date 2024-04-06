@@ -176,9 +176,10 @@ export class AllSeriesPageComponent {
                 new Date(),
                 false,
                 'NewMedia',
+                series.mediaId,
                 series.name,
                 series.poster_path,
-                series.id 
+                series.id, 
               )
             )
           )

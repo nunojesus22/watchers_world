@@ -107,4 +107,9 @@ export class NotificationService {
     const headers = this.getHeaders();
     return this.http.get<MediaNotificationModel[]>(`${environment.appUrl}/api/notifications/mediaNotifications/${username}`, { headers });
   }
+
+  markAllMediaNotificationsAsRead(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.post(`${environment.appUrl}/api/notifications/mediaNotifications/mark-all-as-read/${username}`, {}, { headers });
+  }
 }

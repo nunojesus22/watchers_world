@@ -228,6 +228,8 @@ export class NotificationsComponent {
       });
       this.notificationService.markAllMessageNotificationsAsRead(this.loggedUserName).subscribe(() => {
       });
+      this.notificationService.markAllMediaNotificationsAsRead(this.loggedUserName).subscribe(() => {
+      });
     }
   }
 
@@ -238,6 +240,7 @@ export class NotificationsComponent {
         this.replyNotifications = [];
         this.achievementNotifications = [];
         this.messageNotifications = [];
+        this.mediaNotifications = [];
         console.log('Todas as notificações foram limpas.');
       });
     }
@@ -248,7 +251,8 @@ export class NotificationsComponent {
       ...this.followNotifications,
       ...this.replyNotifications,
       ...this.achievementNotifications,
-      ...this.messageNotifications
+      ...this.messageNotifications,
+      ...this.mediaNotifications
     ];
 
     allNotifications.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
