@@ -91,6 +91,15 @@ namespace WatchersWorld.Server.Data
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest5@gmail.com", "UserTest5", "Credentials", true, "Private");
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest6@gmail.com", "UserTest6", "Credentials", true, "Private");
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest7@gmail.com", "UserTest7", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest8@gmail.com", "UserTest8", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest9@gmail.com", "UserTest9", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest10@gmail.com", "UserTest10", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest11@gmail.com", "UserTest11", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest12@gmail.com", "UserTest12", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest13@gmail.com", "UserTest13", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest14@gmail.com", "UserTest14", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest15@gmail.com", "UserTest15", "Credentials", true, "Public");
+
         }
 
         /// <summary>

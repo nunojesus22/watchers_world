@@ -535,6 +535,37 @@ h4, h3 {
   padding-bottom: 10px;
 }
 
+.pagination-controls {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens nas pontas opostas */
+  align-items: center;
+  margin-top: 20px; /* Espaçamento no topo, ajuste conforme necessário */
+}
+
+.pagination-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+  .pagination-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.pagination-prev {
+  margin-right: auto;
+}
+
+.pagination-next {
+  margin-left: auto;
+}
 
 .search-bar {
   display: flex;
@@ -581,6 +612,7 @@ h4, h3 {
 .name {
   font-size: 24px;
   font-weight: bold;
+  margin-top: 15px;
 }
 
 
@@ -594,7 +626,7 @@ h4, h3 {
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
   margin-left: 5px;
   font-size: 16px;
-  width: 150px;
+  width: 180px;
   height: 40px;
   font-weight: bold;
 }
@@ -680,4 +712,21 @@ h4, h3 {
   border: none;
   font-size: 16px;
   color: #333;
+}
+
+
+
+
+
+/* Add responsiveness if needed */
+@media (max-width: 768px) {
+  .user {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions button {
+    margin-top: 5px;
+    margin-left: 0;
+  }
 }

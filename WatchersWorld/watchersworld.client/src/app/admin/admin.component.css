@@ -16,6 +16,38 @@ h4, h3 {
   width: 30px; /* Tamanho fixo para os ícones */
 }
 
+.pagination-controls {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens nas pontas opostas */
+  align-items: center;
+  margin-top: 20px; /* Espaçamento no topo, ajuste conforme necessário */
+}
+
+.pagination-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+  .pagination-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.pagination-prev {
+  margin-right: auto;
+}
+
+.pagination-next {
+  margin-left: auto;
+}
+
 /* Aumenta ligeiramente o ícone ao passar o mouse ou clicar */
 .profile-icon:hover, .profile-icon:active {
   background-color: #f0f0f0;
@@ -66,6 +98,7 @@ h4, h3 {
 .name {
   font-size: 24px;
   font-weight: bold;
+  margin-top: 15px;
 }
 
 
@@ -166,24 +199,6 @@ h4, h3 {
   font-size: 16px;
   color: #333;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
