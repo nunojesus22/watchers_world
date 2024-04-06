@@ -18,9 +18,9 @@
   <div routerLinkActive #rla="routerLinkActive">
     <ng-container *ngIf="(authService.user$ | async) as user; else notLoggedIn">
       <img (click)="navigateBasedOnRole(user.username)"
-           [src]="rla.isActive ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
-           alt="User Icon"
-           class="user-icon" />
+            [src]="router.url.includes('/profile') ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
+     alt="User Icon"
+     class="user-icon"/>
     </ng-container>
     <ng-template #notLoggedIn>
       <img [routerLink]="['/account/login']"
@@ -30,9 +30,7 @@
     </ng-template>
   </div>
 
-
-
-  <div id="sidebar" class="sidebar" *ngIf="(authService.user$ | async) as user; else notLoggedIn">
+  <div id="sidebar" class="sidebar" *ngIf="(authService.user$ | async) as user">
     <img class="wwimage" src="assets/img/WatchersWorld.png" alt="WathchersWorld Icon" />
     <a href="#"> <i class="fas fa-envelope"></i> Mensagens</a>
     <a [routerLink]="['/notifications', loggedUserName]">

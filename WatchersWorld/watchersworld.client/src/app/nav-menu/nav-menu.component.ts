@@ -22,7 +22,7 @@ export class NavMenuComponent {
   hasUnreadNotifications: boolean = false;
 
 
-  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, private notificationService: NotificationService, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, private notificationService: NotificationService, public authService: AuthenticationService, private _eref: ElementRef, public router: Router, private searchService: SearchServiceComponent) {}
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
@@ -104,7 +104,6 @@ export class NavMenuComponent {
   }
 
   navigateBasedOnRole(username: string) {
-    this.isActive = false;
     this.authService.getUserRole(username).subscribe((roles: string[]) => {
       if (roles.includes('Admin')) {
         this.router.navigate(['/admin']);

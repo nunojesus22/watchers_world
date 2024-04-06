@@ -29,7 +29,7 @@
           <img class="avatar" [src]="notification.triggeredByUserPhoto"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p>{{ notification.message }}</p>
-          <small class="notification-date">{{ notification.createdAt | date:'short' }}</small>
+          <small class="notification-date">{{ notification.createdAt | date:'HH:mm, dd/MM/yyyy' }}</small>
         </div>
         <div class="notification-actions">
           <button [routerLink]="['/profile', getUserNameFromMessage(notification.message)]"
@@ -49,7 +49,7 @@
           <img class="avatar" [src]="notification.triggeredByUserPhoto"
                [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p>{{ notification.message }}</p>
-          <small class="notification-date">{{ notification.createdAt | date:'short' }}</small>
+          <small class="notification-date">{{ notification.createdAt | date:'HH:mm, dd/MM/yyyy'  }}</small>
         </div>
         <div class="notification-actions">
           <button [routerLink]="['/' + notification.mediaType, notification.mediaId]"
@@ -69,7 +69,7 @@
         <div class="user-info">
           <img class="avatar" [src]="notification.achievementPhoto" [routerLink]="['/gamification', currentUsername]">
           <p>{{ notification.message }}</p>
-          <small class="notification-date">{{ notification.createdAt | date:'short' }}</small>
+          <small class="notification-date">{{ notification.createdAt | date:'HH:mm, dd/MM/yyyy'  }}</small>
         </div>
         <div class="notification-actions">
           <button [routerLink]="['/gamification', currentUsername]"
@@ -88,7 +88,7 @@
         <div class="user-info">
           <img class="avatar" [src]="notification.triggeredByUserPhoto" [routerLink]="['/profile', getUserNameFromMessage(notification.message)]">
           <p>{{ notification.message }}</p>
-          <small class="notification-date">{{ notification.createdAt | date:'short' }}</small>
+          <small class="notification-date">{{ notification.createdAt | date:'HH:mm, dd/MM/yyyy'  }}</small>
         </div>
         <div class="notification-actions">
           <button [routerLink]="['/chat', getUserNameFromMessage(notification.message)]"
@@ -106,7 +106,7 @@
       <div *ngFor="let notification of mediaNotifications.reverse()" class="notification-item">
         <div class="user-info">
           <p class="notification-message">{{ notification.message }}</p>
-          <small class="notification-date">{{ notification.createdAt | date: 'short' }}</small>
+          <small class="notification-date">{{ notification.createdAt | date:'HH:mm, dd/MM/yyyy'  }}</small>
         </div>
         <div class="notification-actions">
           <button [routerLink]="['/serie', notification.mediaId, 'season']" [queryParams]="{ scrollToLastSeason: true }"
