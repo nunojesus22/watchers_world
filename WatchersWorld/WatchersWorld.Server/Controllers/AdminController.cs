@@ -26,7 +26,6 @@ namespace WatchersWorld.Server.Controllers
         // Manager for user-related operations.
         private readonly UserManager<User> _userManager;
         private readonly EmailService _emailService;
-        private readonly IConfiguration _config;
 
         private readonly ILogger<AccountController> _logger;
 
@@ -34,7 +33,7 @@ namespace WatchersWorld.Server.Controllers
         private WatchersWorldServerContext _context;
 
         // Constructor for dependency injection.
-        public AdminController(UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
+        public AdminController(UserManager<User> userManager, EmailService emailService, WatchersWorldServerContext context, ILogger<AccountController> logger)
         /// <summary>
         /// Constructor for AccountController.
         /// </summary>
@@ -47,7 +46,6 @@ namespace WatchersWorld.Server.Controllers
 
             _userManager = userManager;
             _emailService = emailService;
-            _config = config;
             _context = context;
             _logger = logger;
 

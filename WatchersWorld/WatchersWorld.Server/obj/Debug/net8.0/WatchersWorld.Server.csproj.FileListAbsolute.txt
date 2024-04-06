@@ -1985,3 +1985,4 @@ D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\Watche
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.pdb
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NodaTime.dll
