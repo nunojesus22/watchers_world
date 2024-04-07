@@ -66,7 +66,9 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddDbContext<WatchersWorldServerContext>(options =>
-                options.UseInMemoryDatabase("TestDb"));
+                options.UseInMemoryDatabase(Guid.NewGuid().ToString()) // Unique database per test
+                    .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+
 
             // Adicionar e configurar Identity
             services.AddIdentity<User, IdentityRole>()
