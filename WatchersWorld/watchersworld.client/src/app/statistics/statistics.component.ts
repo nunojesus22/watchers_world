@@ -45,7 +45,9 @@ export class StatisticsComponent implements OnInit {
   chartMovieAdded: any;
 
   chartSerieAdded: any;
+  chartQuizAndRatings: any; // opções para o gráfico circular
 
+  chartFollowers: any;
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService,
@@ -70,9 +72,110 @@ export class StatisticsComponent implements OnInit {
       this.loadCommentsCountByDate();
       this.loadMediaAddedByDate();
       this.loadSerieAddedByDate();
+      this.loadPieChartData();
+      this.loadFollowersData();
       //this.test();
     }
   }
+
+  loadFollowersData(): void {
+    this.profileService.getUserData(this.currentUser).subscribe({
+      next: (profileData) => {
+        this.followersCount = profileData.followers;
+        this.followingCount = profileData.following;
+        // Chama a função para configurar o gráfico de seguidores
+        this.setFollowersPieChartOptions();
+      },
+      error: (error) => console.error("Error fetching followers data:", error)
+    });
+  }
+
+
+  setFollowersPieChartOptions(): void {
+    // Verificamos se já temos os dados antes de configurar o gráfico
+    if (this.followersCount !== undefined && this.followingCount !== undefined) {
+      this.chartFollowers = {
+        chart: {
+          type: 'pie',
+          options3d: {
+            enabled: true,
+            alpha: 45
+          }
+        },
+        title: {
+          text: 'Seguidores e Seguindo'
+        },
+        subtitle: {
+          text: 'Visão geral do engajamento social'
+        },
+        plotOptions: {
+          pie: {
+            innerSize: 100,
+            depth: 45
+          }
+        },
+        series: [{
+          name: 'Quantidade',
+          data: [
+            ['Seguidores', this.followersCount],
+            ['Seguindo', this.followingCount]
+          ]
+        }]
+      };
+    }
+  }
+  loadPieChartData(): void {
+    forkJoin({
+      quizAttempts: this.profileService.getTotalQuizAttempts(this.currentUser),
+      favoriteActors: this.profileService.getTotalFavoriteActors(),
+      ratings: this.profileService.getTotalRatingsByUser(),
+    }).subscribe({
+      next: results => {
+        this.totalQuizAttempts = results.quizAttempts;
+        this.totalFavoriteActors = results.favoriteActors;
+        this.totalRatigns = results.ratings;
+        this.setPieChartOptions();
+      },
+      error: error => {
+        // Trate os erros aqui
+      }
+    });
+  }
+
+
+  setPieChartOptions(): void {
+    this.chartQuizAndRatings = {
+      chart: {
+        type: 'pie',
+        options3d: {
+          enabled: true,
+          alpha: 45
+        }
+      },
+      title: {
+        text: 'Quizzes e Ratings'
+      },
+      subtitle: {
+        text: 'Distribuição de quizzes e ratings'
+      },
+      plotOptions: {
+        pie: {
+          innerSize: 100,
+          depth: 45
+        }
+      },
+      series: [{
+        name: 'Total',
+        data: [
+          ['Quizzes Realizados', this.totalQuizAttempts],
+          ['Atores Favoritos', this.totalFavoriteActors],
+          ['Ratings Feitos', this.totalRatigns]
+        ]
+      }]
+    };
+  }
+
+  // ... restante da classe ...
 
 
   loadCommentsCountByDate(): void {
