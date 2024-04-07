@@ -350,4 +350,21 @@ export class MovieApiServiceComponent {
 
 
 
+  //TOTAL MEDALS
+  commentsDate(username:string): Observable<any[]> {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${environment.appUrl}/api/media/get-comments-count-by-date/${username}`, { headers });
+  }
+
+  getMovieAddedByDate(username:any): Observable<any[]> {
+    const headers = this.getHeaders();
+
+    return this.http.get<any[]>(`${environment.appUrl}/api/media/get-media-added-by-date/${username}`, { headers });
+  }
+
+  getSeriesAddedByDate(username: any): Observable<any[]> {
+    const headers = this.getHeaders();
+
+    return this.http.get<any[]>(`${environment.appUrl}/api/media/get-serie-added-by-date/${username}`, { headers });
+  }
 }

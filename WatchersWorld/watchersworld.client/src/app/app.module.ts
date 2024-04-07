@@ -39,6 +39,9 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { DialogService } from './confirm-dialog/services/dialog.service';
 import { ConfirmBoxConfigModule, DialogConfigModule, NgxAwesomePopupModule, ToastNotificationConfigModule } from '@costlydeveloper/ngx-awesome-popup';
 
+import { HighchartsChartModule } from 'highcharts-angular';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,6 +85,9 @@ import { ConfirmBoxConfigModule, DialogConfigModule, NgxAwesomePopupModule, Toas
 
     DialogConfigModule.forRoot(), 
     ToastNotificationConfigModule.forRoot(),
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule
+    , HighchartsChartModule
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

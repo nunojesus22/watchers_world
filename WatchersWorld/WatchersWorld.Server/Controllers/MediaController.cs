@@ -55,7 +55,7 @@ namespace WatchersWorld.Server.Controllers
 
             if (existingFavorite == null)
             {
-                var userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = 5 };
+                var userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = 5, DateMarked = DateTime.Now };
                 _context.UserMedia.Add(userMedia);
                 _context.SaveChanges();
 
@@ -149,7 +149,7 @@ namespace WatchersWorld.Server.Controllers
 
             if (userMedia == null)
             {
-                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 1 : 2 };
+                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 1 : 2, DateMarked = DateTime.Now };
                 _context.UserMedia.Add(userMedia);
             }
             else
@@ -259,7 +259,7 @@ namespace WatchersWorld.Server.Controllers
             var userMedia = _context.UserMedia.FirstOrDefault(um => um.UserId == userId && um.IdTableMedia == mediaInfo.IdTableMedia);
             if (userMedia == null)
             {
-                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 4 : 3 };
+                userMedia = new UserMedia { UserId = userId, IdTableMedia = mediaInfo.IdTableMedia, IdListMedia = request.Type == "movie" ? 4 : 3 , DateMarked=DateTime.Now};
                 _context.UserMedia.Add(userMedia);
             }
             else
@@ -673,8 +673,119 @@ namespace WatchersWorld.Server.Controllers
             return result.Result;
         }
 
-    }
 
+        [Authorize]
+        [HttpGet("/api/media/get-total-comments/{username}")]
+        public async Task<ActionResult<int>> GetTotalCommentsByUser(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var totalComments = await _context.Comments.CountAsync(c => c.UserId == user.Id);
+
+            return Ok(totalComments);
+        }
+
+        [HttpGet("/api/media/get-total-likes-received/{username}")]
+        public async Task<ActionResult<int>> GetTotalLikesReceived(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var totalLikesReceived = await _context.CommentLikes.CountAsync(cl => cl.Comment.UserId == user.Id);
+
+            return Ok(totalLikesReceived);
+        }
+
+
+        public class CommentsCountByDateDto
+        {
+            public DateTime Date { get; set; }
+            public int Count { get; set; }
+        }
+
+        [HttpGet("/api/media/get-comments-count-by-date/{username}")]
+        public async Task<ActionResult<IEnumerable<CommentsCountByDateDto>>> GetCommentsCountByDate(string username)
+        {
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var commentsByDate = await _context.Comments
+                .GroupBy(c => c.CreatedAt.Date)
+                .Select(group => new CommentsCountByDateDto
+                {
+                    Date = group.Key.Date,
+                    Count = group.Count()
+                })
+                .OrderBy(dto => dto.Date)
+                .ToListAsync();
+
+            return Ok(commentsByDate);
+        }
+
+
+        [HttpGet("/api/media/get-media-added-by-date/{username}")]
+        public async Task<ActionResult<IEnumerable<MediaAddedByDateDto>>> GetMediaAddedByDate(string username)
+        {
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            var mediaAddedByDate = await _context.UserMedia
+                .Where(um => um.IdListMedia == 1 && um.UserId == user.Id) // Assumindo que 1 e 2 são para mídias assistidas
+                .GroupBy(um => um.DateMarked.Date)
+                .Select(group => new MediaAddedByDateDto
+                {
+                    Date = group.Key.Date,
+                    Count = group.Count()
+                })
+                .OrderBy(dto => dto.Date)
+                .ToListAsync();
+
+            return Ok(mediaAddedByDate);
+        }
+
+        [HttpGet("/api/media/get-serie-added-by-date/{username}")]
+        public async Task<ActionResult<IEnumerable<MediaAddedByDateDto>>> GetSerieAddedByDate(string username)
+        {
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            var mediaAddedByDate = await _context.UserMedia
+                .Where(um => um.IdListMedia == 2 && um.UserId == user.Id) // Assumindo que 1 e 2 são para mídias assistidas
+                .GroupBy(um => um.DateMarked.Date)
+                .Select(group => new MediaAddedByDateDto
+                {
+                    Date = group.Key.Date,
+                    Count = group.Count()
+                })
+                .OrderBy(dto => dto.Date)
+                .ToListAsync();
+
+            return Ok(mediaAddedByDate);
+        }
+
+        public class MediaAddedByDateDto
+        {
+            public DateTime Date { get; set; }
+            public int Count { get; set; }
+        }
+    }
 
 
 }

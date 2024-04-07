@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from '../profile/services/profile.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { UserMedia } from '../profile/models/user-media';
 import { forkJoin, map } from 'rxjs';
 import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
+import * as Highcharts from 'highcharts';
+
+
 
 @Component({
   selector: 'app-statistics',
@@ -31,10 +34,25 @@ export class StatisticsComponent implements OnInit {
   totalWatchedSeriesTimeFormatted: any;
 
   totalWatchedEpisodes: number = 0;
+
+  totalMedals: number = 0;
+  commentsCountByDate: any[] = [];
+  mediaAddedByDate: any[] = [];
+    mediaSerieByDate : any[] =[];
+
+  Highcharts: typeof Highcharts = Highcharts; // passar 'Highcharts' para o componente HTML
+  chartOptions: any; // as opções do gráfico
+  chartMovieAdded: any;
+
+  chartSerieAdded: any;
+  chartQuizAndRatings: any; // opções para o gráfico circular
+
+  chartFollowers: any;
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService,
     private apiService: MovieApiServiceComponent,
+
   ) { }
 
   ngOnInit(): void {
@@ -50,8 +68,281 @@ export class StatisticsComponent implements OnInit {
       this.calculateTotalWatchedTime();
       this.calculateTotalWatchedSeriesTime();
       this.calculateTotalWatchedEpisodes();
+      this.fetchTotalMedals(this.currentUser);
+      this.loadCommentsCountByDate();
+      this.loadMediaAddedByDate();
+      this.loadSerieAddedByDate();
+      this.loadPieChartData();
+      this.loadFollowersData();
+      //this.test();
     }
   }
+
+  loadFollowersData(): void {
+    this.profileService.getUserData(this.currentUser).subscribe({
+      next: (profileData) => {
+        this.followersCount = profileData.followers;
+        this.followingCount = profileData.following;
+        // Chama a função para configurar o gráfico de seguidores
+        this.setFollowersPieChartOptions();
+      },
+      error: (error) => console.error("Error fetching followers data:", error)
+    });
+  }
+
+
+  setFollowersPieChartOptions(): void {
+    // Verificamos se já temos os dados antes de configurar o gráfico
+    if (this.followersCount !== undefined && this.followingCount !== undefined) {
+      this.chartFollowers = {
+        chart: {
+          type: 'pie',
+          options3d: {
+            enabled: true,
+            alpha: 45
+          }
+        },
+        title: {
+          text: 'Seguidores e Seguindo'
+        },
+        subtitle: {
+          text: 'Visão geral do engajamento social'
+        },
+        plotOptions: {
+          pie: {
+            innerSize: 100,
+            depth: 45
+          }
+        },
+        series: [{
+          name: 'Quantidade',
+          data: [
+            ['Seguidores', this.followersCount],
+            ['Seguindo', this.followingCount]
+          ]
+        }]
+      };
+    }
+  }
+  loadPieChartData(): void {
+    forkJoin({
+      quizAttempts: this.profileService.getTotalQuizAttempts(this.currentUser),
+      favoriteActors: this.profileService.getTotalFavoriteActors(),
+      ratings: this.profileService.getTotalRatingsByUser(),
+    }).subscribe({
+      next: results => {
+        this.totalQuizAttempts = results.quizAttempts;
+        this.totalFavoriteActors = results.favoriteActors;
+        this.totalRatigns = results.ratings;
+        this.setPieChartOptions();
+      },
+      error: error => {
+        // Trate os erros aqui
+      }
+    });
+  }
+
+
+  setPieChartOptions(): void {
+    this.chartQuizAndRatings = {
+      chart: {
+        type: 'pie',
+        options3d: {
+          enabled: true,
+          alpha: 45
+        }
+      },
+      title: {
+        text: 'Quizzes e Ratings'
+      },
+      subtitle: {
+        text: 'Distribuição de quizzes e ratings'
+      },
+      plotOptions: {
+        pie: {
+          innerSize: 100,
+          depth: 45
+        }
+      },
+      series: [{
+        name: 'Total',
+        data: [
+          ['Quizzes Realizados', this.totalQuizAttempts],
+          ['Atores Favoritos', this.totalFavoriteActors],
+          ['Ratings Feitos', this.totalRatigns]
+        ]
+      }]
+    };
+  }
+
+  // ... restante da classe ...
+
+
+  loadCommentsCountByDate(): void {
+    this.apiService.commentsDate(this.currentUser).subscribe(data => {
+      this.commentsCountByDate = data;
+      this.setChartOptions();
+    });
+  }
+
+
+  loadMediaAddedByDate(): void {
+    this.apiService.getMovieAddedByDate(this.currentUser).subscribe(data => {
+      this.mediaAddedByDate = data;
+      this.setMediaAddedChartOptions();
+    });
+  }
+
+  loadSerieAddedByDate(): void {
+    this.apiService.getSeriesAddedByDate(this.currentUser).subscribe(data => {
+      this.mediaSerieByDate = data;
+      this.setSerieAddedChartOptions();
+    });
+  }
+
+  setMediaAddedChartOptions(): void {
+    this.chartMovieAdded = {
+      chart: {
+        type: 'column' // 'column' para gráfico de colunas verticais, 'bar' para barras horizontais
+      },
+      title: {
+        text: 'Filmes Vistos por Data'
+      },
+      xAxis: {
+        categories: this.mediaAddedByDate.map(item => item.date.split('T')[0]),
+        title: {
+          text: 'Data'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Total de Filmes'
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: 'Filmes: <b>{point.y}</b>'
+      },
+      series: [{
+        name: 'Total de Comentários',
+        data: this.mediaAddedByDate.map(item => item.count),
+        dataLabels: {
+          enabled: true,
+          inside: false,
+          rotation: 0,
+          color: '#000000',
+          align: 'center',
+          format: '{point.y}', // sem decimais
+          y: 0, // alinhado com o topo da barra
+          style: {
+            fontSize: '13px',
+            fontFamily: 'Verdana, sans-serif'
+          }
+        }
+      }]
+    };
+  }
+
+
+  setSerieAddedChartOptions(): void {
+    this.chartSerieAdded = {
+      chart: {
+        type: 'column' // 'column' para gráfico de colunas verticais, 'bar' para barras horizontais
+      },
+      title: {
+        text: 'Series Vistos por Data'
+      },
+      xAxis: {
+        categories: this.mediaSerieByDate.map(item => item.date.split('T')[0]),
+        title: {
+          text: 'Data'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Total de Serie'
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: 'Filmes: <b>{point.y}</b>'
+      },
+      series: [{
+        name: 'Total de Comentários',
+        data: this.mediaSerieByDate.map(item => item.count),
+        dataLabels: {
+          enabled: true,
+          inside: false,
+          rotation: 0,
+          color: '#000000',
+          align: 'center',
+          format: '{point.y}', // sem decimais
+          y: 0, // alinhado com o topo da barra
+          style: {
+            fontSize: '13px',
+            fontFamily: 'Verdana, sans-serif'
+          }
+        }
+      }]
+    };
+  }
+  setChartOptions(): void {
+    this.chartOptions = {
+      chart: {
+        type: 'column' // 'column' para gráfico de colunas verticais, 'bar' para barras horizontais
+      },
+      title: {
+        text: 'Comentários feito por Data'
+      },
+      xAxis: {
+        categories: this.commentsCountByDate.map(item => item.date.split('T')[0]),
+        title: {
+          text: 'Data'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Total de Comentários'
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: 'Comentários: <b>{point.y}</b>'
+      },
+      series: [{
+        name: 'Total de Comentários',
+        data: this.commentsCountByDate.map(item => item.count),
+        dataLabels: {
+          enabled: true,
+          inside: false,
+          rotation: 0,
+          color: '#000000',
+          align: 'center',
+          format: '{point.y}', // sem decimais
+          y: 0, // alinhado com o topo da barra
+          style: {
+            fontSize: '13px',
+            fontFamily: 'Verdana, sans-serif'
+          }
+        }
+      }]
+    };
+  }
+
+
+
+
+
+
 
   calculateTotalWatchedTime(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
@@ -166,6 +457,16 @@ export class StatisticsComponent implements OnInit {
         this.totalCommentsCount = count;
       },
       error: (error) => console.error("Error fetching total user comments:", error)
+    });
+  }
+
+  private fetchTotalMedals(username: string): void {
+    // Chamadas existentes para buscar followers, following, etc.
+    this.profileService.getUserTotalMedals(username).subscribe({
+      next: (total) => {
+        this.totalMedals = total;
+      },
+      error: (error) => console.error("Error fetching total user likes:", error)
     });
   }
 

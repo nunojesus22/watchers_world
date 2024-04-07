@@ -159,4 +159,14 @@ export class ProfileService {
 
     return this.http.get<number>(`${environment.appUrl}/api/UserRatingMedia/get-rating-by-user`, { headers });
   }
+
+  //TOTAL MEDALS
+  getUserTotalMedals(username: string): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/gamification/medals/${username}`, { headers });
+  }
+
+
+
+
 }
