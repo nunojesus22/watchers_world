@@ -31,6 +31,8 @@ export class StatisticsComponent implements OnInit {
   totalWatchedSeriesTimeFormatted: any;
 
   totalWatchedEpisodes: number = 0;
+
+  totalMedals: number = 0;
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService,
@@ -50,6 +52,7 @@ export class StatisticsComponent implements OnInit {
       this.calculateTotalWatchedTime();
       this.calculateTotalWatchedSeriesTime();
       this.calculateTotalWatchedEpisodes();
+      this.fetchTotalMedals(this.currentUser);
     }
   }
 
@@ -166,6 +169,16 @@ export class StatisticsComponent implements OnInit {
         this.totalCommentsCount = count;
       },
       error: (error) => console.error("Error fetching total user comments:", error)
+    });
+  }
+
+  private fetchTotalMedals(username: string): void {
+    // Chamadas existentes para buscar followers, following, etc.
+    this.profileService.getUserTotalMedals(username).subscribe({
+      next: (total) => {
+        this.totalMedals = total;
+      },
+      error: (error) => console.error("Error fetching total user likes:", error)
     });
   }
 

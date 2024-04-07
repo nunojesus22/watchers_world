@@ -86,5 +86,19 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        [HttpGet("/api/gamification/medals/{username}")]
+        public async Task<ActionResult<int>> GetTotalMedals(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            var totalAttempts = await _context.UserMedals
+                .CountAsync(a => a.UserName== user.UserName);
+
+            return Ok(totalAttempts);
+        }
+
     }
 }

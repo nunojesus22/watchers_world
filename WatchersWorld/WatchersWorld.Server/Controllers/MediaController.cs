@@ -673,8 +673,36 @@ namespace WatchersWorld.Server.Controllers
             return result.Result;
         }
 
-    }
 
+        [Authorize]
+        [HttpGet("/api/media/get-total-comments/{username}")]
+        public async Task<ActionResult<int>> GetTotalCommentsByUser(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var totalComments = await _context.Comments.CountAsync(c => c.UserId == user.Id);
+
+            return Ok(totalComments);
+        }
+
+        [HttpGet("/api/media/get-total-likes-received/{username}")]
+        public async Task<ActionResult<int>> GetTotalLikesReceived(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var totalLikesReceived = await _context.CommentLikes.CountAsync(cl => cl.Comment.UserId == user.Id);
+
+            return Ok(totalLikesReceived);
+        }
+    }
 
 
 }
