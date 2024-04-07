@@ -162,14 +162,14 @@ namespace WatchersWorld.Server.Data
             if (!context.Medals.Any()) // Check if the Medals table is empty
             {
                 var medals = new List<Medals>
-        {
-            new Medals { Name = "Conta Criada", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
-            new Medals { Name = "Primeiro Filme", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
-            new Medals { Name = "Primeira Série", Description = "Marcar 1 série como visto", Image = "../../assets/img/medal.png"},
-            new Medals { Name = "Seguir um utilizador", Description = "Seguir o seu primeiro utilizador", Image = "../../assets/img/medal.png"},
-            new Medals { Name = "Editar perfil", Description = "Editar o perfil pela primeira vez", Image = "../../assets/img/medal.png"},
-            // Add more medals as needed
-        }; 
+                {
+                    new Medals { Name = "Conta Criada", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Primeiro Filme", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Primeira Série", Description = "Marcar 1 série como visto", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Seguir um utilizador", Description = "Seguir o seu primeiro utilizador", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Editar perfil", Description = "Editar o perfil pela primeira vez", Image = "../../assets/img/medal.png"},
+                    // Add more medals as needed
+                }; 
 
                 context.Medals.AddRange(medals);
                 await context.SaveChangesAsync();

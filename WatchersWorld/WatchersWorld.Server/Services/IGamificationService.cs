@@ -5,7 +5,14 @@ using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Services
 {
-    public class GamificationService
+    public interface IGamificationService
+    {
+        Task<bool> AwardMedalAsync(string userName, string medalName);
+        Task<List<MedalsDto>> GetUnlockedMedalsAsync(string userName);
+        Task<List<MedalsDto>> GetLockedMedalsAsync(string userName);
+    }
+
+    public class GamificationService : IGamificationService
     {
         private readonly WatchersWorldServerContext _context;
 

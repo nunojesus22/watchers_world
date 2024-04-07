@@ -26,7 +26,7 @@ builder.Services.AddScoped<IFollowersService, FollowersService>();
 builder.Services.AddScoped<IFavoriteActorService, FavoriteActorService>();
 builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<GamificationService>();
+builder.Services.AddScoped<IGamificationService, GamificationService>();
 builder.Services.AddScoped<ITimeZoneConverterService, TimeZoneConverterService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 

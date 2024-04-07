@@ -14,10 +14,10 @@ namespace WatchersWorld.Server.Controllers
     public class GamificationController : Controller
     {
         private readonly WatchersWorldServerContext _context;
-        private readonly GamificationService _gamificationService;
+        private readonly IGamificationService _gamificationService;
 
 
-        public GamificationController(WatchersWorldServerContext context, GamificationService gamificationService)
+        public GamificationController(WatchersWorldServerContext context, IGamificationService gamificationService)
         {
             _context = context;
             _gamificationService = gamificationService;
