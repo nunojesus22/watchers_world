@@ -10,6 +10,7 @@ namespace WatchersWorld.Server.Chat.Services
     {
         Task<bool> CreateChat(string user1Id, string user2Id);
         Task<bool> DeleteChat(string user1Id, string user2Id);
+        Task<bool> DeleteMessage(string user1Id, string messageId);
         Task<List<Models.Chat>> GetChatsByUser(string userId);
         Task<List<string>> GetUsersThatHaveChatWith(string userId);
         Task<MessageDto> SendMessage(string userSenderId, string userReceiverId, string textMessage, DateTime? sentAt);
@@ -85,7 +86,30 @@ namespace WatchersWorld.Server.Chat.Services
                 Console.Error.WriteLine(ex.Message);
                 return false;
             }
-        } 
+        }
+
+        public async Task<bool> DeleteMessage(string user1Id, string messageId)
+        {
+            if (user1Id.IsNullOrEmpty() || messageId.IsNullOrEmpty() || messageId.IsNullOrEmpty()) return false;
+
+            var message = await _context.Messages.Where(m => m.Id == messageId).FirstAsync();
+            if (message == null) return false;
+
+            try
+            {
+                var userMessageVisibility = await _context.MessagesVisibility.Where(v => v.MessageId == messageId && v.UserId == user1Id).FirstAsync();
+
+                userMessageVisibility.Visibility = false;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
 
         public async Task<List<Models.Chat>> GetChatsByUser(string userId)
         {

@@ -6,6 +6,7 @@ import { Message } from '../models/messages';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { ProfileChat } from '../models/profileChat';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class ChatService {
     }
 
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(`https://localhost:7232/chathub?username=${username}&timeZone=${encodeURIComponent(this.getTimeZone())}`, {
+      .withUrl(`${environment.appUrl}/chathub?username=${username}&timeZone=${encodeURIComponent(this.getTimeZone())}`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets
       })
@@ -199,6 +200,18 @@ export class ChatService {
 
     return this.hubConnection.invoke('DeleteChat', usernameReceiver, this.getTimeZone())
       .then(chats => this.updateChats(chats))
+      .catch(this.handleError);
+  }
+
+  deleteMessage(message: Message): Promise<void> {
+    if (!this.hubConnection) {
+      return Promise.reject('No hub connection');
+    }
+
+    return this.hubConnection.invoke('DeleteMessage', this.getTimeZone(), message)
+      .then(chats => {
+        this.updateChats(chats);
+      })
       .catch(this.handleError);
   }
 

@@ -65,13 +65,26 @@
                               [messagePopup]="'Tem certeza que deseja eliminar esta conversa?'"
                               [confirmationTextButton]="'Confirmar'"
                               [cancelTextButton]="'Cancelar'"
-                              (confirmAction)="performDeleteAction($event)"></app-confirm-dialog>
+                              (confirmAction)="performDeleteChatAction($event)"></app-confirm-dialog>
+          <!-- <button class="btn btn-danger" (click)="deleteChat()">Eliminar mensagem</button>  -->
+          <app-confirm-dialog *ngIf="currentLongPressedMessage"
+                              [classCss]="'btn btn-danger'"
+                              [titleButton]="'Eliminar Mensagem'"
+                              [titlePopup]="'Confirmação'"
+                              [messagePopup]="'Tem certeza que deseja eliminar esta mensagem?'"
+                              [confirmationTextButton]="'Confirmar'"
+                              [cancelTextButton]="'Cancelar'"
+                              (confirmAction)="performDeleteMessageAction(currentLongPressedMessage)"></app-confirm-dialog>
         </div>
 
         <!-- Messages Area -->
         <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>
 
-          <div *ngFor="let message of messages" class="message" [ngClass]="{'incoming': message.sendUsername === selectedUsername, 'outgoing': message.sendUsername !== selectedUsername}">
+          <div *ngFor="let message of messages" class="message"
+               [ngClass]="{'incoming': message.sendUsername === selectedUsername, 'outgoing': message.sendUsername !== selectedUsername}"
+               [class.selected-message]="currentLongPressedMessage === message"
+               (mousedown)="startLongPress($event, message)" 
+               (mouseup)="stopLongPress()" >
             <span class="message-content">{{ message.text }}</span>
             <span class="message-timestamp">{{ message.sentAt | date:'HH:mm, dd/MM/yyyy' }}</span>
           </div>

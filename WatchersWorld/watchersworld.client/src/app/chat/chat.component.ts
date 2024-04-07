@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewChecked, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/services/authentication.service';
@@ -44,11 +44,17 @@ export class ChatComponent implements AfterViewChecked {
   messageTextToNewUser: string = "";
   errorMessage: string = '';
 
+  currentLongPressedMessage: any = null;
+  longPressTimer: any;
+  shouldScrollToBottom: boolean = true;
+  justUnselectedMessage: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthenticationService,
     private chatService: ChatService,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef | undefined;
@@ -105,13 +111,42 @@ export class ChatComponent implements AfterViewChecked {
       return false;
     }
   }
+  
+
+  startLongPress(event: MouseEvent, message: any) {
+    this.currentLongPressedMessage = null;
+    this.shouldScrollToBottom = false;
+    this.detectChanges();
+
+    this.longPressTimer = setTimeout(() => {
+      if (this.currentLongPressedMessage === message) {
+        this.justUnselectedMessage = true;
+      } else {
+        this.currentLongPressedMessage = message;
+      }
+      this.detectChanges();
+    }, 500);
+  }
+
+  stopLongPress() {
+    this.justUnselectedMessage = false;
+    clearTimeout(this.longPressTimer);
+    this.detectChanges();
+  }
+
+  detectChanges() {
+    this.changeDetectorRef.detectChanges();
+  }
 
   selectUser(newUser: ProfileChat) {
     this.selectedUser = newUser;
   }
 
   ngAfterViewChecked(): void {
-    this.scrollToBottom();
+    if (!this.justUnselectedMessage && !this.currentLongPressedMessage) {
+      this.scrollToBottom();
+    }
+    this.justUnselectedMessage = false;
   }
 
   ngOnDestroy(): void {
@@ -120,7 +155,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   private scrollToBottom(): void {
-    if (this.myScrollContainer) {
+    if (this.myScrollContainer && this.shouldScrollToBottom) {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     }
   }
@@ -149,6 +184,7 @@ export class ChatComponent implements AfterViewChecked {
 
     this.filteredUsersProfiles = [...this.usersProfiles];
     this.showNoResults = false; // Resetar estado de não ter resultados, se necessário
+    this.setupMessages();
     console.log(this.messages);
   }
 
@@ -157,6 +193,11 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   onUserSelected(newUserProfile: ProfileChat): void {
+    this.currentLongPressedMessage = null;
+    this.shouldScrollToBottom = true;
+    this.scrollToBottom();
+
+
     sessionStorage.setItem('selectedUser', JSON.stringify(newUserProfile));
     this.router.navigate([`/chat/${newUserProfile.userName}`]);
   }
@@ -248,15 +289,25 @@ export class ChatComponent implements AfterViewChecked {
     this.errorMessage = "";
   }
 
-  performDeleteAction(event: any): void {
+  performDeleteChatAction(event: any): void {
     this.deleteChat();
   }
 
-  deleteChat(): void {
+  performDeleteMessageAction(message: any) {
+    this.deleteMessage(message);
+  }
+
+  private deleteChat(): void {
     if (this._selectedUser) {
       this.chatService.deleteChat(this._selectedUser?.userName!);
       this.resetUser();
     }
+  }
+
+  private deleteMessage(message: any) {
+    this.chatService.deleteMessage(message);
+    this.currentLongPressedMessage = null;
+    this.detectChanges();
   }
 
   resetUser(): void {
