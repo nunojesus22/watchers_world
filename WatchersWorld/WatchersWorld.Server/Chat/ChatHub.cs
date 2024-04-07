@@ -174,7 +174,24 @@ namespace WatchersWorld.Server.Chat
             {
                 throw new HubException("ID do usuário receptor não pode ser null.");
             }
+        }
 
+        public async Task<IEnumerable<ChatWithMessagesDto>> DeleteMessage(string timeZone, MessageDto message)
+        {
+            var username = Context.GetHttpContext().Request.Query["username"].ToString();
+            var userSender = await _userManager.FindByNameAsync(username);
+            var userSenderId = userSender.Id;
+
+            var result = await _chatService.DeleteMessage(userSenderId, message.MessageId);
+
+            if (result)
+            {
+                return await GetUserChatsWithMessages(userSenderId, timeZone);
+            }
+            else
+            {
+                throw new HubException("ID do usuário receptor não pode ser null.");
+            }
         }
 
         public async Task<IEnumerable<ChatWithMessagesDto>> MarkMessagesAsRead(IEnumerable<MessageDto> messages, string timeZone)
