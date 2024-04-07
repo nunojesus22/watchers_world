@@ -35,6 +35,8 @@ import { GamificationComponent } from './gamification/gamification.component';
 import { ChatService } from './chat/services/chat.service';
 import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
 
+import { HighchartsChartModule } from 'highcharts-angular';
+
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.co
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule 
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule
+    , HighchartsChartModule
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

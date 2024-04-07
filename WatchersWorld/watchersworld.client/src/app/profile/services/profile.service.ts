@@ -161,4 +161,7 @@ export class ProfileService {
     return this.http.get<number>(`${environment.appUrl}/api/gamification/medals/${username}`, { headers });
   }
 
+
+
+
 }

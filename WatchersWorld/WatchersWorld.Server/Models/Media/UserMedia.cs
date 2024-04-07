@@ -60,7 +60,7 @@ namespace WatchersWorld.Server.Models.Media
         public virtual MediaListModel MediaListModel { get; set; } // Navegação para MediaListModel
 
 
-        public DateTime? DateMarked{ get; set; }
+        public DateTime DateMarked{ get; set; }
 
     }
 
