@@ -161,7 +161,7 @@ namespace WatchersWorld_Teste
             var request = new UserMediaDto { MediaId = 1, Type = "movie" };
 
             // Act
-            var result = await _controller.MarkToWatchLater(request);
+            var result =  _controller.MarkToWatchLater(request);
 
             // Assert
             if (result == Assert.IsType<OkObjectResult>(result)) {
@@ -178,7 +178,7 @@ namespace WatchersWorld_Teste
             var request = new UserMediaDto { MediaId = 1, Type = "serie" };
 
             // Act
-            var result = await _controller.MarkToWatchLater(request);
+            var result =  _controller.MarkToWatchLater(request);
 
             // Assert
             if (result == Assert.IsType<OkObjectResult>(result))
