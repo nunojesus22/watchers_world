@@ -31,16 +31,14 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task AwardMedalAsync_UserAndMedalExist_ShouldAwardMedal()
         {
-
             var medal = await _context.Medals.FirstOrDefaultAsync(m => m.Name == "Conta Criada");
             Assert.NotNull(medal); // Ensure the medal exists
 
-
-            var result = await _gamificationService.AwardMedalAsync("UserTest1", "Conta Criada");
+            var result = await _gamificationService.AwardMedalAsync("UserTest4", "Conta Criada");
             Assert.True(result);
 
             var userMedalExists = await _context.UserMedals
-                .AnyAsync(um => um.UserName == "UserTest1" && um.MedalId == medal.Id);
+                .AnyAsync(um => um.UserName == "UserTest4" && um.MedalId == medal.Id);
             Assert.True(userMedalExists);
         }
 
