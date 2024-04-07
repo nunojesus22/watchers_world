@@ -51,7 +51,7 @@ namespace WatchersWorld.Tests
         public async Task BanUserTemporarily_UserExists_ShouldBanTemporarily()
         {
             // Arrange
-            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest1");
+            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest2");
 
             // Act
             var result = await _adminService.BanUserTemporarilyAsync(user.UserName, 2);
@@ -67,7 +67,7 @@ namespace WatchersWorld.Tests
         public async Task UnbanUser_UserExists_ShouldUnbanUser()
         {
             // Arrange
-            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest1");
+            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest3");
             // Ensure the user is banned before unbanning for the test
             await _adminService.BanUserPermanentlyAsync(user.UserName);
 
@@ -84,7 +84,7 @@ namespace WatchersWorld.Tests
         public async Task DeleteUserByUsername_UserExists_ShouldDeleteUser()
         {
             // Arrange
-            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest1");
+            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest4");
             Assert.NotNull(user); // Ensure the user exists before attempting delete
 
             // Act
@@ -103,7 +103,7 @@ namespace WatchersWorld.Tests
         public async Task ChangeRoleToModerator_UserExists_ShouldChangeRoleToModerator()
         {
             // Arrange
-            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest1");
+            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest5");
 
             // Act
             var result = await _adminService.ChangeRoleToModeratorAsync(user.UserName);
@@ -118,7 +118,7 @@ namespace WatchersWorld.Tests
         public async Task ChangeRoleToUser_UserExists_ShouldChangeRoleToUser()
         {
             // Arrange
-            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest1");
+            var user = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == "UserTest6");
             var userRole = await _userManager.FindByNameAsync(user.UserName);
 
 
