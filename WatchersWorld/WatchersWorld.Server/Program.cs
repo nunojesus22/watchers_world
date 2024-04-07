@@ -28,8 +28,10 @@ builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<GamificationService>();
 builder.Services.AddScoped<ITimeZoneConverterService, TimeZoneConverterService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
-builder.Services.AddScoped<IChatService, ChatService>(); 
+
+builder.Services.AddScoped<IChatService, ChatService>();
 
 builder.Services.AddDbContext<WatchersWorldServerContext>(options =>
 {
@@ -58,23 +60,23 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddEntityFrameworkStores<WatchersWorldServerContext>() //usar o nosso context
     .AddSignInManager<SignInManager<User>>() //usar o SignInManager
     .AddUserManager<UserManager<User>>() //usar o UserManager
-    .AddDefaultTokenProviders(); //Usado para criar os tokens de confirma��o de email
+    .AddDefaultTokenProviders(); //Usado para criar os tokens de confirmação de email
 
-//Permite fazer a autentica��o usando os JWT
+//Permite fazer a autenticação usando os JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
-                                            {
-                                                //validar o token baseado na key dada no development.json JWT:Key
-                                                ValidateIssuerSigningKey = true,
-                                                //o issuer signing key baseada na JWT:Key
-                                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
-                                                //o issuer � o link do projeto api 
-                                                ValidIssuer = builder.Configuration["JWT:Issuer"],
-                                                ValidateIssuer = true,
-                                                ValidateAudience = false,
-                                            };
+        {
+            //validar o token baseado na key dada no development.json JWT:Key
+            ValidateIssuerSigningKey = true,
+            //o issuer signing key baseada na JWT:Key
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+            //o issuer é o link do projeto api 
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateIssuer = true,
+            ValidateAudience = false,
+        };
     });
 
 builder.Services.AddCors(options =>
@@ -122,24 +124,24 @@ app.UseCors("AllowAllOrigins");
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-    using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<WatchersWorldServerContext>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>(); // Retrieve the RoleManager instance
+
+    context.Database.EnsureCreated();
+
+    if (!context.ProfileInfo.Any())
     {
-        var services = scope.ServiceProvider;
-        var context = services.GetRequiredService<WatchersWorldServerContext>();
-        var userManager = services.GetRequiredService<UserManager<User>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>(); // Retrieve the RoleManager instance
-
-        context.Database.EnsureCreated();
-
-        if (!context.ProfileInfo.Any())
-        {
-            // Now passing roleManager to SeedData, which is expecting it as an optional parameter
-            await DataSeeder.SeedData(context, userManager, roleManager);
-        }
+        // Now passing roleManager to SeedData, which is expecting it as an optional parameter
+        await DataSeeder.SeedData(context, userManager, roleManager);
     }
+}
 
 //}
 app.UseHttpsRedirection();
