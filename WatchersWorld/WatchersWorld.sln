@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WatchersWorld.Server", "Wat
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "watchersworld.client", "watchersworld.client\watchersworld.client.esproj", "{51FACCED-FB2D-43D9-A894-0B591346BD55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersWorld_Teste", "WatchersWorld_Teste\WatchersWorld_Teste.csproj", "{36F49022-A1F0-41B3-A944-BA02E56EA095}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WatchersWorld_Teste", "WatchersWorld_Teste\WatchersWorld_Teste.csproj", "{36F49022-A1F0-41B3-A944-BA02E56EA095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
