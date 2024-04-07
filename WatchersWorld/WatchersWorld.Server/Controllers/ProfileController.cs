@@ -32,7 +32,7 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IProfileService profileService, IFollowersService followersService, INotificationService notificationService, GamificationService gamificationService) : ControllerBase
+    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IProfileService profileService, IFollowersService followersService, INotificationService notificationService, IGamificationService gamificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly UserManager<User> _userManager = userManager;
@@ -40,7 +40,7 @@ namespace WatchersWorld.Server.Controllers
         private readonly IProfileService _profileService = profileService;
         private readonly IFollowersService _followersService = followersService;
         private readonly INotificationService _notificationService = notificationService;
-        private readonly GamificationService _gamificationService = gamificationService;
+        private readonly IGamificationService _gamificationService = gamificationService;
 
 
         /// <summary>

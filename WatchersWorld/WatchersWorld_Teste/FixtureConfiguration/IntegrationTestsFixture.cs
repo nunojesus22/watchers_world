@@ -37,6 +37,8 @@ namespace WatchersWorld_Teste.FixtureConfiguration
 
         public RoleManager<IdentityRole> RoleManager { get; private set; }
 
+        public IGamificationService GamificationService { get; private set; }
+
         public IntegrationTestsFixture()
         {
             var services = new ServiceCollection();
@@ -71,6 +73,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             services.AddTransient(typeof(ILogger<AccountController>), provider => NullLogger<AccountController>.Instance);
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IGamificationService, GamificationService>();
 
             services.AddDbContext<WatchersWorldServerContext>(options =>
                 options.UseInMemoryDatabase(Guid.NewGuid().ToString()) // Unique database per test
@@ -135,7 +138,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             NotificationsService = ServiceProvider.GetRequiredService<INotificationService>();
             AdminService = ServiceProvider.GetRequiredService<IAdminService>();
             RoleManager = ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
+            GamificationService = ServiceProvider.GetRequiredService<IGamificationService>();
             Context.Database.EnsureCreated();
         }
 

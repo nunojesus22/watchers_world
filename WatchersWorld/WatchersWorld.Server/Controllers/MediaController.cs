@@ -22,11 +22,11 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MediaController(WatchersWorldServerContext context, INotificationService notificationService, ILogger<MediaController> logger, GamificationService gamificationService) : ControllerBase
+    public class MediaController(WatchersWorldServerContext context, INotificationService notificationService, ILogger<MediaController> logger, IGamificationService gamificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly INotificationService _notificationService = notificationService;
-        private readonly GamificationService _gamificationService = gamificationService;
+        private readonly IGamificationService _gamificationService = gamificationService;
         private readonly ILogger<MediaController> _logger = logger;
 
 

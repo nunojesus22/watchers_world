@@ -29,7 +29,7 @@ namespace WatchersWorld.Server.Controllers
     /// <param name="config">Application configuration settings.</param>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
-    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger, GamificationService gamificationService, INotificationService notificationService) : ControllerBase
+    public class AccountController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger, IGamificationService gamificationService, INotificationService notificationService) : ControllerBase
     {
         // Service for generating JWT tokens.
         private readonly JWTService _jwtService = jWTService;
@@ -47,7 +47,7 @@ namespace WatchersWorld.Server.Controllers
 
         private readonly WatchersWorldServerContext _context = context;
 
-        private readonly GamificationService _gamificationService = gamificationService;
+        private readonly IGamificationService _gamificationService = gamificationService;
         private readonly INotificationService _notificationService = notificationService;
 
         /// <summary>
