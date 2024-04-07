@@ -17,8 +17,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using WatchersWorld.Server.Controllers;
 using WatchersWorld.Server.Chat.Services;
-using WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace WatchersWorld_Teste.FixtureConfiguration
 {
@@ -32,10 +30,6 @@ namespace WatchersWorld_Teste.FixtureConfiguration
 
         public IFollowersService FollowersService { get; private set; }
         public INotificationService NotificationsService { get; private set; }
-
-        public IAdminService AdminService { get; private set; }
-
-        public RoleManager<IdentityRole> RoleManager { get; private set; }
 
         public IntegrationTestsFixture() 
         {
@@ -70,11 +64,9 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             services.AddSingleton<ChatService>();
             services.AddTransient(typeof(ILogger<AccountController>), provider => NullLogger<AccountController>.Instance);
             services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IAdminService, AdminService>();
 
             services.AddDbContext<WatchersWorldServerContext>(options =>
-                options.UseInMemoryDatabase("TestDb")
-                 .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
+                options.UseInMemoryDatabase("TestDb"));
 
             // Adicionar e configurar Identity
             services.AddIdentity<User, IdentityRole>()
@@ -132,8 +124,6 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             ProfileService = ServiceProvider.GetRequiredService<IProfileService>();
             FollowersService = ServiceProvider.GetRequiredService<IFollowersService>();
             NotificationsService = ServiceProvider.GetRequiredService<INotificationService>();
-            AdminService = ServiceProvider.GetRequiredService<IAdminService>();
-            RoleManager = ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             Context.Database.EnsureCreated();
         }
@@ -144,17 +134,10 @@ namespace WatchersWorld_Teste.FixtureConfiguration
             await Context.SaveChangesAsync();
         }
 
-        public async Task ApplySeedAdminAsync(ISeedConfigurationAdmin seedConfiguration)
-        {
-            await seedConfiguration.SeedAsync(UserManager, Context, RoleManager);
-            await Context.SaveChangesAsync();
-        }
-
         public void Dispose()
         {
             Context.Database.EnsureDeleted();
         }
-
 
         /*public async Task AddUserWithProfileAsync(string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
         {

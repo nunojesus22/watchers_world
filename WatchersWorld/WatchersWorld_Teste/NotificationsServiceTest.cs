@@ -450,7 +450,7 @@ namespace WatchersWorld_Teste
         public async Task CreateMediaNotification_ThrowsException_WhenUserOrMediaNotFound()
         {
             // Arrange
-            string nonExistingUserId = "UserTest16";
+            string nonExistingUserId = "UserTest8";
             int nonExistingMediaId = 999999;
 
             // Act & Assert

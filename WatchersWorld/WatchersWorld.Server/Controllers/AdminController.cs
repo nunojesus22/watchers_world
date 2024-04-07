@@ -26,7 +26,7 @@ namespace WatchersWorld.Server.Controllers
         // Manager for user-related operations.
         private readonly UserManager<User> _userManager;
         private readonly EmailService _emailService;
-        private readonly IAdminService _adminService;
+        private readonly IConfiguration _config;
 
         private readonly ILogger<AccountController> _logger;
 
@@ -34,7 +34,7 @@ namespace WatchersWorld.Server.Controllers
         private WatchersWorldServerContext _context;
 
         // Constructor for dependency injection.
-        public AdminController(UserManager<User> userManager, EmailService emailService, WatchersWorldServerContext context, ILogger<AccountController> logger, IAdminService adminService)
+        public AdminController(UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
         /// <summary>
         /// Constructor for AccountController.
         /// </summary>
@@ -47,10 +47,9 @@ namespace WatchersWorld.Server.Controllers
 
             _userManager = userManager;
             _emailService = emailService;
+            _config = config;
             _context = context;
             _logger = logger;
-            _adminService = adminService;
-
 
         }
 
@@ -59,15 +58,14 @@ namespace WatchersWorld.Server.Controllers
         [HttpGet("api/admin/getUserRole/{username}")]
         public async Task<ActionResult<string[]>> GetUserRole(string username)
         {
-            try
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
             {
-                var roles = await _adminService.GetUserRoleAsync(username);
-                return Ok(roles);
+                return NotFound("User not found");
             }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(roles.ToArray());
         }
 
 
@@ -75,24 +73,54 @@ namespace WatchersWorld.Server.Controllers
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> BanUserPermanently(string username)
         {
-            var message = await _adminService.BanUserPermanentlyAsync(username);
-            if (message == "User not found." || message == "User profile info not found.")
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
             {
-                return NotFound(message);
+                return NotFound("User not found.");
             }
-            return Ok(new { message });
+
+            // Retrieve the user's profile info
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
+
+            // Set ban-related properties in the profile info DTO
+            profileInfo.StartBanDate = DateTime.UtcNow; // Set the start ban date
+            profileInfo.EndBanDate = DateTime.MaxValue; // Set the end ban date to a large value, indicating permanent ban
+
+            // Update the user's profile info in the database
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User banned permanently." });
         }
 
         [HttpPost("api/admin/ban-user-temporarily/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> BanUserTemporarily(string username, [FromQuery] int banDurationInDays)
         {
-            var result = await _adminService.BanUserTemporarilyAsync(username, banDurationInDays);
-            if (result.Contains("not found"))
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
             {
-                return NotFound(result);
+                return NotFound("User not found.");
             }
-            return Ok(new { message = result });
+
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
+
+            profileInfo.StartBanDate = DateTime.UtcNow;
+            profileInfo.EndBanDate = DateTime.UtcNow.AddDays(banDurationInDays);
+
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            var response = new { message = $"User banned temporarily for {banDurationInDays} days." };
+            return Ok(response);
         }
 
 
@@ -101,28 +129,77 @@ namespace WatchersWorld.Server.Controllers
         //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
         public async Task<IActionResult> DeleteUserByUsername(string username)
         {
-            var result = await _adminService.DeleteUserByUsernameAsync(username);
-            if (result.Contains("not found"))
+            // Start a transaction
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                return NotFound(result);
+                try
+                {
+                    // Find the user's profile info
+                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+                    if (profileInfo != null)
+                    {
+                        // Delete the profile info
+                        _context.ProfileInfo.Remove(profileInfo);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // Find the user by username
+                    var user = await _userManager.FindByNameAsync(username);
+                    if (user == null)
+                    {
+                        return NotFound("User not found.");
+                    }
+
+                    // Delete the user
+                    var result = await _userManager.DeleteAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        // If the user wasn't deleted successfully, return the errors
+                        return BadRequest(result.Errors);
+                    }
+
+                    // Commit the transaction
+                    await transaction.CommitAsync();
+
+                    return Ok("User and profile info successfully deleted.");
+                }
+                catch (Exception ex)
+                {
+                    // If there was an exception, rollback the transaction
+                    await transaction.RollbackAsync();
+
+                    // Log the exception and return a generic error message
+                    _logger.LogError(ex, "An error occurred while deleting user and profile info.");
+                    return StatusCode(500, "An error occurred while deleting the user and profile info.");
+                }
             }
-            else if (result.Contains("Error"))
-            {
-                return BadRequest(result);
-            }
-            return Ok(new { message = result });
         }
 
         [HttpPut("api/admin/unban-user/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> UnbanUser(string username)
         {
-            var result = await _adminService.UnbanUserAsync(username);
-            if (result == "User not found." || result == "User profile info not found.")
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
             {
-                return NotFound(result);
+                return NotFound("User not found.");
             }
-            return Ok(new { message = result });
+
+            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+            if (profileInfo == null)
+            {
+                return NotFound("User profile info not found.");
+            }
+
+            // Reset ban-related properties
+            profileInfo.StartBanDate = null;
+            profileInfo.EndBanDate = null;
+
+            // Update the user's profile info in the database
+            _context.ProfileInfo.Update(profileInfo);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User unbanned successfully." });
 
         }
 
@@ -131,35 +208,63 @@ namespace WatchersWorld.Server.Controllers
         [HttpPut("api/admin/change-role-to-moderator/{username}")]
         public async Task<IActionResult> ChangeRoleToModerator(string username)
         {
-            var result = await _adminService.ChangeRoleToModeratorAsync(username);
-            if (result == "User not found.")
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
             {
-                return NotFound(result);
+                return NotFound("User not found.");
             }
-            else if (result.Contains("Failed"))
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!removeResult.Succeeded)
             {
-                return BadRequest(result);
+                return BadRequest("Failed to remove existing roles.");
             }
-            return Ok(new { message = result });
+
+            var addResult = await _userManager.AddToRoleAsync(user, "Moderator");
+            if (!addResult.Succeeded)
+            {
+                // Optionally, you might want to rollback removing the roles if adding the new role fails
+                return BadRequest("Failed to add user to moderator role.");
+            }
+
+            return Ok("User role updated to Moderator successfully.");
         }
 
+        [HttpGet("api/admin/total-registered-users")]
+        public async Task<ActionResult<int>> GetTotalRegisteredUsers()
+        {
+            var totalUsers = await _userManager.Users.CountAsync();
+            return Ok(totalUsers);
+        }
 
         [HttpPut("api/admin/change-role-to-user/{username}")]
         public async Task<IActionResult> ChangeRoleToUser(string username)
         {
-            var result = await _adminService.ChangeRoleToUserAsync(username);
-            if (result == "User not found.")
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
             {
-                return NotFound(result);
+                return NotFound("User not found.");
             }
-            else if (result.Contains("Failed"))
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!removeResult.Succeeded)
             {
-                return BadRequest(result);
+                return BadRequest("Failed to remove existing roles.");
             }
-            return Ok(new { message = result });
+
+            var addResult = await _userManager.AddToRoleAsync(user, "User");
+            if (!addResult.Succeeded)
+            {
+                // Optionally, you might want to rollback removing the roles if adding the new role fails
+                return BadRequest("Failed to remove user from Moderators.");
+            }
+
+            return Ok("User role updated to User successfully.");
         }
-
-
         // In ProfileController.cs or a relevant controller
 
         //[HttpGet("api/admin/total-banned-users")]
@@ -168,13 +273,6 @@ namespace WatchersWorld.Server.Controllers
         //    int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.IsBanned);
         //    return Ok(totalBannedUsers);
         //}
-
-        [HttpGet("api/admin/total-registered-users")]
-        public async Task<ActionResult<int>> GetTotalRegisteredUsers()
-        {
-            var totalUsers = await _userManager.Users.CountAsync();
-            return Ok(totalUsers);
-        }
 
         [HttpGet("api/admin/total-private-profiles")]
         public async Task<ActionResult<int>> GetTotalPrivateProfiles()

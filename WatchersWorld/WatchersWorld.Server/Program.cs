@@ -28,8 +28,6 @@ builder.Services.AddScoped<IRatingMediaService, RatingMediaService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<GamificationService>();
 builder.Services.AddScoped<ITimeZoneConverterService, TimeZoneConverterService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
-
 
 builder.Services.AddScoped<IChatService, ChatService>(); 
 
