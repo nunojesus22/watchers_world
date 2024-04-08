@@ -6,23 +6,78 @@ using WatchersWorld.Server.Models.Authentication;
 
 namespace WatchersWorld.Server.Services
 {
+    /// <summary>
+    /// Define as operações administrativas sobre os utilizadores.
+    /// </summary>
     public interface IAdminService
     {
+        /// <summary>
+        /// Obtém as roles de um utilizador especificado.
+        /// </summary>
+        /// <param name="username">O nome de utilizador.</param>
+        /// <returns>Array de strings contendo as roles do utilizador.</returns>
         Task<string[]> GetUserRoleAsync(string username);
+
+        /// <summary>
+        /// Bane permanente o utilizador.
+        /// </summary>
+        /// <param name="username">O nome de utilizador.</param>
+        /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> BanUserPermanentlyAsync(string username);
+
+        /// <summary>
+        /// Bane temporariamente o utilizador.
+        /// </summary>
+        /// <param name="username">O nome de utilizador.</param>
+        /// <param name="banDurationInDays">A duração em dias.</param>
+        /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> BanUserTemporarilyAsync(string username, int banDurationInDays);
+
+        /// <summary>
+        /// Remove o ban de um utilizador.
+        /// </summary>
+        /// <param name="username">O nome de utilizador.</param>
+        /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> UnbanUserAsync(string username);
+
+        /// <summary>
+        /// Apaga a conta de um utilizador e as suas informações relacionadas.
+        /// </summary>
+        /// <param name="username">O nome de usuário.</param>
+        /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> DeleteUserByUsernameAsync(string username);
+
+        /// <summary>
+        /// Altera a role de um utilizador para Moderator.
+        /// </summary>
+        /// <param name="username">O nome de utilizador.</param>
+        /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> ChangeRoleToModeratorAsync(string username);
+
+        /// <summary>
+        /// Altera a role de um utilizador para User.
+        /// </summary>
+        /// <param name="username">O nome de utilizador.</param>
+        /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> ChangeRoleToUserAsync(string username);
     }
 
+    /// <summary>
+    /// Implementação das operações administrativas sobre os utilizadores.
+    /// </summary>
     public class AdminService : IAdminService
     {
         private readonly UserManager<User> _userManager;
         private readonly WatchersWorldServerContext _context;
         private readonly ILogger<AdminService> _logger;
 
+
+        /// <summary>
+        /// Inicializa uma nova instância da classe <see cref="AdminService"/>.
+        /// </summary>
+        /// <param name="userManager">Gere os utilizadores.</param>
+        /// <param name="context">O contexto da base de dados.</param>
+        /// <param name="logger">O logger.</param>
         public AdminService(UserManager<User> userManager, WatchersWorldServerContext context, ILogger<AdminService> logger)
         {
             _userManager = userManager;
@@ -31,6 +86,7 @@ namespace WatchersWorld.Server.Services
 
         }
 
+        /// <inheritdoc />
 
         public async Task<string[]> GetUserRoleAsync(string username)
         {
@@ -43,6 +99,9 @@ namespace WatchersWorld.Server.Services
             var roles = await _userManager.GetRolesAsync(user);
             return roles.ToArray();
         }
+
+
+        /// <inheritdoc />
 
         public async Task<string> BanUserPermanentlyAsync(string username)
         {
@@ -67,6 +126,9 @@ namespace WatchersWorld.Server.Services
             return "User banned permanently.";
         }
 
+
+        /// <inheritdoc />
+
         public async Task<string> BanUserTemporarilyAsync(string username, int banDurationInDays)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -90,6 +152,8 @@ namespace WatchersWorld.Server.Services
             return $"User banned temporarily for {banDurationInDays} days.";
         }
 
+
+        /// <inheritdoc />
         public async Task<string> UnbanUserAsync(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -114,6 +178,9 @@ namespace WatchersWorld.Server.Services
 
             return "User unbanned successfully.";
         }
+
+
+        /// <inheritdoc />
 
         public async Task<string> DeleteUserByUsernameAsync(string username)
         {
@@ -152,6 +219,9 @@ namespace WatchersWorld.Server.Services
             }
         }
 
+
+        /// <inheritdoc />
+
         public async Task<string> ChangeRoleToModeratorAsync(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -175,6 +245,9 @@ namespace WatchersWorld.Server.Services
 
             return "User role updated to Moderator successfully.";
         }
+
+
+        /// <inheritdoc />
 
         public async Task<string> ChangeRoleToUserAsync(string username)
         {

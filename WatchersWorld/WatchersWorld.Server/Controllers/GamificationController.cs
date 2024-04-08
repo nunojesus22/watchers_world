@@ -8,6 +8,10 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
+
+    /// <summary>
+    /// Controlador para gerir operações de gamificação, incluindo a atribuição de medalhas e consulta de medalhas desbloqueadas ou bloqueadas para os utilizadores.
+    /// </summary>
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -24,6 +28,12 @@ namespace WatchersWorld.Server.Controllers
 
         }
 
+
+        /// <summary>
+        /// Atribui uma medalha a um utilizador especificado.
+        /// </summary>
+        /// <param name="request">Dados da requisição contendo o nome do utilizador e o nome da medalha.</param>
+        /// <returns>Resultado da operação de atribuição.</returns>
         [HttpPost("AwardMedal")]
         public async Task<IActionResult> AwardMedal([FromBody] AwardMedalRequest request)
         {
@@ -37,13 +47,20 @@ namespace WatchersWorld.Server.Controllers
             return Ok();
         }
 
-
+        /// <summary>
+        /// Modelo de dados para a requisição de atribuição de medalhas.
+        /// </summary>
         public class AwardMedalRequest
         {
             public string UserName { get; set; }
             public string MedalName { get; set; }
         }
 
+        /// <summary>
+        /// Obtém as medalhas desbloqueadas por um utilizador específico.
+        /// </summary>
+        /// <param name="userName">Nome do utilizador.</param>
+        /// <returns>Uma lista de medalhas desbloqueadas.</returns>
         [HttpGet("unlocked-medals/{userName}")]
         public async Task<ActionResult<List<MedalsDto>>> GetUnlockedMedals(string userName)
         {
@@ -57,6 +74,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        /// <summary>
+        /// Obtém todas as medalhas disponíveis no sistema.
+        /// </summary>
+        /// <returns>Uma lista de todas as medalhas.</returns>
         [HttpGet("available-medals")]
         public async Task<IActionResult> GetAvailableMedals()
         {
@@ -73,6 +94,12 @@ namespace WatchersWorld.Server.Controllers
             return Ok(medals);
         }
 
+
+        /// <summary>
+        /// Obtém as medalhas que um utilizador específico ainda não desbloqueou.
+        /// </summary>
+        /// <param name="userName">Nome do utilizador.</param>
+        /// <returns>Uma lista de medalhas bloqueadas.</returns>
         [HttpGet("locked-medals/{userName}")]
         public async Task<ActionResult<List<MedalsDto>>> GetLockedMedals(string userName)
         {
@@ -86,6 +113,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        /// <summary>
+        /// Obtém o total de medalhas atribuídas a um utilizador específico.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>O número total de medalhas atribuídas ao utilizador.</returns>
         [HttpGet("/api/gamification/medals/{username}")]
         public async Task<ActionResult<int>> GetTotalMedals(string username)
         {
