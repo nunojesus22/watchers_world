@@ -5,21 +5,52 @@ using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Services
 {
+    /// <summary>
+    /// Define as operações de gamificação, como atribuir medalhas e recuperar medalhas bloqueadas e desbloqueadas.
+    /// </summary>
     public interface IGamificationService
     {
+
+        /// <summary>
+        /// Atribui uma medalha a um utilizador.
+        /// </summary>
+        /// <param name="userName">O nome do utilizador.</param>
+        /// <param name="medalName">O nome da medalha.</param>
+        /// <returns>Verdadeiro se a medalha for atribuída com sucesso, falso caso contrário.</returns>
         Task<bool> AwardMedalAsync(string userName, string medalName);
+
+        /// <summary>
+        /// Obtém uma lista das medalhas desbloqueadas por um utilizador.
+        /// </summary>
+        /// <param name="userName">O nome do utilizador.</param>
+        /// <returns>Uma lista de DTOs representando as medalhas desbloqueadas.</returns>
         Task<List<MedalsDto>> GetUnlockedMedalsAsync(string userName);
+
+        /// <summary>
+        /// Obtém uma lista das medalhas ainda não desbloqueadas por um utilizador.
+        /// </summary>
+        /// <param name="userName">O nome do utilizador.</param>
+        /// <returns>Uma lista de DTOs representando as medalhas bloqueadas.</returns>
         Task<List<MedalsDto>> GetLockedMedalsAsync(string userName);
     }
 
+    /// <summary>
+    /// Implementa as operações de gamificação, como atribuir medalhas e recuperar medalhas bloqueadas e desbloqueadas.
+    /// </summary>
     public class GamificationService : IGamificationService
     {
         private readonly WatchersWorldServerContext _context;
 
+        /// <summary>
+        /// Inicializa uma nova instância da classe de serviço de gamificação com o contexto especificado.
+        /// </summary>
+        /// <param name="context">O contexto do servidor.</param>
         public GamificationService(WatchersWorldServerContext context)
         {
             _context = context;
         }
+
+        /// <inheritdoc />
 
         public async Task<bool> AwardMedalAsync(string userName, string medalName)
         {
@@ -57,6 +88,8 @@ namespace WatchersWorld.Server.Services
         }
 
 
+        /// <inheritdoc />
+
         public async Task<List<MedalsDto>> GetUnlockedMedalsAsync(string userName)
         {
             var unlockedMedals = await _context.UserMedals
@@ -76,6 +109,8 @@ namespace WatchersWorld.Server.Services
             return unlockedMedals;
         }
 
+
+        /// <inheritdoc />
 
         public async Task<List<MedalsDto>> GetLockedMedalsAsync(string userName)
         {

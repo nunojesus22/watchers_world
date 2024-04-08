@@ -12,7 +12,11 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
+<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240408102120_WatchersWorld.Designer.cs
     [Migration("20240408102120_WatchersWorld")]
+========
+    [Migration("20240408114935_WatchersWorld")]
+>>>>>>>> development:WatchersWorld/WatchersWorld.Server/Migrations/20240408114935_WatchersWorld.Designer.cs
     partial class WatchersWorld
     {
         /// <inheritdoc />

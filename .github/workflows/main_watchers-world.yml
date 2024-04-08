@@ -35,7 +35,7 @@ jobs:
         run: npm run build --configuration=production
 
       - name: Zip artifact for deployment
-        run: zip -r client-app.zip dist/watchersworld.client
+        run: zip -r client-app.zip dist/
 
       - name: Upload client artifact
         uses: actions/upload-artifact@v4.3.1
@@ -55,14 +55,14 @@ jobs:
           name: client-app
 
       - name: Unzip artifact for deployment
-        run: unzip client-app.zip -d ./client
+        run: unzip client-app.zip -d ./dist
 
       - name: Deploy client to Azure Web App
         uses: azure/webapps-deploy@v3.0.0
         with:
           app-name: 'WatchersWorldFrontEnd'
           slot-name: 'Production'
-          package: ./client
+          package: ./dist
           publish-profile: ${{ secrets.CLIENT_PUBLISH_PROFILE }}
 
   build_server:

@@ -15,15 +15,15 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
+
     /// <summary>
-    /// Controller handling admin account-related requests such as authentication, registration, email confirmation, and password management.
+    /// Controlador para operações administrativas, incluindo gestão de utilizadores e obtenção de estatísticas.
     /// </summary>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
 
-        // Manager for user-related operations.
         private readonly UserManager<User> _userManager;
         private readonly EmailService _emailService;
         private readonly IAdminService _adminService;
@@ -33,29 +33,21 @@ namespace WatchersWorld.Server.Controllers
 
         private WatchersWorldServerContext _context;
 
-        // Constructor for dependency injection.
         public AdminController(UserManager<User> userManager, EmailService emailService, WatchersWorldServerContext context, ILogger<AccountController> logger, IAdminService adminService)
-        /// <summary>
-        /// Constructor for AccountController.
-        /// </summary>
-        /// <param name="jWTService">Service for generating JWT tokens.</param>
-        /// <param name="signInManager">Manager for handling sign-in processes.</param>
-        /// <param name="userManager">Manager for user-related operations.</param>
-        /// <param name="emailService">Service for handling email operations.</param>
-        /// <param name="config">Application configuration settings.</param>
         {
-
             _userManager = userManager;
             _emailService = emailService;
             _context = context;
             _logger = logger;
             _adminService = adminService;
-
-
         }
 
 
-
+        /// <summary>
+        /// Obtém as roles de um utilizador específico.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Um array com as roles do utilizador.</returns>
         [HttpGet("api/admin/getUserRole/{username}")]
         public async Task<ActionResult<string[]>> GetUserRole(string username)
         {
@@ -71,6 +63,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        /// <summary>
+        /// Aplica um banimento permanente a um utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPost("api/admin/ban-user-permanently/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> BanUserPermanently(string username)
@@ -83,6 +80,13 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message });
         }
 
+
+        /// <summary>
+        /// Aplica um banimento temporário a um utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <param name="banDurationInDays">Duração do banimento em dias.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPost("api/admin/ban-user-temporarily/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> BanUserTemporarily(string username, [FromQuery] int banDurationInDays)
@@ -96,7 +100,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-
+        /// <summary>
+        /// Elimina um utilizador pelo nome de utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpDelete("api/admin/users/{username}")]
         //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
         public async Task<IActionResult> DeleteUserByUsername(string username)
@@ -113,6 +121,12 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = result });
         }
 
+
+        /// <summary>
+        /// Remove o ban de um utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPut("api/admin/unban-user/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> UnbanUser(string username)
@@ -127,7 +141,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-
+        /// <summary>
+        /// Altera a role de um utilizador para moderator.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPut("api/admin/change-role-to-moderator/{username}")]
         public async Task<IActionResult> ChangeRoleToModerator(string username)
         {
@@ -144,6 +162,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
+        /// <summary>
+        /// Altera a role de um utilizador de moderator para user.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPut("api/admin/change-role-to-user/{username}")]
         public async Task<IActionResult> ChangeRoleToUser(string username)
         {
