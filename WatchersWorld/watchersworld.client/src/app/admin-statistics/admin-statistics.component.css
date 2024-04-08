@@ -25,7 +25,7 @@
 
 /* Botão Voltar */
 .btn-secondary {
-  display: inline-block;
+  display: list-item;
   padding: 0.375rem 0.75rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
@@ -72,3 +72,19 @@
 .watchLaterSeriesCount::before {
   content: "Número Total de Series Marcadas como Ver Mais Tarde: ";
 }
+
+
+
+.card {
+  border-radius: 0;
+}
+
+.card-title {
+  font-size: 1rem; 
+}
+
+.card-text {
+  font-size: 2rem; 
+  font-weight: bold;
+}
+
