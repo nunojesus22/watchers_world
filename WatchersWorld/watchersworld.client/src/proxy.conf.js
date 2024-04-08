@@ -5,7 +5,7 @@ const PROXY_CONFIG = [
       "/api",
     ],
     //target: "https://localhost:7155",
-    target: "https://watchersworld.azurewebsites.net",
+    target: "https://watchers-world-backend.azurewebsites.net",
     secure: false
   }
 ]

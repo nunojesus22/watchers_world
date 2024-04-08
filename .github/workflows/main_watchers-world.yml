@@ -7,64 +7,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_client:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: WatchersWorld/watchersworld.client
-    steps:
-      - uses: actions/checkout@v4.1.1
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4.0.2
-        with:
-          node-version: '20.x'
-
-      - name: Set up client environment
-        run: |
-          echo "export const environment = {
-            production: true,
-            appUrl: '${{ secrets.APP_URL }}',
-            userKey: '${{ secrets.USER_KEY }}'
-          };" > ./src/environments/environment.ts
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build client
-        run: npm run azurebuild
-
-      - name: Zip artifact for deployment
-        run: zip -r client-app.zip dist/
-
-      - name: Upload client artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: client-app
-          path: client-app.zip
-
-  deploy_client:
-    runs-on: ubuntu-latest
-    needs: build_client
-    environment:
-      name: 'Production'
-    steps:
-      - name: Download client artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: client-app
-
-      - name: Unzip artifact for deployment
-        run: unzip client-app.zip -d ./dist
-
-      - name: Deploy client to Azure Web App
-        uses: azure/webapps-deploy@v3.0.0
-        with:
-          app-name: 'WatchersWorldFrontEnd'
-          slot-name: 'Production'
-          package: ./dist
-          publish-profile: ${{ secrets.CLIENT_PUBLISH_PROFILE }}
-
   build_server:
     runs-on: ubuntu-latest
     defaults:
