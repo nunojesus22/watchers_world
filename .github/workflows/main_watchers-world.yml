@@ -90,6 +90,6 @@ jobs:
       - name: Deploy server to Azure Web App
         uses: azure/webapps-deploy@v3.0.0
         with:
-          app-name: 'WatchersWorld'
+          app-name: 'watchers-world-backend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.SERVER_PUBLISH_PROFILE }}
