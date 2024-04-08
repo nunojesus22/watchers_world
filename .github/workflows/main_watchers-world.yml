@@ -38,7 +38,7 @@ jobs:
         run: zip -r client-app.zip dist/
 
       - name: Upload client artifact
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4
         with:
           name: client-app
           path: client-app.zip
@@ -50,7 +50,7 @@ jobs:
       name: 'Production'
     steps:
       - name: Download client artifact
-        uses: actions/download-artifact@v4.1.4
+        uses: actions/download-artifact@v4
         with:
           name: client-app
 
