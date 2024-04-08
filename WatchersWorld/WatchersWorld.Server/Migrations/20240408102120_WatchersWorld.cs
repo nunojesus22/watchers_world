@@ -176,6 +176,19 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserMedals",
+                columns: table => new
+                {
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MedalId = table.Column<int>(type: "int", nullable: false),
+                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMedals", x => new { x.UserName, x.MedalId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -282,6 +295,32 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    User1Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    User2Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chat_User1",
+                        column: x => x.User1Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Chat_User2",
+                        column: x => x.User2Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ActorMedia",
                 columns: table => new
                 {
@@ -373,7 +412,8 @@ namespace WatchersWorld.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdTableMedia = table.Column<int>(type: "int", nullable: false),
-                    IdListMedia = table.Column<int>(type: "int", nullable: true)
+                    IdListMedia = table.Column<int>(type: "int", nullable: true),
+                    DateMarked = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -396,7 +436,7 @@ namespace WatchersWorld.Server.Migrations
                 columns: table => new
                 {
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AchievementName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserMedalId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -428,6 +468,25 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MessageNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MessageId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TargetUserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_MessageNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ReplyNotifications",
                 columns: table => new
                 {
@@ -448,27 +507,29 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserMedals",
+                name: "Messages",
                 columns: table => new
                 {
-                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MedalId = table.Column<int>(type: "int", nullable: false),
-                    AcquiredDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SendUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserMedals", x => new { x.UserName, x.MedalId });
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserMedals_Medals_MedalId",
-                        column: x => x.MedalId,
-                        principalTable: "Medals",
+                        name: "FK_Messages_AspNetUsers_SendUserId",
+                        column: x => x.SendUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserMedals_ProfileInfo_UserName",
-                        column: x => x.UserName,
-                        principalTable: "ProfileInfo",
-                        principalColumn: "UserName",
+                        name: "FK_Messages_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -547,6 +608,81 @@ namespace WatchersWorld.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "MediaNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserMediaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaNotifications", x => x.NotificationId);
+                    table.ForeignKey(
+                        name: "FK_MediaNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "NotificationId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MediaNotifications_UserMedia_UserMediaId",
+                        column: x => x.UserMediaId,
+                        principalTable: "UserMedia",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MessagesStatus",
+                columns: table => new
+                {
+                    MessageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RecipientUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReadAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessagesStatus", x => x.MessageId);
+                    table.ForeignKey(
+                        name: "FK_MessagesStatus_AspNetUsers_RecipientUserId",
+                        column: x => x.RecipientUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MessagesStatus_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MessagesVisibility",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MessageId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Visibility = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessagesVisibility", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MessageVisibility_Message",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MessageVisibility_User",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "MediaListModel",
                 columns: new[] { "Id", "ListName" },
@@ -609,6 +745,16 @@ namespace WatchersWorld.Server.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Chats_User1Id",
+                table: "Chats",
+                column: "User1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_User2Id",
+                table: "Chats",
+                column: "User2Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CommentDislikes_CommentId",
                 table: "CommentDislikes",
                 column: "CommentId");
@@ -660,9 +806,34 @@ namespace WatchersWorld.Server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserMedals_MedalId",
-                table: "UserMedals",
-                column: "MedalId");
+                name: "IX_MediaNotifications_UserMediaId",
+                table: "MediaNotifications",
+                column: "UserMediaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChatId",
+                table: "Messages",
+                column: "ChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SendUserId",
+                table: "Messages",
+                column: "SendUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessagesStatus_RecipientUserId",
+                table: "MessagesStatus",
+                column: "RecipientUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessagesVisibility_MessageId",
+                table: "MessagesVisibility",
+                column: "MessageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessagesVisibility_UserId",
+                table: "MessagesVisibility",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserMedia_IdListMedia",
@@ -722,6 +893,24 @@ namespace WatchersWorld.Server.Migrations
                 name: "FollowNotifications");
 
             migrationBuilder.DropTable(
+                name: "Medals");
+
+            migrationBuilder.DropTable(
+                name: "MediaNotifications");
+
+            migrationBuilder.DropTable(
+                name: "MessageNotifications");
+
+            migrationBuilder.DropTable(
+                name: "MessagesStatus");
+
+            migrationBuilder.DropTable(
+                name: "MessagesVisibility");
+
+            migrationBuilder.DropTable(
+                name: "ProfileInfo");
+
+            migrationBuilder.DropTable(
                 name: "QuizAttempts");
 
             migrationBuilder.DropTable(
@@ -729,9 +918,6 @@ namespace WatchersWorld.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserMedals");
-
-            migrationBuilder.DropTable(
-                name: "UserMedia");
 
             migrationBuilder.DropTable(
                 name: "UserRatingMedia");
@@ -746,25 +932,28 @@ namespace WatchersWorld.Server.Migrations
                 name: "ActorMedia");
 
             migrationBuilder.DropTable(
+                name: "UserMedia");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "Notifications");
-
-            migrationBuilder.DropTable(
-                name: "Medals");
-
-            migrationBuilder.DropTable(
-                name: "ProfileInfo");
-
-            migrationBuilder.DropTable(
-                name: "MediaListModel");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Actor");
 
             migrationBuilder.DropTable(
                 name: "MediaInfoModel");
+
+            migrationBuilder.DropTable(
+                name: "MediaListModel");
+
+            migrationBuilder.DropTable(
+                name: "Chats");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

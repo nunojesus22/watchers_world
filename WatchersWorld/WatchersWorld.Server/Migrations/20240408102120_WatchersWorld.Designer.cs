@@ -12,11 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-<<<<<<<< HEAD:WatchersWorld/WatchersWorld.Server/Migrations/20240406111826_WatchersWorld.Designer.cs
-    [Migration("20240406111826_WatchersWorld")]
-========
-    [Migration("20240407192551_WatchersWorld")]
->>>>>>>> WWJ-219-testes-unitarios-admin:WatchersWorld/WatchersWorld.Server/Migrations/20240407192551_WatchersWorld.Designer.cs
+    [Migration("20240408102120_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -694,6 +690,9 @@ namespace WatchersWorld.Server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateMarked")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("IdListMedia")
                         .HasColumnType("int");
