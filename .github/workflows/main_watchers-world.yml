@@ -1,4 +1,5 @@
 name: Deployment
+
 on:
   push:
     branches:
@@ -6,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_client:
+  build_and_deploy_client:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -18,35 +19,28 @@ jobs:
         with:
           node-version: '20.x'
       - name: Install dependencies
-        run: npm install 
+        run: npm install
       - name: Set up client environment
         run: |
           echo "export const environment = {
             production: true,
             appUrl: '${{ secrets.APP_URL }}',
             userKey: '${{ secrets.USER_KEY }}'
-          };" > ./src/environments/environment.ts
-        
+          };" > ./src/environments/environment.prod.ts
       - name: Build client
-        run: npm run build --configuration=production
-
-  deploy_client:
-    runs-on: ubuntu-latest
-    needs: build_client
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    steps:
-      - name: Deploy client
-        id: deploy-to-webapp
-        uses: Azure/webapps-deploy@v3.0.0
+        run: npm run build -- --outputPath=dist --configuration=production
+      - name: Zip client artifacts
+        run: zip -r client-app.zip ./dist
+      - name: Deploy client to Azure Web App
+        uses: azure/webapps-deploy@v3.0.0
         with:
           app-name: 'WatchersWorldFrontEnd'
           slot-name: 'Production'
-          package: ./dist
+          package: client-app.zip
           publish-profile: ${{ secrets.CLIENT_PUBLISH_PROFILE }}
 
-  build_server:
+
+  build_and_deploy_server:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -100,22 +94,16 @@ jobs:
               "ClientId": "${{ secrets.GOOGLE_CLIENT_ID }}"
             }
           }' > ./appsettings.json
-      - name: Publish server
-        run: dotnet publish -c Release -o ./publish
-
-  deploy_server:
-    runs-on: ubuntu-latest
-    needs: build_server
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
+      - name: Build and publish server
+        run: dotnet publish -c Release -o publish
+      - name: Zip server artifacts
+        run: zip -r server-app.zip ./publish
+      - name: Deploy server to Azure Web App
         uses: azure/webapps-deploy@v3.0.0
         with:
           app-name: 'WatchersWorld'
           slot-name: 'Production'
-          package: './WatchersWorld/WatchersWorld.Server/Properties/PublishProfiles/WatchersWorld - Web Deploy.pubxml'
+          package: server-app.zip
           publish-profile: ${{ secrets.SERVER_PUBLISH_PROFILE }}
+
+  
