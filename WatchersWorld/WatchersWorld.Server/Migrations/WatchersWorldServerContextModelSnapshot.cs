@@ -688,6 +688,9 @@ namespace WatchersWorld.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DateMarked")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IdListMedia")
                         .HasColumnType("int");
 
