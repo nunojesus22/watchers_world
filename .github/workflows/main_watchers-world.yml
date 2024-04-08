@@ -29,7 +29,7 @@ jobs:
       - run: npm run build --configuration=production
       - name: Zip artifact for deployment
         working-directory: WatchersWorld/watchersworld.client/dist/watchersworld.client/browser
-        run: zip ../release.zip . -r
+        run: zip -r release.zip dist/
       - name: Upload client artifact
         uses: actions/upload-artifact@v4.3.1
         with:
