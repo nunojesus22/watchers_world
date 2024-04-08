@@ -32,7 +32,7 @@ jobs:
         run: npm install
 
       - name: Build client
-        run: npm run build --configuration=production
+        run: npm run build-prod
 
       - name: Zip artifact for deployment
         run: zip -r client-app.zip dist/
