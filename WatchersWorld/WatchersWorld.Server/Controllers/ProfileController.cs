@@ -459,5 +459,28 @@ namespace WatchersWorld.Server.Controllers
             var isFollowing = await _followersService.AlreadyFollow(userIdAuthenticated,userIdToFollow);
             return Ok(isFollowing);
         }
+
+
+
+        [HttpDelete("deleteAccount/{usernameAuthenticated}")]
+        public async Task<IActionResult> DeleteAccount(string usernameAuthenticated)
+        {
+            var userName = usernameAuthenticated;
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("User is not authenticated.");
+            }
+
+            var result = await _profileService.DeleteOwnAccountAsync(userName);
+
+            if (result == "Your account and profile info have been successfully deleted.")
+            {
+                return Ok(new { message = result });
+            }
+            else
+            {
+                return BadRequest(new { error = result });
+            }
+        }
     }
 }

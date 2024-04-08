@@ -95,12 +95,6 @@ export class ProfileService {
     const headers = this.getHeaders();
     return this.http.get<UserMedia[]>(`${environment.appUrl}/api/media/get-watch-later-list/${username}`, { headers });
   }
-  
-  deleteUserByUsername(username: string): Observable<any> {
-    const headers = this.getHeaders();
-    return this.http.delete(`${environment.appUrl}/api/users/${encodeURIComponent(username)}`,
-      { headers, responseType: 'text' }); // Expecting a text response
-  }
 
   banUserPermanently(username: string): Observable<any> {
     const headers = this.getHeaders();
@@ -166,7 +160,10 @@ export class ProfileService {
     return this.http.get<number>(`${environment.appUrl}/api/gamification/medals/${username}`, { headers });
   }
 
-
+  deleteOwnAccount(username : string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.delete<any>(`${environment.appUrl}/api/profile/deleteAccount/${username}`, { headers });
+  }
 
 
 }

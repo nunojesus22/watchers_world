@@ -21,7 +21,7 @@
               <button class="change-password-button" (click)="sendEmailChangePassword()">
                 Alterar palavra-passe
               </button>
-              <button class="delete-account-button">
+              <button class="delete-account-button" (click)="deleteAccount()">
                 Apagar conta
               </button>
             </div>
@@ -61,56 +61,6 @@
                 <button class="btn btn-primary" (click)="saveButton(user.username)">Salvar alterações</button>
               </div>
             </form>
-            <!--<div class="user-media">
-              <div class="favorites-section">
-                <div class="favorites-section-header">
-                  <div class="favorites-title">
-                    <h3>Favoritos:</h3>
-                    <span class="favorites-down-arrow" [ngClass]="showFavorites ? 'favorites-down-arrow' : 'favorites-right-arrow'" (click)="toggleFavorites()">&#9660;</span>
-                  </div>
-                  <button class="filter-favorites-button">Filtrar</button>
-                </div>
-                <div [ngClass]="showFavorites ? 'favorites-section-content-expanded' : 'favorites-section-content-collapsed'">
-                  <p> Favoritos Por Implementar</p>
-                </div>
-              </div>
-              <div class="movies-section">
-                <div class="movies-section-header">
-                  <div class="movies-title">
-                    <h3>Filmes:</h3>
-                    <span class="movies-down-arrow" [ngClass]="showMovies ? 'movies-down-arrow' : 'movies-right-arrow'" (click)="toggleMovies()">&#9660;</span>
-                  </div>
-                  <button class="filter-movies-button">Filtrar</button>
-                </div>
-                <div [ngClass]="showMovies ? 'movies-section-content-expanded' : 'movies-section-content-collapsed'">
-                  <p>Filmes Por Implementar</p>
-                </div>
-              </div>
-              <div class="series-section">
-                <div class="series-section-header">
-                  <div class="series-title">
-                    <h3>Séries:</h3>
-                    <span class="series-down-arrow" [ngClass]="showSeries ? 'series-down-arrow' : 'series-right-arrow'" (click)="toggleSeries()">&#9660;</span>
-                  </div>
-                  <button class="filter-series-button">Filtrar</button>
-                </div>
-                <div [ngClass]="showSeries ? 'series-section-content-expanded' : 'series-section-content-collapsed'">
-                  <p>Series Por Implementar</p>
-                </div>
-              </div>
-              <div class="medals-section">
-                <div class="medals-section-header">
-                  <div class="medals-title">
-                    <h3>Medalhas:</h3>
-                    <span class="medals-down-arrow" [ngClass]="showMedals ? 'medals-down-arrow' : 'medals-right-arrow'" (click)="toggleMedals()">&#9660;</span>
-                  </div>
-                  <button class="filter-medals-button">Filtrar</button>
-                </div>
-                <div [ngClass]="showMedals ? 'medals-section-content-expanded' : 'medals-section-content-collapsed'">
-                  <p>Medalhas Por Implementar</p>
-                </div>
-              </div>
-            </div>-->
           </div>
         </div>
       </div>
