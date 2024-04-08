@@ -8,6 +8,7 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { GamificationService } from '../../gamification/Service/gamification.service';
+import { MessageService } from 'primeng/api'
 
 @Component({
   selector: 'app-edit-profile',
@@ -53,6 +54,7 @@ export class EditProfileComponent {
 
 
   constructor(private profileService: ProfileService,
+    private messageService: MessageService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService, private router: Router,
     private gamificationService: GamificationService) {
@@ -150,6 +152,12 @@ export class EditProfileComponent {
     if (target) {
       const file = (fileInput.files as FileList)[0];
 
+      if (!file.type.match('image.*')) {
+        this.messageService.clear();
+        this.messageService.add({ key: 'toast2', severity: 'error', summary: 'Ficheiro Inválido', detail: 'Tipo de ficheiro inválido. Por favor, escolha uma imagem.' });
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         if (target === 'profilePhoto') {
@@ -246,6 +254,18 @@ export class EditProfileComponent {
     );
   }
 
+  isOldEnough(birthDate: string): boolean {
+    const birthDateObj = new Date(birthDate);
+    const today = new Date();
+    var age = today.getFullYear() - birthDateObj.getFullYear();
+    const m = today.getMonth() - birthDateObj.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    return age >= 12; // Retorna verdadeiro se a idade for 12 ou mais
+  }
+
+
   updateFormFields(username: string) {
     const hobby = this.profileForm.get('hobby')?.value;
     const gender = this.profileForm.get('gender')?.value;
@@ -272,10 +292,20 @@ export class EditProfileComponent {
     }
   }
 
- saveButton(username: string) {
-   this.updateFormFields(username);
-   this.getMedals(username);
- }
+  saveButton(username: string) {
+    const date = this.profileForm.get('date')?.value;
+
+    if (date && !this.isOldEnough(date)) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'toast1', severity: 'error', summary: 'Data Inválida', detail: 'Data de nascimento inválida. O utilizador deve ter mais de 12 anos.' });
+      console.log("Data de nascimento inválida. O utilizador deve ter mais de 12 anos.")
+      return;
+    }
+
+    this.updateFormFields(username);
+    this.getMedals(username);
+    this.router.navigate(['/profile/', username]);
+  }
 
   
   sendEmailChangePassword() {

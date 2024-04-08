@@ -1,6 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +39,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DialogService } from './confirm-dialog/services/dialog.service';
 import { ConfirmBoxConfigModule, DialogConfigModule, NgxAwesomePopupModule, ToastNotificationConfigModule } from '@costlydeveloper/ngx-awesome-popup';
+import { ToastModule } from 'primeng/toast'
+import { MessageService } from 'primeng/api'
+
+
 
 import { HighchartsChartModule } from 'highcharts-angular';
 
@@ -69,7 +74,10 @@ import { HighchartsChartModule } from 'highcharts-angular';
     ConfirmDialogComponent,
   ],
   imports: [
-    BrowserModule, HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ToastModule,
+    HttpClientModule,
     AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule, MatDialogModule,
     NgxAwesomePopupModule.forRoot({
       colorList: {
@@ -97,6 +105,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
     SearchServiceComponent,
     ChatService,
     DialogService,
+    MessageService,
   ],
   bootstrap: [AppComponent]
 })

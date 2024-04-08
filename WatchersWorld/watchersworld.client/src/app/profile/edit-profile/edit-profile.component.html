@@ -1,4 +1,8 @@
 
+<div>
+  <p-toast key="toast1"></p-toast>
+  <p-toast key="toast2"></p-toast>
+</div>
 <div class="container mt-5" *ngIf="(authService.user$ | async) as user">
   <div class="row" *ngIf="user.username === currentUsername">
     <div class="col-12 col-lg-8">
@@ -54,7 +58,7 @@
                 <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('birthdate')"></button>
               </div>
               <div class="text-center" *ngIf="(authService.user$ | async) as user">
-                <button class="btn btn-primary" (click)="saveButton(user.username)" [routerLink]="['/profile/', user.username]">Salvar alterações</button>
+                <button class="btn btn-primary" (click)="saveButton(user.username)">Salvar alterações</button>
               </div>
             </form>
             <!--<div class="user-media">
