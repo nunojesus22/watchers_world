@@ -324,9 +324,22 @@ export class EditProfileComponent {
         }
       }
     });
-    
+  }
 
-    
+  deleteAccount() {
+    if (confirm('Tem a certeza que quer apagar a conta? Esta ação será permanente.')) {
+      var LoggedInUsername = this.authService.getLoggedInUserName();
+      if (LoggedInUsername)
+      this.profileService.deleteOwnAccount(LoggedInUsername).subscribe(
+        (response) => {
+          console.log(response);
+          this.router.navigateByUrl('/home');
+        },
+        (error) => {
+          console.error('Error deleting account:', error);
+        }
+      );
+    }
   }
 
   toggleFavorites() {

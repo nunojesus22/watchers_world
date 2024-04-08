@@ -10,6 +10,8 @@ namespace WatchersWorld.Server.Services
     {
         Task<ProfileInfoDto> GetUserProfileAsync(string username);
         Task<bool> UpdateUserProfileAsync(string userId, ProfileInfoDto profileInfo);
+        Task<string> DeleteOwnAccountAsync(string username);
+
     }
 
     public class ProfileService : IProfileService
@@ -72,6 +74,42 @@ namespace WatchersWorld.Server.Services
             // Salva as mudanças no contexto
             var result = await _context.SaveChangesAsync();
             return result > 0;
+        }
+
+        public async Task<string> DeleteOwnAccountAsync(string username)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
+                    if (profileInfo != null)
+                    {
+                        _context.ProfileInfo.Remove(profileInfo);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    var user = await _userManager.FindByNameAsync(username);
+                    if (user == null)
+                    {
+                        return "User not found.";
+                    }
+
+                    var result = await _userManager.DeleteAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        return $"Error: {string.Join(", ", result.Errors.Select(e => e.Description))}";
+                    }
+
+                    await transaction.CommitAsync();
+                    return "Your account and profile info have been successfully deleted.";
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return "An error occurred while deleting your account and profile info.";
+                }
+            }
         }
     }
 }
