@@ -8,6 +8,7 @@ import { CredentialResponse } from 'google-one-tap';
 import { LoginWithExternal } from '../models/loginWithExternals';
 import { jwtDecode } from 'jwt-decode';
 import { DOCUMENT } from '@angular/common';
+import { ChatService } from '../../chat/services/chat.service';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,8 @@ export class LoginComponent {
   errorMessages: any = {};
   submittedValues: any = {};
   returnUrl: string | null = null;
+  banDurationMessage: string = '';
+
 
   constructor(
     private authService: AuthenticationService,
@@ -29,6 +32,7 @@ export class LoginComponent {
     private activatedRoute: ActivatedRoute,
     private _renderer2: Renderer2,
     private ngZone: NgZone,
+    private chatService: ChatService,
 
     @Inject(DOCUMENT) private _document: Document
   ) {
@@ -77,18 +81,27 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          if (response == "A conta está por confirmar!") {
+          if (response.message === "A conta está por confirmar!") {
             this.router.navigateByUrl('/account/confirm-email');
           } else if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
+            this.connectChatHub();
           } else {
             this.router.navigateByUrl('/home');
+            this.connectChatHub();
           }
         },
-        error: error => {
+        error: (error) => {
+          // Handle the banned user case
+          if (error.error.Field === "Banned") {
+            this.router.navigateByUrl('/suspendedAccount');
+            return;
+          }
+
+          // Handle other errors
           if (error.error.errors) {
             error.error.errors.forEach((value: any) => {
-              if (!this.errorMessages[value.field]) { //check if the error with this field already exists
+              if (!this.errorMessages[value.field]) {
                 this.errorMessages[value.field] = value.message;
               }
             });
@@ -97,11 +110,12 @@ export class LoginComponent {
             this.errorMessages[error.error.field] = error.error.message;
             this.saveSubmittedValues();
           }
-
         }
       });
     }
   }
+
+
 
   private initializeGoogleButton() {
     (window as any).onGoogleLibraryLoad = () => {
@@ -124,25 +138,56 @@ export class LoginComponent {
     this.errorMessages = {};
     this.submittedValues = {};
 
-    const decodedToken: any = jwtDecode(response.credential);
-    this.authService.loginWithThirdParty(new LoginWithExternal(response.credential, decodedToken.sub, "google", decodedToken.email)).subscribe({
-      next: _ => {
-        this.ngZone.run(() => {
-          if (this.returnUrl) {
-            this.router.navigateByUrl(this.returnUrl);
-          } else {
-            this.router.navigateByUrl('/');
-          }
-        });
-      },
-      error: error => {
-        this.ngZone.run(() => {
-          this.errorMessages[error.error.field] = error.error.message;
-          this.saveSubmittedValues();
-        });
-      }
-    });
+    if (response.credential) {
+      const decodedToken: any = jwtDecode(response.credential);
+      this.authService.loginWithThirdParty(new LoginWithExternal(response.credential, decodedToken.sub, "google", decodedToken.email)).subscribe({
+        next: _ => {
+          this.ngZone.run(() => {
+            if (this.returnUrl) {
+              this.router.navigateByUrl(this.returnUrl);
+              this.connectChatHub();
+            } else {
+              this.router.navigateByUrl('/');
+              this.connectChatHub();
+            }
+          });
+        },
+        error: error => {
+          this.ngZone.run(() => {
+            // Check if the error field indicates the user is banned and handle the message
+            if (error.error.field === "Banned") {
+              // Here we assume the backend sends a readable ban duration in the response
+              //this.banDurationMessage = `A sua conta encontra-se suspensa por ${error.error.BanDuration}.`;
+              this.banDurationMessage = `A sua conta encontra-se suspensa.`;
+              this.router.navigateByUrl('/suspendedAccount', { state: { banDurationMessage: this.banDurationMessage } });
+            } else {
+              // Handle other errors by displaying them to the user
+              if (error.error.errors) {
+                // If there are multiple error messages, process them
+                console.log(error.error.errors);
+                error.error.errors.forEach((value: any) => {
+                  this.errorMessages[value.field] = value.message;
+                });
+              } else {
+                // If there's a single error message, display it
+                if (error.error.message === "Não existe nenhuma conta associada a esse email!") {
+                  const decodedToken: any = jwtDecode(response.credential);
+                  this.router.navigateByUrl(`/account/register/third-party/google?access_token=${response.credential}&userId=${decodedToken.sub}&email=${decodedToken.email}`);
+                }
+                this.errorMessages[error.error.field] = error.error.message;
+              }
+              this.saveSubmittedValues();
+            }
+          });
+        }
+      });
+    } else {
+      // Handle the case where the Google sign-in response did not include a credential
+      this.errorMessages['googleLogin'] = 'Failed to sign in with Google.';
+      this.saveSubmittedValues();
+    }
   }
+
 
   isFieldModified(fieldName: string): boolean {
     return this.loginForm.get(fieldName)!.value !== this.submittedValues[fieldName];
@@ -151,6 +196,10 @@ export class LoginComponent {
   private saveSubmittedValues(): void {
     this.submittedValues["email"] = this.loginForm.get("email")!.value;
     this.submittedValues["password"] = this.loginForm.get("password")!.value;
+  }
+
+  private connectChatHub(): void {
+    this.chatService.startConnectionAndListen();
   }
 
 }

@@ -1,0 +1,124 @@
+<button *ngIf="!this.messageForm" class="btn btn-primary" (click)="toggleMessageForm()">Enviar mensagem</button>
+
+<div *ngIf="this.messageForm" class="chat-container mt-4 p-4">
+  <h5 class="text-white">Enviar Mensagem</h5>
+  <input type="text" [(ngModel)]="usernameOfNewReceiver" placeholder="Nome do Usuário Destinatário" class="form-control my-2" (input)="clearErrorMessage()">
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <textarea [(ngModel)]="messageTextToNewUser" placeholder="Digite sua mensagem aqui..." class="form-control my-2"></textarea>
+  <div class="d-flex justify-content-between">
+    <button (click)="sendMessageToNewUser()" class="btn btn-primary">Enviar Mensagem</button>
+    <button (click)="toggleMessageForm()" class="btn btn-danger">Cancelar</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Chat Section -->
+  <div class="row">
+    <!-- Contact List -->
+    <div class="col-lg-4 mb-3">
+      <div class="contact-list">
+        <!-- Search Bar -->
+        <div class="p-2">
+          <div class="search-bar">
+            <i class="fa fa-search search-icon"></i>
+            <input type="text"
+                   placeholder="Procurar..."
+                   class="search-input"
+                   [(ngModel)]="searchTerm"
+                   (input)="filterUsers()">
+          </div>
+        </div>
+        <!-- Contact Items -->
+        <div class="user-list-container">
+          <ul *ngIf="filteredUsersProfiles.length > 0 && !showNoResults; else noResults" class="list-group">
+            <ng-container *ngFor="let userProfile of filteredUsersProfiles">
+              <li *ngIf="userProfile.userName !== loggedUserName" (click)="onUserSelected(userProfile)" class="list-group-item">
+                <div class="user-item">
+                  <img class="other-users-user-photo" [src]="userProfile.profilePhoto">
+                  <span class="other-users-user-name" [ngClass]="{'unread-message': isUnread(userProfile.unreadMessages)}">{{ userProfile.userName }}</span>
+                  <span class="last-message-time">{{ userProfile.lastMessage!.sentAt | date:'HH:mm' }}</span>
+                </div>
+              </li>
+            </ng-container>
+          </ul>
+          <ng-template #noResults>
+            <div class="no-results-message">
+              Não existe nenhum utilizador com esse nome.
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages Section -->
+    <div class="col-lg-8">
+      <!-- Chat Card -->
+      <div class="card chat-card">
+        <!-- Chat Header -->
+        <div *ngIf="selectedUser; else noUserSelected" class="card-header d-flex justify-content-between align-items-center">
+          <img class="other-users-user-photo" [src]="selectedUser.profilePhoto" [routerLink]="['/profile', selectedUser.userName]">
+          <span class="other-users-user-name">{{ selectedUser.userName }}</span>
+          <!-- <button class="btn btn-danger" (click)="deleteChat()">Eliminar conversa</button>  -->
+          <app-confirm-dialog [classCss]="'btn btn-danger'"
+                              [titleButton]="'Eliminar Conversa'"
+                              [titlePopup]="'Confirmação'"
+                              [messagePopup]="'Tem certeza que deseja eliminar esta conversa?'"
+                              [confirmationTextButton]="'Confirmar'"
+                              [cancelTextButton]="'Cancelar'"
+                              (confirmAction)="performDeleteChatAction($event)"></app-confirm-dialog>
+          <!-- <button class="btn btn-danger" (click)="deleteChat()">Eliminar mensagem</button>  -->
+          <app-confirm-dialog *ngIf="currentLongPressedMessage"
+                              [classCss]="'btn btn-danger'"
+                              [titleButton]="'Eliminar Mensagem'"
+                              [titlePopup]="'Confirmação'"
+                              [messagePopup]="'Tem certeza que deseja eliminar esta mensagem?'"
+                              [confirmationTextButton]="'Confirmar'"
+                              [cancelTextButton]="'Cancelar'"
+                              (confirmAction)="performDeleteMessageAction(currentLongPressedMessage)"></app-confirm-dialog>
+        </div>
+
+        <!-- Messages Area -->
+        <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>
+
+          <div *ngFor="let message of messages" class="message"
+               [ngClass]="{'incoming': message.sendUsername === selectedUsername, 'outgoing': message.sendUsername !== selectedUsername}"
+               [class.selected-message]="currentLongPressedMessage === message"
+               (mousedown)="startLongPress($event, message)" 
+               (mouseup)="stopLongPress()" >
+            <span class="message-content">{{ message.text }}</span>
+            <span class="message-timestamp">{{ message.sentAt | date:'HH:mm, dd/MM/yyyy' }}</span>
+          </div>
+          <!-- More messages here -->
+        </div>
+
+        <!-- Input for new message -->
+        <div *ngIf="selectedUser" class="card-footer">
+          <form (submit)="sendMessage()">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Escrever mensagem..." required>
+              <div class="input-group-append">
+                <img src="assets/img/Send.png" class="send-button" (click)="sendMessage()" alt="Enviar">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- No User Selected Placeholder -->
+        <ng-template #noUserSelected>
+          <div class="card-header d-flex justify-content-between align-items-center" style="visibility: hidden;">
+            <span>Placeholder</span>
+          </div>
+        </ng-template>
+
+        <!-- No Messages Placeholder -->
+        <ng-template #noMessages>
+          <div class="card-body chat-message-area">
+            <div class="p-3 no-user-selected">
+              <h3 class="placeholder-text" style="color:white">Selecione um utilizador para começar a conversar.</h3>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

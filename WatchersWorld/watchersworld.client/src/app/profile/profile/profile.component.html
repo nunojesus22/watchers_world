@@ -10,16 +10,39 @@
           <h1 class="card-title"> </h1>
           <div *ngIf="(authService.user$ | async) as user">
             <div class="user-icons">
-              <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
+              <a *ngIf="user.username === currentUsername" [routerLink]="['/statistics', user.username]" class="profile-icon">
                 <img src="assets/img/statistic.png" alt="Estatísticas">
               </a>
-              <a *ngIf="user.username === currentUsername" routerLink="/" class="profile-icon">
+              <a *ngIf="user.username === currentUsername" routerLink="/chat" class="profile-icon">
                 <img src="assets/img/messenger.png" alt="Chat">
               </a>
               <a *ngIf="user.username === currentUsername" [routerLink]="['/editProfile', user.username]" class="profile-icon">
                 <img src="assets/img/edit profile.png" alt="Editar perfil">
               </a>
             </div>
+
+          </div>
+          <div class="user-details">
+            <form [formGroup]="profileForm" class="user-details">
+              <div>
+                <label for="hobby">Descrição:</label>
+                <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
+              </div>
+              <div>
+                <label>Género:</label>
+                <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'">
+                <label for="male">Masculino</label>
+                <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
+                <label for="female">Feminino</label>
+              </div>
+              <div>
+                <label for="birthdate">Data de nascimento:</label>
+                <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
+              </div>
+            </form>
+            <br />
+          </div>
+          <div *ngIf="(authService.user$ | async) as user">
             <div class="action-icons">
               <!-- Se o perfil for público, mostra 'Seguir' e permite seguir diretamente -->
               <button *ngIf="!isFollowing && !followRequestSent && user.username !== currentUsername && isProfilePublic === 'Public'"
@@ -51,30 +74,10 @@
 
               <!-- Botão para enviar mensagem -->
               <button *ngIf="user.username !== currentUsername"
-                      class="send-message-button">
+                      class="send-message-button" (click)="sendMessageToUser()">
                 Enviar mensagem
               </button>
             </div>
-          </div>
-          <div class="user-details">
-            <form [formGroup]="profileForm" class="user-details">
-              <div>
-                <label for="hobby">Descrição:</label>
-                <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
-              </div>
-              <div>
-                <label>Género:</label>
-                <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'">
-                <label for="male">Masculino</label>
-                <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
-                <label for="female">Feminino</label>
-              </div>
-              <div>
-                <label for="birthdate">Data de nascimento:</label>
-                <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
-              </div>
-            </form>
-            <br />
           </div>
           <div *ngIf="canViewData">
             <!-- Lista de seguidores -->
@@ -85,7 +88,7 @@
                 <div class="search-followers-container">
                   <p class="follows-text">Seguidores: {{ followers.length }}</p>
                   <button class="expand-followers-button" (click)="toggleFollowersScroll()">
-                    {{ expandedFollowers ? 'Fechar' : 'Expandir' }}
+                    {{ expandedFollowers ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
                 <br />
@@ -107,7 +110,7 @@
                 <div class="following-count-container">
                   <p class="follows-text">A seguir: {{ following.length }}</p>
                   <button class="expand-following-button" (click)="toggleFollowingScroll()">
-                    {{ expandedFollowing ? 'Fechar' : 'Expandir' }}
+                    {{ expandedFollowing ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
                 <br />
@@ -124,6 +127,28 @@
             </div>
 
             <div class="user-media">
+              <div class="favorites-section" *ngIf="showFavorites">
+                <div class="favorites-section-header">
+                  <div class="favorites-title">
+                    <h3>Favoritos:</h3>
+                  </div>
+                  <button *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0" (click)="toggleFavoritesScroll(); $event.preventDefault()" class="expand-favorites-button">
+                    {{ expandedFavoritesList ? 'Ver menos' : 'Ver mais' }}
+                  </button>
+                </div>
+                <div *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0; else noFavoritesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let movie of expandedFavoritesList ? favoriteMovies : favoriteMovies.slice(0, 6)">
+                    <img *ngIf="movie.details" [src]="'https://image.tmdb.org/t/p/original/' + movie.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
+                  </ng-container>
+                  <ng-container *ngFor="let series of expandedFavoritesList ? favoriteSeries : favoriteSeries.slice(0, 6)">
+                    <img *ngIf="series.details" [src]="'https://image.tmdb.org/t/p/original/' + series.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
+                  </ng-container>
+                </div>
+                <ng-template #noFavoritesTemplate>
+                  <p class="text-center">Ainda não adicionou mídia aos favoritos.</p>
+                </ng-template>
+              </div>
+
 
               <div class="watched-movies-section" *ngIf="showMoviesWatched">
                 <div class="movies-watched-section-header">
@@ -131,7 +156,7 @@
                     <h3>Filmes visualizados:</h3>
                   </div>
                   <button *ngIf="watchedMovies.length > 0" (click)="toggleWatchedMoviesScroll(); $event.preventDefault()" class="expand-watched-movies-button">
-                    {{ expandedMoviesWatchList ? 'Fechar' : 'Expandir' }}
+                    {{ expandedMoviesWatchList ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
                 <div *ngIf="watchedMovies.length > 0; else noWatchedMoviesTemplate" class="rowposter-user-media">
@@ -150,7 +175,7 @@
                     <h3>Filmes a ver:</h3>
                   </div>
                   <button *ngIf="watchLaterMovies.length > 0" (click)="toggleToWatchMoviesScroll(); $event.preventDefault()" class="expand-to-watch-movies-button">
-                    {{ expandedMoviesToWatchList ? 'Fechar' : 'Expandir' }}
+                    {{ expandedMoviesToWatchList ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
                 <div *ngIf="watchLaterMovies.length > 0; else noToWatchMoviesTemplate" class="rowposter-user-media">
@@ -169,7 +194,7 @@
                     <h3>Séries visualizadas:</h3>
                   </div>
                   <button *ngIf="watchedSeries.length > 0" (click)="toggleWatchedSeriesScroll(); $event.preventDefault()" class="expand-watched-series-button">
-                    {{ expandedSeriesWatchList ? 'Fechar' : 'Expandir' }}
+                    {{ expandedSeriesWatchList ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
                 <div *ngIf="watchedSeries.length > 0; else noWatchedSeriesTemplate" class="rowposter-user-media">
@@ -187,9 +212,8 @@
                   <div class="series-to-watch-title">
                     <h3>Séries a ver:</h3>
                   </div>
-                  <!-- O botão só será exibido se houver séries na lista -->
                   <button *ngIf="watchLaterSeries.length > 0" (click)="toggleToWatchSeriesScroll(); $event.preventDefault()" class="expand-to-watch-series-button">
-                    {{ expandedSeriesToWatchList ? 'Fechar' : 'Expandir' }}
+                    {{ expandedSeriesToWatchList ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
                 <div *ngIf="watchLaterSeries.length > 0; else noToWatchSeriesTemplate" class="rowposter-user-media">
@@ -201,10 +225,30 @@
                   <p class="text-center">Ainda não adicionou séries para ver mais tarde.</p>
                 </ng-template>
               </div>
+              <!--MEDALHAS-->
+              <div class="medals-section">
+                <div class="medals-section-header">
+                  <div class="medals-title">
+                    <h3>Medalhas:</h3>
+                  </div>
+                  <button class="expand-medals-button" [routerLink]="['/gamification', currentUsername]">
+                    Ver mais
+                  </button>
+                </div>
+                <div *ngIf="medals.length > 0; else noMedals" class="medals-container">
+                  <div *ngFor="let medal of showAllMedals ? medals : medals.slice(0, 4)" class="medals-user-media">
+                    <img [src]="medal.image" [alt]="medal.name" class="medal-image">
+                    <p>{{ medal.name }}</p>
+                  </div>
+                </div>
+                <ng-template #noMedals>
+                  <p>Ainda não desbloqueou medalhas.</p>
+                </ng-template>
+              </div>
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
     <div class="col-lg-4 side-divs">
       <div class="card mb-3">
@@ -219,7 +263,7 @@
             </li>
           </ul>
           <a (click)="toggleAllFiveOtherUsers(); $event.preventDefault()" class="expand-link">
-            {{ showFiveOtherUsers ? 'Mostrar Menos' : 'Expandir Utilizadores' }}
+            {{ showFiveOtherUsers ? 'Ver Menos' : 'Ver mais' }}
           </a>
         </div>
       </div>
@@ -236,7 +280,7 @@
             </div>
           </div>
           <a (click)="toggleExpandedSuggestions()" class="expand-link">
-            {{ showExpandedSuggestions ? 'Mostrar Menos' : 'Expandir Sugestões' }}
+            {{ showExpandedSuggestions ? 'Ver Menos' : 'Ver mais' }}
           </a>
         </div>
       </div>
@@ -246,26 +290,43 @@
 
 <!-- MODERADOR -->
 <div class="moderator-panel" *ngIf="isModerator">
-  <h3>Menu de moderador</h3>
-  <div class="search-bar">
-    <i class="fa fa-search search-icon"></i>
-    <form>
-      <input type="text" name="searchQuery" placeholder="Procurar..." class="search-input">
-    </form>
+  <h3>Bem vindo {{ loggedUserName }}</h3>
+  <!-- Search Bar -->
+  <div class="p-2">
+    <div class="search-bar">
+      <i class="fa fa-search search-icon"></i>
+      <input type="text"
+             placeholder="Procurar..."
+             class="search-input"
+             [(ngModel)]="searchTerm"
+             (input)="filterUsers()">
+    </div>
   </div>
   <div class="user-list">
     <h4>Utilizadores:</h4>
-    <div class="user" *ngFor="let userProfile of usersProfilesMod">
-      <div class="user-info">
-        <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-        <p class="name">{{ userProfile.userName }}</p>
+    <!-- Verifica se a lista filtrada tem conteúdo -->
+    <ng-container *ngIf="filteredUsersProfiles.length > 0; else noResults">
+      <div class="user" *ngFor="let userProfile of filteredUsersProfiles">
+        <div class="user-info">
+          <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+          <p class="name">{{ userProfile.userName }}</p>
+        </div>
+        <div class="actions">
+          <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
+          <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
+        </div>
       </div>
-      <div class="actions">
-        <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
-        <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
-      </div>
+    </ng-container>
+    <div class="pagination-controls">
+      <button *ngIf="hasPreviousPage" class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
+      <button *ngIf="hasNextPage" class="pagination-button pagination-next" (click)="nextPage()" [disabled]="page * pageSize >= collectionSize"> &gt; </button>
     </div>
-
+    <!-- Mostra esta mensagem se não houver resultados -->
+    <ng-template #noResults>
+      <div class="no-results-message">
+        Não existe nenhum utilizador com esse nome.
+      </div>
+    </ng-template>
   </div>
   <!-- Ban Popup -->
   <div *ngIf="isBanPopupVisible" class="ban-popup">
@@ -277,10 +338,11 @@
         <button class="banTemp" (click)="banTemp(selectedUserForBan)">Banir temporariamente</button>
       </div>
       <div class="ban-duration-container">
-        <input type="number" [(ngModel)]="banDuration" placeholder="Duration in days" min="1" class="ban-duration-input">
+        <input type="number" [(ngModel)]="banDuration" placeholder="Duração em dias" min="1" class="ban-duration-input">
       </div>
     </div>
   </div>
 </div>
+
 
 

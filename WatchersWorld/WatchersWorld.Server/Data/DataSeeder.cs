@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Data
 {
@@ -15,7 +17,7 @@ namespace WatchersWorld.Server.Data
         /// <param name="context">Contexto do servidor WatchersWorld.</param>
         /// <param name="userManager">Gestor de utilizadores.</param>
         /// <returns>Tarefa assíncrona.</returns>
-        public static async Task SeedData(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole>? roleManager) 
+        public static async Task SeedData(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager) 
         {
             // Seed roles
             if (roleManager != null)
@@ -28,10 +30,15 @@ namespace WatchersWorld.Server.Data
 
             // Seed test users
             await SeedTestUser(context, userManager, roleManager);
+
+            await SeedMedalsAsync(context);
+            await SeedUserMedalsAsync(context, userManager);
+
+
         }
 
-        
-        private static async Task EnsureRolesAsync(RoleManager<IdentityRole>? roleManager)
+
+        private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             string[] roles = ["Admin", "Moderator", "User"];
 
@@ -44,7 +51,7 @@ namespace WatchersWorld.Server.Data
             }
         }
 
-        private static async Task EnsureAdminUserAsync(UserManager<User> userManager, RoleManager<IdentityRole>? roleManager)
+        private static async Task EnsureAdminUserAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             string adminEmail = "admin@admin.com";
             string adminPassword = "Teste1234";
@@ -84,6 +91,15 @@ namespace WatchersWorld.Server.Data
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest5@gmail.com", "UserTest5", "Credentials", true, "Private");
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest6@gmail.com", "UserTest6", "Credentials", true, "Private");
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest7@gmail.com", "UserTest7", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest8@gmail.com", "UserTest8", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest9@gmail.com", "UserTest9", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest10@gmail.com", "UserTest10", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest11@gmail.com", "UserTest11", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest12@gmail.com", "UserTest12", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest13@gmail.com", "UserTest13", "Credentials", true, "Private");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest14@gmail.com", "UserTest14", "Credentials", true, "Public");
+            await AddUserWithProfileAsync(context, userManager, roleManager, "usertest15@gmail.com", "UserTest15", "Credentials", true, "Public");
+
         }
 
         /// <summary>
@@ -98,7 +114,7 @@ namespace WatchersWorld.Server.Data
         /// <param name="emailConfirmed">Indica se o email está confirmado.</param>
         /// <param name="profileStatus">Estado do perfil (Público ou Privado).</param>
         /// <returns>Tarefa assíncrona.</returns>
-        private static async Task AddUserWithProfileAsync(WatchersWorldServerContext context, UserManager<User>? userManager, RoleManager<IdentityRole> roleManager, string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
+        private static async Task AddUserWithProfileAsync(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
         {
             var user = new User
             {
@@ -140,6 +156,70 @@ namespace WatchersWorld.Server.Data
             context.ProfileInfo.Add(userProfile);
             await context.SaveChangesAsync();
         }
+
+        public static async Task SeedMedalsAsync(WatchersWorldServerContext context)
+        {
+            if (!context.Medals.Any()) // Check if the Medals table is empty
+            {
+                var medals = new List<Medals>
+                {
+                    new Medals { Name = "Conta Criada", Description = "Criar uma conta", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Primeiro Filme", Description = "Marcar 1 filme como visto", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Primeira Série", Description = "Marcar 1 série como visto", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Seguir um utilizador", Description = "Seguir o seu primeiro utilizador", Image = "../../assets/img/medal.png"},
+                    new Medals { Name = "Editar perfil", Description = "Editar o perfil pela primeira vez", Image = "../../assets/img/medal.png"},
+                    // Add more medals as needed
+                }; 
+
+                context.Medals.AddRange(medals);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        private static async Task SeedUserMedalsAsync(WatchersWorldServerContext context, UserManager<User> userManager)
+        {
+            // Assume you have a list of user email addresses and corresponding medals they should receive
+            var userMedalsInfo = new List<(string userEmail, string medalName)>
+        {
+            ("usertest1@gmail.com", "Conta Criada"),
+            ("usertest2@gmail.com", "Conta Criada"),
+            ("usertest3@gmail.com", "Conta Criada"),
+            ("usertest4@gmail.com", "Conta Criada"),
+            ("usertest5@gmail.com", "Conta Criada"),
+            ("usertest6@gmail.com", "Conta Criada"),
+            ("usertest7@gmail.com", "Conta Criada"),
+            // Add more pairs as needed
+        };
+
+            foreach (var (userEmail, medalName) in userMedalsInfo)
+            {
+                var user = await userManager.FindByEmailAsync(userEmail);
+                if (user != null)
+                {
+                    var medal = await context.Medals.FirstOrDefaultAsync(m => m.Name == medalName);
+                    if (medal != null)
+                    {
+                        var userMedal = new UserMedal
+                        {
+                            UserName = user.UserName,
+                            MedalId = medal.Id,
+                            AcquiredDate = DateTime.UtcNow // or any other logic to set the date
+                        };
+
+                        // Prevent duplicate medals for the same user
+                        var existingUserMedal = await context.UserMedals
+                            .FirstOrDefaultAsync(um => um.UserName == user.UserName && um.MedalId == medal.Id);
+                        if (existingUserMedal == null)
+                        {
+                            context.UserMedals.Add(userMedal);
+                        }
+                    }
+                }
+            }
+
+            await context.SaveChangesAsync();
+        }
+
 
     }
 }

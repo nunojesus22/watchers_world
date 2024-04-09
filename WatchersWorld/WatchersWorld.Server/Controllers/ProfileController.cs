@@ -32,12 +32,16 @@ namespace WatchersWorld.Server.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IFollowersService followersService) : ControllerBase
+    public class ProfileController(WatchersWorldServerContext context, UserManager<User> userManager, ILogger<ProfileController> logger, IProfileService profileService, IFollowersService followersService, INotificationService notificationService, IGamificationService gamificationService) : ControllerBase
     {
         private readonly WatchersWorldServerContext _context = context;
         private readonly UserManager<User> _userManager = userManager;
         private readonly ILogger<ProfileController> _logger = logger;
+        private readonly IProfileService _profileService = profileService;
         private readonly IFollowersService _followersService = followersService;
+        private readonly INotificationService _notificationService = notificationService;
+        private readonly IGamificationService _gamificationService = gamificationService;
+
 
         /// <summary>
         /// Obtém informações de perfil para um utilizador especificado.
@@ -47,28 +51,12 @@ namespace WatchersWorld.Server.Controllers
         [HttpGet("get-user-info/{username}")]
         public async Task<ActionResult<ProfileInfoDto>> GetUser(string username)
         {
-            var user = await _userManager.Users
-                 .FirstOrDefaultAsync(u => u.UserName == username);
+            var userProfileDto = await _profileService.GetUserProfileAsync(username);
 
-            if (user == null)
+            if (userProfileDto == null)
             {
                 return NotFound("Não foi possível encontrar o utilizador");
             }
-
-            var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
-
-            ProfileInfoDto userProfileDto = new()
-            {
-                UserName = data.UserName,
-                Description = data.Description,
-                BirthDate = data.BirthDate,
-                Gender = data.Gender,
-                ProfilePhoto = data.ProfilePhoto,
-                CoverPhoto = data.CoverPhoto,
-                ProfileStatus = data.ProfileStatus,
-                Followers = data.Followers,
-                Following = data.Following
-            };
 
             return userProfileDto;
         }
@@ -95,31 +83,31 @@ namespace WatchersWorld.Server.Controllers
                 return NotFound("Não foi possível encontrar o utilizador");
             }
 
+            var updateSuccessful = await _profileService.UpdateUserProfileAsync(userIdClaim, model);
+
+            if (!updateSuccessful)
+            {
+                return BadRequest("Não foi possível atualizar o perfil do utilizador");
+            }
+
             var data = _context.ProfileInfo.FirstOrDefault(p => p.UserName == user.UserName);
 
-            try
+            // Logic to handle the medal awarding if needed
+            bool medalAwarded = await _gamificationService.AwardMedalAsync(data.UserName, "Editar perfil");
+            if (medalAwarded)
             {
-                data.Description = model.Description;
-                data.Gender = model.Gender;
-                data.BirthDate = model.BirthDate;
-                data.CoverPhoto = model.CoverPhoto;
-                data.ProfilePhoto = model.ProfilePhoto;
-                data.ProfileStatus = model.ProfileStatus;
-
-                _context.ProfileInfo.Update(data);
-
-                var result = await _context.SaveChangesAsync();
-
-                if (result > 0)
-                    return Ok(new JsonResult(new { title = "Perfil atualizado", 
-                        message = "Os seus dados foram alterados com sucesso." }));
-                return BadRequest("Não foi possivel alterar os seus dados.Tente Novamente.");
-
+                await _notificationService.CreateAchievementNotificationAsync(data.UserId, 5);
             }
-            catch (Exception)
+            else
             {
-                return BadRequest("Não foi possivel alterar os seus dados.Tente Novamente.");
+                _logger.LogWarning("Medal was not awarded for user {UserName}.", model.UserName);
             }
+
+            return Ok(new JsonResult(new
+            {
+                title = "Perfil atualizado",
+                message = "Os seus dados foram alterados com sucesso."
+            }));
         }
 
         /// <summary>
@@ -139,36 +127,40 @@ namespace WatchersWorld.Server.Controllers
             var userIdToFollow = userToFollow.Id;
 
             var result = await _followersService.Follow(userIdAuthenticated, userIdToFollow);
-            switch (result)
+            if (!result)
             {
-                case false:
-                    return BadRequest("Não foi possível seguir o utilizador pretendido.");
-                case true:
-                    var isPending = await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
-
-                    if (!isPending)
-                    {
-                        var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
-                        var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
-
-                        currentUserProfile.Following++;
-                        userProfileToFollow.Followers++;
-                    }
-                    
-                    break;
+                return BadRequest("Não foi possível seguir o utilizador pretendido.");
             }
 
-            try
+            var isApproved = !await _followersService.FollowIsPending(userIdAuthenticated, userIdToFollow);
+            if (isApproved)
             {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Você agora segue " + usernameToFollow });
+                var currentUserProfile = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameAuthenticated);
+                var userProfileToFollow = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == usernameToFollow);
+
+                currentUserProfile.Following++;
+                userProfileToFollow.Followers++;
+
+                var medalAwarded = await _gamificationService.AwardMedalAsync(userAuthenticated.UserName, "Seguir um utilizador");
+                if (medalAwarded)
+                {
+                    await _notificationService.CreateAchievementNotificationAsync(userIdAuthenticated, 4);
+
+                }
+                if (!medalAwarded)
+                {
+                    // Handle the case where the medal was not awarded. You may log this or take another action.
+                    _logger.LogWarning("The medal for following a user was not awarded to user with ID {UserId}.", userIdAuthenticated);
+                }
+
+                await _notificationService.CreateFollowNotificationAsync(userIdAuthenticated, userIdToFollow);
+
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ocorreu um erro ao seguir o utilizador.");
-                return StatusCode(500, "Não foi possível seguir o utilizador.");
-            }
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
+
 
 
         /// <summary>
@@ -233,8 +225,43 @@ namespace WatchersWorld.Server.Controllers
                 // Map the users to ProfileInfo with selected properties
                 var profilesList = userProfiles.Select(profile => new ProfileInfo
                 {
+                    UserName = profile.UserName,
+                    ProfilePhoto = profile.ProfilePhoto,
+                    StartBanDate = profile.StartBanDate, 
+                    EndBanDate = profile.EndBanDate
+                });
+
+                return Ok(profilesList);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as appropriate for your application
+                _logger.LogError(ex, "Error while getting users' profiles");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Obtém a lista de perfis de todos os utilizadores excepto o logado.
+        /// </summary>
+        /// <returns>Uma lista de informações de perfil.</returns>
+        [HttpGet("get-users-profiles-not-logged-in/{loggedUserName}")]
+        public async Task<ActionResult<List<ProfileInfo>>> GetUsersProfileNotLoggedIn(string loggedUserName)
+        {
+            try
+            {
+                // Query all users from the database excluding the logged in user
+                var userProfiles = await _context.ProfileInfo
+                                        .Where(u => u.UserName.ToLower() != loggedUserName)
+                                        .ToListAsync();
+
+                // Map the users to ProfileInfo with selected properties
+                var profilesList = userProfiles.Select(profile => new ProfileInfo
+                {
                     UserName = profile.UserName.ToLower(),
-                    ProfilePhoto = profile.ProfilePhoto
+                    ProfilePhoto = profile.ProfilePhoto,
+                    StartBanDate = profile.StartBanDate,
+                    EndBanDate = profile.EndBanDate
                 });
 
                 return Ok(profilesList);
@@ -365,6 +392,8 @@ namespace WatchersWorld.Server.Controllers
                     currentUserProfile.Followers++;
                     userProfileToFollow.Following++;
 
+                    await _notificationService.CreateFollowNotificationAsync(userIdWhoSend, userIdAuthenticated);
+
                     break;
             }
 
@@ -427,9 +456,31 @@ namespace WatchersWorld.Server.Controllers
             var userToFollow = await _userManager.FindByNameAsync(usernameToFollow);
             var userIdToFollow = userToFollow.Id;
 
-
             var isFollowing = await _followersService.AlreadyFollow(userIdAuthenticated,userIdToFollow);
             return Ok(isFollowing);
+        }
+
+
+
+        [HttpDelete("deleteAccount/{usernameAuthenticated}")]
+        public async Task<IActionResult> DeleteAccount(string usernameAuthenticated)
+        {
+            var userName = usernameAuthenticated;
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("User is not authenticated.");
+            }
+
+            var result = await _profileService.DeleteOwnAccountAsync(userName);
+
+            if (result == "Your account and profile info have been successfully deleted.")
+            {
+                return Ok(new { message = result });
+            }
+            else
+            {
+                return BadRequest(new { error = result });
+            }
         }
     }
 }

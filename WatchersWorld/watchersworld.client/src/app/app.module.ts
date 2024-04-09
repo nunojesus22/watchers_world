@@ -1,6 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,7 +29,22 @@ import { SearchServiceComponent } from './media/search-service/search-service.co
 import { AdminComponent } from './admin/admin.component';
 import { SeasonDetailsComponent } from './season-details/season-details.component';
 import { SeasonDetailsInfoComponent } from './season-details-info/season-details-info.component';
-import { NotificationsComponent } from './notifications/notifications.component';
+import { ChatComponent } from './chat/chat.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { NotificationsComponent } from './notifications/notifications/notifications.component';
+import { GamificationComponent } from './gamification/gamification.component';
+import { ChatService } from './chat/services/chat.service';
+import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DialogService } from './confirm-dialog/services/dialog.service';
+import { ConfirmBoxConfigModule, DialogConfigModule, NgxAwesomePopupModule, ToastNotificationConfigModule } from '@costlydeveloper/ngx-awesome-popup';
+import { ToastModule } from 'primeng/toast'
+import { MessageService } from 'primeng/api'
+
+
+
+import { HighchartsChartModule } from 'highcharts-angular';
 
 
 @NgModule({
@@ -51,17 +67,45 @@ import { NotificationsComponent } from './notifications/notifications.component'
     SeasonDetailsComponent,
     SeasonDetailsInfoComponent,
     NotificationsComponent,
+    ChatComponent,
+    StatisticsComponent,
+    GamificationComponent,
+    AdminStatisticsComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
-    BrowserModule, HttpClientModule,
-    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule 
+    BrowserModule,
+    BrowserAnimationsModule,
+    ToastModule,
+    HttpClientModule,
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule, MatDialogModule,
+    NgxAwesomePopupModule.forRoot({
+      colorList: {
+        success: '#3caea3', 
+        info: '#2f8ee5', 
+        warning: '#ffc107', 
+        danger: '#e46464', 
+        customOne: '#3ebb1a',
+        customTwo: '#bd47fa',
+      },
+    }),
+    ConfirmBoxConfigModule.forRoot(),
+
+    DialogConfigModule.forRoot(), 
+    ToastNotificationConfigModule.forRoot(),
+    AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, FormsModule
+    , HighchartsChartModule
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     MovieApiServiceComponent,
-    MovieApiServiceComponent, SearchServiceComponent
-
+    MovieApiServiceComponent,
+    SearchServiceComponent,
+    ChatService,
+    DialogService,
+    MessageService,
   ],
   bootstrap: [AppComponent]
 })

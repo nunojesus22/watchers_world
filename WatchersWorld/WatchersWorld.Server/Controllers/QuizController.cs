@@ -53,6 +53,19 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { hasCompleted, lastAttempt?.Score });
         }
 
+        [HttpGet("/api/quiz/total-attempts/{username}")]
+        public async Task<ActionResult<int>> GetTotalQuizAttempts(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            var totalAttempts = await _context.QuizAttempts
+                .CountAsync(a => a.UserId == user.Id);
+
+            return Ok(totalAttempts);
+        }
 
 
         public class QuizAttemptDto {

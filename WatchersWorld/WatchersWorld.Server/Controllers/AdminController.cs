@@ -15,236 +15,209 @@ using WatchersWorld.Server.Services;
 
 namespace WatchersWorld.Server.Controllers
 {
+
     /// <summary>
-    /// Controller handling admin account-related requests such as authentication, registration, email confirmation, and password management.
+    /// Controlador para operações administrativas, incluindo gestão de utilizadores e obtenção de estatísticas.
     /// </summary>
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
 
-
-        // Service for generating JWT tokens.
-        private readonly JWTService _jwtService;
-
-        // Manager for authentication processes.
-        private readonly SignInManager<User> _signInManager;
-
-        // Manager for user-related operations.
         private readonly UserManager<User> _userManager;
         private readonly EmailService _emailService;
-        private readonly IConfiguration _config;
+        private readonly IAdminService _adminService;
 
         private readonly ILogger<AccountController> _logger;
 
 
         private WatchersWorldServerContext _context;
 
-        // Constructor for dependency injection.
-        public AdminController(JWTService jWTService, SignInManager<User> signInManager, UserManager<User> userManager, EmailService emailService, IConfiguration config, WatchersWorldServerContext context, ILogger<AccountController> logger)
-        /// <summary>
-        /// Constructor for AccountController.
-        /// </summary>
-        /// <param name="jWTService">Service for generating JWT tokens.</param>
-        /// <param name="signInManager">Manager for handling sign-in processes.</param>
-        /// <param name="userManager">Manager for user-related operations.</param>
-        /// <param name="emailService">Service for handling email operations.</param>
-        /// <param name="config">Application configuration settings.</param>
+        public AdminController(UserManager<User> userManager, EmailService emailService, WatchersWorldServerContext context, ILogger<AccountController> logger, IAdminService adminService)
         {
-            _jwtService = jWTService;
-            _signInManager = signInManager;
             _userManager = userManager;
             _emailService = emailService;
-            _config = config;
             _context = context;
             _logger = logger;
-
+            _adminService = adminService;
         }
 
 
-
+        /// <summary>
+        /// Obtém as roles de um utilizador específico.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Um array com as roles do utilizador.</returns>
         [HttpGet("api/admin/getUserRole/{username}")]
         public async Task<ActionResult<string[]>> GetUserRole(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            try
             {
-                return NotFound("User not found");
+                var roles = await _adminService.GetUserRoleAsync(username);
+                return Ok(roles);
             }
-
-            var roles = await _userManager.GetRolesAsync(user);
-            return Ok(roles.ToArray());
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
+        /// <summary>
+        /// Aplica um banimento permanente a um utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPost("api/admin/ban-user-permanently/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> BanUserPermanently(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            var message = await _adminService.BanUserPermanentlyAsync(username);
+            if (message == "User not found." || message == "User profile info not found.")
             {
-                return NotFound("User not found.");
+                return NotFound(message);
             }
-
-            // Retrieve the user's profile info
-            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-            if (profileInfo == null)
-            {
-                return NotFound("User profile info not found.");
-            }
-
-            // Set ban-related properties in the profile info DTO
-            profileInfo.StartBanDate = DateTime.UtcNow; // Set the start ban date
-            profileInfo.EndBanDate = DateTime.MaxValue; // Set the end ban date to a large value, indicating permanent ban
-            profileInfo.IsBanned = true;
-
-            // Update the user's profile info in the database
-            _context.ProfileInfo.Update(profileInfo);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "User banned permanently." });
+            return Ok(new { message });
         }
 
+
+        /// <summary>
+        /// Aplica um banimento temporário a um utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <param name="banDurationInDays">Duração do banimento em dias.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPost("api/admin/ban-user-temporarily/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> BanUserTemporarily(string username, [FromQuery] int banDurationInDays)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            var result = await _adminService.BanUserTemporarilyAsync(username, banDurationInDays);
+            if (result.Contains("not found"))
             {
-                return NotFound("User not found.");
+                return NotFound(result);
             }
-
-            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-            if (profileInfo == null)
-            {
-                return NotFound("User profile info not found.");
-            }
-
-            profileInfo.StartBanDate = DateTime.UtcNow;
-            profileInfo.EndBanDate = DateTime.UtcNow.AddDays(banDurationInDays);
-            profileInfo.IsBanned = banDurationInDays > 0;
-
-            _context.ProfileInfo.Update(profileInfo);
-            await _context.SaveChangesAsync();
-
-            var response = new { message = $"User banned temporarily for {banDurationInDays} days." };
-            return Ok(response);
+            return Ok(new { message = result });
         }
 
 
-
+        /// <summary>
+        /// Elimina um utilizador pelo nome de utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpDelete("api/admin/users/{username}")]
         //[Authorize(Roles = "Admin")] // Ensuring that only authorized users can perform this action
         public async Task<IActionResult> DeleteUserByUsername(string username)
         {
-            // Start a transaction
-            using (var transaction = _context.Database.BeginTransaction())
+            var result = await _adminService.DeleteUserByUsernameAsync(username);
+            if (result.Contains("not found"))
             {
-                try
-                {
-                    // Find the user's profile info
-                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-                    if (profileInfo != null)
-                    {
-                        // Delete the profile info
-                        _context.ProfileInfo.Remove(profileInfo);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    // Find the user by username
-                    var user = await _userManager.FindByNameAsync(username);
-                    if (user == null)
-                    {
-                        return NotFound("User not found.");
-                    }
-
-                    // Delete the user
-                    var result = await _userManager.DeleteAsync(user);
-                    if (!result.Succeeded)
-                    {
-                        // If the user wasn't deleted successfully, return the errors
-                        return BadRequest(result.Errors);
-                    }
-
-                    // Commit the transaction
-                    await transaction.CommitAsync();
-
-                    return Ok("User and profile info successfully deleted.");
-                }
-                catch (Exception ex)
-                {
-                    // If there was an exception, rollback the transaction
-                    await transaction.RollbackAsync();
-
-                    // Log the exception and return a generic error message
-                    _logger.LogError(ex, "An error occurred while deleting user and profile info.");
-                    return StatusCode(500, "An error occurred while deleting the user and profile info.");
-                }
+                return NotFound(result);
             }
+            else if (result.Contains("Error"))
+            {
+                return BadRequest(result);
+            }
+            return Ok(new { message = result });
         }
 
+
+        /// <summary>
+        /// Remove o ban de um utilizador.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPut("api/admin/unban-user/{username}")]
         //[Authorize(Roles = "Admin")] // Ensure only admins can perform this action
         public async Task<IActionResult> UnbanUser(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            var result = await _adminService.UnbanUserAsync(username);
+            if (result == "User not found." || result == "User profile info not found.")
             {
-                return NotFound("User not found.");
+                return NotFound(result);
             }
-
-            var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-            if (profileInfo == null)
-            {
-                return NotFound("User profile info not found.");
-            }
-
-            // Reset ban-related properties
-            profileInfo.StartBanDate = null;
-            profileInfo.EndBanDate = null;
-            profileInfo.IsBanned = false; // Assuming you have a Banned flag
-
-            // Update the user's profile info in the database
-            _context.ProfileInfo.Update(profileInfo);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "User unbanned successfully." });
+            return Ok(new { message = result });
 
         }
 
 
-
+        /// <summary>
+        /// Altera a role de um utilizador para moderator.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
         [HttpPut("api/admin/change-role-to-moderator/{username}")]
         public async Task<IActionResult> ChangeRoleToModerator(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
+            var result = await _adminService.ChangeRoleToModeratorAsync(username);
+            if (result == "User not found.")
             {
-                return NotFound("User not found.");
+                return NotFound(result);
             }
-
-            var currentRoles = await _userManager.GetRolesAsync(user);
-            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-            if (!removeResult.Succeeded)
+            else if (result.Contains("Failed"))
             {
-                return BadRequest("Failed to remove existing roles.");
+                return BadRequest(result);
             }
-
-            var addResult = await _userManager.AddToRoleAsync(user, "Moderator");
-            if (!addResult.Succeeded)
-            {
-                // Optionally, you might want to rollback removing the roles if adding the new role fails
-                return BadRequest("Failed to add user to moderator role.");
-            }
-
-            return Ok("User role updated to Moderator successfully.");
+            return Ok(new { message = result });
         }
 
 
+        /// <summary>
+        /// Altera a role de um utilizador de moderator para user.
+        /// </summary>
+        /// <param name="username">Nome do utilizador.</param>
+        /// <returns>Mensagem de sucesso ou erro.</returns>
+        [HttpPut("api/admin/change-role-to-user/{username}")]
+        public async Task<IActionResult> ChangeRoleToUser(string username)
+        {
+            var result = await _adminService.ChangeRoleToUserAsync(username);
+            if (result == "User not found.")
+            {
+                return NotFound(result);
+            }
+            else if (result.Contains("Failed"))
+            {
+                return BadRequest(result);
+            }
+            return Ok(new { message = result });
+        }
 
 
+        // In ProfileController.cs or a relevant controller
+
+        //[HttpGet("api/admin/total-banned-users")]
+        //public async Task<ActionResult<int>> GetTotalBannedUsers()
+        //{
+        //    int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.IsBanned);
+        //    return Ok(totalBannedUsers);
+        //}
+
+        [HttpGet("api/admin/total-registered-users")]
+        public async Task<ActionResult<int>> GetTotalRegisteredUsers()
+        {
+            var totalUsers = await _userManager.Users.CountAsync();
+            return Ok(totalUsers);
+        }
+
+        [HttpGet("api/admin/total-private-profiles")]
+        public async Task<ActionResult<int>> GetTotalPrivateProfiles()
+        {
+            int totalPrivateProfiles = await _context.ProfileInfo.CountAsync(p => p.ProfileStatus == "Private");
+            return Ok(totalPrivateProfiles);
+        }
+
+        [HttpGet("api/admin/total-public-profiles")]
+        public async Task<ActionResult<int>> GetTotalPublicProfiles()
+        {
+            int totalPublicProfiles = await _context.ProfileInfo.CountAsync(p => p.ProfileStatus == "Public");
+            return Ok(totalPublicProfiles);
+        }
+
+        [HttpGet("api/admin/total-comments")]
+        public async Task<ActionResult<int>> GetTotalComments()
+        {
+            int totalComments = await _context.Comments.CountAsync();
+            return Ok(totalComments);
+        }
     }
 }

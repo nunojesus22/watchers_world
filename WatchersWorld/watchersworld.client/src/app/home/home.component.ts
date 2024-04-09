@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { Meta, Title } from '@angular/platform-browser';
+import { ChatService } from '../chat/services/chat.service';
+import { Message } from '../chat/models/messages';
 
 interface MovieCategory {
   name: string;
@@ -18,11 +20,34 @@ interface MovieCategory {
 })
 export class HomeComponent {
   categories: MovieCategory[] = [];
+  usernameReceiver: string = "";
+  messageText: string = "";
 
-  constructor(public authService: AuthenticationService, private router: Router, private service: MovieApiServiceComponent, private title: Title, private meta: Meta) { }
+  constructor(public authService: AuthenticationService, private chatService: ChatService, private router: Router, private service: MovieApiServiceComponent, private title: Title, private meta: Meta) { }
 
   ngOnInit(): void {
     this.initCategories();
+  }
+
+  sendMessage(): void {
+    if (!this.usernameReceiver.trim() || !this.messageText.trim()) {
+      console.log('Nome do usuário destinatário e mensagem são necessários.');
+      return;
+    }
+
+    var messageToSent: Message = {
+      messageId: undefined,
+      sendUsername: this.authService.getLoggedInUserName()!,
+      text: this.messageText.trim(),
+      sentAt: undefined,
+      readAt: undefined
+    }
+
+    this.chatService.sendMessage(this.usernameReceiver, messageToSent)
+      .then(() => {
+        console.log("Mensagem Enviada!"); 
+      })
+      .catch(error => console.error('Erro ao enviar mensagem:', error));
   }
 
   initCategories() {
@@ -66,6 +91,7 @@ export class HomeComponent {
 
   logout() {
     this.authService.logout();
+    this.chatService.stopConnection();
   }
 
   getCategoryResults(categoryName: string): any[] {

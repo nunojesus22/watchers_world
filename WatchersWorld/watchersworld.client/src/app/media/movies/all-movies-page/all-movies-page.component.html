@@ -13,9 +13,12 @@
     </div>
     <div *ngIf="category.showAll" class="container mt-3">
       <div class="row" *ngFor="let row of getRows(category.results)">
+
         <div class="col-3" *ngFor="let movie of row">
           <img *ngIf="movie.poster_path" src="https://image.tmdb.org/t/p/original/{{ movie?.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.id]">
         </div>
+
+
       </div>
     </div>
   </div>

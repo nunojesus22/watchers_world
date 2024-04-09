@@ -80,6 +80,15 @@ namespace WatchersWorld.Server.Controllers
             // Altere de BadRequest para Ok e retorne null ou um identificador claro que possa ser tratado pelo frontend
             return Ok(new { ChoiceId = (int?)null });
         }
+        [HttpGet("get-total-favorite-actors")]
+        public async Task<IActionResult> GetTotalFavoriteActors()
+        {
+            var userAuthenticated = await _userManager.GetUserAsync(User);
+            if (userAuthenticated == null) return BadRequest("Utilizador não encontrado.");
 
+            var totalFavoriteActors = await _favoriteActorService.GetTotalFavoriteActorsByUser(userAuthenticated.Id);
+
+            return Ok(totalFavoriteActors);
+        }
     }
 }

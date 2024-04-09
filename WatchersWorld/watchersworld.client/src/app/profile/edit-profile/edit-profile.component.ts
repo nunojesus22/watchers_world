@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, switchMap, take, takeUntil } from 'rxjs';
 import { Profile } from '../models/profile';
 import { ProfileService } from '../services/profile.service';
@@ -7,6 +7,8 @@ import { User } from '../../authentication/models/user';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { GamificationService } from '../../gamification/Service/gamification.service';
+import { MessageService } from 'primeng/api'
 
 @Component({
   selector: 'app-edit-profile',
@@ -45,9 +47,22 @@ export class EditProfileComponent {
   showSeries: boolean = false;
   showMedals: boolean = false;
 
+  currentDate: string;
+  minDate: string;
+
+  medals: any[] = [];
+
+
   constructor(private profileService: ProfileService,
+    private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router) { }
+    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router,
+    private gamificationService: GamificationService) {
+    const today = new Date();
+    this.currentDate = today.toISOString().split('T')[0];
+    const earliestDate = new Date('1900-01-01');
+    this.minDate = earliestDate.toISOString().split('T')[0];
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -137,6 +152,12 @@ export class EditProfileComponent {
     if (target) {
       const file = (fileInput.files as FileList)[0];
 
+      if (!file.type.match('image.*')) {
+        this.messageService.clear();
+        this.messageService.add({ key: 'toast2', severity: 'error', summary: 'Ficheiro Inválido', detail: 'Tipo de ficheiro inválido. Por favor, escolha uma imagem.' });
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         if (target === 'profilePhoto') {
@@ -191,7 +212,7 @@ export class EditProfileComponent {
 
   initializeForm() {
     this.profileForm = this.formBuilder.group({
-      hobby: [{ value: ''}],
+      hobby: ['', [Validators.required, Validators.maxLength(50)]],
       gender: [''],
       date: [{ value: ''}],
       name: [{ value: ''}]
@@ -203,6 +224,7 @@ export class EditProfileComponent {
     this.profileForm.get('gender')?.disable();
     this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
+        console.log(userData);
         //if (userName != undefined) { userName.textContent = userData.userName.toUpperCase(); }
         if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
         if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
@@ -219,6 +241,8 @@ export class EditProfileComponent {
           gender: userData.gender = userData.gender || "Por definir",
           date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
         });
+        if(this.loggedUserName)
+        this.getUserProfileInfo(this.loggedUserName);
       },
       error => {
         if (error.error.errors) {
@@ -230,6 +254,18 @@ export class EditProfileComponent {
     );
   }
 
+  isOldEnough(birthDate: string): boolean {
+    const birthDateObj = new Date(birthDate);
+    const today = new Date();
+    var age = today.getFullYear() - birthDateObj.getFullYear();
+    const m = today.getMonth() - birthDateObj.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    return age >= 12; // Retorna verdadeiro se a idade for 12 ou mais
+  }
+
+
   updateFormFields(username: string) {
     const hobby = this.profileForm.get('hobby')?.value;
     const gender = this.profileForm.get('gender')?.value;
@@ -239,31 +275,38 @@ export class EditProfileComponent {
     const profileStatus = this.profileLocked;
     const numberOfFollowers = this.followersCount || 0;
     const numberOfFollowing = this.followingCount || 0;
-
     
     const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus, numberOfFollowers, numberOfFollowing);
-    
+    console.log(data);
     if (this.profileForm.valid) {
       this.profileService.setUserData(data).subscribe({
         next: (response: any) => {
+          console.log(response);
           this.setFormFields(username);
         },
         error: (error) => {
-          if (error.error.errors) {
-            this.errorMessages = error.error.errors;
-          } else {
-            this.errorMessages.push(error.error);
-          }
+          console.error("Error during setUserData", error); 
         }
       },
       );
     }
-
   }
 
   saveButton(username: string) {
+    const date = this.profileForm.get('date')?.value;
+
+    if (date && !this.isOldEnough(date)) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'toast1', severity: 'error', summary: 'Data Inválida', detail: 'Data de nascimento inválida. O utilizador deve ter mais de 12 anos.' });
+      console.log("Data de nascimento inválida. O utilizador deve ter mais de 12 anos.")
+      return;
+    }
+
     this.updateFormFields(username);
+    this.getMedals(username);
+    this.router.navigate(['/profile/', username]);
   }
+
   
   sendEmailChangePassword() {
     this.authService.user$.pipe(take(1)).subscribe({
@@ -281,9 +324,22 @@ export class EditProfileComponent {
         }
       }
     });
-    
+  }
 
-    
+  deleteAccount() {
+    if (confirm('Tem a certeza que quer apagar a conta? Esta ação será permanente.')) {
+      var LoggedInUsername = this.authService.getLoggedInUserName();
+      if (LoggedInUsername)
+      this.profileService.deleteOwnAccount(LoggedInUsername).subscribe(
+        (response) => {
+          console.log(response);
+          this.router.navigateByUrl('/home');
+        },
+        (error) => {
+          console.error('Error deleting account:', error);
+        }
+      );
+    }
   }
 
   toggleFavorites() {
@@ -300,5 +356,21 @@ export class EditProfileComponent {
 
   toggleMedals() {
     this.showMedals = !this.showMedals;
+  }
+
+
+  getMedals(username: string) {
+    if (this.currentUsername) {
+      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
+        next: (medals) => {
+          this.medals = medals;
+        },
+        error: (err) => {
+          console.error('Error retrieving medals:', err);
+        }
+      });
+    } else {
+      console.error('User ID is not defined');
+    }
   }
 }

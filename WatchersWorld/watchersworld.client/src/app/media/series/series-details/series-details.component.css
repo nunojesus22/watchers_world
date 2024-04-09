@@ -118,7 +118,7 @@ a {
 
 .actor-image-container {
   height: 300px; /* Ajuste este valor conforme necessário */
-  overflow: hidden;
+ /* overflow: hidden;*/
 }
 
 .card {
@@ -483,4 +483,16 @@ a {
 
 .form-check-label {
   cursor: pointer;
+}
+
+.row-comments {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-select {
+  width: auto;
+  margin-right: 0;
+  border: 3px solid #4CAEFE; /* Creates a white border around the image */
 }

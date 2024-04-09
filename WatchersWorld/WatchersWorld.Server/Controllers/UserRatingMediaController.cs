@@ -91,5 +91,16 @@ namespace WatchersWorld.Server.Controllers
             var averageRating = await _ratingMediaService.GetAverageRatingForMedia(mediaId);
             return Ok(averageRating);
         }
+
+        [HttpGet("get-rating-by-user")]
+        public async Task<IActionResult> GetTotalFavoriteActors()
+        {
+            var userAuthenticated = await _userManager.GetUserAsync(User);
+            if (userAuthenticated == null) return BadRequest("Utilizador não encontrado.");
+
+            var totalFavoriteActors = await _ratingMediaService.GetTotalRatinsByUser(userAuthenticated.Id);
+
+            return Ok(totalFavoriteActors);
+        }
     }
 }

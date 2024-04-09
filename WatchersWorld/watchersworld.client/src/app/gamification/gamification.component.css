@@ -1,0 +1,81 @@
+.medals-panel {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center; /* Center the title if desired */
+}
+
+hr {
+  border: 0; /* Remove default border */
+  height: 6px; /* Set the height of the line */
+  background-color: black; /* Set the line color */
+  margin-top: 0; /* Optionally remove the top margin if required */
+  margin-bottom: 20px; /* Add some space below the line */
+  border-radius: 5px;
+  opacity: 1;
+}
+
+
+.medals-list {
+  display: flex;
+  justify-content: space-around; /* This spreads out the medals evenly */
+  align-items: center; /* Align medals vertically */
+  flex-wrap: wrap; /* Wrap items to the next line if needed */
+}
+
+.medal {
+  text-align: center;
+  margin: 10px;
+  display: inline-block;
+}
+
+  .medal img {
+    max-width: 100px;
+    height: auto;
+  }
+
+  .medal h3 {
+    margin-top: 0.5em;
+  }
+
+  .medal p {
+    margin-top: 0.5em;
+  }
+
+.private-icon, .public-icon {
+  width: 20px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Make the image a block element to allow for margin usage */
+  margin: 0 auto; /* Center the image horizontally */
+}
+
+
+.medal.unlocked img {
+  max-width: 100px;
+  height: auto;
+}
+
+.medal.locked {
+  opacity: 0.5; /* Dim the locked medals for visual distinction */
+}
+
+  .medal.locked img {
+    filter: grayscale(100%); /* Optional: make the medal image grayscale */
+  }
+
+.lock-icon {
+  width: 20px; /* Lock icon size */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Align block for margin */
+  margin-top: 5px; /* Space above the icon */
+  margin-bottom: 5px; /* Space below the icon */
+}
+

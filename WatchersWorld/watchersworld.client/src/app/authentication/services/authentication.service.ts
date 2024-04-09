@@ -10,6 +10,7 @@ import { ConfirmEmail } from '../models/confirmEmail';
 import { ResetPassword } from '../models/resetPassword';
 import { LoginWithExternal } from '../models/loginWithExternals';
 import { RegisterWithExternal } from '../models/registerWithExternal';
+import { ChatService } from '../../chat/services/chat.service';
 
 @Injectable({
   providedIn: 'root'

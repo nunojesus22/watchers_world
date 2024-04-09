@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy ASP.Net Core app to Azure Web App - watchers-world
+name: Deployment
 
 on:
   push:
@@ -10,57 +7,89 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_server:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: WatchersWorld/WatchersWorld.Server
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+      - uses: actions/checkout@v4.1.1
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4.0.0
         with:
           dotnet-version: '8.x'
-          include-prerelease: true
+      - name: Set up server environment
+        run: |
+          echo '{
+            "AzureAd": {
+              "Instance": "${{ secrets.AZURE_AD_INSTANCE }}",
+              "Domain": "${{ secrets.AZURE_AD_DOMAIN }}",
+              "TenantId": "${{ secrets.AZUREAPPSERVICE_TENANTID_F78ED58CF7954AAE9A59768BCCB3C3FA }}",
+              "ClientId": "${{ secrets.AZUREAPPSERVICE_CLIENTID_7EBCA730BA4641B299DA8A042E85F1A6 }}",
+              "Scopes": "access_as_user",
+              "CallbackPath": "/signin-oidc"
+            },
+            "Logging": {
+              "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+              }
+            },
+            "AllowedHosts": "*",
+            "ConnectionStrings": {
+              "DefaultConnection": "${{ secrets.AZURE_SQL_SERVER_CONNECTION }}"
+            },
+            "JWT": {
+              "Key": "${{ secrets.JWT_KEY }}",
+              "ExpiresInDays": 15,
+              "Issuer": "${{ secrets.ISSUER_URL }}",
+              "ClientUrl": "${{ secrets.CLIENT_URL }}"
+            },
+            "Email": {
+              "From": "${{ secrets.EMAIL_FROM }}",
+              "ApplicationName": "Watchers World",
+              "ConfirmEmailPath": "account/confirm-email",
+              "ResetPasswordPath": "account/reset-password"
+            },
+            "MailJet": {
+              "ApiKey": "${{ secrets.MAILJET_API_KEY }}",
+              "SecretKey": "${{ secrets.MAILJET_SECRET_KEY }}"
+            },
+            "Google": {
+              "ClientId": "${{ secrets.GOOGLE_CLIENT_ID }}"
+            }
+          }' > ./appsettings.json
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Publish server
+        run: dotnet publish -c Release -o ./publish --no-dependencies
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Zip artifact for deployment
+        working-directory: WatchersWorld/WatchersWorld.Server/publish
+        run: zip ../release.zip . -r
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+      - name: Upload server artifact
+        uses: actions/upload-artifact@v4.3.1
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: server-app
+          path: ./WatchersWorld/WatchersWorld.Server/release.zip
 
-  deploy:
+  deploy_server:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_server
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+      - name: Download server artifact
+        uses: actions/download-artifact@v4.1.4
         with:
-          name: .net-app
-      
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7EBCA730BA4641B299DA8A042E85F1A6 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F78ED58CF7954AAE9A59768BCCB3C3FA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_62B967BAEF654973BA3B9AC10FF080C3 }}
+          name: server-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: Deploy server to Azure Web App
+        uses: azure/webapps-deploy@v3.0.0
         with:
-          app-name: 'watchers-world'
+          app-name: 'watchers-world-backend'
           slot-name: 'Production'
-          package: .
-          
+          publish-profile: ${{ secrets.SERVER_PUBLISH_PROFILE }}

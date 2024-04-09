@@ -38,6 +38,15 @@ export class MovieApiServiceComponent {
     return headers;
   }
 
+  getSimilarMovie(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/movie/${data}/similar?api_key=${this.apikey}`)
+
+  }
+
+  getSimilarSerie(data: any): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/${data}/similar?api_key=${this.apikey}`)
+
+  }
 
   //getStreamingProvider
   getStreamingProvider(data: any): Observable<any> {
@@ -174,7 +183,26 @@ export class MovieApiServiceComponent {
     return this.http.get(`${this.baseurl}/discover/tv?api_key=${this.apikey}&with_genres=16`);
   }
 
+  // SERIES AIRING TODAY
 
+  getAiringSeries(): Observable<any> {
+    return this.http.get(`${this.baseurl}/tv/airing_today?api_key=${this.apikey}`)
+  }
+
+  // FAVORITOS
+
+  checkIfIsFavorite(mediaId: number, mediaType: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/is-favorite/${mediaId}/${mediaType}`, { headers });
+  }
+
+  markMediaAsFavorite(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/mark-as-favorite`, { mediaId, type });
+  }
+
+  unmarkMediaAsFavorite(mediaId: number, type: string): Observable<any> {
+    return this.http.post(`${environment.appUrl}/api/media/unmark-favorite`, { mediaId, type });
+  }
 
   //MARCAR COMO VISTO
 
@@ -210,7 +238,8 @@ export class MovieApiServiceComponent {
 
 
   getMediaComments(mediaId: any): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`);
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`, { headers });
   }
   
 
@@ -253,6 +282,17 @@ export class MovieApiServiceComponent {
       text
     });
   }
+
+  getMostLikedComments(mediaId: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-likes/${mediaId}`, { headers });
+  }
+
+  getCommentsSortedByDate(mediaId: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-date/${mediaId}`, { headers });
+  }
+
 
   // RATINGS
 
@@ -304,9 +344,27 @@ export class MovieApiServiceComponent {
 
   }
   checkQuizCompleted(mediaId: any): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`);
+    const headers = this.getHeaders();
+    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`, { headers });
   }
 
 
 
+  //TOTAL MEDALS
+  commentsDate(username:string): Observable<any[]> {
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(`${environment.appUrl}/api/media/get-comments-count-by-date/${username}`, { headers });
+  }
+
+  getMovieAddedByDate(username:any): Observable<any[]> {
+    const headers = this.getHeaders();
+
+    return this.http.get<any[]>(`${environment.appUrl}/api/media/get-media-added-by-date/${username}`, { headers });
+  }
+
+  getSeriesAddedByDate(username: any): Observable<any[]> {
+    const headers = this.getHeaders();
+
+    return this.http.get<any[]>(`${environment.appUrl}/api/media/get-serie-added-by-date/${username}`, { headers });
+  }
 }

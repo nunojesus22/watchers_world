@@ -412,3 +412,5 @@ WatchersWorld/WatchersWorld.Server/obj/Debug/net8.0/WatchersWorld.Server.Assembl
 WatchersWorld/WatchersWorld.Server/obj/Debug/net8.0/WatchersWorld.Server.AssemblyInfo.cs
 WatchersWorld/watchersworld.client/obj/Debug/watchersworld.client.esproj.FileListAbsolute.txt
 WatchersWorld/WatchersWorld.Server/obj/Debug/net8.0/WatchersWorld.Server.AssemblyInfo.cs
+
+**/obj/

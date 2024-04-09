@@ -6,6 +6,7 @@ import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-a
 import { ProfileService } from '../profile/services/profile.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FollowerProfile } from '../profile/models/follower-profile';
+import { NotificationService } from '../notifications/services/notification.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -18,13 +19,15 @@ export class NavMenuComponent {
   searchQuery: any;
   unsubscribed$: Subject<void> = new Subject<void>();
   pendingFollowRequests: FollowerProfile[] = [];
+  hasUnreadNotifications: boolean = false;
 
-  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, public authService: AuthenticationService, private _eref: ElementRef, private router: Router, private searchService: SearchServiceComponent) {}
+
+  constructor(private service: MovieApiServiceComponent, private profileService: ProfileService, private notificationService: NotificationService, public authService: AuthenticationService, private _eref: ElementRef, public router: Router, private searchService: SearchServiceComponent) {}
 
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getPendingFollowRequests();
-
+    this.checkForUnreadNotifications();
   }
 
   getPendingFollowRequests() {
@@ -37,6 +40,20 @@ export class NavMenuComponent {
           },
           error: (error) => {
             console.error('Error fetching pending follow requests:', error);
+          }
+        });
+    }
+  }
+
+  checkForUnreadNotifications(): void {
+    if (this.loggedUserName) {
+      this.notificationService.hasUnreadNotifications(this.loggedUserName)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+           this.hasUnreadNotifications = response.hasUnread;
+          },
+          error: (err) => {
           }
         });
     }
@@ -90,8 +107,10 @@ export class NavMenuComponent {
     this.authService.getUserRole(username).subscribe((roles: string[]) => {
       if (roles.includes('Admin')) {
         this.router.navigate(['/admin']);
+        this.isActive = true;
       } else if (roles.includes('User') || roles.includes('Moderator')) {
         this.router.navigate(['/profile', username]);
+        this.isActive = true;
       } else {
         // Handle case for users without Admin or User roles or redirect to a default route
         this.router.navigate(['/home']);
@@ -105,8 +124,6 @@ export class NavMenuComponent {
   logout() {
     this.authService.logout();
   }
-
-
 }
 
 

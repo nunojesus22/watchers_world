@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { FavoriteActor } from '../../media-models/fav-actor';
 import { Actor } from '../../media-models/actor';
+import { GamificationService } from '../../../gamification/Service/gamification.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -15,7 +16,7 @@ import { Actor } from '../../media-models/actor';
   styleUrl: './movie-details.component.css'
 })
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService) {
+  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService, private gamificationService: GamificationService) {
     this.setUserRole();
   }
 
@@ -25,6 +26,7 @@ export class MovieDetailsComponent {
   getMovieProviders: any;
   showAll: boolean = true;
   type: string = "movie";
+  isFavorite: boolean = false;
   isWatched: boolean = false;
   isToWatchLater: boolean = false;
   actorIsFavorite: boolean = false;
@@ -72,7 +74,7 @@ export class MovieDetailsComponent {
       this.getMovie(getParamId);
       this.checkIfWatched(getParamId);
       this.checkIfWatchedOnInit(getParamId);
-      this.checkIfWatched(getParamId);
+      this.checkIfFavorite(getParamId);
       this.checkIfWatchedLater(getParamId);
       this.checkQuizCompleted(getParamId);
     }
@@ -83,8 +85,22 @@ export class MovieDetailsComponent {
     this.getFavoriteActorChoicesForMedia(getParamId);
     this.loadQuizQuestions();
     this.fetchComments();
+
+    this.router.queryParams.subscribe(params => {
+      const commentId = params['commentId'];
+      if (commentId) {
+        setTimeout(() => {
+          this.scrollToComment(commentId);
+        }, 100);
+      }
+    });
   }
 
+  // Método para fazer scroll até o comentário
+  scrollToComment(commentId: string): void {
+    const commentElement = document.getElementById(`comment-${commentId}`);
+    commentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
   // Mostra o pop-up do quiz
   showQuizPopup(): void {
     this.isQuizPopupVisible = true;
@@ -316,6 +332,66 @@ export class MovieDetailsComponent {
     }
   }
 
+  toggleFavoriteMedia() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (!mediaId) {
+      console.error('ID de mídia não encontrado');
+      return;
+    }
+
+    if (this.isFavorite) {
+      this.unmarkAsFavorite();
+    } else {
+      this.markAsFavorite();
+    }
+  }
+
+  checkIfFavorite(mediaId: any) {
+    this.service.checkIfIsFavorite(mediaId, this.type).subscribe({
+      next: (response: any) => {
+        this.isFavorite = response.isFavorite;
+      },
+      error: (error) => {
+        console.error('Erro ao verificar se a mídia é favorita', error);
+      }
+    });
+  }
+
+  markAsFavorite() {
+    if (!this.isWatched) {
+      alert('Você precisa marcar a mídia como assistida antes de adicioná-la aos favoritos.');
+      return;
+    }
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      // Chama o serviço para marcar como favorito
+      this.service.markMediaAsFavorite(+mediaId, this.type).subscribe({
+        next: (response) => {
+          this.isFavorite = true;
+          console.log('Mídia adicionada aos favoritos com sucesso!');
+        },
+        error: (error) => {
+          console.error('Erro ao marcar a mídia como favorita', error);
+        }
+      });
+    }
+  }
+
+  unmarkAsFavorite() {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.service.unmarkMediaAsFavorite(+mediaId, this.type).subscribe({
+        next: (response) => {
+          this.isFavorite = false;
+          console.log('Mídia removida dos favoritos com sucesso!');
+        },
+        error: (error) => {
+          console.error('Erro ao desmarcar a mídia como favorita', error);
+        }
+      });
+    }
+  }
+
   /* VISUALIZADO */
 
   checkIfWatchedOnInit(mediaId: string) {
@@ -346,7 +422,8 @@ export class MovieDetailsComponent {
     if (mediaId) {
       if (!this.isWatched) {
         this.service.markMediaAsWatched(+mediaId, this.type).subscribe({
-          next: () => {
+          next: (result) => {
+            // Após a ação, atualize os estados e verifique novamente
             this.checkIfWatched(mediaId);
             this.checkIfWatchedLater(mediaId);
             this.isWatched = true;
@@ -358,9 +435,10 @@ export class MovieDetailsComponent {
         });
       } else {
         this.service.unmarkMediaAsWatched(+mediaId, this.type).subscribe({
-          next: () => {
+          next: (result) => {
             this.checkIfWatched(mediaId);
             this.checkIfWatchedLater(mediaId);
+            this.unmarkAsFavorite();
             this.isWatched = false;
             this.showComments = false;
           },
@@ -492,6 +570,71 @@ export class MovieDetailsComponent {
       });
     }
   }
+
+  getMostLikedComments(mediaId: any): void {
+    this.service.getMostLikedComments(mediaId).subscribe({
+      next: (response: any) => {
+        this.comments = response;
+      },
+      error: (error) => {
+        console.error('Erro ao buscar comentários mais curtidos', error);
+      }
+    });
+  }
+
+  fetchMostLikedComments(): void {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.getMostLikedComments(+mediaId);
+    }
+  }
+
+  getMostOldComments(mediaId: any): void {
+    this.service.getCommentsSortedByDate(mediaId).subscribe({
+      next: (response: any) => {
+        this.comments = response;
+      },
+      error: (error) => {
+      }
+    });
+  }
+
+  fetchCommentsSortedByDate(): void {
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (mediaId) {
+      this.getMostOldComments(+mediaId);
+    }
+  }
+
+  sortComments(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+
+    if (!selectElement.value) {
+      console.error('Valor de ordenação é nulo');
+      return;
+    }
+
+    let mediaId = this.router.snapshot.paramMap.get('id');
+    if (!mediaId) {
+      console.error('ID de mídia não encontrado');
+      return;
+    }
+
+    switch (selectElement.value) {
+      case 'recentes':
+        this.fetchComments();
+        break;
+      case 'likes':
+        this.fetchMostLikedComments();
+        break;
+      case 'antigos':
+        this.fetchCommentsSortedByDate();
+        break;
+      default:
+        console.error('Opção de ordenação desconhecida:', selectElement.value);
+    }
+  }
+
   newCommentText: string = '';
 
   addComment(): void {

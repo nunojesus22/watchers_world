@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { Subject, catchError, firstValueFrom, forkJoin, map, mergeMap, of, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { FollowerProfile } from '../models/follower-profile';
@@ -10,6 +10,11 @@ import { MovieApiServiceComponent } from '../../media/api/movie-api-service/movi
 import { UserMedia } from '../models/user-media';
 import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
+import { NotificationService } from '../../notifications/services/notification.service';
+import { GamificationService } from '../../gamification/Service/gamification.service';
+
+import { ChatService } from '../../chat/services/chat.service';
+import { ProfileChat } from '../../chat/models/profileChat';
 
 
 interface MovieCategory {
@@ -30,6 +35,7 @@ export class ProfileComponent implements OnInit {
   loggedUserName: string | null = null; // Nome de usuário do usuário logado
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
+  userPhoto: string | null = null;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -39,7 +45,6 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] = [];
-  usersProfilesMod: Profile[] = [];
 
 
   followersCount: number | undefined;
@@ -52,8 +57,9 @@ export class ProfileComponent implements OnInit {
 
   showFollowers: boolean = true;
   showFollowing: boolean = true;
-  showFavorites: boolean = false;
 
+  showFavorites: boolean = true;
+  showAllFavorites: boolean = false;
 
   showMoviesWatched: boolean = true;
   showAllMoviesWatched: boolean = false;
@@ -72,6 +78,8 @@ export class ProfileComponent implements OnInit {
   expandedFollowers: boolean = false;
   expandedFollowing: boolean = false;
 
+  expandedFavoritesList: boolean = false;
+
   expandedMoviesWatchList: boolean = false;
   expandedMoviesToWatchList: boolean = false;
 
@@ -88,6 +96,8 @@ export class ProfileComponent implements OnInit {
   showExpandedSuggestions = false;
 
   categories: MovieCategory[] = [];
+  favoriteMovies: any[] = [];
+  favoriteSeries: any[] = [];
   watchedMovies: any[] = [];
   watchedSeries: any[] = [];
   watchLaterMovies: any[] = [];
@@ -102,10 +112,31 @@ export class ProfileComponent implements OnInit {
   isBanned?: boolean;
   selectedUserForBan: string | null = null;
 
+  usersProfilesMod: Profile[] = [];
+  filteredUsersProfiles: Profile[] = [];
+  searchTerm: string = '';
+  showNoResults: boolean = false;
+  selectedUser: Profile | undefined;
+  selectedUsername: string | null = null;
+
+  page: number = 1;
+  pageSize: number = 5; // Quantidade de usuários por página
+  collectionSize!: number; // O total de usuários disponíveis
+
+
+
+  //MEDALHAS
+  medals: any[] = [];
+  showAllMedals = false;
+
+
   constructor(private profileService: ProfileService,
+    private chatService: ChatService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
-    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService) { }
+    private notificationService: NotificationService,
+    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService, 
+    private gamificationService: GamificationService) { }
 
   ngOnInit(): void {
 
@@ -138,15 +169,41 @@ export class ProfileComponent implements OnInit {
         this.setImages(this.currentUsername);
         this.getFollowersList();
         this.getFollowingList();
+        this.getFavorites(this.currentUsername);
         this.getWatchedMedia(this.currentUsername);
         this.getWatchLaterMedia(this.currentUsername);
-
+        this.getMedals(this.currentUsername);
       }
 
 
     });
 
+    //-------------MODERADOR-----------------------------------------------------------------------------------
+    this.loggedUserName = this.authService.getLoggedInUserName();
     this.getUserProfilesMod();
+    if (this.loggedUserName)
+    this.profileService.getUserProfilesNotLoggedIn(this.loggedUserName).pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (profiles: Profile[]) => {
+        this.usersProfilesMod = profiles; 
+        this.filteredUsersProfiles = profiles;
+        this.collectionSize = profiles.length;
+        this.updateSelectedUser();
+        this.sortAlphabetically(); 
+        this.filterUsers(); 
+      },
+      error => {
+        console.error("Error while fetching users' profiles:", error);
+      }
+    );
+
+    if (this.usersProfilesMod.length > 0) {
+      this.updateSelectedUser();
+    }
+
+    this.collectionSize = this.filteredUsersProfiles.length;
+    //--------------------------------------------------------------------------------------------------------
+
+
     this.getUserProfiles();
     this.initializeForm();
     this.categories = [
@@ -180,11 +237,12 @@ export class ProfileComponent implements OnInit {
           this.isProfilePublic = userData.profileStatus;
           this.followersCount = userData.followers;
           this.followingCount = userData.following;
+          this.userPhoto = userData.profilePhoto;
 
           if (this.isProfilePublic !== 'Public' && this.loggedUserName && this.loggedUserName !== username) {
             this.profileService.alreadyFollows(this.loggedUserName, username)
               .subscribe(isFollowing => {
-                this.canViewData = isFollowing; 
+                this.canViewData = isFollowing;
                 resolve();
               }, error => {
                 console.error('Erro ao verificar o status de seguimento', error);
@@ -192,7 +250,7 @@ export class ProfileComponent implements OnInit {
                 reject(error);
               });
           } else {
-           
+
             this.canViewData = true;
             resolve();
           }
@@ -221,7 +279,7 @@ export class ProfileComponent implements OnInit {
   initializeForm() {
     this.profileForm = this.formBuilder.group({
       hobby: [''],
-      gender: ['', {disabled:true}],
+      gender: ['', { disabled: true }],
       date: [''],
     });
   }
@@ -275,8 +333,6 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-
-
   checkFollowingStatus(usernameAuthenticated: string, usernameToCheck: string): void {
     this.profileService.alreadyFollows(usernameAuthenticated, usernameToCheck).subscribe(isFollowing => {
       this.isFollowing = isFollowing;
@@ -285,8 +341,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
   requestToFollow(): void {
     this.followRequestSent = true;
   }
@@ -294,17 +348,17 @@ export class ProfileComponent implements OnInit {
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
-        next: (response) => {
+        next: () => {
           if (this.isProfilePublic === 'Private') {
-            console.log('Pedido enviado. Aguardando aprovação.');
+            this.isFollowing = false;
             this.followRequestSent = true;
           } else {
-            console.log('Usuário seguido com sucesso!', response.message);
             this.isFollowing = true;
+            this.followRequestSent = false;
           }
         },
         error: (error) => {
-          console.error('Erro ao enviar pedido para seguir', error);
+          console.error('Erro ao seguir usuário', error);
         }
       });
     } else {
@@ -316,16 +370,26 @@ export class ProfileComponent implements OnInit {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.isFollowing = false;
-            console.log(this.isFollowing);
-            // this.getFollowers(this.currentUsername);
-            console.log('Usuário deixado de seguir com sucesso!', response.message);
           },
           error: (error) => {
             console.error('Erro ao deixar de seguir usuário', error);
           }
         });
+    } else {
+      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
+    }
+  }
+
+  sendMessageToUser(): void {
+    if (this.currentUsername && this.loggedUserName) {
+      var profile = {
+        userName: this.currentUsername,
+        profilePhoto: this.userPhoto,
+        lastMessage: undefined,
+      } as ProfileChat;
+      this.chatService.selectUser(profile);
     } else {
       console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
     }
@@ -387,6 +451,40 @@ export class ProfileComponent implements OnInit {
       }
     );
   }
+
+  /*----------------------------------------------------------------  FAVORITOS ---------------------------------------------------------------- */
+
+
+  async getFavorites(username: string): Promise<void> {
+    try {
+      const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
+
+      this.favoriteMovies = favorites.filter(m => m.type === 'movie');
+      this.favoriteSeries = favorites.filter(m => m.type === 'serie');
+
+      for (const movie of this.favoriteMovies) {
+        try {
+          const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+          movie.details = details; // Adicionando detalhes ao objeto movie
+        } catch (error) {
+          console.error('Erro ao buscar detalhes do filme favorito', error);
+        }
+      }
+
+      // Buscar detalhes para séries favoritas
+      for (const series of this.favoriteSeries) {
+        try {
+          const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+          series.details = details; // Adicionando detalhes ao objeto series
+        } catch (error) {
+          console.error('Erro ao buscar detalhes da série favorita', error);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao buscar mídia favorita para usuário', username, error);
+    }
+  }
+
 
   /*----------------------------------------------------------------  MEDIA JÁ VISTA ---------------------------------------------------------------- */
 
@@ -460,6 +558,27 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /*----------------------------------------------------------------  Favoritos ----------------------------------------------------------------------- */
+
+  toggleFavoritesList(): void {
+    this.showFavorites = !this.showFavorites;
+  }
+
+  toggleFavoritesListDisplay(): void {
+    this.showAllFavorites = !this.showAllFavorites;
+  }
+
+  toggleFavoritesScroll(): void {
+    this.expandedFavoritesList = !this.expandedFavoritesList;
+    this.toggleFollowers();
+    this.toggleFollowing();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
+    this.toggleMoviesWatchedList();
+
+  }
+
   /*----------------------------------------------------------------  Filmes já vistos ---------------------------------------------------------------- */
 
   toggleMoviesWatchedList(): void {
@@ -477,6 +596,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
   }
 
   /*----------------------------------------------------------------  Filmes a ver -------------------------------------------------------------------- */
@@ -496,6 +616,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /*----------------------------------------------------------------  Séries já vistas ---------------------------------------------------------------- */
@@ -515,6 +637,8 @@ export class ProfileComponent implements OnInit {
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
@@ -535,6 +659,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /* Seguidores */
@@ -550,10 +676,13 @@ export class ProfileComponent implements OnInit {
   toggleFollowersScroll(): void {
     this.expandedFollowers = !this.expandedFollowers;
     this.toggleFollowersDisplay();
-    this.toggleMoviesWatchedListDisplay();
-    this.toggleSeriesWatchedListDisplay();
-    this.toggleSeriesToWatchListDisplay();
-    this.toggleMoviesToWatchListDisplay();
+    this.toggleFollowing();
+    this.toggleMoviesWatchedList();
+    this.toggleSeriesWatchedList();
+    this.toggleSeriesToWatchList();
+    this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   /* A seguir */
@@ -574,6 +703,8 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
+    this.toggleFavoritesList();
+
   }
 
   toggleAllFiveOtherUsers(): void {
@@ -584,11 +715,43 @@ export class ProfileComponent implements OnInit {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
   }
 
+
+  //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
+
+  getMedals(username: string) {
+    if (this.currentUsername) {
+      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
+        next: (medals) => {
+          this.medals = medals;
+        },
+        error: (err) => {
+          console.error('Error retrieving medals:', err);
+        }
+      });
+    } else {
+      console.error('User ID is not defined');
+    }
+  }
+  
+ 
+
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
   checkIfUserIsBanned(profile: Profile): boolean {
-    // Directly return the isBanned status from the profile
-    // If the property could be undefined, provide a default value
-    return profile.isBanned ?? false;
+    try {
+      if (!profile.startBanDate || !profile.endBanDate) {
+        return false;
+      }
+
+      const now = new Date();
+      const startBan = new Date(profile.startBanDate);
+      const endBan = new Date(profile.endBanDate);
+      const isBanned = startBan <= now && now <= endBan;
+
+      return isBanned;
+    } catch (error) {
+      console.error('Error in checkIfUserIsBanned:', error);
+      return false;
+    }
   }
 
 
@@ -606,12 +769,12 @@ export class ProfileComponent implements OnInit {
     this.adminService.BanUserTemporarily(username, this.banDuration).subscribe({
       next: () => {
         console.log(`User banned temporarily for ${this.banDuration} days`);
-        const user = this.usersProfiles?.find(u => u.userName === username);
+        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
         this.hideBanPopup();
         if (user) {
           user.isBanned = true;
           // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
+          this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
         }
       },
       error: error => {
@@ -628,17 +791,16 @@ export class ProfileComponent implements OnInit {
       return;
     }
     console.log(`Attempting to ban user permanently: ${username}`);
-
     this.adminService.banUserPermanently(username).subscribe({
       next: () => {
         console.log('User banned permanently');
-        const user = this.usersProfiles?.find(u => u.userName === username);
+        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
         this.hideBanPopup();
         if (user) {
           user.isBanned = true;
-          // This will trigger change detection and update the UI
-          this.usersProfiles = [...this.usersProfiles!];
         }
+        // This will trigger change detection and update the UI
+        this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: error => {
         console.error("Error banning user:", error);
@@ -654,12 +816,12 @@ export class ProfileComponent implements OnInit {
     this.adminService.unbanUser(username).subscribe({
       next: (response) => {
         console.log(response.message);
-        const user = this.usersProfiles?.find(u => u.userName === username);
+        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
         if (user) {
           user.isBanned = false;
         }
         // This will trigger change detection and update the UI
-        this.usersProfiles = [...this.usersProfiles!];
+        this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: (error) => {
         console.error("Error unbanning user:", error);
@@ -678,15 +840,106 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserProfilesMod() {
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        const currentUsername = this.authService.getLoggedInUserName();
-        // Filter out the logged-in user's profile from the list
-        this.usersProfilesMod = profiles.filter(profile => profile.userName !== currentUsername);
+    this.profileService.getUserProfiles().pipe(
+      takeUntil(this.unsubscribed$),
+      map(profiles => profiles.filter(profile => profile.userName !== this.loggedUserName)),
+      mergeMap(profiles => {
+        // Filtrar fora o usuário logado antes de buscar as funções.
+        const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
+        const profilesWithRoles$ = filteredProfiles.map(profile => {
+          return this.adminService.getUserRole(profile.userName).pipe(
+            map(roles => ({
+              ...profile,
+              isBanned: this.checkIfUserIsBanned(profile),
+              isModerator: roles.includes('Moderator'),
+            })),
+            catchError(error => {
+              console.error('Error fetching roles:', profile.userName, error);
+              return of({ ...profile, isModerator: false }); // default to false on error
+            })
+          );
+        });
+        return forkJoin(profilesWithRoles$);
+      })
+    ).subscribe(
+      (profiles) => {
+        this.filteredUsersProfiles = profiles;
+        this.collectionSize = profiles.length;
+        this.sortAlphabetically();
+        this.filterUsers();
+
       },
       (error) => {
         console.error("Error while fetching users' profiles:", error);
       }
     );
+  }
+
+
+  updateSelectedUser(): void {
+    this.selectedUser = this.usersProfilesMod.find(u => u.userName === this.selectedUsername);
+  }
+
+  filterUsers(): void {
+    let filtered = this.searchTerm ? this.usersProfilesMod.filter(user =>
+      user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())) : this.usersProfilesMod;
+
+    this.showNoResults = filtered.length === 0;
+    this.collectionSize = filtered.length;
+
+    // Aplica a paginação
+    filtered = filtered.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
+    this.filteredUsersProfiles = filtered;
+  }
+
+  previousPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.filterUsers();
+    }
+  }
+
+  nextPage() {
+    if (this.page * this.pageSize < this.collectionSize) {
+      this.page++;
+      this.filterUsers();
+      this.sortAlphabetically();
+    }
+  }
+
+  get hasPreviousPage(): boolean {
+    return this.page > 1;
+  }
+
+  get hasNextPage(): boolean {
+    return this.page * this.pageSize < this.collectionSize;
+  }
+
+  naturalSort(a: Profile, b: Profile): number {
+    const ax: [number | typeof Infinity, string][] = [];
+    const bx: [number | typeof Infinity, string][] = [];
+
+    a.userName.replace(/(\d+)|(\D+)/g, function (_, $1, $2): string {
+      ax.push([$1 ? Number($1) : Infinity, $2 || ""]);
+      return "";
+    });
+    b.userName.replace(/(\d+)|(\D+)/g, function (_, $1, $2): string {
+      bx.push([$1 ? Number($1) : Infinity, $2 || ""]);
+      return "";
+    });
+
+    while (ax.length && bx.length) {
+      const an = ax.shift()!;
+      const bn = bx.shift()!;
+      const nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
+      if (nn) return nn;
+    }
+
+    return ax.length - bx.length;
+  }
+
+  sortAlphabetically(): void {
+    this.usersProfilesMod.sort((a, b) => this.naturalSort(a, b));
+    this.filterUsers(); // Reaplica a filtragem e paginação após a ordenação
   }
 }

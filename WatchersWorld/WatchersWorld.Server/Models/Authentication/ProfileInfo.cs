@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WatchersWorld.Server.Models.Gamification;
 
 namespace WatchersWorld.Server.Models.Authentication
 {
@@ -78,6 +79,7 @@ namespace WatchersWorld.Server.Models.Authentication
         /// </summary>
         public DateTime? EndBanDate { get; set;}
 
-        public bool IsBanned { get; set; }
+
+
     }
 }

@@ -54,7 +54,7 @@ export class AdminService {
       { headers, responseType: 'text' }); // Expecting a text response
   }
 
-  getUserRole(username: string) {
+  getUserRole(username: string): Observable<string[]> {
     return this.http.get<string[]>(`${environment.appUrl}/api/admin/getUserRole/${username}`);
   }
 
@@ -69,6 +69,35 @@ export class AdminService {
       headers: headers,
       responseType: 'text'  // Expect a text response
     });
+  }
+
+  changeRoleToUser(username: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put(`${environment.appUrl}/api/admin/change-role-to-user/${encodeURIComponent(username)}`, {}, {
+      headers: headers,
+      responseType: 'text'  // Expect a text response
+    });
+  }
+  //ESTATISTICAS
+  getTotalRegisteredUsers(): Observable<number> {
+    const headers = this.getHeaders();
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-registered-users`, { headers });
+  }
+
+  getTotalBannedUsers(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-banned-users`);
+  }
+
+  getTotalPrivateProfiles(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-private-profiles`);
+  }
+
+  getTotalPublicProfiles(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-public-profiles`);
+  }
+
+  getTotalComments(): Observable<number> {
+    return this.http.get<number>(`${environment.appUrl}/api/admin/total-comments`);
   }
 
 }

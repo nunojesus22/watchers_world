@@ -58,6 +58,10 @@ namespace WatchersWorld.Server.Models.Media
         /// </remarks>
         [ForeignKey("IdListMedia")]
         public virtual MediaListModel MediaListModel { get; set; } // Navegação para MediaListModel
+
+
+        public DateTime DateMarked{ get; set; }
+
     }
 
 }

@@ -1,0 +1,221 @@
+.title-panel {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title-center {
+  margin: 0;
+  padding: 20px 0;
+}
+
+.divider {
+  border: none;
+  height: 3px;
+  background-color: #000000; /* Definido como preto */
+  width: 100%; /* Ajuste a largura conforme necessário */
+}
+
+.request-text {
+  position: absolute; /* Posiciona o texto de pedido para seguir acima da imagem */
+  top: -20px; /* Ajuste este valor conforme necessário para alinhar */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap; /* Impede a quebra de linha do texto */
+  background: #fff; /* Cor de fundo */
+  padding: 0 10px; /* Ajuste este valor conforme necessário para espaço em volta do texto */
+}
+
+h4, h3 {
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-top:5px;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top:20px;
+}
+
+.clear-notifications {
+  background-color: #f44336; /* Vermelho */
+  width:250px;
+  margin-right:50px;
+}
+
+/* Botão Aceitar */
+.accept-follow-request {
+    width:150px;
+  background-color: #4CAF50; /* Verde */
+  /* outras propriedades mantêm-se inalteradas */
+}
+
+/* Botão Recusar */
+.recuse-follow-request {
+    width:150px;
+  background-color: #f44336; /* Vermelho */
+  /* outras propriedades mantêm-se inalteradas */
+}
+
+  .accept-follow-request:hover {
+    background-color: darkgreen; /* Cor mais escura no hover */
+  }
+  .recuse-follow-request:hover {
+    background-color: darkred; /* Cor mais escura no hover */
+  }
+
+.actions{
+    margin-left:50px;
+}
+
+.actions button {
+  display: inline-block;
+  padding: 8px 15px; /* Ajuste conforme necessário */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  margin-left: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top:10px;
+}
+
+ 
+@media (max-width: 768px) {
+  .user {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions button {
+    margin-top: 5px;
+    margin-left: 0;
+  }
+}
+
+.notification-panel {
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  width:80%;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Isso empurrará o conteúdo e os botões para lados opostos */
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notification-message {
+  margin: 0;
+}
+
+.notification-date {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.notification-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+  .notification-actions button {
+    margin-top: 5px; /* Ajuste conforme necessário */
+  }
+
+.notification-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+  .notification-item .user-info {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .notification-item .user-info img.avatar {
+    margin-right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .notification-item .user-info .name {
+    font-weight: bold;
+    margin-right: auto;
+  }
+
+  .notification-item p {
+    margin: 0;
+    color: #333;
+  }
+
+  .notification-item small {
+    margin-left: 10px;
+    color: #666;
+  }
+
+.notification-item .btn {
+  margin-left: 15px;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 150px;
+  background-color: #4CAEFE;
+}
+
+.no-notifications,
+.user-list h4 {
+  text-align: center; /* Centraliza o texto se não houver notificações ou para o título da lista de pedidos */
+}
+
+.user-name {
+    margin-top:25px;
+    margin-left:10px;
+    font-weight:bold;
+}
+
+.notification-name{
+    color:red;
+}

@@ -2,7 +2,7 @@
       <div class="row position-relative">
         <div class="container bg-white  rounded">
           <!-- Botão Voltar -->
-            <!-- Botão Voltar e Pôster -->
+          <!-- Botão Voltar e Pôster -->
           <div class="d-flex align-items-center mb-4">
 
             <div class="backdrop-with-poster mb-4" *ngIf="getSerieDetailsResult?.backdrop_path">
@@ -18,12 +18,14 @@
             </div>
           </div>
 
-            <h2 class="mb-4">Temporadas</h2>
-            <div *ngFor="let season of getSerieDetailsResult?.seasons" class="season-container shadow-sm bg-white rounded mb-4">
+          <h2 class="mb-4">Temporadas</h2>
+          <ng-container *ngFor="let season of getSerieDetailsResult?.seasons; let i = index; let last = last">
+            <div *ngIf="!last" class="season-container shadow-sm bg-white rounded mb-4">
+              <!-- Conteúdo das temporadas exceto a última -->
               <div class="season-image-container">
                 <img *ngIf="season.poster_path; else defaultPoster" src="https://image.tmdb.org/t/p/w200/{{ season.poster_path }}" class="img-fluid rounded" alt="Poster da Temporada">
-                <ng-template #defaultPoster >
-                  <img src="../assets/img/default_media_pic.jpg" class="img-fluid rounded" alt="Poster Padrão da Temporada">
+                <ng-template #defaultPoster>
+                  <img src="../assets/img/default_media_pic.jpg" class="img-fluid rounded" alt="Poster Padrão da Temporada" style="height:300px; width:200px;">
                 </ng-template>
               </div>
               <div class="season-info p-3">
@@ -40,7 +42,33 @@
                 <a [routerLink]="['/serie', getSerieDetailsResult?.id, 'season', season.season_number]" class="btn btn-primary shadow-sm">Ver detalhes da temporada</a>
               </div>
             </div>
-          </div>
+            <div *ngIf="last" #lastSeason class="season-container shadow-sm bg-white rounded mb-4">
+              <!-- Conteúdo da última temporada com o identificador #lastSeason -->
+              <div class="season-image-container">
+                <img *ngIf="season.poster_path; else defaultPoster" src="https://image.tmdb.org/t/p/w200/{{ season.poster_path }}" class="img-fluid rounded" alt="Poster da Temporada">
+                <ng-template #defaultPoster>
+                  <img src="../assets/img/default_media_pic.jpg" class="img-fluid rounded" alt="Poster Padrão da Temporada" style="height:300px; width:200px;">
+                </ng-template>
+              </div>
+              <div class="season-info p-3">
+                <h3> {{ season.name }}</h3>
+                <p>Número de Episódios: {{ season.episode_count }}</p>
+                <p>Data de Lançamento: {{ season.air_date || '-' }}</p>
+                <p *ngIf="season.overview; else defaultSynopsis">Sinopse: {{ season.overview }}</p>
+                <ng-template #defaultSynopsis>
+                  <p>Sinopse: Esta é a temporada {{ season.season_number }} da série "{{ getSerieDetailsResult?.name }}".</p>
+                </ng-template>
+                <ng-container *ngIf="season.vote_average && season.vote_average > 0">
+                  <p>Classificação Geral dos Utilizadores: {{ season.vote_average }}</p>
+                </ng-container>
+                <a [routerLink]="['/serie', getSerieDetailsResult?.id, 'season', season.season_number]" class="btn btn-primary shadow-sm">Ver detalhes da temporada</a>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
 
         </div>
         </div>
+<br>
+<br />

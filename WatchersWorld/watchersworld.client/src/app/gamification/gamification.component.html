@@ -1,0 +1,23 @@
+<div class="medals-panel">
+  <h1>Medalhas</h1>
+  <hr>
+  <div class="medals-list">
+    <ng-container *ngIf="unlockedMedals.length">
+      <!-- Loop for unlocked medals -->
+      <div *ngFor="let medal of unlockedMedals" class="medal unlocked">
+        <img [src]="medal.image" [alt]="medal.name">
+        <h3>{{ medal.name }}</h3>
+        <p>{{ medal.description }}</p>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="lockedMedals.length">
+      <!-- Loop for locked medals -->
+      <div *ngFor="let medal of lockedMedals" class="medal locked">
+        <img [src]="medal.image" [alt]="medal.name">
+        <h3>{{ medal.name }}</h3>
+        <p>{{ medal.description }}</p>
+        
+      </div>
+    </ng-container>
+  </div>
+</div>
