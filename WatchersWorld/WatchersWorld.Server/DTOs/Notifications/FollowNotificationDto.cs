@@ -6,15 +6,18 @@
     public class FollowNotificationDto : NotificationDto
     {
         /// <summary>
-        /// Nome de usuário que deve receber a notificação.
+        /// Identificador do utilizador alvo que recebe a notificação de um novo seguidor.
         /// </summary>
         public string TargetUserId { get; set; }
 
         /// <summary>
-        /// Nome de usuário que desencadeou a notificação.
+        /// Caminho para a foto do perfil do utilizador que desencadeou a notificação, ou seja, que começou a seguir o utilizador alvo.
         /// </summary>
         public string TriggeredByUserPhoto { get; set; }
 
+        /// <summary>
+        /// Construtor que inicializa uma nova instância da classe FollowNotificationDto com o tipo de evento específico.
+        /// </summary>
         public FollowNotificationDto()
         {
             EventType = "NewFollower";

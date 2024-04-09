@@ -87,7 +87,6 @@ namespace WatchersWorld.Server.Services
     /// Inicializa uma nova instância da classe <see cref="FollowersService"/>.
     /// </remarks>
     /// <param name="context">O contexto da base de dados.</param>
-
     public class FollowersService(WatchersWorldServerContext context) : IFollowersService
     {
         private readonly WatchersWorldServerContext _context = context;

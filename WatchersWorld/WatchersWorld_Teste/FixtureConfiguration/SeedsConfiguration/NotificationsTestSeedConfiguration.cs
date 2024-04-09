@@ -45,9 +45,17 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
                 var user6ToGetId = await userManager.FindByNameAsync("UserTest6");
                 var user7ToGetId = await userManager.FindByNameAsync("UserTest7");
 
-                var media = new MediaInfoModel { IdMedia = 787699, Type = "movie" };
+                var media = new MediaInfoModel { IdTableMedia = 1, IdMedia = 787699, Type = "movie" };
                 context.MediaInfoModel.Add(media);
-                await context.SaveChangesAsync();
+
+                var userMedia = new UserMedia
+                {
+                    UserId = user6ToGetId!.Id, 
+                    IdTableMedia = media.IdTableMedia,
+                    DateMarked = DateTime.UtcNow 
+                };
+
+                context.UserMedia.Add(userMedia);
 
                 var originalComment = new Comment { UserId = user5ToGetId!.Id, MediaId = media.IdMedia, Text = "Ótimo filme!", CreatedAt = DateTime.UtcNow };
                 context.Comments.Add(originalComment);

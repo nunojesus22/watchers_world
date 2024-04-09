@@ -6,12 +6,12 @@
     public class NotificationDto
     {
         /// <summary>
-        /// Nome de usuário que desencadeou a notificação.
+        /// Identificador do utilizador que desencadeou a notificação.
         /// </summary>
         public string TriggeredByUserId { get; set; }
 
         /// <summary>
-        /// Mensagem da notificação.
+        /// Conteúdo da mensagem de notificação.
         /// </summary>
         public string Message { get; set; }
 
@@ -21,12 +21,12 @@
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// Indica se a notificação foi lida.
+        /// Indica se a notificação já foi lida pelo utilizador destinatário.
         /// </summary>
         public bool IsRead { get; set; }
 
         /// <summary>
-        /// Tipo de evento que desencadeou a notificação.
+        /// Tipo de evento que desencadeou a notificação, ajudando a identificar o contexto da mesma.
         /// </summary>
         public string EventType { get; set; }
     }
