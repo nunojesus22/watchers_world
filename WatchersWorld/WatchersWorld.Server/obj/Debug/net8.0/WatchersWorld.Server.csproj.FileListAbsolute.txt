@@ -2311,3 +2311,7 @@ D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\Watche
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.pdb
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Common.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
