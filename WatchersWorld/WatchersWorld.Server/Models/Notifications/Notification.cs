@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WatchersWorld.Server.Models.Authentication;
 
-
 namespace WatchersWorld.Server.Models.Notifications
 {
     /// <summary>
@@ -38,12 +37,9 @@ namespace WatchersWorld.Server.Models.Notifications
         /// </summary>
         public bool IsRead { get; set; }
 
-        // Adicionalmente, você pode querer adicionar um tipo ou categoria para a notificação
         /// <summary>
         /// O tipo de evento que a notificação representa (por exemplo, novo seguidor, mensagem, etc.)
         /// </summary>
         public string EventType { get; set; }
-
-
     }
 }

@@ -6,14 +6,42 @@ using WatchersWorld.Server.Models.Authentication;
 
 namespace WatchersWorld.Server.Services
 {
+    /// <summary>
+    /// Interface que define operações de serviço para gestão de perfis de utilizadores.
+    /// </summary>
     public interface IProfileService
     {
+        /// <summary>
+        /// Obtém as informações do perfil de um utilizador com base no seu nome de utilizador.
+        /// </summary>
+        /// <param name="username">O nome de utilizador para o qual o perfil é requerido.</param>
+        /// <returns>Os detalhes do perfil do utilizador como um DTO de ProfileInfo.</returns>
         Task<ProfileInfoDto> GetUserProfileAsync(string username);
+
+        /// <summary>
+        /// Atualiza as informações de perfil de um utilizador.
+        /// </summary>
+        /// <param name="userId">O identificador do utilizador cujo perfil será atualizado.</param>
+        /// <param name="profileInfo">Um DTO contendo as novas informações do perfil.</param>
+        /// <returns>True se a atualização for bem-sucedida, caso contrário false.</returns>
         Task<bool> UpdateUserProfileAsync(string userId, ProfileInfoDto profileInfo);
+
+        /// <summary>
+        /// Exclui a conta e as informações de perfil de um utilizador.
+        /// </summary>
+        /// <param name="username">O nome de utilizador da conta a ser excluída.</param>
+        /// <returns>Uma mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> DeleteOwnAccountAsync(string username);
 
     }
 
+    /// <summary>
+    /// Serviço para a gestão de perfis.
+    /// </summary>
+    /// <remarks>
+    /// Inicializa uma nova instância da classe <see cref="ProfileService"/>.
+    /// </remarks>
+    /// <param name="context">O contexto da base de dados.</param>
     public class ProfileService : IProfileService
     {
         private readonly UserManager<User> _userManager;
@@ -61,7 +89,6 @@ namespace WatchersWorld.Server.Services
                 throw new NullReferenceException("Não foi possível encontrar o utilizador");
             }
 
-            // Atualiza o perfil com os novos dados
             user.Description = profileInfo.Description;
             user.Gender = profileInfo.Gender;
             user.BirthDate = profileInfo.BirthDate;
@@ -71,7 +98,6 @@ namespace WatchersWorld.Server.Services
             user.Followers = profileInfo.Followers;
             user.Following = profileInfo.Following;
 
-            // Salva as mudanças no contexto
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
@@ -104,7 +130,7 @@ namespace WatchersWorld.Server.Services
                     await transaction.CommitAsync();
                     return "Your account and profile info have been successfully deleted.";
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     await transaction.RollbackAsync();
                     return "An error occurred while deleting your account and profile info.";

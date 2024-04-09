@@ -6,32 +6,31 @@
     public class MediaNotificationDto : NotificationDto
     {
         /// <summary>
-        /// Nome da série ou mídia à qual o novo episódio pertence.
+        /// Identificador da mídia a que a notificação se refere.
         /// </summary>
         public int MediaId { get; set; }
 
         /// <summary>
-        /// Nome da série ou mídia à qual o novo episódio pertence.
+        /// Nome da série ou filme a que o novo episódio ou mídia pertence.
         /// </summary>
         public string MediaName { get; set; }
 
         /// <summary>
-        /// Nome da série ou mídia à qual o novo episódio pertence.
+        /// Caminho para a foto representativa da série ou filme.
         /// </summary>
         public string MediaPhoto { get; set; }
 
         /// <summary>
-        /// Identificador único da relação UserMedia associada à notificação.
-        /// Isso pode ser usado para recuperar informações adicionais se necessário.
+        /// Identificador da relação UserMedia que conecta o utilizador à mídia específica.
         /// </summary>
         public int UserMediaId { get; set; }
 
         /// <summary>
-        /// Construtor para inicializar a notificação de nova mídia com o tipo de evento pré-definido.
+        /// Construtor que inicializa uma nova instância da classe MediaNotificationDto com o tipo de evento específico.
         /// </summary>
         public MediaNotificationDto()
         {
-            EventType = "NewMedia"; // Defina o tipo de evento para nova mídia
+            EventType = "NewMedia";
         }
     }
 }

@@ -6,15 +6,18 @@
     public class MessageNotificationDto : NotificationDto
     {
         /// <summary>
-        /// Nome de utilizador que deve receber a notificação.
+        /// Identificador do utilizador destinatário da notificação.
         /// </summary>
         public string TargetUserId { get; set; }
 
         /// <summary>
-        /// Foto de utilizador que desencadeou a notificação.
+        /// Caminho para a foto do utilizador que desencadeou a notificação.
         /// </summary>
         public string TriggeredByUserPhoto { get; set; }
 
+        /// <summary>
+        /// Construtor que inicializa uma nova instância da classe MessageNotificationDto com o tipo de evento específico.
+        /// </summary>
         public MessageNotificationDto()
         {
             EventType = "Message";
