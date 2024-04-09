@@ -90,7 +90,7 @@ namespace WatchersWorld.Server.Chat.Services
 
         public async Task<bool> DeleteMessage(string user1Id, string messageId)
         {
-            if (user1Id.IsNullOrEmpty() || messageId.IsNullOrEmpty() || messageId.IsNullOrEmpty()) return false;
+            if (user1Id.IsNullOrEmpty() || messageId.IsNullOrEmpty()) return false;
 
             var message = await _context.Messages.Where(m => m.Id == messageId).FirstAsync();
             if (message == null) return false;

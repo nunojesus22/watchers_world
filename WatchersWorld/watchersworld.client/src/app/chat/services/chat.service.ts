@@ -6,7 +6,6 @@ import { Message } from '../models/messages';
 import { AuthenticationService } from '../../authentication/services/authentication.service';
 import { ProfileChat } from '../models/profileChat';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -59,8 +58,10 @@ export class ChatService {
       return; // Prevent multiple connections.
     }
 
+    const isDevelopment = window.location.hostname === 'localhost';
+    const signalRHubUrl = isDevelopment ? 'https://localhost:7232/chathub' : '/chathub';
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(`${environment.appUrl}/chathub?username=${username}&timeZone=${encodeURIComponent(this.getTimeZone())}`, {
+      .withUrl(`${signalRHubUrl}?username=${username}&timeZone=${encodeURIComponent(this.getTimeZone())}`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets
       })

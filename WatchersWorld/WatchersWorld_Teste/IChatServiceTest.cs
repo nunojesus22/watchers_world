@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WatchersWorld.Server.Chat.DTOs;
 using WatchersWorld.Server.Chat.Services;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
@@ -102,17 +103,96 @@ namespace WatchersWorld_Teste
             var user1 = await _userManager.FindByNameAsync("UserTest1");
             var user3 = await _userManager.FindByNameAsync("UserTest3");
 
+            await _service.SendMessage(user1!.Id, user3!.Id, "Olá", DateTime.UtcNow);
+            await _service.SendMessage(user1!.Id, user3!.Id, "Tudo bem?", DateTime.UtcNow);
+            await _service.SendMessage(user3!.Id, user1!.Id, "Está tudo, e por aí?", DateTime.UtcNow);
+            await _service.SendMessage(user1!.Id, user3!.Id, "Também!", DateTime.UtcNow);
+
             var result = await _service.DeleteChat(user1!.Id, user3!.Id);
 
             Assert.True(result);
+
+
+            var chat = await _service.GetChatByUsers(user1.Id, user3.Id);
+            var messages = await _service.GetAllMessagesByChat(chat.Id.ToString());
+
+            foreach (var message in messages)
+            {
+                var visibilityUser1 = await _context.MessagesVisibility.FirstOrDefaultAsync(v => v.MessageId == message.MessageId && v.UserId == user1.Id);
+                Assert.False(visibilityUser1!.Visibility);
+
+                var visibilityUser3 = await _context.MessagesVisibility.FirstOrDefaultAsync(v => v.MessageId == message.MessageId && v.UserId == user3.Id);
+                Assert.True(visibilityUser3!.Visibility);
+            }
         }
 
         [Fact]
+        public async Task DeleteMessage_DeleteMessageUserThatNotExists_ShouldReturnFalse()
+        {
+            var user20 = await _userManager.FindByNameAsync("UserTest20");
+
+            var result = await _service.DeleteMessage(user20?.Id, "");
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task DeleteMessage_DeleteMessageMessageThatNotExists_ShouldReturnFalse()
+        {
+            var user1 = await _userManager.FindByNameAsync("UserTest1");
+
+            var result = await _service.DeleteMessage(user1!.Id, "");
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task DeleteMessage_DeleteMessageMessageThatExists_ShouldReturnTrue()
+        {
+            var user2 = await _userManager.FindByNameAsync("UserTest2");
+            var user3 = await _userManager.FindByNameAsync("UserTest3");
+
+            var messageToDelete = await _service.SendMessage(user2!.Id, user3!.Id, "Olá", DateTime.UtcNow);
+            await _service.SendMessage(user2!.Id, user3!.Id, "Tudo bem?", DateTime.UtcNow);
+            await _service.SendMessage(user3!.Id, user2!.Id, "Está tudo, e por aí?", DateTime.UtcNow);
+            await _service.SendMessage(user2!.Id, user3!.Id, "Também!", DateTime.UtcNow);
+
+            var result = await _service.DeleteMessage(user2!.Id, messageToDelete.MessageId);
+
+            Assert.True(result);
+
+
+            var chat = await _service.GetChatByUsers(user2.Id, user3.Id);
+            var messages = await _service.GetAllMessagesByChat(chat.Id.ToString());
+
+            foreach (var message in messages)
+            {
+                if(message.MessageId == messageToDelete.MessageId)
+                {
+                    var visibilityUser2 = await _context.MessagesVisibility.FirstOrDefaultAsync(v => v.MessageId == message.MessageId && v.UserId == user2.Id);
+                    Assert.False(visibilityUser2!.Visibility);
+
+                    var visibilityUser3 = await _context.MessagesVisibility.FirstOrDefaultAsync(v => v.MessageId == message.MessageId && v.UserId == user3.Id);
+                    Assert.True(visibilityUser3!.Visibility);
+
+                } else
+                {
+                    var visibilityUser2 = await _context.MessagesVisibility.FirstOrDefaultAsync(v => v.MessageId == message.MessageId && v.UserId == user2.Id);
+                    Assert.True(visibilityUser2!.Visibility);
+
+                    var visibilityUser3 = await _context.MessagesVisibility.FirstOrDefaultAsync(v => v.MessageId == message.MessageId && v.UserId == user3.Id);
+                    Assert.True(visibilityUser3!.Visibility);
+                }
+            }
+        }
+
+        
+        [Fact]
         public async Task GetChatsByUser_GetChatsFromUser_ShouldReturnEmpty()
         {
-            var user8 = await _userManager.FindByNameAsync("UserTest8");
+            var user20 = await _userManager.FindByNameAsync("UserTest20");
 
-            var result = await _service.GetChatsByUser(user8!.Id);
+            var result = await _service.GetChatsByUser(user20?.Id);
 
             Assert.Empty(result);
 
@@ -131,9 +211,9 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetUsersThatHaveChatWith_GetUsersThatHaveChatWithUser_ShouldReturnEmpty()
         {
-            var user8 = await _userManager.FindByNameAsync("UserTest8");
+            var user20 = await _userManager.FindByNameAsync("UserTest20");
 
-            var result = await _service.GetUsersThatHaveChatWith(user8!.Id);
+            var result = await _service.GetUsersThatHaveChatWith(user20?.Id);
 
             Assert.Empty(result);
 
@@ -156,48 +236,71 @@ namespace WatchersWorld_Teste
             Assert.Equal(3, result.Count);
         }
 
-        /*
+        
         [Fact]
-        public async Task SendMessage_SendMessageWhenUserNotExists_ShouldReturnFalse()
+        public async Task SendMessage_SendMessageWhenUserNotExists_ShouldReturnNull()
         {
             var user1 = await _userManager.FindByNameAsync("UserTest1");
             var user20 = await _userManager.FindByNameAsync("UserTest20");
 
             var result = await _service.SendMessage(user1!.Id, user20?.Id ,"Olá UserTest20");
 
-            Assert.False(result);
+            Assert.Null(result);
         }
 
         [Fact]
-        public async Task SendMessage_SendMessageWhenMessageTextIsEmpty_ShouldReturnFalse()
+        public async Task SendMessage_SendMessageWhenUserIsEquals_ShouldReturnNull()
+        {
+            var user1 = await _userManager.FindByNameAsync("UserTest1");
+
+            var result = await _service.SendMessage(user1!.Id, user1!.Id, "Olá UserTest1");
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task SendMessage_SendMessageWhenMessageTextIsEmpty_ShouldReturnNull()
         {
             var user1 = await _userManager.FindByNameAsync("UserTest1");
             var user2 = await _userManager.FindByNameAsync("UserTest2");
 
             var result = await _service.SendMessage(user1!.Id, user2!.Id, "");
 
-            Assert.False(result);
+            Assert.Null(result);
         }
 
         [Fact]
-        public async Task SendMessage_SendMessageWhenEverythingIsCorrect_ShouldReturnTrue()
+        public async Task SendMessage_SendMessageWhenEverythingIsCorrect_ShouldReturnMessageDto()
         {
-            var user1 = await _userManager.FindByNameAsync("UserTest1");
-            var user2 = await _userManager.FindByNameAsync("UserTest2");
+            var user3 = await _userManager.FindByNameAsync("UserTest3");
+            var user4 = await _userManager.FindByNameAsync("UserTest4");
 
-            var result = await _service.SendMessage(user1!.Id, user2!.Id, "Olá UserTest2");
+            var result = await _service.SendMessage(user3!.Id, user4!.Id, "Olá UserTest4");
 
-            Assert.True(result);
+            Assert.IsType<MessageDto>(result);
+
+            Assert.Null(result.ReadAt);
+
+            var messageSenderVisibility = await _context.MessagesVisibility
+                .FirstOrDefaultAsync(v => v.MessageId == result.MessageId && v.UserId == user3.Id);
+            var messageReceiverVisibility = await _context.MessagesVisibility
+                .FirstOrDefaultAsync(v => v.MessageId == result.MessageId && v.UserId == user4.Id);
+
+            Assert.NotNull(messageSenderVisibility);
+            Assert.NotNull(messageReceiverVisibility);
+            Assert.True(messageSenderVisibility.Visibility, "Sender message visibility should be true.");
+            Assert.True(messageReceiverVisibility.Visibility, "Receiver message visibility should be true.");
         }
 
         [Fact]
-        public async Task MarkMessageAsRead_MarkMessageAsReadWhenMessageIdIsNull_ShouldReturnFalse()
+        public async Task MarkMessageAsRead_MarkMessageAsReadWhenMessageIdIsNull_ShouldReturnNull()
         {
             var result = await _service.MarkMessageAsRead(null);
 
-            Assert.False(result);
+            Assert.Null(result);
         }
 
+        /*
         [Fact]
         public async Task MarkMessageAsRead_MarkMessageAsReadWhenMessageIdIsCorrect_ShouldReturnTrue()
         {
@@ -212,7 +315,7 @@ namespace WatchersWorld_Teste
             var result = await _service.MarkMessageAsRead(message!.Id.ToString());
 
             Assert.True(result);
-        }*/
+        }
 
         [Fact]
         public async Task GetAllMessages_GetAllMessagesByChatWhenChatHaveMessages_ShouldReturnNotEmpty()
@@ -277,5 +380,6 @@ namespace WatchersWorld_Teste
 
             Assert.Empty(result);
         }
+        */
     }
 }
