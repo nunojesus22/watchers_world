@@ -718,6 +718,10 @@ export class ProfileComponent implements OnInit {
 
   //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
 
+  /**
+   * Recupera as medalhas desbloqueadas pelo utilizador.
+   * Este método consulta o serviço de gamificação para obter as medalhas que o utilizador já conseguiu desbloquear.
+   */
   getMedals(username: string) {
     if (this.currentUsername) {
       this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
@@ -736,6 +740,13 @@ export class ProfileComponent implements OnInit {
  
 
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
+
+  /**
+   * Verifica se um utilizador está atualmente banido com base nas datas de início e fim do banimento.
+   * 
+   * @param profile O perfil do utilizador a verificar.
+   * @returns Verdadeiro se o utilizador estiver banido, falso caso contrário.
+   */
   checkIfUserIsBanned(profile: Profile): boolean {
     try {
       if (!profile.startBanDate || !profile.endBanDate) {
@@ -754,7 +765,11 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Executa o banimento temporário de um utilizador.
+   * 
+   * @param username O nome do utilizador a ser banido temporariamente.
+   */
   banTemp(username: string | null): void {
     if (!username) {
       console.error('Username is undefined, cannot ban user temporarily.');
@@ -783,8 +798,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
+  /**
+   * Executa o banimento permanente de um utilizador.
+   * 
+   * @param username O nome do utilizador a ser banido permanentemente.
+   */
   banPerm(username: string | null): void {
     if (!username) {
       console.error('Username is undefined, cannot ban user.');
@@ -808,6 +826,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Desbane um utilizador, permitindo-lhe aceder novamente ao sistema.
+   * 
+   * @param username O nome do utilizador a ser desbanido.
+   */
   unban(username: string | undefined): void {
     if (!username) {
       console.error('Username is undefined, cannot unban user.');
@@ -829,16 +852,27 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Exibe o popup de banimento para um utilizador selecionado.
+   * 
+   * @param username O nome do utilizador selecionado para banimento.
+   */
   showBanPopup(username: string): void {
     this.selectedUserForBan = username;
     this.isBanPopupVisible = true; // This should show the popup
   }
 
+  /**
+   * Esconde o popup de banimento e limpa a seleção de utilizador.
+   */
   hideBanPopup(): void {
     this.isBanPopupVisible = false;
     this.selectedUserForBan = null; // Clear the selected user
   }
 
+  /**
+   * Obtém e filtra os perfis dos utilizadores, excluindo o do utilizador autenticado e enriquecendo-os com informação de moderador.
+   */
   getUserProfilesMod() {
     this.profileService.getUserProfiles().pipe(
       takeUntil(this.unsubscribed$),
@@ -875,11 +909,19 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-
+  /**
+ * Atualiza o perfil do utilizador selecionado baseando-se no `selectedUsername`.
+ * Busca e atribui o perfil correspondente a `selectedUser`.
+ */
   updateSelectedUser(): void {
     this.selectedUser = this.usersProfilesMod.find(u => u.userName === this.selectedUsername);
   }
 
+  /**
+   * Filtra os perfis dos utilizadores conforme o termo de pesquisa `searchTerm`.
+   * Atualiza `showNoResults`, `collectionSize` e `filteredUsersProfiles` para refletir os resultados,
+   * aplicando paginação baseada em `page` e `pageSize`.
+   */
   filterUsers(): void {
     let filtered = this.searchTerm ? this.usersProfilesMod.filter(user =>
       user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())) : this.usersProfilesMod;
@@ -892,6 +934,11 @@ export class ProfileComponent implements OnInit {
     this.filteredUsersProfiles = filtered;
   }
 
+  /**
+   * Navega para a página anterior na lista paginada de utilizadores.
+   * Este método decrementa o contador de página atual e filtra novamente os utilizadores
+   * para refletir a mudança na paginação.
+   */
   previousPage() {
     if (this.page > 1) {
       this.page--;
@@ -899,6 +946,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /**
+   * Navega para a próxima página na lista paginada de utilizadores.
+   * Este método incrementa o contador de página atual e filtra novamente os utilizadores
+   * para refletir a mudança na paginação, incluindo a ordenação alfabética dos utilizadores
+   * se necessário.
+   */
   nextPage() {
     if (this.page * this.pageSize < this.collectionSize) {
       this.page++;
@@ -907,14 +960,33 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /**
+  * Verifica se existe uma página anterior disponível para navegação.
+  * 
+  * @returns Verdadeiro se a página atual for maior que 1, indicando a existência de uma página anterior.
+  */
   get hasPreviousPage(): boolean {
     return this.page > 1;
   }
 
+  /**
+  * Verifica se existe uma próxima página disponível para navegação.
+  * 
+  * @returns Verdadeiro se o produto da página atual pelo tamanho da página for menor que o tamanho total da coleção,
+  * indicando a existência de uma próxima página.
+  */
   get hasNextPage(): boolean {
     return this.page * this.pageSize < this.collectionSize;
   }
 
+  /**
+   * Implementa uma função de ordenação natural que compara dois perfis de utilizador.
+   * 
+   * @param a O primeiro perfil de utilizador para comparação.
+   * @param b O segundo perfil de utilizador para comparação.
+   * @returns Um número indicando a ordem dos perfis. Um valor negativo se a preceder b, positivo se b preceder a,
+   * e zero se forem equivalentes na ordenação.
+   */
   naturalSort(a: Profile, b: Profile): number {
     const ax: [number | typeof Infinity, string][] = [];
     const bx: [number | typeof Infinity, string][] = [];
@@ -938,6 +1010,11 @@ export class ProfileComponent implements OnInit {
     return ax.length - bx.length;
   }
 
+  /**
+   * Ordena alfabeticamente os perfis de utilizadores pela propriedade userName.
+   * Este método utiliza uma ordenação natural para lidar com números dentro das strings,
+   * garantindo uma ordenação intuitiva para os utilizadores.
+   */
   sortAlphabetically(): void {
     this.usersProfilesMod.sort((a, b) => this.naturalSort(a, b));
     this.filterUsers(); // Reaplica a filtragem e paginação após a ordenação
