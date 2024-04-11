@@ -29,6 +29,12 @@ export class HomeComponent {
     this.initCategories();
   }
 
+  /**
+ * Envia uma mensagem para um usuário específico.
+ * Verifica se o nome do usuário destinatário e a mensagem estão preenchidos antes de enviar.
+ * Se a validação passar, cria uma mensagem com os dados fornecidos e a envia através do serviço de chat.
+ * Registra no console se a mensagem foi enviada com sucesso ou se ocorreu um erro.
+ */
   sendMessage(): void {
     if (!this.usernameReceiver.trim() || !this.messageText.trim()) {
       console.log('Nome do usuário destinatário e mensagem são necessários.');
@@ -68,6 +74,11 @@ export class HomeComponent {
   } 
 
 
+  /**
+ * Inicializa as categorias de filmes.
+ * Define as categorias de filmes com seus respectivos resultados vazios e índice ativo como 0.
+ * Em seguida, chama o método para buscar os filmes para preencher as categorias.
+ */
   fetchMovies() {
     const fetchMethods = [
       this.service.bannerApiData(),
@@ -89,22 +100,41 @@ export class HomeComponent {
     });
   }
 
+  /**
+ * Realiza o logout do usuário e para a conexão do serviço de chat.
+ */
   logout() {
     this.authService.logout();
     this.chatService.stopConnection();
   }
 
+
+  /**
+ * Obtém os resultados da categoria especificada.
+ * @param categoryName O nome da categoria.
+ * @returns Um array com os resultados da categoria.
+ */
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
     //console.log("category",category);
     return category ? category.results : [];
   }
 
+
+  /**
+ * Obtém o índice ativo da categoria especificada.
+ * @param categoryName O nome da categoria.
+ * @returns O índice ativo da categoria.
+ */
   getCategoryActiveIndex(categoryName: string): number {
     const category = this.categories.find(cat => cat.name === categoryName);
     return category ? category.activeIndex : 0;
   }
 
+  /**
+ * Avança para a próxima página de resultados da categoria especificada.
+ * @param categoryName O nome da categoria.
+ */
   nextCategory(categoryName: string) {
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
@@ -114,6 +144,11 @@ export class HomeComponent {
     }
   }
 
+  
+/**
+ * Retrocede para a página anterior de resultados da categoria especificada.
+ * @param categoryName O nome da categoria.
+ */
   prevCategory(categoryName: string) {
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {

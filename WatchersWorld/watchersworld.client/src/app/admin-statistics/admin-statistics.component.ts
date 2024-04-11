@@ -24,6 +24,13 @@ export class AdminStatisticsComponent {
   chartStaticData: any;
 
 
+/**
+ * Construtor da classe AdminStatisticsComponent.
+ * 
+ * @param adminService O serviço responsável por operações administrativas.
+ * @param authService O serviço de autenticação do usuário.
+ * @param router O serviço de roteamento para navegação entre páginas.
+ */
   constructor(
     private adminService: AdminService,
     private authService: AuthenticationService,
@@ -59,23 +66,36 @@ export class AdminStatisticsComponent {
     }
   }
 
-
+/**
+ * Carrega os tipos de perfil (público/privado) e define as opções do gráfico de pizza correspondente.
+ */
   loadProfileTypes(): void {
     this.fetchProfileCounts(() => {
       this.setProfileTypePieChartOptions();
     });
   }
 
-
+/**
+ * Carrega os dados de usuários banidos versus usuários registrados e define as opções do gráfico correspondente.
+ */
   loadBannedVsRegisteredData(): void {
     // Executa em paralelo o carregamento dos usuários banidos e registrados
     this.fetchTotalBannedUsers();
     this.fetchTotalRegisteredUsers(() => {
-      // Após carregar os dados, configuramos o gráfico
       this.setBannedVsRegisteredChartOptions();
     });
   }
 
+  /**
+ * Define as opções do gráfico de pizza para exibir a comparação entre usuários banidos e registrados.
+ * 
+ * Certifica-se de que os dados necessários estão carregados antes de configurar o gráfico.
+ * 
+ * @remarks
+ * Se os dados de usuários banidos e registrados estiverem disponíveis, configura as opções do gráfico.
+ * 
+ * @returns void
+ */
   setBannedVsRegisteredChartOptions(): void {
     // Assegura-se de que os dados necessários estão carregados
     if (this.totalBannedUsers !== undefined && this.totalRegisteredUsers !== undefined) {
@@ -106,6 +126,12 @@ export class AdminStatisticsComponent {
       };
     }
   }
+
+  /**
+ * Define as opções do gráfico de pizza para exibir a distribuição de perfis privados e públicos.
+ * 
+ * @returns void
+ */
   setProfileTypePieChartOptions(): void {
     this.chartProfileTypes = {
       chart: {
@@ -134,6 +160,11 @@ export class AdminStatisticsComponent {
     };
   }
 
+  /**
+ * Define as opções do gráfico de pizza para exibir a distribuição de conteúdo estático, como filmes e séries.
+ * 
+ * @returns void
+ */
   setStaticDataPieChartOptions(): void {
     this.chartStaticData = {
       chart: {
@@ -161,6 +192,11 @@ export class AdminStatisticsComponent {
       }]
     };
   }
+
+  /**
+ * Busca o total de usuários registrados e chama a função de retorno, se fornecida.
+ * @param callback Uma função de retorno opcional para chamar após a conclusão da busca.
+ */
   private fetchTotalRegisteredUsers(callback?: () => void): void {
     this.adminService.getTotalRegisteredUsers().subscribe({
       next: (totalUsers) => {
@@ -172,6 +208,11 @@ export class AdminStatisticsComponent {
   }
 
 
+
+
+/**
+ * Busca o total de usuários banidos.
+ */
   private fetchTotalBannedUsers(): void {
     this.adminService.getTotalBannedUsers().subscribe({
       next: (total) => {
@@ -180,6 +221,10 @@ export class AdminStatisticsComponent {
       error: (error) => console.error("Error fetching total banned users:", error)
     });
   }
+
+  /**
+ * Busca o total de comentários.
+ */
   private fetchTotalComments(): void {
     this.adminService.getTotalComments().subscribe({
       next: (total) => {
@@ -188,6 +233,12 @@ export class AdminStatisticsComponent {
       error: (error) => console.error("Error fetching total comments :", error)
     });
   }
+
+  /**
+ * Busca o total de perfis privados e chama a função de retorno, se fornecida.
+ * Em seguida, busca o total de perfis públicos e chama a função de retorno novamente.
+ * @param callback Uma função de retorno opcional para chamar após a conclusão da busca de perfis privados e públicos.
+ */
   private fetchProfileCounts(callback?: () => void): void {
     this.adminService.getTotalPrivateProfiles().subscribe({
       next: (total) => {
