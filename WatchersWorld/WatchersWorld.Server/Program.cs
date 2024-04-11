@@ -23,7 +23,8 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    builder.Services.AddSignalR().AddAzureSignalR("Endpoint=https://watchers-world-signalr.service.signalr.net;AccessKey=EuNLKyC4PIC8282X4JF4n5WSRg7T+IBFnx0gXS1yXxQ=;Version=1.0;");
+    builder.Services.AddSignalR();
+    //builder.Services.AddSignalR().AddAzureSignalR("Endpoint=https://watchers-world-signalr.service.signalr.net;AccessKey=EuNLKyC4PIC8282X4JF4n5WSRg7T+IBFnx0gXS1yXxQ=;Version=1.0;");
 }
 
 builder.Services.AddScoped<JWTService>();
