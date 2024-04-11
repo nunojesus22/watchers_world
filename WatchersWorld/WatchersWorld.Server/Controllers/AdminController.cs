@@ -185,12 +185,12 @@ namespace WatchersWorld.Server.Controllers
 
         // In ProfileController.cs or a relevant controller
 
-        //[HttpGet("api/admin/total-banned-users")]
-        //public async Task<ActionResult<int>> GetTotalBannedUsers()
-        //{
-        //    int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.IsBanned);
-        //    return Ok(totalBannedUsers);
-        //}
+        [HttpGet("api/admin/total-banned-users")]
+        public async Task<ActionResult<int>> GetTotalBannedUsers()
+        {
+            int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.StartBanDate != null);
+            return Ok(totalBannedUsers);
+        }
 
         [HttpGet("api/admin/total-registered-users")]
         public async Task<ActionResult<int>> GetTotalRegisteredUsers()

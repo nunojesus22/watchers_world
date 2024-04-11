@@ -48,6 +48,8 @@ export class StatisticsComponent implements OnInit {
   chartQuizAndRatings: any; // opções para o gráfico circular
 
   chartFollowers: any;
+  chartComparisonMedia: any; 
+
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService,
@@ -74,16 +76,76 @@ export class StatisticsComponent implements OnInit {
       this.loadSerieAddedByDate();
       this.loadPieChartData();
       this.loadFollowersData();
-      //this.test();
+      this.loadMoviesVsSeriesData();
     }
   }
 
+  loadMoviesVsSeriesData(): void {
+    forkJoin({
+      watchedMedia: this.profileService.getUserWatchedMedia(this.currentUser),
+      watchLaterMedia: this.profileService.getUserWatchLaterMedia(this.currentUser)
+    }).subscribe({
+      next: (results) => {
+        this.watchedMoviesCount = results.watchedMedia.filter(m => m.type === 'movie').length;
+        this.watchedSeriesCount = results.watchedMedia.filter(m => m.type === 'serie').length;
+        this.watchLaterMoviesCount = results.watchLaterMedia.filter(m => m.type === 'movie').length;
+        this.watchLaterSeriesCount = results.watchLaterMedia.filter(m => m.type === 'serie').length;
+        this.setWatchedComparisonChartOptions();
+      },
+      error: (error) => console.error("Error fetching media counts:", error)
+    });
+  }
+
+
+  setWatchedComparisonChartOptions(): void {
+    this.chartComparisonMedia = {
+      chart: {
+        type: 'pie',
+        options3d: {
+          enabled: true,
+          alpha: 45
+        }
+      },
+      subtitle: {
+        text: 'Numero de Filmes Vistos Vs Series Vistas  '
+      },
+      title: {
+        text: 'Comparação de Filmes e Séries Assistidas'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          innerSize: 100,
+          depth: 45
+        }
+      },
+      series: [{
+        name: 'Assistidos',
+        colorByPoint: true,
+        data: [{
+          name: 'Filmes',
+          y: this.watchedMoviesCount,
+          sliced: true,
+          selected: true
+        }, {
+          name: 'Séries',
+          y: this.watchedSeriesCount
+        }]
+      }]
+    };
+  }
   loadFollowersData(): void {
     this.profileService.getUserData(this.currentUser).subscribe({
       next: (profileData) => {
         this.followersCount = profileData.followers;
         this.followingCount = profileData.following;
-        // Chama a função para configurar o gráfico de seguidores
         this.setFollowersPieChartOptions();
       },
       error: (error) => console.error("Error fetching followers data:", error)
@@ -106,7 +168,7 @@ export class StatisticsComponent implements OnInit {
           text: 'Seguidores e Seguindo'
         },
         subtitle: {
-          text: 'Visão geral do engajamento social'
+          text: 'Visão geral da parte social'
         },
         plotOptions: {
           pie: {
