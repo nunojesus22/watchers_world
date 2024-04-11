@@ -9,53 +9,149 @@ using WatchersWorld.Server.Models.Notifications;
 namespace WatchersWorld.Server.Services
 {
     /// <summary>
-    /// Define as operações relacionadas à gestão de notificações no sistema.
+    /// Interface que define operações para a gestão de notificações.
     /// </summary>
     public interface INotificationService
     {
         /// <summary>
-        /// Cria uma nova notificação de seguimento.
+        /// Cria e armazena uma notificação de seguimento.
         /// </summary>
-        /// <param name="triggeredByUserId">O identificador do usuário que desencadeou o evento (por exemplo, quem começou a seguir).</param>
-        /// <param name="targetUserId">O identificador do usuário que deve receber a notificação.</param>
+        /// <param name="triggeredByUserId">Identificador do utilizador que iniciou o seguimento.</param>
+        /// <param name="targetUserId">Identificador do utilizador alvo que receberá a notificação.</param>
+        /// <returns>O DTO da notificação de seguimento criada.</returns>
         Task<FollowNotificationDto> CreateFollowNotificationAsync(string triggeredByUserId, string targetUserId);
 
+        /// <summary>
+        /// Obtém todas as notificações de seguimento para um dado utilizador.
+        /// </summary>
+        /// <param name="targetUserId">Identificador do utilizador alvo.</param>
+        /// <returns>Uma lista de DTOs de notificações de seguimento.</returns>
         Task<List<FollowNotificationDto>> GetFollowNotificationsForUserAsync(string targetUserId);
 
+        /// <summary>
+        /// Cria uma notificação de resposta para um utilizador.
+        /// </summary>
+        /// <param name="triggeredByUserId">O identificador do utilizador que iniciou a resposta.</param>
+        /// <param name="targetUserId">O identificador do utilizador alvo da notificação.</param>
+        /// <param name="mediaId">O identificador do media relacionado com a resposta.</param>
+        /// <param name="commentId">O identificador do comentário que é objeto da resposta.</param>
+        /// <param name="commentText">O texto do comentário que foi respondido.</param>
+        /// <returns>Um DTO de notificação de resposta.</returns>
         Task<ReplyNotificationDto> CreateReplyNotificationAsync(string triggeredByUserId, string targetUserId, int mediaId, int commentId, string commentText);
 
+        /// <summary>
+        /// Obtém todas as notificações de resposta a comentários para um dado utilizador.
+        /// </summary>
+        /// <param name="targetUserId">Identificador do utilizador alvo.</param>
+        /// <returns>Uma lista de DTOs de notificações de respostas a comentários.</returns>
         Task<List<ReplyNotificationDto>> GetReplyNotificationsForUserAsync(string targetUserId);
 
+        /// <summary>
+        /// Marca todas as notificações de seguimento de um utilizador como lidas.
+        /// </summary>
+        /// <param name="username">O nome de utilizador cujas notificações de seguimento serão marcadas como lidas.</param>
+        /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
         Task MarkAllFollowNotificationsAsReadAsync(string username);
 
+        /// <summary>
+        /// Marca todas as notificações de resposta a comentários de um utilizador como lidas.
+        /// </summary>
+        /// <param name="username">O nome de utilizador cujas notificações de resposta serão marcadas como lidas.</param>
+        /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
         Task MarkAllReplyNotificationsAsReadAsync(string username);
 
+        /// <summary>
+        /// Limpa todas as notificações associadas a um utilizador.
+        /// </summary>
+        /// <param name="username">O nome do utilizador para quem as notificações devem ser limpas.</param>
+        /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
         Task ClearNotificationsForUserAsync(string username);
 
+        /// <summary>
+        /// Verifica se existem notificações não lidas para um utilizador específico.
+        /// </summary>
+        /// <param name="username">O nome de utilizador para o qual verificar a existência de notificações não lidas.</param>
+        /// <returns>Um valor booleano que é verdadeiro se existirem notificações não lidas e falso caso contrário.</returns>
         Task<bool> HasUnreadNotificationsAsync(string username);
 
+        /// <summary>
+        /// Cria uma notificação de conquista de uma medalha para um utilizador.
+        /// </summary>
+        /// <param name="triggeredByUserId">O identificador do utilizador que atingiu a conquista de uma medalha.</param>
+        /// <param name="userMedalId">O identificador da medalha que foi conquistada.</param>
+        /// <returns>Um DTO de notificação de conquista de uma medalha.</returns>
         Task<AchievementNotificationDto> CreateAchievementNotificationAsync(string triggeredByUserId, int userMedalId);
 
+        /// <summary>
+        /// Obtém todas as notificações de medalhas para um dado utilizador.
+        /// </summary>
+        /// <param name="targetUserId">Identificador do utilizador alvo.</param>
+        /// <returns>Uma lista de DTOs de notificações de medalhas.</returns>
         Task<List<AchievementNotificationDto>> GetAchievementNotificationsForUserAsync(string userId);
 
+        /// <summary>
+        /// Marca todas as notificações de medalhas de um utilizador como lidas.
+        /// </summary>
+        /// <param name="username">O nome de utilizador cujas notificações de medalhas serão marcadas como lidas.</param>
+        /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
         Task MarkAllAchievementNotificationsAsReadAsync(string username);
 
+        /// <summary>
+        /// Cria uma notificação de mensagem para um utilizador.
+        /// </summary>
+        /// <param name="triggeredByUserId">O identificador do utilizador que enviou a mensagem.</param>
+        /// <param name="targetUserId">O identificador do utilizador destinatário da mensagem.</param>
+        /// <returns>Um DTO de notificação de mensagem.</returns>
         Task<MessageNotificationDto> CreateMessageNotificationAsync(string triggeredByUserId, string targetUserId);
 
+        /// <summary>
+        /// Obtém todas as notificações de mensagens para um dado utilizador.
+        /// </summary>
+        /// <param name="targetUserId">Identificador do utilizador alvo.</param>
+        /// <returns>Uma lista de DTOs de notificações de mensagens.</returns>
         Task<List<MessageNotificationDto>> GetMessageNotificationsForUserAsync(string targetUserId);
 
+        /// <summary>
+        /// Marca todas as notificações de mensagens de um utilizador como lidas.
+        /// </summary>
+        /// <param name="username">O nome de utilizador cujas notificações de mensagem serão marcadas como lidas.</param>
+        /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
         Task MarkAllMessageNotificationsAsReadAsync(string username);
 
+        /// <summary>
+        /// Cria uma notificação de mídia nova e a associa ao utilizador especificado.
+        /// </summary>
+        /// <param name="triggeredByUserId">O identificador do utilizador que acionou o evento.</param>
+        /// <param name="mediaId">O identificador da mídia associada à notificação.</param>
+        /// <param name="mediaName">O nome da mídia associada à notificação.</param>
+        /// <param name="mediaPhoto">O caminho para a foto da mídia associada à notificação.</param>
+        /// <returns>Um DTO contendo os detalhes da notificação de mídia criada.</returns>
         Task<MediaNotificationDto> CreateMediaNotificationAsync(string triggeredByUserId, int idTableMedia, string mediaName, string mediaPhoto);
 
+        /// <summary>
+        /// Obtém uma lista de notificações de mídia para um utilizador específico.
+        /// </summary>
+        /// <param name="userId">O identificador do utilizador para o qual obter as notificações.</param>
+        /// <param name="mediaName">O nome da mídia a ser utilizado na montagem da mensagem da notificação.</param>
+        /// <param name="mediaPhoto">O caminho para a foto da mídia a ser utilizado na notificação.</param>
+        /// <returns>Uma lista de DTOs representando as notificações de mídia do utilizador.</returns>
         Task<List<MediaNotificationDto>> GetMediaNotificationsForUserAsync(string userId, string mediaName, string mediaPhoto);
 
+        /// <summary>
+        /// Marca todas as notificações de novos episódios de um utilizador como lidas.
+        /// </summary>
+        /// <param name="username">O nome de utilizador cujas notificações de novos episódios de medias serão marcadas como lidas.</param>
+        /// <returns>Uma tarefa que representa a operação assíncrona.</returns>
         Task MarkAllMediaNotificationsAsReadAsync(string username);
     }
 
     /// <summary>
-    /// Implementa as operações definidas pela interface INotificationService, manipulando a lógica de negócios para notificações no sistema.
+    /// Serviço para a gestão de seguidores.
     /// </summary>
+    /// <remarks>
+    /// Inicializa uma nova instância da classe <see cref="NotificationService"/>.
+    /// </remarks>
+    /// <param name="context">O contexto da base de dados.</param>
     public class NotificationService : INotificationService
     {
         private readonly WatchersWorldServerContext _context;

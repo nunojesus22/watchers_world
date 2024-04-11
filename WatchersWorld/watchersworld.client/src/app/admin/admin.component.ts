@@ -8,6 +8,12 @@ import { AdminService } from '../admin/service/admin.service'
 import { Router } from '@angular/router';
 
 
+/**
+ * Componente responsável pela gestão administrativa dos utilizadores na interface de administração.
+ * Permite a realização de operações como banir utilizadores (temporariamente ou permanentemente),
+ * deletar contas de utilizador, alterar papéis de utilizador (promover a moderador ou rebaixar a utilizador),
+ * e desbanir utilizadores. Além disso, gere a visualização e filtragem dos perfis de utilizador.
+ */
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -31,35 +37,31 @@ export class AdminComponent implements OnDestroy {
   selectedUser: Profile | undefined;
   selectedUsername: string | null = null;
 
-
-
   page: number = 1;
-  pageSize: number = 5; // Quantidade de usuários por página
-  collectionSize!: number; // O total de usuários disponíveis
+  pageSize: number = 5;
+  collectionSize!: number;
 
 
   constructor(private profileService: ProfileService, private authService: AuthenticationService, private adminService: AdminService, private router: Router) { }
 
-
+  /**
+   * Inicializa o componente, obtendo o nome do utilizador autenticado e carregando os perfis dos utilizadores.
+   */
   ngOnInit(): void {
     this.loggedUserName = this.authService.getLoggedInUserName();
     if (this.loggedUserName) {
-      // Obtem as roles do usuário atual
       this.authService.getUserRole(this.loggedUserName).subscribe({
         next: (roles) => {
-          // Verifica se o usuário tem a role de admin
           if (!roles.includes('Admin')) {
-            this.router.navigate(['/']); // Redireciona para a página inicial se não for admin
+            this.router.navigate(['/']);
             return;
           }
-          // Se for admin, executa as funções de busca
           this.getUserProfiles();
 
         },
         error: (error) => console.error("Error fetching user roles:", error)
       });
     } else {
-      // Se não estiver logado ou se o nome do usuário não estiver disponível, redireciona
       this.router.navigate(['/']);
     }
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
@@ -83,34 +85,30 @@ export class AdminComponent implements OnDestroy {
 
   }
 
+  /**
+   * Limpa os recursos ao destruir o componente.
+   */
   ngOnDestroy() {
     this.unsubscribed$.next();
     this.unsubscribed$.complete();
-
   }
 
-
-
+  /**
+   * Obtém e filtra os perfis dos utilizadores, excluindo o do utilizador autenticado e enriquecendo-os com informação de moderador.
+   */
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(
       takeUntil(this.unsubscribed$),
       mergeMap(profiles => {
-        // Filtra fora o perfil do usuário logado
         const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
-
-        // Mapeia os perfis filtrados para chamadas de Observable do getUserRole
         return forkJoin(filteredProfiles.map(profile => {
-          // Verifique se o nome de usuário está definido para evitar erros
           if (!profile.userName) {
             console.warn(`Perfil sem nome de usuário encontrado:`, profile);
             return of({ ...profile, isModerator: false });
           }
-
-          // Chama getUserRole e mapeia os resultados para cada perfil
           return this.adminService.getUserRole(profile.userName).pipe(
             map(roles => {
               console.log(`Roles for ${profile.userName}:`, roles);
-              // Retorna o perfil com a propriedade adicional isModerator
               return {
                 ...profile,
                 isBanned: this.checkIfUserIsBanned(profile),
@@ -119,21 +117,18 @@ export class AdminComponent implements OnDestroy {
             }),
             catchError(error => {
               console.error('Error fetching roles for user:', profile.userName, error);
-              return of({ ...profile, isModerator: false }); // Retorna isModerator como false em caso de erro
+              return of({ ...profile, isModerator: false });
             })
           );
         }));
       })
     ).subscribe(
       (profiles) => {
-        // Os perfis aqui são os perfis completos com as informações de isModerator
         console.log("Perfis com informação de moderador:", profiles);
 
-        // Atualiza o estado do componente com os novos perfis
         this.filteredUsersProfiles = profiles;
         this.collectionSize = profiles.length;
 
-        // Classifica e filtra os perfis atualizados
         this.sortAlphabetically();
         this.filterUsers();
       },
@@ -143,9 +138,12 @@ export class AdminComponent implements OnDestroy {
     );
   }
 
-
-
-
+  /**
+   * Verifica se um utilizador está atualmente banido com base nas datas de início e fim do banimento.
+   * 
+   * @param profile O perfil do utilizador a verificar.
+   * @returns Verdadeiro se o utilizador estiver banido, falso caso contrário.
+   */
   checkIfUserIsBanned(profile: Profile): boolean {
     try {
       if (!profile.startBanDate || !profile.endBanDate) {
@@ -164,9 +162,11 @@ export class AdminComponent implements OnDestroy {
     }
   }
 
-
-
-
+  /**
+   * Executa o banimento temporário de um utilizador.
+   * 
+   * @param username O nome do utilizador a ser banido temporariamente.
+   */
   banTemp(username: string | null): void {
     if (!username) {
       console.error('Username is undefined, cannot ban user temporarily.');
@@ -185,7 +185,6 @@ export class AdminComponent implements OnDestroy {
         this.hideBanPopup();
         if (user) {
           user.isBanned = true;
-          // This will trigger change detection and update the UI
           this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
         }
       },
@@ -195,9 +194,11 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
-
-
-
+  /**
+   * Executa o banimento permanente de um utilizador.
+   * 
+   * @param username O nome do utilizador a ser banido permanentemente.
+   */
   banPerm(username: string | null): void {
     if (!username) {
       console.error('Username is undefined, cannot ban user.');
@@ -212,7 +213,6 @@ export class AdminComponent implements OnDestroy {
         if (user) {
           user.isBanned = true;
         }
-        // This will trigger change detection and update the UI
         this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: error => {
@@ -221,10 +221,11 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
-
-
-
-
+  /**
+   * Deleta a conta de um utilizador.
+   * 
+   * @param username O nome do utilizador cuja conta será deletada.
+   */
   deleteAccount(username: string | undefined): void {
     if (!username) {
       console.error('Username is undefined, cannot delete account.');
@@ -242,7 +243,11 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
-
+  /**
+   * Promove um utilizador a moderador.
+   * 
+   * @param userName O nome do utilizador a ser promovido.
+   */
   makeModerator(userName: string): void {
     if (!userName) {
       console.error('Username is undefined, cannot change role.');
@@ -252,7 +257,6 @@ export class AdminComponent implements OnDestroy {
     this.adminService.changeRoleToModerator(userName).subscribe({
       next: response => {
         console.log('User role updated to Moderator successfully:', response);
-        // Verify the role change
         this.verifyUserRole(userName);
         const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
         if (user) {
@@ -264,6 +268,7 @@ export class AdminComponent implements OnDestroy {
       }
     });
   }
+
 
   private verifyUserRole(userName: string): void {
     this.adminService.getUserRole(userName).subscribe({
@@ -277,6 +282,11 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Rebaixa um moderador a utilizador.
+   * 
+   * @param userName O nome do utilizador a ser rebaixado.
+   */
   demoteToUser(userName: string): void {
     if (!userName) {
       console.error('Username is undefined, cannot change role.');
@@ -286,7 +296,6 @@ export class AdminComponent implements OnDestroy {
     this.adminService.changeRoleToUser(userName).subscribe({
       next: response => {
         console.log('Moderator role updated to User successfully:', response);
-        // Verify the role change
         this.verifyUserRole(userName);
         const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
         if (user) {
@@ -299,7 +308,11 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
-
+  /**
+   * Desbane um utilizador, permitindo-lhe aceder novamente ao sistema.
+   * 
+   * @param username O nome do utilizador a ser desbanido.
+   */
   unban(username: string | undefined): void {
     if (!username) {
       console.error('Username is undefined, cannot unban user.');
@@ -312,7 +325,6 @@ export class AdminComponent implements OnDestroy {
         if (user) {
           user.isBanned = false;
         }
-        // This will trigger change detection and update the UI
         this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: (error) => {
@@ -321,10 +333,16 @@ export class AdminComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Atualiza o utilizador selecionado na interface de usuário.
+   */
   updateSelectedUser(): void {
     this.selectedUser = this.usersProfiles.find(u => u.userName === this.selectedUsername);
   }
 
+  /**
+   * Filtra a lista de utilizadores baseada no termo de pesquisa.
+   */
   filterUsers(): void {
     let filtered = this.searchTerm ? this.usersProfiles.filter(user =>
       user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())) : this.usersProfiles;
@@ -332,11 +350,15 @@ export class AdminComponent implements OnDestroy {
     this.showNoResults = filtered.length === 0;
     this.collectionSize = filtered.length;
 
-    // Aplica a paginação
     filtered = filtered.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
     this.filteredUsersProfiles = filtered;
   }
 
+  /**
+   * Navega para a página anterior na lista paginada de utilizadores.
+   * Este método decrementa o contador de página atual e filtra novamente os utilizadores
+   * para refletir a mudança na paginação.
+   */
   previousPage() {
     if (this.page > 1) {
       this.page--;
@@ -344,6 +366,12 @@ export class AdminComponent implements OnDestroy {
     }
   }
 
+  /**
+   * Navega para a próxima página na lista paginada de utilizadores.
+   * Este método incrementa o contador de página atual e filtra novamente os utilizadores
+   * para refletir a mudança na paginação, incluindo a ordenação alfabética dos utilizadores
+   * se necessário.
+   */
   nextPage() {
     if (this.page * this.pageSize < this.collectionSize) {
       this.page++;
@@ -352,14 +380,33 @@ export class AdminComponent implements OnDestroy {
     }
   }
 
+  /**
+  * Verifica se existe uma página anterior disponível para navegação.
+  * 
+  * @returns Verdadeiro se a página atual for maior que 1, indicando a existência de uma página anterior.
+  */
   get hasPreviousPage(): boolean {
     return this.page > 1;
   }
 
+  /**
+   * Verifica se existe uma próxima página disponível para navegação.
+   * 
+   * @returns Verdadeiro se o produto da página atual pelo tamanho da página for menor que o tamanho total da coleção,
+   * indicando a existência de uma próxima página.
+   */
   get hasNextPage(): boolean {
     return this.page * this.pageSize < this.collectionSize;
   }
 
+  /**
+   * Implementa uma função de ordenação natural que compara dois perfis de utilizador.
+   * 
+   * @param a O primeiro perfil de utilizador para comparação.
+   * @param b O segundo perfil de utilizador para comparação.
+   * @returns Um número indicando a ordem dos perfis. Um valor negativo se a preceder b, positivo se b preceder a,
+   * e zero se forem equivalentes na ordenação.
+   */
   naturalSort(a: Profile, b: Profile): number {
     const ax: [number | typeof Infinity, string][] = [];
     const bx: [number | typeof Infinity, string][] = [];
@@ -383,19 +430,32 @@ export class AdminComponent implements OnDestroy {
     return ax.length - bx.length;
   }
 
+  /**
+   * Ordena alfabeticamente os perfis de utilizadores pela propriedade userName.
+   * Este método utiliza uma ordenação natural para lidar com números dentro das strings,
+   * garantindo uma ordenação intuitiva para os utilizadores.
+   */
   sortAlphabetically(): void {
     this.usersProfiles.sort((a, b) => this.naturalSort(a, b));
-    this.filterUsers(); // Reaplica a filtragem e paginação após a ordenação
+    this.filterUsers();
   }
 
+  /**
+   * Exibe o popup de banimento para um utilizador selecionado.
+   * 
+   * @param username O nome do utilizador selecionado para banimento.
+   */
   showBanPopup(username: string): void {
     this.selectedUserForBan = username;
-    this.isBanPopupVisible = true; // This should show the popup
+    this.isBanPopupVisible = true;
   }
 
+  /**
+   * Esconde o popup de banimento e limpa a seleção de utilizador.
+   */
   hideBanPopup(): void {
     this.isBanPopupVisible = false;
-    this.selectedUserForBan = null; // Clear the selected user
+    this.selectedUserForBan = null;
   }
 
 }

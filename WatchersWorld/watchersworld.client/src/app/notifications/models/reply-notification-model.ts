@@ -1,5 +1,17 @@
 import { NotificationModel } from "./notification-model";
 
+/**
+ * Modelo para notificações de respostas a comentários. Estende o modelo de notificação base,
+ * adicionando propriedades específicas como ID da mídia, tipo da mídia, ID do comentário,
+ * ID do usuário alvo e foto do usuário que disparou a notificação.
+ *
+ * Propriedades:
+ * - mediaId: Identificador da mídia associada à notificação.
+ * - mediaType: Tipo da mídia (por exemplo, filme, série).
+ * - commentId: Identificador do comentário associado à notificação.
+ * - targetUserId: Identificador do usuário alvo da notificação.
+ * - triggeredByUserPhoto: Foto do usuário que disparou a notificação.
+ */
 export class ReplyNotificationModel extends NotificationModel {
   mediaId: number;
   mediaType: string;

@@ -12,10 +12,8 @@ import { Title } from '@angular/platform-browser';
 import { AdminService } from '../../admin/service/admin.service';
 import { NotificationService } from '../../notifications/services/notification.service';
 import { GamificationService } from '../../gamification/Service/gamification.service';
-
 import { ChatService } from '../../chat/services/chat.service';
 import { ProfileChat } from '../../chat/models/profileChat';
-
 
 interface MovieCategory {
   name: string;
@@ -24,6 +22,10 @@ interface MovieCategory {
   media_type: string;
 }
 
+/**
+ * Componente para a página de perfil do utilizador.
+ * Permite visualizar e interagir com o perfil do utilizador, incluindo seguir/desseguir, enviar mensagens e visualizar media favorita.
+ */
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -31,8 +33,8 @@ interface MovieCategory {
 })
 export class ProfileComponent implements OnInit {
 
-  currentUsername: string | undefined; // Nome de usuário do perfil exibido
-  loggedUserName: string | null = null; // Nome de usuário do usuário logado
+  currentUsername: string | undefined;
+  loggedUserName: string | null = null;
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
   userPhoto: string | null = null;
@@ -45,7 +47,6 @@ export class ProfileComponent implements OnInit {
   errorMessages: any;
 
   usersProfiles: Profile[] = [];
-
 
   followersCount: number | undefined;
   followingCount: number | undefined;
@@ -73,7 +74,7 @@ export class ProfileComponent implements OnInit {
   showSeriesToWatch: boolean = true;
   showAllSeriesToWatch: boolean = false;
 
-  showMedals: boolean = false;
+  showMedals: boolean = true;
 
   expandedFollowers: boolean = false;
   expandedFollowing: boolean = false;
@@ -85,7 +86,6 @@ export class ProfileComponent implements OnInit {
 
   expandedSeriesWatchList: boolean = false;
   expandedSeriesToWatchList: boolean = false;
-
 
   followers: FollowerProfile[] = [];
   following: FollowerProfile[] = [];
@@ -104,8 +104,6 @@ export class ProfileComponent implements OnInit {
   watchLaterSeries: any[] = [];
   getMovieDetailResult: any;
 
-
-  //MODERADOR
   isBanPopupVisible = false;
   isModerator: boolean = false;
   banDuration: number | undefined;
@@ -120,49 +118,48 @@ export class ProfileComponent implements OnInit {
   selectedUsername: string | null = null;
 
   page: number = 1;
-  pageSize: number = 5; // Quantidade de usuários por página
-  collectionSize!: number; // O total de usuários disponíveis
+  pageSize: number = 5;
+  collectionSize!: number;
 
-
-
-  //MEDALHAS
   medals: any[] = [];
   showAllMedals = false;
 
-
+  /**
+ * Construtor do componente ProfileComponent.
+ * Inicializa os serviços e ferramentas necessárias para a gestão do perfil do utilizador.
+ * @param profileService Serviço para interação com dados de perfil do utilizador.
+ * @param chatService Serviço para gestão de mensagens e chat.
+ * @param formBuilder Ferramenta para criação de formulários reativos.
+ * @param route Serviço para interação com a rota ativa.
+ * @param authService Serviço de autenticação, utilizado para gestão do estado de login do utilizador.
+ * @param service Serviço para interação com a API de media (filmes e séries).
+ * @param adminService Serviço para interações específicas de administradores.
+ * @param gamificationService Serviço para gestão de elementos de gamificação, como medalhas.
+ */
   constructor(private profileService: ProfileService,
     private chatService: ChatService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute, public authService: AuthenticationService,
-    private notificationService: NotificationService,
-    private service: MovieApiServiceComponent, private title: Title, private adminService: AdminService, 
+    private service: MovieApiServiceComponent, private adminService: AdminService,
     private gamificationService: GamificationService) { }
 
+  /**
+   * Método chamado imediatamente após a criação do componente.
+   * Subscreve a mudanças na rota ativa e ao estado de autenticação do utilizador para carregar os dados de perfil necessários.
+   * Inicializa o formulário de perfil e carrega dados de media e gamificação associados ao perfil visualizado.
+   */
   ngOnInit(): void {
-
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
-
-        //this.getUserProfileInfo(this.currentUsername).then(() => {
-        //  // Aqui você tem certeza de que as informações do perfil foram carregadas
-        //  if (this.loggedUserProfile) {
-        //    this.canViewFollowers = this.loggedUserProfile.profileStatus === 'Public' || this.isFollowing;
-        //  }
-        //});
       }
-
       this.authService.user$.subscribe(user => {
-        this.loggedUserName = user ? user.username : null; // Obtenha o nome de usuário do usuário logado
-        // Certifique-se de que currentUsername é uma string antes de chamar includes
+        this.loggedUserName = user ? user.username : null;
         if (this.currentUsername && this.loggedUserName && this.currentUsername !== this.loggedUserName) {
           this.checkFollowingStatus(this.loggedUserName, this.currentUsername);
         }
       });
-
       this.loadUserRole();
-
-
       if (this.currentUsername) {
         this.getUserProfileInfo(this.currentUsername);
         this.setFormFields(this.currentUsername);
@@ -174,45 +171,40 @@ export class ProfileComponent implements OnInit {
         this.getWatchLaterMedia(this.currentUsername);
         this.getMedals(this.currentUsername);
       }
-
-
     });
-
-    //-------------MODERADOR-----------------------------------------------------------------------------------
     this.loggedUserName = this.authService.getLoggedInUserName();
     this.getUserProfilesMod();
     if (this.loggedUserName)
-    this.profileService.getUserProfilesNotLoggedIn(this.loggedUserName).pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        this.usersProfilesMod = profiles; 
-        this.filteredUsersProfiles = profiles;
-        this.collectionSize = profiles.length;
-        this.updateSelectedUser();
-        this.sortAlphabetically(); 
-        this.filterUsers(); 
-      },
-      error => {
-        console.error("Error while fetching users' profiles:", error);
-      }
-    );
+      this.profileService.getUserProfilesNotLoggedIn(this.loggedUserName).pipe(takeUntil(this.unsubscribed$)).subscribe(
+        (profiles: Profile[]) => {
+          this.usersProfilesMod = profiles;
+          this.filteredUsersProfiles = profiles;
+          this.collectionSize = profiles.length;
+          this.updateSelectedUser();
+          this.sortAlphabetically();
+          this.filterUsers();
+        },
+        error => {
+          console.error("Error while fetching users' profiles:", error);
+        }
+      );
 
     if (this.usersProfilesMod.length > 0) {
       this.updateSelectedUser();
     }
-
     this.collectionSize = this.filteredUsersProfiles.length;
-    //--------------------------------------------------------------------------------------------------------
-
-
     this.getUserProfiles();
     this.initializeForm();
     this.categories = [
       { name: 'Trending Movies', results: [], activeIndex: 0, media_type: "movie" },
     ];
-
     this.fetchTrending();
   }
 
+  /**
+  * Carrega dados de trending de media da API e atribui os resultados às categorias correspondentes.
+  * Utilizado para exibir media em destaque ou mais popular na página de perfil do utilizador.
+  */
   fetchTrending() {
     const fetchMethods = [
       this.service.trendingMovieApiData(),
@@ -225,11 +217,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+  * Método chamado imediatamente antes da destruição do componente.
+  * Responsável por cancelar todas as subscrições ativas para evitar memory leaks.
+  */
   ngOnDestroy(): void {
     this.unsubscribed$.next();
     this.unsubscribed$.complete();
   }
 
+   /**
+   * Obtém a informação do perfil do utilizador especificado pelo nome de utilizador.
+   * Atualiza a variável de estado `canViewData` baseada no status do perfil e se
+   * o utilizador logado tem permissão para ver o perfil.
+   * 
+   * @param username Nome do utilizador do perfil a ser obtido.
+   * @returns Promise<void> Uma promessa que resolve quando a informação do perfil
+   * é obtida com sucesso ou rejeitada em caso de erro.
+   */
   getUserProfileInfo(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.profileService.getUserData(username).subscribe({
@@ -263,8 +268,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+   /**
+   * Carrega o papel (role) do utilizador logado para determinar se é um moderador.
+   * Atualiza a propriedade `isModerator` baseada nas roles retornadas.
+   */
   private loadUserRole() {
-    // Assuming the AuthService is keeping track of the current user's username
     const currentUsername = this.authService.getLoggedInUserName();
     if (currentUsername) {
       this.authService.getUserRole(currentUsername).subscribe(roles => {
@@ -275,7 +283,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
+  /**
+  * Inicializa o formulário com os campos padrão.
+  */
   initializeForm() {
     this.profileForm = this.formBuilder.group({
       hobby: [''],
@@ -284,6 +294,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+   /**
+   * Define as imagens de perfil e de capa para o utilizador especificado.
+   * 
+   * @param username Nome do utilizador para o qual as imagens serão definidas.
+   */
   setImages(username: string) {
     this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
@@ -305,6 +320,11 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+   /**
+   * Preenche os campos do formulário com os dados do perfil do utilizador.
+   * 
+   * @param username Nome do utilizador cujos dados do perfil serão utilizados para preencher o formulário.
+   */
   setFormFields(username: string) {
     const userName = document.querySelector("h1");
     this.profileForm.get('gender')?.disable();
@@ -333,6 +353,13 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+   /**
+   * Verifica se o utilizador autenticado segue o utilizador especificado.
+   * Atualiza a propriedade `isFollowing` baseada no resultado.
+   * 
+   * @param usernameAuthenticated Nome do utilizador autenticado.
+   * @param usernameToCheck Nome do utilizador a verificar se está a ser seguido.
+   */
   checkFollowingStatus(usernameAuthenticated: string, usernameToCheck: string): void {
     this.profileService.alreadyFollows(usernameAuthenticated, usernameToCheck).subscribe(isFollowing => {
       this.isFollowing = isFollowing;
@@ -341,10 +368,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+   /**
+   * Define a propriedade `followRequestSent` como verdadeira, indicando que um pedido
+   * de seguimento foi enviado.
+   */
   requestToFollow(): void {
     this.followRequestSent = true;
   }
 
+   /**
+   * Envia um pedido para seguir o utilizador atual. Atualiza as propriedades `isFollowing`
+   * e `followRequestSent` baseadas na resposta.
+   */
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
@@ -366,6 +401,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+   /**
+   * Envia um pedido para deixar de seguir o utilizador atual. Atualiza a propriedade `isFollowing`.
+   */
   unfollowUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
@@ -382,6 +420,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+   /**
+   * Inicia uma conversa com o utilizador atual através do serviço de chat.
+   */
   sendMessageToUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       var profile = {
@@ -395,18 +436,26 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+   /**
+   * Gera uma lista aleatória de seguidores ou de utilizadores que estão a seguir,
+   * limitada pelo tamanho especificado.
+   * 
+   * @param array Array original de seguidores ou seguindo.
+   * @param size Tamanho máximo da lista resultante.
+   * @returns Array de `FollowerProfile` com tamanho máximo especificado e elementos aleatórios.
+   */
   getRandomFollowslist(array: FollowerProfile[], size: number): FollowerProfile[] {
-    // Cria uma cópia do array para não modificar o original
     const arrayCopy = [...array];
-    // Embaralha a cópia do array
     for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    // Retorna os primeiros `size` elementos do array embaralhado
     return arrayCopy.slice(0, size);
   }
 
+  /**
+  * Obtém e atualiza a lista de seguidores do utilizador atual.
+  */
   getFollowersList(): void {
     if (this.currentUsername) {
       this.profileService.getFollowers(this.currentUsername).subscribe(followers => {
@@ -417,11 +466,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
+   /**
+   * Obtém e atualiza a lista de utilizadores que o utilizador atual está a seguir.
+   */
   getFollowingList(): void {
     if (this.currentUsername) {
       this.profileService.getFollowing(this.currentUsername).subscribe(following => {
-        // Em vez de atribuir diretamente, passa pelo método getRandomSublist
         this.following = this.getRandomFollowslist(following, following.length);
       }, error => {
         console.error("Error while fetching following:", error);
@@ -429,18 +479,25 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+   /**
+   * Gera uma lista aleatória de outros utilizadores, limitada pelo tamanho especificado.
+   * 
+   * @param array Array original de perfis de utilizadores.
+   * @param size Tamanho máximo da lista resultante.
+   * @returns Array de `Profile` com tamanho máximo especificado e elementos aleatórios.
+   */
   getRandomOtherUsers(array: Profile[], size: number): Profile[] {
-    // Cria uma cópia do array para não modificar o original
     const arrayCopy = [...array];
-    // Embaralha a cópia do array
     for (let i = arrayCopy.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
     }
-    // Retorna os primeiros `size` elementos do array embaralhado
     return arrayCopy.slice(0, size);
   }
 
+   /**
+   * Obtém e atualiza a lista de perfis de utilizadores sugeridos, limitada a 5.
+   */
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
@@ -454,7 +511,12 @@ export class ProfileComponent implements OnInit {
 
   /*----------------------------------------------------------------  FAVORITOS ---------------------------------------------------------------- */
 
-
+   /**
+   * Obtém e processa a lista de mídias favoritas do utilizador especificado, incluindo filmes e séries.
+   * Para cada mídia, busca detalhes adicionais como descrição e capa.
+   * 
+   * @param username Nome do utilizador cujas mídias favoritas serão obtidas.
+   */
   async getFavorites(username: string): Promise<void> {
     try {
       const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
@@ -465,17 +527,16 @@ export class ProfileComponent implements OnInit {
       for (const movie of this.favoriteMovies) {
         try {
           const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
-          movie.details = details; // Adicionando detalhes ao objeto movie
+          movie.details = details;
         } catch (error) {
           console.error('Erro ao buscar detalhes do filme favorito', error);
         }
       }
 
-      // Buscar detalhes para séries favoritas
       for (const series of this.favoriteSeries) {
         try {
           const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
-          series.details = details; // Adicionando detalhes ao objeto series
+          series.details = details;
         } catch (error) {
           console.error('Erro ao buscar detalhes da série favorita', error);
         }
@@ -485,9 +546,14 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
   /*----------------------------------------------------------------  MEDIA JÁ VISTA ---------------------------------------------------------------- */
 
+   /**
+   * Obtém e processa a lista de mídias assistidas pelo utilizador especificado, separando entre filmes e séries.
+   * Busca detalhes adicionais de cada mídia assistida.
+   * 
+   * @param username Nome do utilizador cujas mídias assistidas serão obtidas.
+   */
   async getWatchedMedia(username: string): Promise<void> {
     try {
       const media = await firstValueFrom(this.profileService.getUserWatchedMedia(username));
@@ -500,22 +566,23 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+   /**
+   * Busca detalhes adicionais para as mídias assistidas previamente obtidas.
+   */
   async fetchWatchedMediaDetails(): Promise<void> {
-    // Buscar detalhes dos filmes
     for (const movie of this.watchedMovies) {
       try {
         const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
-        movie.details = details; // Aqui você pode querer criar uma nova propriedade para guardar os detalhes
+        movie.details = details;
       } catch (error) {
         console.error('Erro ao buscar detalhes do filme', error);
       }
     }
 
-    // Buscar detalhes das séries
     for (const series of this.watchedSeries) {
       try {
         const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
-        series.details = details; // Similarmente aqui
+        series.details = details;
       } catch (error) {
         console.error('Erro ao buscar detalhes da série', error);
       }
@@ -524,6 +591,12 @@ export class ProfileComponent implements OnInit {
 
   /*----------------------------------------------------------------  MEDIA A VER ---------------------------------------------------------------- */
 
+   /**
+   * Obtém e processa a lista de mídias marcadas para ver mais tarde pelo utilizador, incluindo filmes e séries.
+   * Busca detalhes adicionais para cada mídia marcada.
+   * 
+   * @param username Nome do utilizador cujas mídias para ver mais tarde serão obtidas.
+   */
   async getWatchLaterMedia(username: string): Promise<void> {
     try {
       const media = await firstValueFrom(this.profileService.getUserWatchLaterMedia(username));
@@ -536,22 +609,23 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+   /**
+   * Busca detalhes adicionais para as mídias marcadas para ver mais tarde previamente obtidas.
+   */
   async fetchWatchLaterMediaDetails(): Promise<void> {
-    // Buscar detalhes dos filmes para ver mais tarde
     for (const movie of this.watchLaterMovies) {
       try {
         const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
-        movie.details = details; // Aqui você pode querer criar uma nova propriedade para guardar os detalhes
+        movie.details = details;
       } catch (error) {
         console.error('Erro ao buscar detalhes do filme para ver mais tarde', error);
       }
     }
 
-    // Buscar detalhes das séries para ver mais tarde
     for (const series of this.watchLaterSeries) {
       try {
         const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
-        series.details = details; // Similarmente aqui
+        series.details = details;
       } catch (error) {
         console.error('Erro ao buscar detalhes da série para ver mais tarde', error);
       }
@@ -562,6 +636,10 @@ export class ProfileComponent implements OnInit {
 
   toggleFavoritesList(): void {
     this.showFavorites = !this.showFavorites;
+  }
+
+  toggleMedalsList(): void {
+    this.showMedals = !this.showMedals;
   }
 
   toggleFavoritesListDisplay(): void {
@@ -576,7 +654,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
     this.toggleMoviesWatchedList();
-
+    this.toggleMedalsList();
   }
 
   /*----------------------------------------------------------------  Filmes já vistos ---------------------------------------------------------------- */
@@ -597,6 +675,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
     this.toggleFavoritesList();
+    this.toggleMedalsList();
   }
 
   /*----------------------------------------------------------------  Filmes a ver -------------------------------------------------------------------- */
@@ -617,7 +696,7 @@ export class ProfileComponent implements OnInit {
     this.toggleMoviesWatchedList();
     this.toggleSeriesToWatchList();
     this.toggleFavoritesList();
-
+    this.toggleMedalsList();
   }
 
   /*----------------------------------------------------------------  Séries já vistas ---------------------------------------------------------------- */
@@ -638,7 +717,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
     this.toggleFavoritesList();
-
+    this.toggleMedalsList();
   }
 
   /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
@@ -657,10 +736,9 @@ export class ProfileComponent implements OnInit {
     this.toggleFollowing();
     this.toggleMoviesWatchedList();
     this.toggleSeriesWatchedList();
-    this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
     this.toggleFavoritesList();
-
+    this.toggleMedalsList();
   }
 
   /* Seguidores */
@@ -682,7 +760,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
     this.toggleFavoritesList();
-
+    this.toggleMedalsList();
   }
 
   /* A seguir */
@@ -704,7 +782,7 @@ export class ProfileComponent implements OnInit {
     this.toggleSeriesToWatchList();
     this.toggleMoviesToWatchList();
     this.toggleFavoritesList();
-
+    this.toggleMedalsList();
   }
 
   toggleAllFiveOtherUsers(): void {
@@ -718,6 +796,10 @@ export class ProfileComponent implements OnInit {
 
   //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
 
+  /**
+   * Recupera as medalhas desbloqueadas pelo utilizador.
+   * Este método consulta o serviço de gamificação para obter as medalhas que o utilizador já conseguiu desbloquear.
+   */
   getMedals(username: string) {
     if (this.currentUsername) {
       this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
@@ -732,10 +814,15 @@ export class ProfileComponent implements OnInit {
       console.error('User ID is not defined');
     }
   }
-  
- 
 
   //--------------------------------------------------MODERADOR------------------------------------------------------------------
+
+  /**
+   * Verifica se um utilizador está atualmente banido com base nas datas de início e fim do banimento.
+   * 
+   * @param profile O perfil do utilizador a verificar.
+   * @returns Verdadeiro se o utilizador estiver banido, falso caso contrário.
+   */
   checkIfUserIsBanned(profile: Profile): boolean {
     try {
       if (!profile.startBanDate || !profile.endBanDate) {
@@ -754,7 +841,11 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Executa o banimento temporário de um utilizador.
+   * 
+   * @param username O nome do utilizador a ser banido temporariamente.
+   */
   banTemp(username: string | null): void {
     if (!username) {
       console.error('Username is undefined, cannot ban user temporarily.');
@@ -773,7 +864,6 @@ export class ProfileComponent implements OnInit {
         this.hideBanPopup();
         if (user) {
           user.isBanned = true;
-          // This will trigger change detection and update the UI
           this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
         }
       },
@@ -783,8 +873,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
+  /**
+   * Executa o banimento permanente de um utilizador.
+   * 
+   * @param username O nome do utilizador a ser banido permanentemente.
+   */
   banPerm(username: string | null): void {
     if (!username) {
       console.error('Username is undefined, cannot ban user.');
@@ -799,7 +892,6 @@ export class ProfileComponent implements OnInit {
         if (user) {
           user.isBanned = true;
         }
-        // This will trigger change detection and update the UI
         this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: error => {
@@ -808,6 +900,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Desbane um utilizador, permitindo-lhe aceder novamente ao sistema.
+   * 
+   * @param username O nome do utilizador a ser desbanido.
+   */
   unban(username: string | undefined): void {
     if (!username) {
       console.error('Username is undefined, cannot unban user.');
@@ -820,7 +917,6 @@ export class ProfileComponent implements OnInit {
         if (user) {
           user.isBanned = false;
         }
-        // This will trigger change detection and update the UI
         this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
       },
       error: (error) => {
@@ -829,22 +925,32 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Exibe o popup de banimento para um utilizador selecionado.
+   * 
+   * @param username O nome do utilizador selecionado para banimento.
+   */
   showBanPopup(username: string): void {
     this.selectedUserForBan = username;
-    this.isBanPopupVisible = true; // This should show the popup
+    this.isBanPopupVisible = true;
   }
 
+  /**
+   * Esconde o popup de banimento e limpa a seleção de utilizador.
+   */
   hideBanPopup(): void {
     this.isBanPopupVisible = false;
-    this.selectedUserForBan = null; // Clear the selected user
+    this.selectedUserForBan = null;
   }
 
+  /**
+   * Obtém e filtra os perfis dos utilizadores, excluindo o do utilizador autenticado e enriquecendo-os com informação de moderador.
+   */
   getUserProfilesMod() {
     this.profileService.getUserProfiles().pipe(
       takeUntil(this.unsubscribed$),
       map(profiles => profiles.filter(profile => profile.userName !== this.loggedUserName)),
       mergeMap(profiles => {
-        // Filtrar fora o usuário logado antes de buscar as funções.
         const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
         const profilesWithRoles$ = filteredProfiles.map(profile => {
           return this.adminService.getUserRole(profile.userName).pipe(
@@ -855,7 +961,7 @@ export class ProfileComponent implements OnInit {
             })),
             catchError(error => {
               console.error('Error fetching roles:', profile.userName, error);
-              return of({ ...profile, isModerator: false }); // default to false on error
+              return of({ ...profile, isModerator: false });
             })
           );
         });
@@ -875,11 +981,19 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-
+  /**
+ * Atualiza o perfil do utilizador selecionado baseando-se no `selectedUsername`.
+ * Busca e atribui o perfil correspondente a `selectedUser`.
+ */
   updateSelectedUser(): void {
     this.selectedUser = this.usersProfilesMod.find(u => u.userName === this.selectedUsername);
   }
 
+  /**
+   * Filtra os perfis dos utilizadores conforme o termo de pesquisa `searchTerm`.
+   * Atualiza `showNoResults`, `collectionSize` e `filteredUsersProfiles` para refletir os resultados,
+   * aplicando paginação baseada em `page` e `pageSize`.
+   */
   filterUsers(): void {
     let filtered = this.searchTerm ? this.usersProfilesMod.filter(user =>
       user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())) : this.usersProfilesMod;
@@ -887,11 +1001,15 @@ export class ProfileComponent implements OnInit {
     this.showNoResults = filtered.length === 0;
     this.collectionSize = filtered.length;
 
-    // Aplica a paginação
     filtered = filtered.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
     this.filteredUsersProfiles = filtered;
   }
 
+  /**
+   * Navega para a página anterior na lista paginada de utilizadores.
+   * Este método decrementa o contador de página atual e filtra novamente os utilizadores
+   * para refletir a mudança na paginação.
+   */
   previousPage() {
     if (this.page > 1) {
       this.page--;
@@ -899,6 +1017,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /**
+   * Navega para a próxima página na lista paginada de utilizadores.
+   * Este método incrementa o contador de página atual e filtra novamente os utilizadores
+   * para refletir a mudança na paginação, incluindo a ordenação alfabética dos utilizadores
+   * se necessário.
+   */
   nextPage() {
     if (this.page * this.pageSize < this.collectionSize) {
       this.page++;
@@ -907,14 +1031,33 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /**
+  * Verifica se existe uma página anterior disponível para navegação.
+  * 
+  * @returns Verdadeiro se a página atual for maior que 1, indicando a existência de uma página anterior.
+  */
   get hasPreviousPage(): boolean {
     return this.page > 1;
   }
 
+  /**
+  * Verifica se existe uma próxima página disponível para navegação.
+  * 
+  * @returns Verdadeiro se o produto da página atual pelo tamanho da página for menor que o tamanho total da coleção,
+  * indicando a existência de uma próxima página.
+  */
   get hasNextPage(): boolean {
     return this.page * this.pageSize < this.collectionSize;
   }
 
+  /**
+   * Implementa uma função de ordenação natural que compara dois perfis de utilizador.
+   * 
+   * @param a O primeiro perfil de utilizador para comparação.
+   * @param b O segundo perfil de utilizador para comparação.
+   * @returns Um número indicando a ordem dos perfis. Um valor negativo se a preceder b, positivo se b preceder a,
+   * e zero se forem equivalentes na ordenação.
+   */
   naturalSort(a: Profile, b: Profile): number {
     const ax: [number | typeof Infinity, string][] = [];
     const bx: [number | typeof Infinity, string][] = [];
@@ -938,8 +1081,13 @@ export class ProfileComponent implements OnInit {
     return ax.length - bx.length;
   }
 
+  /**
+   * Ordena alfabeticamente os perfis de utilizadores pela propriedade userName.
+   * Este método utiliza uma ordenação natural para lidar com números dentro das strings,
+   * garantindo uma ordenação intuitiva para os utilizadores.
+   */
   sortAlphabetically(): void {
     this.usersProfilesMod.sort((a, b) => this.naturalSort(a, b));
-    this.filterUsers(); // Reaplica a filtragem e paginação após a ordenação
+    this.filterUsers();
   }
 }
