@@ -97,6 +97,9 @@ export class StatisticsComponent implements OnInit {
   }
 
 
+  /**
+ * Configura as opções do gráfico de comparação entre filmes e séries assistidas.
+ */
   setWatchedComparisonChartOptions(): void {
     this.chartComparisonMedia = {
       chart: {
@@ -141,6 +144,7 @@ export class StatisticsComponent implements OnInit {
       }]
     };
   }
+
   loadFollowersData(): void {
     this.profileService.getUserData(this.currentUser).subscribe({
       next: (profileData) => {
@@ -237,7 +241,6 @@ export class StatisticsComponent implements OnInit {
     };
   }
 
-  // ... restante da classe ...
 
 
   loadCommentsCountByDate(): void {
@@ -265,7 +268,7 @@ export class StatisticsComponent implements OnInit {
   setMediaAddedChartOptions(): void {
     this.chartMovieAdded = {
       chart: {
-        type: 'column' // 'column' para gráfico de colunas verticais, 'bar' para barras horizontais
+        type: 'column' 
       },
       title: {
         text: 'Filmes Vistos por Data'
@@ -405,7 +408,9 @@ export class StatisticsComponent implements OnInit {
 
 
 
-
+/**
+ * Calcula o tempo total assistido pelo usuário e formata em meses, dias e horas.
+ */
   calculateTotalWatchedTime(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
       // Filter only movies from the watchedMedia list
@@ -432,6 +437,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Calcula o tempo total assistido de séries pelo usuário e formata em meses, dias e horas.
+ */
   calculateTotalWatchedSeriesTime(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
       // Filter only series from the watchedMedia list
@@ -458,7 +466,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+/**
+ * Calcula o número total de episódios assistidos pelo usuário.
+ */
   calculateTotalWatchedEpisodes(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
       // Filtra apenas as séries da lista de mídias assistidas
@@ -483,7 +493,10 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+/**
+ * Busca as estatísticas do usuário, como número de seguidores e seguindo.
+ * @param username O nome de usuário do perfil para buscar estatísticas.
+ */
   private fetchStatistics(username: string): void {
     this.profileService.getUserData(username).subscribe({
       next: (profileData) => {
@@ -493,6 +506,11 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching user statistics:", error)
     });
   }
+
+  /**
+ * Busca o número total de filmes e séries assistidos e para assistir mais tarde pelo usuário.
+ * @param username O nome de usuário do perfil para buscar mídias assistidas.
+ */
   private fetchMediaCounts(username: string): void {
     // Fetch watched movies and series
     this.profileService.getUserWatchedMedia(username).subscribe({
@@ -512,6 +530,11 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching watch later media:", error)
     });
   }
+
+  /**
+ * Busca o número total de comentários feitos pelo usuário.
+ * @param username O nome de usuário do perfil para buscar o número total de comentários.
+ */
   private fetchTotalComments(username: string): void {
     // Chamadas existentes para buscar followers, following, etc.
     this.profileService.getUserTotalComments(username).subscribe({
@@ -522,6 +545,10 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Busca o número total de medalhas conquistadas pelo usuário.
+ * @param username O nome de usuário do perfil para buscar o número total de medalhas.
+ */
   private fetchTotalMedals(username: string): void {
     // Chamadas existentes para buscar followers, following, etc.
     this.profileService.getUserTotalMedals(username).subscribe({
@@ -532,6 +559,10 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Busca o número total de curtidas recebidas pelo usuário.
+ * @param username O nome de usuário do perfil para buscar o número total de curtidas.
+ */
   private fetchTotalLikes(username: string): void {
     // Chamadas existentes para buscar followers, following, etc.
     this.profileService.getUserTotalLikesReceived(username).subscribe({
@@ -541,6 +572,11 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching total user likes:", error)
     });
   }
+
+  /**
+ * Busca o número total de tentativas de quiz realizadas pelo usuário.
+ * @param userId O ID do usuário para buscar o número total de tentativas de quiz.
+ */
   private fetchTotalQuizAttempts(userId: string): void {
     this.profileService.getTotalQuizAttempts(userId).subscribe({
       next: (totalAttempts) => {
@@ -550,6 +586,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Carrega o número total de atores favoritos do usuário.
+ */
   private loadTotalFavoriteActors(): void {
     this.profileService.getTotalFavoriteActors().subscribe({
       next: (total) => {
@@ -561,6 +600,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Carrega o número total de avaliações feitas pelo usuário.
+ */
   private loadTotalRatings(): void {
     this.profileService.getTotalRatingsByUser().subscribe({
       next: (total) => {

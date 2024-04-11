@@ -96,12 +96,21 @@ export class MovieDetailsComponent {
     });
   }
 
-  // Método para fazer scroll até o comentário
+/**
+ * Método para rolar a página até um comentário específico.
+ * @param commentId O ID do comentário para o qual rolar a página.
+ */
   scrollToComment(commentId: string): void {
     const commentElement = document.getElementById(`comment-${commentId}`);
     commentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  // Mostra o pop-up do quiz
+
+
+/**
+ * Mostra o pop-up do quiz na interface do usuário.
+ * Isso também redefine as respostas do usuário e o resultado do quiz, se necessário,
+ * e carrega as perguntas do quiz.
+ */
   showQuizPopup(): void {
     this.isQuizPopupVisible = true;
     // Resetar respostas e resultado do quiz se necessário
@@ -110,25 +119,38 @@ export class MovieDetailsComponent {
     this.loadQuizQuestions();
   }
 
-  // Esconde o pop-up do quiz
+
+/**
+ * Esconde o pop-up do quiz na interface do usuário.
+ */
   hideQuizPopup(): void {
     this.isQuizPopupVisible = false;
   }
 
 
-  // Função para ir para a próxima pergunta
+/**
+ * Avança para a próxima pergunta no quiz, se disponível.
+ */
   nextQuestion(): void {
     if (this.currentQuestionIndex < this.quizQuestions.length - 1) {
       this.currentQuestionIndex++;
     }
   }
 
-  // Função para voltar para a pergunta anterior
+/**
+ * Retorna para a pergunta anterior no quiz, se disponível.
+ */
   prevQuestion(): void {
     if (this.currentQuestionIndex > 0) {
       this.currentQuestionIndex--;
     }
   }
+
+  /**
+ * Verifica se o quiz associado a um determinado ID de mídia foi concluído.
+ * @param mediaId O ID da mídia para a qual verificar se o quiz foi concluído.
+ * @remarks Este método atualiza as propriedades 'quizCompleted', 'lastQuizScore' e 'showLastScore' do componente.
+ */
   checkQuizCompleted(mediaId: any): void {
     this.service.checkQuizCompleted(mediaId).subscribe({
       next: (response: any) => { // Agora tratando response como 'any'
@@ -145,6 +167,11 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Carrega as perguntas do quiz com base nos detalhes do filme associado ao ID da mídia.
+ * Este método define a propriedade 'quizQuestions' do componente com as perguntas do quiz.
+ * @remarks Este método depende de 'getMovieDetailResult' para obter os detalhes do filme.
+ */
   loadQuizQuestions(): void {
     this.isQuizActive = true;
     this.showLastScore = false;
@@ -237,7 +264,12 @@ export class MovieDetailsComponent {
   }
 
 
-  // Simula a geração de perguntas e respostas do quiz
+/**
+ * Simula a submissão do quiz, calculando o número de respostas corretas e enviando os resultados para o backend.
+ * Este método define a propriedade 'quizCompleted' como verdadeira e atualiza 'quizResult' e 'lastQuizScore' com os resultados do quiz.
+ * @remarks Este método depende de 'getMovieDetailResult' para obter os detalhes do filme e 'userAnswers' para as respostas do usuário.
+ * @remarks Este método chama o serviço 'submitQuizAttempt' para enviar os dados da tentativa do quiz ao backend.
+ */
   submitQuiz(): void {
     this.isQuizActive = false; // O quiz foi concluído
     this.quizCompleted = true; // Indica que o quiz foi completado
@@ -282,47 +314,31 @@ export class MovieDetailsComponent {
     this.quizResult = { correctAnswers, totalQuestions: this.quizQuestions.length };
 
 
-    // Preparando os dados para enviar ao back-end
     const quizAttempt = {
       mediaId: this.getMovieDetailResult.id,
       score: correctAnswers
-      // Você pode incluir mais dados aqui, como as respostas do usuário
     };
     this.lastQuizScore = quizAttempt.score;
     this.hideQuizPopup();
 
-    // Chamando o serviço para enviar os dados ao back-end
     this.service.submitQuizAttempt(quizAttempt).subscribe({
       next: (result) => console.log(result),
       error: (error) => console.error('Erro ao enviar tentativa do quiz', error)
     });
   }
 
-
+/**
+ * Registra a resposta do usuário para uma pergunta específica do quiz.
+ * @param questionId O ID da pergunta à qual o usuário está respondendo.
+ * @param answerId O ID da resposta selecionada pelo usuário.
+ */
   selectAnswer(questionId: number, answerId: number): void {
     this.userAnswers[questionId] = answerId;
   }
 
-
-  //toggleFavorite(selectedActor: any): void {
-  //  if (selectedActor.isFavorite) {
-  //    selectedActor.isFavorite = false;
-  //    return;
-  //  }
-  //  this.checkIfWatchedLater(getParamId);
-
-  //  this.auth.user$.subscribe(user => {
-  //    this.currentUser = user ? user.username.toLowerCase() : null;
-  //    this.fetchComments(); 
-  //  });
-
-  //  this.loadAverageRatingForMedia(getParamId);
-  //  this.loadUserRatingForMedia(getParamId);
-
-  //  this.getFavoriteActorChoicesForMedia(getParamId);
-  //  this.getUserFavoriteActorChoice(getParamId);
-  //}
-
+/**
+ * Define o papel do usuário, verificando se é administrador ou moderador e atualizando a propriedade 'isAdminOrModerator$' em conformidade.
+ */
   setUserRole(): void {
     const username = this.auth.getLoggedInUserName();
     if (username) {
@@ -332,6 +348,9 @@ export class MovieDetailsComponent {
     }
   }
 
+  /**
+ * Alterna o estado de favorito de uma mídia, marcando-a ou desmarcando-a como favorita.
+ */
   toggleFavoriteMedia() {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (!mediaId) {
@@ -346,6 +365,11 @@ export class MovieDetailsComponent {
     }
   }
 
+
+  /**
+ * Verifica se uma determinada mídia é favorita para o usuário atual.
+ * @param mediaId O ID da mídia a ser verificada quanto ao status de favorito.
+ */
   checkIfFavorite(mediaId: any) {
     this.service.checkIfIsFavorite(mediaId, this.type).subscribe({
       next: (response: any) => {
@@ -357,6 +381,11 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Marca a mídia atual como favorita.
+ * Exibe um alerta se a mídia não estiver marcada como assistida e retorna imediatamente.
+ * Chama o serviço para marcar a mídia como favorita e atualiza o estado de 'isFavorite' em caso de sucesso.
+ */
   markAsFavorite() {
     if (!this.isWatched) {
       alert('Você precisa marcar a mídia como assistida antes de adicioná-la aos favoritos.');
@@ -377,6 +406,10 @@ export class MovieDetailsComponent {
     }
   }
 
+  /**
+ * Remove a marcação de favorito da mídia atual.
+ * Chama o serviço para desmarcar a mídia como favorita e atualiza o estado de 'isFavorite' em caso de sucesso.
+ */
   unmarkAsFavorite() {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -392,8 +425,10 @@ export class MovieDetailsComponent {
     }
   }
 
-  /* VISUALIZADO */
-
+/**
+ * Verifica se a mídia foi assistida no momento da inicialização do componente.
+ * Atualiza o estado de 'isWatched' com base na resposta do serviço.
+ */
   checkIfWatchedOnInit(mediaId: string) {
     this.service.checkIfWatched(+mediaId, this.type).subscribe({
       next: (response) => {
@@ -406,6 +441,10 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Verifica se a mídia foi assistida.
+ * Atualiza o estado de 'isWatched' com base na resposta do serviço.
+ */
   checkIfWatched(mediaId: any) {
     this.service.checkIfWatched(mediaId, this.type).subscribe({
       next: (response: any) => {
@@ -417,6 +456,10 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Marca a mídia atual como assistida ou não assistida, dependendo do estado atual.
+ * Chama o serviço correspondente para marcar ou desmarcar a mídia como assistida.
+ */
   markAsWatched() {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -450,8 +493,10 @@ export class MovieDetailsComponent {
     }
   }
 
-  /* VER MAIS TARDE */
-
+/**
+ * Verifica se a mídia foi marcada como 'Assistir depois'.
+ * Atualiza o estado de 'isToWatchLater' com base na resposta do serviço.
+ */
   checkIfWatchedLater(mediaId: any) {
     this.service.checkIfWatchedLater(mediaId, this.type).subscribe({
       next: (response: any) => {
@@ -463,6 +508,11 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Marca a mídia atual para assistir mais tarde ou remove a marcação, dependendo do estado atual.
+ * Chama o serviço correspondente para marcar ou desmarcar a mídia para assistir mais tarde.
+ * Atualiza os estados de 'isWatched' e 'isToWatchLater' após a conclusão da operação.
+ */
   markToWatchLater() {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -490,6 +540,10 @@ export class MovieDetailsComponent {
     }
   }
 
+  /**
+ * Obtém os detalhes do filme com o ID fornecido.
+ * Atualiza o estado de 'getMovieDetailResult' com os detalhes do filme.
+ */
   getMovie(id: any) {
     this.service.getMovieDetails(id).subscribe(async (result) => {
       console.log(result, 'getmoviedetails#');
@@ -499,6 +553,10 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Obtém o vídeo associado ao filme com o ID fornecido.
+ * Atualiza o estado de 'getMovieVideoResult' com o vídeo do trailer, se disponível.
+ */
   getVideo(id: any) {
     this.service.getMovieVideo(id).subscribe((result) => {
       console.log(result, 'getMovieVideo#');
@@ -510,6 +568,10 @@ export class MovieDetailsComponent {
     });
   }
 
+/**
+ * Obtém o elenco do filme com o ID fornecido.
+ * Atualiza o estado de 'getMovieCastResult' com o elenco do filme.
+ */
   getMovieCast(id: any) {
     this.service.getMovieCast(id).subscribe((result) => {
       console.log(result, 'movieCast#');
@@ -517,7 +579,10 @@ export class MovieDetailsComponent {
     });
   }
 
-
+/**
+ * Obtém os provedores de streaming para o filme com o ID fornecido.
+ * Atualiza o estado de 'getMovieProviders' com os provedores de streaming disponíveis para o filme.
+ */
   getProviders(id: any) {
     this.service.getStreamingProvider(id).subscribe((result) => {
       console.log(result, 'movieProviders#');
@@ -526,18 +591,32 @@ export class MovieDetailsComponent {
     });
   }
 
-
+  /**
+ * Converte um tempo dado em minutos para o formato de horas e minutos.
+ * @param time O tempo em minutos a ser convertido.
+ * @returns Uma string no formato 'horas h minutos min'.
+ */
   public convertMinutesToHours(time: number): string {
     const hours = Math.floor(time / 60);
     const minutes = time % 60;
     return `${hours}h ${minutes}min`;
   }
 
+  /**
+ * Converte uma pontuação para uma porcentagem (multiplica por 10).
+ * @param points A pontuação a ser convertida.
+ * @returns Uma string representando a porcentagem.
+ */
   public convertToPercentage(points: number): string {
     const pointsPercentage = Math.round(points * 10);
     return `${pointsPercentage}%`;
   }
 
+  /**
+ * Formata um valor numérico como uma string no formato de moeda dos EUA (USD).
+ * @param value O valor numérico a ser formatado.
+ * @returns Uma string formatada como moeda dos EUA (USD), ou '-' se nenhum valor for fornecido.
+ */
   public formatCurrency(value?: number): string {
     if (value) {
       return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -546,10 +625,18 @@ export class MovieDetailsComponent {
     }
   }
 
+  /**
+ * Alterna a visibilidade dos comentários.
+ */
   toggleComents() {
     this.showComments = !this.showComments;
   }
 
+  /**
+ * Obtém os comentários associados à mídia com o ID fornecido.
+ * Atualiza o estado de 'comments' com os comentários recuperados.
+ * @param mediaId O ID da mídia para a qual os comentários serão recuperados.
+ */
   getComments(mediaId: any): void {
     this.service.getMediaComments(mediaId).subscribe({
       next: (response: any) => {
@@ -562,6 +649,10 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Recupera os comentários associados à mídia atualmente exibida.
+ * Atualiza o estado de 'comments' com os comentários recuperados, invertendo a ordem para exibir os mais recentes primeiro.
+ */
   fetchComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -571,6 +662,12 @@ export class MovieDetailsComponent {
     }
   }
 
+
+  /**
+ * Obtém os comentários mais curtidos associados à mídia com o ID fornecido.
+ * Atualiza o estado de 'comments' com os comentários recuperados.
+ * @param mediaId O ID da mídia para a qual os comentários mais curtidos serão recuperados.
+ */
   getMostLikedComments(mediaId: any): void {
     this.service.getMostLikedComments(mediaId).subscribe({
       next: (response: any) => {
@@ -582,6 +679,11 @@ export class MovieDetailsComponent {
     });
   }
 
+
+  /**
+ * Recupera os comentários mais curtidos associados à mídia atualmente exibida.
+ * Atualiza o estado de 'comments' com os comentários recuperados.
+ */
   fetchMostLikedComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -589,6 +691,12 @@ export class MovieDetailsComponent {
     }
   }
 
+
+  /**
+ * Obtém os comentários associados à mídia com o ID fornecido, classificados por data.
+ * Atualiza o estado de 'comments' com os comentários recuperados.
+ * @param mediaId O ID da mídia para a qual os comentários serão recuperados e classificados por data.
+ */
   getMostOldComments(mediaId: any): void {
     this.service.getCommentsSortedByDate(mediaId).subscribe({
       next: (response: any) => {
@@ -599,6 +707,10 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Recupera os comentários associados à mídia atualmente exibida, classificados por data.
+ * Atualiza o estado de 'comments' com os comentários recuperados.
+ */
   fetchCommentsSortedByDate(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
@@ -606,6 +718,11 @@ export class MovieDetailsComponent {
     }
   }
 
+  /**
+ * Ordena os comentários com base na opção selecionada em um elemento de seleção HTML.
+ * Atualiza o estado de 'comments' de acordo com a opção selecionada.
+ * @param event O evento de alteração acionado quando o valor do elemento de seleção HTML é alterado.
+ */
   sortComments(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
 
@@ -637,6 +754,11 @@ export class MovieDetailsComponent {
 
   newCommentText: string = '';
 
+
+  /**
+ * Adiciona um novo comentário à mídia atualmente exibida.
+ * O novo comentário é adicionado ao início da lista de comentários e o texto do novo comentário é redefinido.
+ */
   addComment(): void {
     if (!this.newCommentText.trim()) {
       return; // Verifica se o comentário não está vazio
@@ -657,6 +779,12 @@ export class MovieDetailsComponent {
     });
   }
 
+  /**
+ * Verifica se o usuário atual pode excluir o comentário com base no nome de usuário do autor do comentário.
+ * Retorna true se o usuário atual for o autor do comentário ou se for um administrador ou moderador.
+ * @param commentUserName O nome de usuário do autor do comentário.
+ * @returns true se o usuário atual pode excluir o comentário, caso contrário, false.
+ */
   canDeleteComment(commentUserName: string): boolean {
     if (!this.currentUser) return false;
     const isCurrentUser = this.currentUser.toLowerCase() === commentUserName.toLowerCase();
@@ -664,7 +792,12 @@ export class MovieDetailsComponent {
     return isCurrentUser || isAdminOrModerator;
   }
 
-
+/**
+ * Exclui o comentário com o ID fornecido. Se o comentário for uma resposta, ele será removido do array de respostas do comentário pai.
+ * Se o comentário não for uma resposta, ele será removido do array de comentários principais.
+ * @param commentId O ID do comentário a ser excluído.
+ * @param parentCommentId Opcional. O ID do comentário pai, se o comentário a ser excluído for uma resposta.
+ */
   deleteComment(commentId: number, parentCommentId?: number): void {
     this.service.deleteComment(commentId).subscribe({
       next: () => {
@@ -685,7 +818,11 @@ export class MovieDetailsComponent {
   }
 
 
-
+/**
+ * Registra um "curtir" no comentário com o ID fornecido.
+ * Atualiza a lista de comentários após a operação bem-sucedida.
+ * @param commentId O ID do comentário a ser curtido.
+ */
   likeComment(commentId: number): void {
     this.service.likeComment(commentId).subscribe({
       next: () => {
@@ -696,16 +833,11 @@ export class MovieDetailsComponent {
   }
 
 
-  //dislikeComment(commentId: number): void {
-  //  this.service.dislikeComment(commentId).subscribe({
-  //    next: () => {
-  //      // Atualize a lista de comentários ou o estado do comentário específico conforme necessário
-  //      this.fetchComments();
-  //    },
-  //    error: (error) => console.error('Erro ao curtir o comentário', error)
-  //  });
-  //}
-
+/**
+ * Remove o "curtir" do comentário com o ID fornecido.
+ * Atualiza a interface do usuário removendo o "curtir" do comentário correspondente na lista de comentários.
+ * @param commentId O ID do comentário do qual o "curtir" será removido.
+ */
   removeLike(commentId: number): void {
     this.service.removeLikeFromComment(commentId).subscribe(() => {
       // Atualize a interface do usuário aqui
@@ -717,16 +849,12 @@ export class MovieDetailsComponent {
     });
   }
 
-  //removeDislike(commentId: number): void {
-  //  this.service.removeDislikeFromComment(commentId).subscribe(() => {
-  //    // Atualize a interface do usuário aqui
-  //    const comment = this.comments.find(c => c.id === commentId);
-  //    if (comment) {
-  //      comment.dislikesCount--;
-  //      comment.hasDisliked = false;
-  //    }
-  //  });
-  //}
+/**
+ * Alterna o estado de "curtir" do comentário com o ID fornecido.
+ * Atualiza a contagem de curtidas e o estado do comentário após a operação bem-sucedida.
+ * @param commentId O ID do comentário cujo estado de "curtir" será alternado.
+ * @param parentCommentId (Opcional) O ID do comentário pai, se aplicável (para respostas a comentários).
+ */
 
   toggleLikeComment(commentId: number, parentCommentId?: number): void {
     let commentList = this.comments;
@@ -759,41 +887,13 @@ export class MovieDetailsComponent {
     }
   }
 
-  //toggleDislikeComment(commentId: number, parentCommentId?: number): void {
-  //  let commentList = this.comments;
-  //  if (parentCommentId) {
-  //    const parentComment = this.comments.find(c => c.id === parentCommentId);
-  //    if (parentComment) {
-  //      commentList = parentComment.replies;
-  //    }
-  //  }
-
-  //  const comment = commentList.find(c => c.id === commentId);
-  //  if (comment) {
-  //    if (comment.hasDisliked) {
-  //      // The user already disliked this comment, so we will remove the dislike
-  //      this.service.removeDislikeFromComment(commentId).subscribe(() => {
-  //        comment.hasDisliked = false;
-  //        comment.dislikesCount--;
-  //        this.fetchComments(); // Refresh comments to update UI
-  //      });
-  //    } else {
-  //      // The user has not disliked this comment yet, so we will add a dislike
-  //      this.service.dislikeComment(commentId).subscribe(() => {
-  //        comment.hasDisliked = true;
-  //        comment.dislikesCount++;
-  //        if (comment.hasLiked) {
-  //          comment.hasLiked = false;
-  //          comment.likesCount--;
-  //        }
-  //        this.fetchComments(); // Refresh comments to update UI
-  //      });
-  //    }
-  //  }
-  //}
 
 
 
+/**
+ * Alterna o estado de exibição do formulário de resposta para o comentário com o ID fornecido.
+ * @param commentId O ID do comentário para o qual o formulário de resposta será alternado.
+ */
   toggleReplyForm(commentId: number): void {
     this.showReplyForms[commentId] = !this.showReplyForms[commentId];
     if (this.replyTexts[commentId] === undefined) {
@@ -801,7 +901,11 @@ export class MovieDetailsComponent {
     }
   }
 
-
+/**
+ * Adiciona uma resposta ao comentário pai com o ID fornecido.
+ * Atualiza a lista de comentários após a adição bem-sucedida da resposta.
+ * @param parentCommentId O ID do comentário pai ao qual a resposta será adicionada.
+ */
   addReply(parentCommentId: number): void {
     const replyText = this.replyTexts[parentCommentId] || '';
     if (!replyText.trim()) {
@@ -820,6 +924,10 @@ export class MovieDetailsComponent {
 
   // RATINGS
 
+  /**
+ * Define a classificação do usuário para a mídia atual.
+ * @param rating A classificação atribuída pelo usuário para a mídia.
+ */
   setUserRatingForMedia(rating: number): void {
     if (this.currentUser) {
       const userRatingMedia: UserRatingMedia = {
@@ -843,11 +951,20 @@ export class MovieDetailsComponent {
     }
   }
 
+  /**
+ * Define a classificação do filme e atualiza a classificação do usuário.
+ * @param rating A classificação atribuída pelo usuário para o filme.
+ */
   rateMovie(rating: number): void {
     this.movieRating = rating;
     this.setUserRatingForMedia(rating);
   }
 
+
+  /**
+ * Carrega a classificação do usuário para a mídia atual.
+ * @param mediaId O ID da mídia para a qual a classificação do usuário será carregada.
+ */
   loadUserRatingForMedia(mediaId: any): void {
     if (this.currentUser) {
       this.service.getUserRatingForMedia(this.currentUser, mediaId).subscribe({
@@ -867,6 +984,10 @@ export class MovieDetailsComponent {
 
   }
 
+  /**
+ * Carrega a classificação média para a mídia atual.
+ * @param mediaId O ID da mídia para a qual a classificação média será carregada.
+ */
   loadAverageRatingForMedia(mediaId: any): void {
     this.service.getAverageRatingForMedia(mediaId).subscribe({
       next: (averageRating) => {
@@ -885,6 +1006,11 @@ export class MovieDetailsComponent {
 
   // ATORES
 
+
+  /**
+ * Alterna o estado de favorito para o ator fornecido.
+ * @param actor O ator para o qual o estado de favorito será alternado.
+ */
   toggleFavorite(actor: Actor): void {
     if (!this.actorIsFavorite) { // Supondo que você tem uma propriedade isFavorite em seus atores
       this.chooseFavoriteActor(actor);
@@ -897,7 +1023,10 @@ export class MovieDetailsComponent {
 
 
 
-  // Método para obter as escolhas de atores favoritos para a mídia atual
+/**
+ * Obtém as escolhas de atores favoritos para a mídia atual.
+ * @param mediaId O ID da mídia para a qual as escolhas de atores favoritos serão obtidas.
+ */
   getFavoriteActorChoicesForMedia(mediaId: any): void {
     this.service.getActorChoicesForMedia(mediaId).subscribe({
       next: (choices) => {
@@ -913,7 +1042,10 @@ export class MovieDetailsComponent {
     });
   }
 
-
+/**
+ * Obtém a escolha de ator favorito do usuário para a mídia atual.
+ * @param mediaId O ID da mídia para a qual a escolha de ator favorito do usuário será obtida.
+ */
   getUserFavoriteActorChoice(mediaId: any): void {
     if (this.currentUser /*&& this.isWatched*/) {
       this.service.getUserActorChoice(this.currentUser, mediaId).subscribe({
@@ -933,7 +1065,10 @@ export class MovieDetailsComponent {
       });
     }
   }
-
+/**
+ * Escolhe um ator como favorito para a mídia atual e atualiza o estado de favorito do usuário.
+ * @param selectedActor O ator selecionado para ser marcado como favorito.
+ */
   chooseFavoriteActor(selectedActor: Actor): void {
     if (!this.currentUser) {
       return;
@@ -968,7 +1103,10 @@ export class MovieDetailsComponent {
     });
   }
 
-  // Função para atualizar o status de favorito do ator na UI
+/**
+ * Atualiza o status de favorito do ator na interface do usuário.
+ * @param selectedActorId O ID do ator selecionado para ser atualizado como favorito ou não.
+ */
   updateFavoriteActorStatus(selectedActorId: number): void {
     if (this.getMovieCastResult) {
       this.getMovieCastResult.forEach((actor: any) => {
@@ -978,6 +1116,12 @@ export class MovieDetailsComponent {
     }
   }
 
+
+  /**
+ * Verifica se o ator com o ID fornecido é o ator favorito atual do usuário.
+ * @param actorId O ID do ator a ser verificado.
+ * @returns Um valor booleano indicando se o ator é o favorito do usuário ou não.
+ */
   isFavoriteActor(actorId: number): boolean {
     return actorId === this.userFavoriteActorId;
   }

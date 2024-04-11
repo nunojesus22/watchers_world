@@ -21,6 +21,12 @@ export class SeasonDetailsInfoComponent {
     this.getSeasonDetails(getParamId, seasonNumber);
     this.getSerieDetails(getParamId);
   }
+
+  /**
+   * Obtém os detalhes da temporada de uma série.
+   * @param id O ID da série.
+   * @param seasonNumber O número da temporada.
+   */
   getSeasonDetails(id: any, seasonNumber: any) {
     this.service.getSerieSeasonInfo(id, seasonNumber).subscribe({
       next: (data) => {
@@ -30,6 +36,11 @@ export class SeasonDetailsInfoComponent {
       error: (error) => console.error('Erro ao buscar informações da temporada:', error)
     });
   }
+
+   /**
+   * Obtém os detalhes de uma série.
+   * @param id O ID da série.
+   */
   getSerieDetails(id: any) {
     this.service.getSerieDetails(id).subscribe(async (result) => {
       console.log(result, 'serie#');

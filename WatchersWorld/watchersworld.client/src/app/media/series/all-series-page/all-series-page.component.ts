@@ -22,16 +22,31 @@ interface MovieCategory {
   styleUrl: './all-series-page.component.css'
 })
 
+/**
+ * A classe `AllSeriesPageComponent` representa o componente da página que exibe todas as séries.
+ */
 export class AllSeriesPageComponent {
   categories: MovieCategory[] = [];
   currentUser: any;
 
+  /**
+   * Construtor da classe `AllSeriesPageComponent`.
+   * 
+   * @param route O serviço de roteamento.
+   * @param service O serviço da API de filmes.
+   * @param authService O serviço de autenticação.
+   * @param notificationService O serviço de notificações.
+   * @param profileService O serviço de perfil do usuário.
+   */
   constructor(private route: Router,
     private service: MovieApiServiceComponent,
     private authService: AuthenticationService,
     private notificationService: NotificationService,
     private profileService: ProfileService) { }
 
+     /**
+   * Método executado ao inicializar o componente.
+   */
   ngOnInit(): void {
     this.currentUser = this.authService.getLoggedInUserName();
     this.initCategories();
@@ -39,7 +54,9 @@ export class AllSeriesPageComponent {
     this.fetchAiringAndWatchedSeriesAndNotify();
   }
 
-
+/**
+   * Recupera as séries recomendadas para o usuário e as adiciona à categoria "Séries Sugeridas".
+   */
   fetchRecommendedSeries(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).pipe(
       switchMap((watchedMedia: any[]) => {
@@ -81,6 +98,9 @@ export class AllSeriesPageComponent {
       }
     });
   }
+   /**
+   * Inicializa as categorias de séries com os nomes e resultados iniciais.
+   */
   initCategories() {
     this.categories = [
       { name: 'Séries em Destaque', results: [], activeIndex: 0, showAll: false },
@@ -95,7 +115,9 @@ export class AllSeriesPageComponent {
     this.fetchMovies();
   } 
 
-
+ /**
+   * Recupera as séries para cada categoria e as atualiza na respectiva categoria.
+   */
   fetchMovies() {
     const fetchMethods = [
       this.service.fetchTopRatedSeries(),
@@ -113,17 +135,32 @@ export class AllSeriesPageComponent {
     });
   }
 
-
+/**
+ * Retorna os resultados da categoria especificada.
+ * 
+ * @param categoryName O nome da categoria.
+ * @returns Um array contendo os resultados da categoria.
+ */
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
     return category ? category.results : [];
   }
-
+/**
+ * Retorna o índice ativo da categoria especificada.
+ * 
+ * @param categoryName O nome da categoria.
+ * @returns O índice ativo da categoria.
+ */
   getCategoryActiveIndex(categoryName: string): number {
     const category = this.categories.find(cat => cat.name === categoryName);
     return category ? category.activeIndex : 0;
   }
 
+/**
+ * Avança para o próximo lote de resultados da categoria especificada.
+ * 
+ * @param categoryName O nome da categoria.
+ */
   nextCategory(categoryName: string) {
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
@@ -133,6 +170,11 @@ export class AllSeriesPageComponent {
     }
   }
 
+/**
+ * Retrocede para o lote anterior de resultados da categoria especificada.
+ * 
+ * @param categoryName O nome da categoria.
+ */
   prevCategory(categoryName: string) {
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
@@ -141,6 +183,12 @@ export class AllSeriesPageComponent {
       category.activeIndex = newIndex < 0 ? Math.max(0, category.results.length - batchSize) : newIndex;
     }
   }
+
+/**
+ * Alterna a exibição de todos os resultados da categoria especificada.
+ * 
+ * @param categoryName O nome da categoria.
+ */
   toggleShowAll(categoryName: string) { // Adicione este método
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
@@ -148,6 +196,12 @@ export class AllSeriesPageComponent {
     }
   }
 
+/**
+ * Divide os filmes em linhas de 4 filmes cada.
+ * 
+ * @param movies Um array de filmes.
+ * @returns Um array de linhas de filmes, cada uma contendo até 4 filmes.
+ */
   getRows(movies: any[]) {
     const rows = [];
     for (let i = 0; i < movies.length; i += 4) {
@@ -156,6 +210,9 @@ export class AllSeriesPageComponent {
     return rows;
   }
 
+  /**
+ * Busca as séries que estão sendo transmitidas hoje e notifica o usuário sobre novos episódios disponíveis.
+ */
   fetchAiringAndWatchedSeriesAndNotify(): void {
     forkJoin({
       airingToday: this.service.getAiringSeries(),
