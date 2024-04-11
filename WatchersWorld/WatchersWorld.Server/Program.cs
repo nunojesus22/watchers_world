@@ -23,9 +23,10 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
+    builder.Services.AddSignalR();
     // Se estiver em produção, utilize Azure SignalR Service
-    var signalRConnectionString = builder.Configuration.GetSection("SignalR")["ConnectionString"];
-    builder.Services.AddSignalR().AddAzureSignalR(signalRConnectionString);
+    //var signalRConnectionString = builder.Configuration.GetSection("SignalR")["ConnectionString"];
+    //builder.Services.AddSignalR().AddAzureSignalR(signalRConnectionString);
 }
 
 builder.Services.AddScoped<JWTService>();

@@ -59,7 +59,7 @@ export class ChatService {
     }
 
     const isDevelopment = window.location.hostname === 'localhost';
-    const signalRHubUrl = isDevelopment ? 'https://localhost:7232/chathub' : '/chathub';
+    const signalRHubUrl = isDevelopment ? 'https://localhost:7232/chathub' : 'https://watchers-world-backend.azurewebsites.net/chathub';
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(`${signalRHubUrl}?username=${username}&timeZone=${encodeURIComponent(this.getTimeZone())}`, {
         skipNegotiation: true,
