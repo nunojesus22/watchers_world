@@ -69,6 +69,7 @@ export class SeriesDetailsComponent {
   currentQuestionIndex: number = 0;
   commentId: string | null = null;
 
+  /** Método executado quando o componente é inicializado. */
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     console.log(getParamId, 'getparamid#');

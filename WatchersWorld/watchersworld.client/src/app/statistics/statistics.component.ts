@@ -13,6 +13,10 @@ import * as Highcharts from 'highcharts';
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })
+
+/**
+ * StatisticsComponent class
+ */
 export class StatisticsComponent implements OnInit {
   followersCount: number | undefined;
   followingCount: number | undefined;
@@ -145,6 +149,10 @@ export class StatisticsComponent implements OnInit {
     };
   }
 
+
+  /**
+   * Carrega seguidores
+   */
   loadFollowersData(): void {
     this.profileService.getUserData(this.currentUser).subscribe({
       next: (profileData) => {
@@ -156,7 +164,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+  /**
+   * PieChart Followers
+   */
   setFollowersPieChartOptions(): void {
     // Verificamos se já temos os dados antes de configurar o gráfico
     if (this.followersCount !== undefined && this.followingCount !== undefined) {
@@ -190,6 +200,10 @@ export class StatisticsComponent implements OnInit {
       };
     }
   }
+
+  /**
+   * Carrega o PieChart
+   */
   loadPieChartData(): void {
     forkJoin({
       quizAttempts: this.profileService.getTotalQuizAttempts(this.currentUser),
@@ -208,7 +222,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Define o Pie Chart
+   */
   setPieChartOptions(): void {
     this.chartQuizAndRatings = {
       chart: {
@@ -242,7 +258,9 @@ export class StatisticsComponent implements OnInit {
   }
 
 
-
+  /**
+   * Carrega os comentarios pela data
+   */
   loadCommentsCountByDate(): void {
     this.apiService.commentsDate(this.currentUser).subscribe(data => {
       this.commentsCountByDate = data;
@@ -250,7 +268,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Carrega os Media pela data
+   */
   loadMediaAddedByDate(): void {
     this.apiService.getMovieAddedByDate(this.currentUser).subscribe(data => {
       this.mediaAddedByDate = data;
@@ -258,6 +278,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+   /**
+   * Carrega os Series pela data
+   */
   loadSerieAddedByDate(): void {
     this.apiService.getSeriesAddedByDate(this.currentUser).subscribe(data => {
       this.mediaSerieByDate = data;
@@ -265,6 +288,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+     /**
+   * Carrega os Media Pie Chart
+   */
   setMediaAddedChartOptions(): void {
     this.chartMovieAdded = {
       chart: {
@@ -312,6 +338,9 @@ export class StatisticsComponent implements OnInit {
   }
 
 
+  /**
+   * Carrega os Serie Pie Chart
+   */
   setSerieAddedChartOptions(): void {
     this.chartSerieAdded = {
       chart: {
@@ -357,6 +386,11 @@ export class StatisticsComponent implements OnInit {
       }]
     };
   }
+
+  
+  /**
+   * Carrega os Comentarios Pie Chart
+   */
   setChartOptions(): void {
     this.chartOptions = {
       chart: {

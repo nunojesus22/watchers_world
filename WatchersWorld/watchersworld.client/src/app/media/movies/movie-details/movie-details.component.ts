@@ -15,6 +15,10 @@ import { GamificationService } from '../../../gamification/Service/gamification.
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css'
 })
+
+/**
+ * MovieDetailsComponent Classe
+ */
 export class MovieDetailsComponent {
   constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService, private gamificationService: GamificationService) {
     this.setUserRole();
@@ -63,6 +67,7 @@ export class MovieDetailsComponent {
 
   currentQuestionIndex: number = 0;
 
+  /** Método executado quando o componente é inicializado. */
   ngOnInit(): void {
     let getParamId = this.router.snapshot.paramMap.get('id');
     this.showAll = false;

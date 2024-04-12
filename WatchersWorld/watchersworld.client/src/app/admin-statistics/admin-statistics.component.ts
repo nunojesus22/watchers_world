@@ -10,6 +10,11 @@ import * as Highcharts from 'highcharts';
   templateUrl: './admin-statistics.component.html',
   styleUrl: './admin-statistics.component.css'
 })
+
+
+/**
+ * AdminStatisticsComponent Classe
+ */
 export class AdminStatisticsComponent {
 
   totalRegisteredUsers: number | undefined;
@@ -19,7 +24,7 @@ export class AdminStatisticsComponent {
   totalComments: number | undefined;
 
   chartProfileTypes: any; 
-  Highcharts: typeof Highcharts = Highcharts; // passar 'Highcharts' para o componente HTML
+  Highcharts: typeof Highcharts = Highcharts; 
   chartBannedVsRegistered: any;
   chartStaticData: any;
 

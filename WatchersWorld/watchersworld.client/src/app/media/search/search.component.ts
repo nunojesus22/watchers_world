@@ -124,7 +124,7 @@ import { MovieApiServiceComponent } from '../api/movie-api-service/movie-api-ser
       }
     }
 
-  
+    /** Método executado quando o componente é inicializado. */
     ngOnInit() {
       this.route.queryParams.subscribe(params => {
         const genreId = params['genre'];
