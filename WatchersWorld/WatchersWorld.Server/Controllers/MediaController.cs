@@ -766,13 +766,6 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-        public class CommentsCountByDateDto
-        {
-            public DateTime Date { get; set; }
-            public int Count { get; set; }
-        }
-
-
         /// <summary>
         /// Obtém a contagem de comentários feitos por um usuário específico, agrupados por data de criação.
         /// </summary>
@@ -867,11 +860,7 @@ namespace WatchersWorld.Server.Controllers
             return Ok(mediaAddedByDate);
         }
 
-        public class MediaAddedByDateDto
-        {
-            public DateTime Date { get; set; }
-            public int Count { get; set; }
-        }
+
     }
 
 
