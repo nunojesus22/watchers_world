@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Chat;
 using WatchersWorld.Server.Models.Authentication;
@@ -259,11 +258,7 @@ namespace WatchersWorld.Server.Hubs
 
             foreach (var message in messages)
             {
-                var result = await _chatService.MarkMessageAsRead(message.MessageId);
-                if (result == null)
-                {
-                    throw new HubException("ID do utilizador receptor não pode ser null.");
-                }
+                _ = await _chatService.MarkMessageAsRead(message.MessageId) ?? throw new HubException("ID do utilizador receptor não pode ser null.");
             }
 
             return await GetUserChatsWithMessages(userSenderId, timeZone);

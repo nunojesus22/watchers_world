@@ -1,20 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Xunit;
-using Moq;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using Microsoft.AspNetCore.Identity;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Data;
-using Microsoft.Extensions.Logging;
-using WatchersWorld.Server.Controllers;
 using WatchersWorld.Server.Services;
 using WatchersWorld_Teste.FixtureConfiguration;
-using Castle.Core.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration;
-using WatchersWorld.Server.Chat.Services;
 
 namespace WatchersWorld.Tests
 {

@@ -2,11 +2,11 @@ import { NotificationModel } from "./notification-model";
 
 /**
  * Modelo para notificações de novos seguidores. Estende o modelo base de notificação,
- * incluindo o ID do usuário alvo e a foto do usuário que disparou a notificação.
+ * incluindo o ID do utilizador alvo e a foto do utilizador que disparou a notificação.
  *
  * Propriedades:
- * - targetUserId: Identificador do usuário alvo da notificação.
- * - triggeredByUserPhoto: URL ou caminho da foto do usuário que disparou a notificação.
+ * - targetUserId: Identificador do utilizador alvo da notificação.
+ * - triggeredByUserPhoto: URL ou caminho da foto do utilizador que disparou a notificação.
  */
 export class FollowNotificationModel extends NotificationModel {
   targetUserId: string;

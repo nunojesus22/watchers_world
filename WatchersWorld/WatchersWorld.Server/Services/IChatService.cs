@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.Chat;
+using WatchersWorld.Server.Models.Chat;
 
 namespace WatchersWorld.Server.Services
 {
@@ -112,7 +112,7 @@ namespace WatchersWorld.Server.Services
 
             try
             {
-                var newChat = new Models.Chat
+                var newChat = new Chat
                 {
                     User1Id = user1Id,
                     User2Id = user2Id,

@@ -33,7 +33,7 @@ export class AllMoviesPageComponent {
    * @param route Serviço de roteamento.
    * @param service Serviço de API de filmes.
    * @param authService Serviço de autenticação.
-   * @param profileService Serviço de perfil de usuário.
+   * @param profileService Serviço de perfil de utilizador.
    */
   constructor(private route: Router,
     private service: MovieApiServiceComponent,
@@ -86,7 +86,7 @@ export class AllMoviesPageComponent {
     });
   }
 
-  /** Busca os filmes recomendados com base no histórico do usuário. */
+  /** Busca os filmes recomendados com base no histórico do utilizador. */
 
   fetchRecommendedMovies(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).pipe(

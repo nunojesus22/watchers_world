@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WatchersWorld.Server.Chat.Models;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Chat;
 using WatchersWorld.Server.Models.Gamification;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Models.Notifications;

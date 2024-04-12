@@ -26,7 +26,7 @@ export class SeriesDetailsComponent {
    * @param router Serviço para acesso aos parâmetros da rota.
    * @param title Serviço para manipulação do título da página.
    * @param meta Serviço para manipulação de metadados da página.
-   * @param auth Serviço de autenticação para operações relacionadas à conta do usuário.
+   * @param auth Serviço de autenticação para operações relacionadas à conta do utilizador.
    * @param adminService Serviço para operações administrativas.
    * @param gamificationService Serviço para operações relacionadas à gamificação.
    */
@@ -310,7 +310,7 @@ export class SeriesDetailsComponent {
     const quizAttempt = {
       mediaId: this.getSerieDetailsResult.id,
       score: correctAnswers
-      // Você pode incluir mais dados aqui, como as respostas do usuário
+      // Você pode incluir mais dados aqui, como as respostas do utilizador
     };
     this.lastQuizScore = quizAttempt.score;
     this.hideQuizPopup();
@@ -324,10 +324,10 @@ export class SeriesDetailsComponent {
 
 
   /**
-   * Seleciona a resposta escolhida pelo usuário para uma determinada pergunta.
+   * Seleciona a resposta escolhida pelo utilizador para uma determinada pergunta.
    * 
    * @param idPergunta O ID da pergunta à qual a resposta está associada.
-   * @param idResposta O ID da resposta escolhida pelo usuário.
+   * @param idResposta O ID da resposta escolhida pelo utilizador.
    * @returns void
    */
   selectAnswer(questionId: number, answerId: number): void {
@@ -812,10 +812,10 @@ export class SeriesDetailsComponent {
   }
 
   /**
- * Verifica se o usuário atual pode excluir o comentário com base no nome do usuário do comentário.
+ * Verifica se o utilizador atual pode excluir o comentário com base no nome do utilizador do comentário.
  * 
- * @param commentUserName O nome de usuário do autor do comentário.
- * @returns Um valor booleano indicando se o usuário atual pode excluir o comentário.
+ * @param commentUserName O nome de utilizador do autor do comentário.
+ * @returns Um valor booleano indicando se o utilizador atual pode excluir o comentário.
  */
   canDeleteComment(commentUserName: string): boolean {
     if (!this.currentUser) return false;
@@ -875,7 +875,7 @@ export class SeriesDetailsComponent {
  */
   removeLike(commentId: number): void {
     this.service.removeLikeFromComment(commentId).subscribe(() => {
-      // Atualize a interface do usuário aqui
+      // Atualize a interface do utilizador aqui
       const comment = this.comments.find(c => c.id === commentId);
       if (comment) {
         comment.likesCount--;
@@ -973,9 +973,9 @@ export class SeriesDetailsComponent {
 
   // RATINGS
 /**
- * Define a avaliação do usuário para a mídia.
+ * Define a avaliação do utilizador para a mídia.
  * 
- * @param rating A avaliação atribuída pelo usuário à mídia.
+ * @param rating A avaliação atribuída pelo utilizador à mídia.
  * @returns void
  */
   setUserRatingForMedia(rating: number): void {
@@ -997,14 +997,14 @@ export class SeriesDetailsComponent {
         }
       });
     } else {
-      console.error('Usuário não está logado.');
+      console.error('utilizador não está logado.');
     }
   }
 
   /**
  * Avalia a mídia.
  * 
- * @param rating A avaliação atribuída pelo usuário à mídia.
+ * @param rating A avaliação atribuída pelo utilizador à mídia.
  * @returns void
  */
   rateMovie(rating: number): void {
@@ -1013,9 +1013,9 @@ export class SeriesDetailsComponent {
   }
 
   /**
- * Carrega a avaliação do usuário para a mídia.
+ * Carrega a avaliação do utilizador para a mídia.
  * 
- * @param mediaId O ID da mídia para a qual carregar a avaliação do usuário.
+ * @param mediaId O ID da mídia para a qual carregar a avaliação do utilizador.
  * @returns void
  */
   loadUserRatingForMedia(mediaId: any): void {
@@ -1026,7 +1026,7 @@ export class SeriesDetailsComponent {
             this.userRating = rating;
             //console.log('Classificação recebida', rating);
           } else {
-            //console.log('Não existem classificações feitas pelo usuário para esta mídia.');
+            //console.log('Não existem classificações feitas pelo utilizador para esta mídia.');
           }
         },
         error: (error) => {
@@ -1075,9 +1075,9 @@ export class SeriesDetailsComponent {
   }
 
   /**
- * Obtém as escolhas de atores favoritos do usuário para uma determinada mídia.
+ * Obtém as escolhas de atores favoritos do utilizador para uma determinada mídia.
  * 
- * @param mediaId O ID da mídia para a qual obter as escolhas de atores favoritos do usuário.
+ * @param mediaId O ID da mídia para a qual obter as escolhas de atores favoritos do utilizador.
  * @returns void
  */
   getFavoriteActorChoicesForMedia(mediaId: any): void {
@@ -1096,9 +1096,9 @@ export class SeriesDetailsComponent {
   }
 
 /**
- * Obtém a escolha do ator favorito do usuário para uma determinada mídia.
+ * Obtém a escolha do ator favorito do utilizador para uma determinada mídia.
  * 
- * @param mediaId O ID da mídia para a qual obter a escolha do ator favorito do usuário.
+ * @param mediaId O ID da mídia para a qual obter a escolha do ator favorito do utilizador.
  * @returns void
  */
   getUserFavoriteActorChoice(mediaId: any): void {
@@ -1107,15 +1107,15 @@ export class SeriesDetailsComponent {
         next: (response) => {
           //console.log(response);
           if (response) {
-            //console.log('Escolha de ator favorito do usuário recebida:', response);
+            //console.log('Escolha de ator favorito do utilizador recebida:', response);
             this.updateFavoriteActorStatus(response);
             this.userFavoriteActorId = response;
           } else {
-            //console.log('Usuário ainda não escolheu um ator favorito para esta mídia.');
+            //console.log('utilizador ainda não escolheu um ator favorito para esta mídia.');
           }
         },
         error: (error) => {
-          console.error('Erro ao obter a escolha do ator favorito do usuário:', error);
+          console.error('Erro ao obter a escolha do ator favorito do utilizador:', error);
         }
       });
     }
@@ -1163,7 +1163,7 @@ export class SeriesDetailsComponent {
   }
 
 /**
- * Atualiza o status de favorito do ator na interface do usuário.
+ * Atualiza o status de favorito do ator na interface do utilizador.
  * 
  * @param selectedActorId O ID do ator selecionado como favorito.
  * @returns void
@@ -1177,7 +1177,7 @@ export class SeriesDetailsComponent {
   }
 
   /**
- * Verifica se um determinado ator é favorito para o usuário atual.
+ * Verifica se um determinado ator é favorito para o utilizador atual.
  * 
  * @param actorId O ID do ator a ser verificado.
  * @returns boolean

@@ -107,8 +107,8 @@ export class MovieDetailsComponent {
 
 
 /**
- * Mostra o pop-up do quiz na interface do usuário.
- * Isso também redefine as respostas do usuário e o resultado do quiz, se necessário,
+ * Mostra o pop-up do quiz na interface do utilizador.
+ * Isso também redefine as respostas do utilizador e o resultado do quiz, se necessário,
  * e carrega as perguntas do quiz.
  */
   showQuizPopup(): void {
@@ -121,7 +121,7 @@ export class MovieDetailsComponent {
 
 
 /**
- * Esconde o pop-up do quiz na interface do usuário.
+ * Esconde o pop-up do quiz na interface do utilizador.
  */
   hideQuizPopup(): void {
     this.isQuizPopupVisible = false;
@@ -267,7 +267,7 @@ export class MovieDetailsComponent {
 /**
  * Simula a submissão do quiz, calculando o número de respostas corretas e enviando os resultados para o backend.
  * Este método define a propriedade 'quizCompleted' como verdadeira e atualiza 'quizResult' e 'lastQuizScore' com os resultados do quiz.
- * @remarks Este método depende de 'getMovieDetailResult' para obter os detalhes do filme e 'userAnswers' para as respostas do usuário.
+ * @remarks Este método depende de 'getMovieDetailResult' para obter os detalhes do filme e 'userAnswers' para as respostas do utilizador.
  * @remarks Este método chama o serviço 'submitQuizAttempt' para enviar os dados da tentativa do quiz ao backend.
  */
   submitQuiz(): void {
@@ -328,16 +328,16 @@ export class MovieDetailsComponent {
   }
 
 /**
- * Registra a resposta do usuário para uma pergunta específica do quiz.
- * @param questionId O ID da pergunta à qual o usuário está respondendo.
- * @param answerId O ID da resposta selecionada pelo usuário.
+ * Registra a resposta do utilizador para uma pergunta específica do quiz.
+ * @param questionId O ID da pergunta à qual o utilizador está respondendo.
+ * @param answerId O ID da resposta selecionada pelo utilizador.
  */
   selectAnswer(questionId: number, answerId: number): void {
     this.userAnswers[questionId] = answerId;
   }
 
 /**
- * Define o papel do usuário, verificando se é administrador ou moderador e atualizando a propriedade 'isAdminOrModerator$' em conformidade.
+ * Define o papel do utilizador, verificando se é administrador ou moderador e atualizando a propriedade 'isAdminOrModerator$' em conformidade.
  */
   setUserRole(): void {
     const username = this.auth.getLoggedInUserName();
@@ -367,7 +367,7 @@ export class MovieDetailsComponent {
 
 
   /**
- * Verifica se uma determinada mídia é favorita para o usuário atual.
+ * Verifica se uma determinada mídia é favorita para o utilizador atual.
  * @param mediaId O ID da mídia a ser verificada quanto ao status de favorito.
  */
   checkIfFavorite(mediaId: any) {
@@ -780,10 +780,10 @@ export class MovieDetailsComponent {
   }
 
   /**
- * Verifica se o usuário atual pode excluir o comentário com base no nome de usuário do autor do comentário.
- * Retorna true se o usuário atual for o autor do comentário ou se for um administrador ou moderador.
- * @param commentUserName O nome de usuário do autor do comentário.
- * @returns true se o usuário atual pode excluir o comentário, caso contrário, false.
+ * Verifica se o utilizador atual pode excluir o comentário com base no nome de utilizador do autor do comentário.
+ * Retorna true se o utilizador atual for o autor do comentário ou se for um administrador ou moderador.
+ * @param commentUserName O nome de utilizador do autor do comentário.
+ * @returns true se o utilizador atual pode excluir o comentário, caso contrário, false.
  */
   canDeleteComment(commentUserName: string): boolean {
     if (!this.currentUser) return false;
@@ -835,12 +835,12 @@ export class MovieDetailsComponent {
 
 /**
  * Remove o "curtir" do comentário com o ID fornecido.
- * Atualiza a interface do usuário removendo o "curtir" do comentário correspondente na lista de comentários.
+ * Atualiza a interface do utilizador removendo o "curtir" do comentário correspondente na lista de comentários.
  * @param commentId O ID do comentário do qual o "curtir" será removido.
  */
   removeLike(commentId: number): void {
     this.service.removeLikeFromComment(commentId).subscribe(() => {
-      // Atualize a interface do usuário aqui
+      // Atualize a interface do utilizador aqui
       const comment = this.comments.find(c => c.id === commentId);
       if (comment) {
         comment.likesCount--;
@@ -925,8 +925,8 @@ export class MovieDetailsComponent {
   // RATINGS
 
   /**
- * Define a classificação do usuário para a mídia atual.
- * @param rating A classificação atribuída pelo usuário para a mídia.
+ * Define a classificação do utilizador para a mídia atual.
+ * @param rating A classificação atribuída pelo utilizador para a mídia.
  */
   setUserRatingForMedia(rating: number): void {
     if (this.currentUser) {
@@ -947,13 +947,13 @@ export class MovieDetailsComponent {
         }
       });
     } else {
-      console.error('Usuário não está logado.');
+      console.error('utilizador não está logado.');
     }
   }
 
   /**
- * Define a classificação do filme e atualiza a classificação do usuário.
- * @param rating A classificação atribuída pelo usuário para o filme.
+ * Define a classificação do filme e atualiza a classificação do utilizador.
+ * @param rating A classificação atribuída pelo utilizador para o filme.
  */
   rateMovie(rating: number): void {
     this.movieRating = rating;
@@ -962,8 +962,8 @@ export class MovieDetailsComponent {
 
 
   /**
- * Carrega a classificação do usuário para a mídia atual.
- * @param mediaId O ID da mídia para a qual a classificação do usuário será carregada.
+ * Carrega a classificação do utilizador para a mídia atual.
+ * @param mediaId O ID da mídia para a qual a classificação do utilizador será carregada.
  */
   loadUserRatingForMedia(mediaId: any): void {
     if (this.currentUser) {
@@ -973,7 +973,7 @@ export class MovieDetailsComponent {
             this.userRating = rating;
             //console.log('Classificação recebida', rating);
           } else {
-            //console.log('Não existem classificações feitas pelo usuário para esta mídia.');
+            //console.log('Não existem classificações feitas pelo utilizador para esta mídia.');
           }
         },
         error: (error) => {
@@ -1043,8 +1043,8 @@ export class MovieDetailsComponent {
   }
 
 /**
- * Obtém a escolha de ator favorito do usuário para a mídia atual.
- * @param mediaId O ID da mídia para a qual a escolha de ator favorito do usuário será obtida.
+ * Obtém a escolha de ator favorito do utilizador para a mídia atual.
+ * @param mediaId O ID da mídia para a qual a escolha de ator favorito do utilizador será obtida.
  */
   getUserFavoriteActorChoice(mediaId: any): void {
     if (this.currentUser /*&& this.isWatched*/) {
@@ -1052,21 +1052,21 @@ export class MovieDetailsComponent {
         next: (response) => {
           //console.log(response);
           if (response) {
-            //console.log('Escolha de ator favorito do usuário recebida:', response);
+            //console.log('Escolha de ator favorito do utilizador recebida:', response);
             this.updateFavoriteActorStatus(response);
             this.userFavoriteActorId = response;
           } else {
-            //console.log('Usuário ainda não escolheu um ator favorito para esta mídia.');
+            //console.log('utilizador ainda não escolheu um ator favorito para esta mídia.');
           }
         },
         error: (error) => {
-          console.error('Erro ao obter a escolha do ator favorito do usuário:', error);
+          console.error('Erro ao obter a escolha do ator favorito do utilizador:', error);
         }
       });
     }
   }
 /**
- * Escolhe um ator como favorito para a mídia atual e atualiza o estado de favorito do usuário.
+ * Escolhe um ator como favorito para a mídia atual e atualiza o estado de favorito do utilizador.
  * @param selectedActor O ator selecionado para ser marcado como favorito.
  */
   chooseFavoriteActor(selectedActor: Actor): void {
@@ -1104,7 +1104,7 @@ export class MovieDetailsComponent {
   }
 
 /**
- * Atualiza o status de favorito do ator na interface do usuário.
+ * Atualiza o status de favorito do ator na interface do utilizador.
  * @param selectedActorId O ID do ator selecionado para ser atualizado como favorito ou não.
  */
   updateFavoriteActorStatus(selectedActorId: number): void {
@@ -1118,9 +1118,9 @@ export class MovieDetailsComponent {
 
 
   /**
- * Verifica se o ator com o ID fornecido é o ator favorito atual do usuário.
+ * Verifica se o ator com o ID fornecido é o ator favorito atual do utilizador.
  * @param actorId O ID do ator a ser verificado.
- * @returns Um valor booleano indicando se o ator é o favorito do usuário ou não.
+ * @returns Um valor booleano indicando se o ator é o favorito do utilizador ou não.
  */
   isFavoriteActor(actorId: number): boolean {
     return actorId === this.userFavoriteActorId;

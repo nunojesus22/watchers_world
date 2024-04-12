@@ -148,8 +148,8 @@
 }
 
 .other-users-user-name {
-  flex-grow: 1; /* Permite que o nome do usuário ocupe qualquer espaço extra */
-  margin-left: 1rem; /* Espaço entre a foto e o nome do usuário */
+  flex-grow: 1; /* Permite que o nome do utilizador ocupe qualquer espaço extra */
+  margin-left: 1rem; /* Espaço entre a foto e o nome do utilizador */
   font-weight: bold;
   color: #333;
 }
@@ -170,7 +170,7 @@
   background: white; /* Cor de fundo para cobrir o conteúdo por baixo quando rolar */
 }
 
-/* Adicione um contêiner em torno da lista de usuários para permitir rolagem apenas nessa seção */
+/* Adicione um contêiner em torno da lista de utilizadors para permitir rolagem apenas nessa seção */
 .user-list-container {
   height: calc(100vh - 18rem); /* Ajuste a altura para compensar a barra de pesquisa */
   overflow-y: auto; /* Ativa a barra de rolagem */
