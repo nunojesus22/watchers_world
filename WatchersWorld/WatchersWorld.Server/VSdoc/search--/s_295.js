@@ -1,0 +1,1 @@
+search_result['295']=["topic_000000000000009E.html","LoginDto Class","DTO utilizado para o login de utilizador.\r\nServe para transferir dados de login do cliente para o servidor."];

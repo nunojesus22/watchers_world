@@ -1,0 +1,1 @@
+search_result['754']=["topic_0000000000000193.html","UserRatingMedia Class","Representa a avaliação de um item de Media por um utilizador, associando uma classificação numérica à combinação utilizador-Media."];

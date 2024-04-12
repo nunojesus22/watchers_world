@@ -1,1 +1,1 @@
-search_result['54']=["topic_0000000000000018_vars--.html","EmailSendDto Fields",""];
+search_result['54']=["topic_0000000000000016.html","AdminController.ChangeRoleToModerator Method","Altera a role de um utilizador para moderator."];

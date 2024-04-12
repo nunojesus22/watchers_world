@@ -1,0 +1,1 @@
+search_result['393']=["topic_00000000000000CE.html","ActorDto Class","DTO (Objeto de Transferência de Dados) que representa um ator dentro do sistema.\r\nContém o identificador único do ator e o seu nome. Este DTO pode ser usado para transportar dados de atores entre dife..."];

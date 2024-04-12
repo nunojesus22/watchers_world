@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>AccountController.Login Method</title>
+	<title>AccountController.LoginWithThirdParty Method</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,7 +74,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">AccountController.Login Method</h1>
+		<h1 class="title">AccountController.LoginWithThirdParty Method</h1>
         
 		<div class="metadata">
         Namespace:
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Handles the login process for a user.</summary-info>
+        <summary-info>Processa o login de um utilizador através de um serviço externo (ex: Google).</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">&lt;AllowAnonymous()&gt; _&nbsp;<br />&lt;HttpPost(&quot;api/account/login&quot;)&gt; _&nbsp;<br />Public Function Login( _&nbsp;<br />   ByVal <i>model</i> As <a target="_top" href="topic_000000000000001D.html" onclick="this.target='';return true;">LoginDto</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>(Of <a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>))</pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;AllowAnonymous()&gt; _&nbsp;<br />&lt;HttpPost(&quot;api/account/login-with-third-party&quot;)&gt; _&nbsp;<br />Public Function LoginWithThirdParty( _&nbsp;<br />   ByVal <i>model</i> As <a target="_top" href="topic_00000000000000A1.html" onclick="this.target='';return true;">LoginWithExternalDto</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>(Of <a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>))</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">[AllowAnonymous()]&nbsp;<br />[HttpPost(&quot;api/account/login&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; Login(&nbsp;<br />   <a target="_top" href="topic_000000000000001D.html" onclick="this.target='';return true;">LoginDto</a> <i>model</i>&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[AllowAnonymous()]&nbsp;<br />[HttpPost(&quot;api/account/login-with-third-party&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; LoginWithThirdParty(&nbsp;<br />   <a target="_top" href="topic_00000000000000A1.html" onclick="this.target='';return true;">LoginWithExternalDto</a> <i>model</i>&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">[AllowAnonymous()]&nbsp;<br />[HttpPost(&quot;api/account/login&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>^&gt;^&gt;^ Login(&nbsp;<br />   <a target="_top" href="topic_000000000000001D.html" onclick="this.target='';return true;">LoginDto</a>^ <i>model</i>&nbsp;<br />) </pre>			
+					<pre xml:space="preserve" class="brush: cpp">[AllowAnonymous()]&nbsp;<br />[HttpPost(&quot;api/account/login-with-third-party&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>^&gt;^&gt;^ LoginWithThirdParty(&nbsp;<br />   <a target="_top" href="topic_00000000000000A1.html" onclick="this.target='';return true;">LoginWithExternalDto</a>^ <i>model</i>&nbsp;<br />) </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -276,20 +276,20 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 		</span>
 	</dt>
 	<dd>
-		<a target="_top" href="topic_000000000000001D.html" onclick="this.target='';return true;">LoginDto</a> 
+		<a target="_top" href="topic_00000000000000A1.html" onclick="this.target='';return true;">LoginWithExternalDto</a> 
 	</dd>
 </dl>
 <p>
-	Login DTO containing user credentials. 
+	DTO contendo informações do login externo. 
 </p>
 
 <p />
 
 	<h4 class="subHeading">
 		Return Value</h4>
-	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; 
+	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; 
 		<p>
-		UserDto on successful login; otherwise, returns an error. 
+		UserDto em caso de sucesso. 
 	</p>
 	
 

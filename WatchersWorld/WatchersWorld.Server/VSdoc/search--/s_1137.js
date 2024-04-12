@@ -1,0 +1,1 @@
+search_result['1137']=["topic_0000000000000272.html","JWTService Class","Classe de serviço para a criação de Tokens Web JSON (JWT).\r\nEsta classe é responsável por gerar JWTs para a autenticação de utilizadores."];

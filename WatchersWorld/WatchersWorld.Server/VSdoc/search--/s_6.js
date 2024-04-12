@@ -1,1 +1,1 @@
-search_result['6']=["topic_0000000000000001_vars--.html","AccountController Fields",""];
+search_result['6']=["topic_0000000000000001_methods--.html","AccountController Methods",""];

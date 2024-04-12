@@ -1,0 +1,1 @@
+search_result['825']=["topic_00000000000001BC.html","UserMedia Class","Representa a relação entre um utilizador e os Media associados, permitindo associar um utilizador\r\na uma lista específica de Media ou a um Media individual."];

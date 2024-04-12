@@ -1,0 +1,1 @@
+search_result['438']=["topic_00000000000000E7.html","MediaAddedByDateDto Class","Representa um Objeto de Transferência de Dados (DTO) para contagem do número de mídias adicionadas por data."];

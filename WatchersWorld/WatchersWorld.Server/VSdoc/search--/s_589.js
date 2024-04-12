@@ -1,0 +1,1 @@
+search_result['589']=["topic_0000000000000133.html","ChatHub.GetMissingChats Method","Recupera chats que não estão na lista de chats já fornecida pelo cliente."];

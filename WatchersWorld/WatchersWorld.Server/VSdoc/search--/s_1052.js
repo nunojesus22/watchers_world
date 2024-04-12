@@ -1,0 +1,1 @@
+search_result['1052']=["topic_0000000000000240.html","INotificationService.GetMediaNotificationsForUserAsync Method","Obtém uma lista de notificações de mídia para um utilizador específico."];

@@ -1,0 +1,1 @@
+search_result['943']=["topic_00000000000001FB.html","IChatService.GetAllMessagesByUsers Method","Recupera todas as mensagens trocadas entre dois usuários."];

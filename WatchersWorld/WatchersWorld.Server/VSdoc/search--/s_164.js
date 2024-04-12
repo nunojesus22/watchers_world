@@ -1,0 +1,1 @@
+search_result['164']=["topic_0000000000000048.html","NotificationsController Class","Controlador responsável pela gestão de notificações dos utilizadores.\r\nAutenticação é requerida para acessar os endpoints deste controlador."];

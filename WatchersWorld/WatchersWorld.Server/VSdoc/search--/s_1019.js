@@ -1,0 +1,1 @@
+search_result['1019']=["topic_0000000000000229.html","IGamificationService.GetUnlockedMedalsAsync Method","Obtém uma lista das medalhas desbloqueadas por um utilizador."];

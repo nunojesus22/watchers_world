@@ -1,0 +1,1 @@
+search_result['617']=["topic_0000000000000145.html","ProfileInfo.CoverPhoto Property","URL ou caminho para a foto de capa do utilizador.\r\nEsta é uma imagem maior, exibida no topo do perfil do utilizador."];

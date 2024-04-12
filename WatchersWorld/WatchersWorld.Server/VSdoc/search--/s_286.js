@@ -1,0 +1,1 @@
+search_result['286']=["topic_000000000000009A.html","EmailSendDto Class","DTO utilizado para enviar email.\r\nContém o destinatário, o assunto e o corpo do email."];

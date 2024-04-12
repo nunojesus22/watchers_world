@@ -1,1 +1,1 @@
-search_result['81']=["topic_0000000000000024_vars--.html","ResetPasswordDto Fields",""];
+search_result['81']=["topic_0000000000000022.html","GamificationController Class","Controlador para gerir operações de gamificação, incluindo a atribuição de medalhas e consulta de medalhas desbloqueadas ou bloqueadas para os utilizadores."];

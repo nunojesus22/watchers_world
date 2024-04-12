@@ -1,0 +1,1 @@
+search_result['1044']=["topic_0000000000000238.html","INotificationService.HasUnreadNotificationsAsync Method","Verifica se existem notificações não lidas para um utilizador específico."];

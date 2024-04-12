@@ -1,1 +1,1 @@
-search_result['67']=["topic_0000000000000020.html","RegisterDto Class","DTO for user registration.\r\nUsed to transfer registration data from the client to the server."];
+search_result['67']=["topic_000000000000001D_attached_props--.html","FavoriteActorChoiceController Attached Properties",""];

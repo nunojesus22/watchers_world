@@ -1,1 +1,1 @@
-c['51']=[['52',"AddingUserToDatabase Class","topic_000000000000000D.html",1]];
+c['51']=[['52',"AwardMedal Method","topic_0000000000000024.html",0],['53',"GetAvailableMedals Method","topic_0000000000000029.html",0],['54',"GetLockedMedals Method","topic_000000000000002A.html",0],['55',"GetTotalMedals Method","topic_000000000000002B.html",0],['56',"GetUnlockedMedals Method","topic_0000000000000028.html",0]];

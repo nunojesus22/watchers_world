@@ -1,0 +1,1 @@
+search_result['233']=["topic_0000000000000074.html","UserRatingMediaController.GetAverageRatingForMedia Method","Obtém a avaliação média de uma media específica."];

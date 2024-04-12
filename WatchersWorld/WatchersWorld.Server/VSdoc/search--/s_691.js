@@ -1,0 +1,1 @@
+search_result['691']=["topic_0000000000000171.html","Medals Class","Classe que representa uma medalha na plataforma.\r\nAs medalhas são recompensas atribuídas aos utilizadores por alcançarem certos marcos ou completarem tarefas específicas.\r\nEsta classe destina-se a cap..."];

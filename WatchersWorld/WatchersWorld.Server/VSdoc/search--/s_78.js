@@ -1,1 +1,1 @@
-search_result['78']=["topic_0000000000000024_events--.html","ResetPasswordDto Events",""];
+search_result['78']=["topic_0000000000000020_props--.html","RegisterDto Properties",""];

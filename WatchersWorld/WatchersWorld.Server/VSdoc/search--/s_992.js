@@ -1,0 +1,1 @@
+search_result['992']=["topic_0000000000000218.html","IFollowersService.GetPendingsSend Method","Obtém os pedidos para seguir pendentes enviados para um utilizador."];

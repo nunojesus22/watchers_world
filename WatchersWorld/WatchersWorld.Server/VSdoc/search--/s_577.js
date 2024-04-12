@@ -1,0 +1,1 @@
+search_result['577']=["topic_000000000000012C.html","FollowerDto.ProfilePhoto Property","Caminho ou URL para a fotografia de perfil do seguidor."];

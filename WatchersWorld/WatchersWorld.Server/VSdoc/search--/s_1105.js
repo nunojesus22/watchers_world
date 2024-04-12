@@ -1,0 +1,1 @@
+search_result['1105']=["topic_0000000000000261.html","IRatingMediaService.GetUserRate Method","Obtém a avaliação específica dada por um utilizador a uma Media."];

@@ -1,1 +1,1 @@
-search_result['66']=["topic_000000000000001F.html","LoginDto.Password Property","Password of the user."];
+search_result['66']=["topic_000000000000001D.html","FavoriteActorChoiceController Class","Controlador para gerir as escolhas de atores favoritos dos utilizadores.\r\nPermite aos utilizadores escolherem o seu ator favorito para uma determinada media, obter as escolhas para uma media e a escol..."];

@@ -1,0 +1,1 @@
+search_result['1043']=["topic_0000000000000237.html","INotificationService.ClearNotificationsForUserAsync Method","Limpa todas as notificações associadas a um utilizador."];

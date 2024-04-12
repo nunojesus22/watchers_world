@@ -1,0 +1,1 @@
+search_result['379']=["topic_00000000000000C5.html","MedalsDto.Id Property","Identificador único da medalha.\r\nUtilizado para referenciar de forma única cada medalha dentro da plataforma."];

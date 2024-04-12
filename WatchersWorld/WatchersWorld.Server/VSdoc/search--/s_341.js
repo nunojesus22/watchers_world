@@ -1,0 +1,1 @@
+search_result['341']=["topic_00000000000000B3.html","ResetPasswordDto.NewPassword Property","Nova palavra-passe a ser definida para a conta do utilizador."];

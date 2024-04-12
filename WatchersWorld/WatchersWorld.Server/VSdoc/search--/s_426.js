@@ -1,0 +1,1 @@
+search_result['426']=["topic_00000000000000E0.html","CommentsCountByDateDto.Date Property","Obtém ou define a data associada ao número de comentários."];

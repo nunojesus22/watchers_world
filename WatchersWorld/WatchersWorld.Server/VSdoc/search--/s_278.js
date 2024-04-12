@@ -1,0 +1,1 @@
+search_result['278']=["topic_0000000000000097.html","ConfirmEmailDto Class","DTO utilizado para a confirmação de email.\r\nContém o token de confirmação e o email do utilizador."];

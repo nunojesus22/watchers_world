@@ -1,0 +1,1 @@
+search_result['330']=["topic_00000000000000AD.html","RegisterWithExternalDto.UserId Property","Identificador do utilizador no serviço externo."];

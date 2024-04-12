@@ -1,0 +1,1 @@
+search_result['638']=["topic_0000000000000150.html","Chat.User1Id Property","Identificador do primeiro utilizador no chat. Este campo é obrigatório."];

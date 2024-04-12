@@ -1,1 +1,1 @@
-search_result['23']=["topic_000000000000000D.html","AddingUserToDatabase Class",""];
+search_result['23']=["topic_000000000000000B.html","AccountController.GetUserRole Method","Obtém os papéis de um utilizador."];

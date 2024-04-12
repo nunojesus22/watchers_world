@@ -1,1 +1,1 @@
-search_result['105']=["topic_0000000000000037.html","ProfileInfo.BirthDate Property","The user\u0027s date of birth.\r\nThis information can be used for age verification or displayed in user profiles for personalization."];
+search_result['105']=["topic_0000000000000028_methods--.html","UserDto Methods",""];

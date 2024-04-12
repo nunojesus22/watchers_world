@@ -1,0 +1,1 @@
+search_result['487']=["topic_00000000000000FA.html","FollowNotificationDto.TargetUserId Property","Identificador do utilizador alvo que recebe a notificação de um novo seguidor."];

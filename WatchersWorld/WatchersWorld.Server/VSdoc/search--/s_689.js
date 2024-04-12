@@ -1,0 +1,1 @@
+search_result['689']=["topic_000000000000016F.html","Followers.IsApproved Property","Indica se o pedido para seguir foi aprovado. Isto é usado para aprovação de pedidos para seguir antes de eles se tornarem ativos."];

@@ -1,1 +1,1 @@
-search_result['40']=["topic_0000000000000014.html","WatchersWorld.Server.DTOs.Account Namespace",""];
+search_result['40']=["topic_0000000000000012.html","AdminController.BanUserPermanently Method","Aplica um banimento permanente a um utilizador."];

@@ -1,1 +1,1 @@
-search_result['17']=["topic_000000000000000A_events--.html","ProfileController Events",""];
+search_result['17']=["topic_000000000000000A.html","AccountController.ResetPassword Method","Redefine a senha de um utilizador."];

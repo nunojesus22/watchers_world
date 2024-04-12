@@ -1,0 +1,1 @@
+search_result['455']=["topic_00000000000000EE.html","RatingPercentageDto Class","DTO que representa a percentagem de avaliações para uma determinada classificação.\r\nInclui a classificação específica e a sua percentagem correspondente."];

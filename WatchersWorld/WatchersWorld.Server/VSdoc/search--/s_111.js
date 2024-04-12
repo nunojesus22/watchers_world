@@ -1,1 +1,1 @@
-search_result['111']=["topic_000000000000003C_attached_props--.html","User Attached Properties",""];
+search_result['111']=["topic_000000000000002C.html","MediaController Class","Controlador responsável pela gestão de medias no contexto da aplicação, incluindo operações como marcar medias como assistidas ou para assistir mais tarde,\r\nverificar se uma media foi assistida ou est..."];

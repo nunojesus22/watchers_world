@@ -1,1 +1,1 @@
-search_result['84']=["topic_0000000000000027.html","ResetPasswordDto.NewPassword Property","New password to be set for the user account."];
+search_result['84']=["topic_0000000000000022_methods--.html","GamificationController Methods",""];

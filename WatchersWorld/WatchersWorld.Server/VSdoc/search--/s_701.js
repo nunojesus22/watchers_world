@@ -1,0 +1,1 @@
+search_result['701']=["topic_0000000000000176.html","UserMedal Class","Classe que representa a atribuição de uma medalha a um utilizador.\r\nEsta classe faz a ligação entre os utilizadores e as medalhas que eles obtiveram, registando quando cada medalha foi adquirida.\r\nDes..."];

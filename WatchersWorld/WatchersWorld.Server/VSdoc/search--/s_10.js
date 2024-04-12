@@ -1,1 +1,1 @@
-search_result['10']=["topic_0000000000000005.html","AccountController.Register Method","Handles the user registration process."];
+search_result['10']=["topic_0000000000000003.html","AccountController.Login Method","Processa o login de um utilizador."];

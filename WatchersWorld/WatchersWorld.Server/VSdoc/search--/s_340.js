@@ -1,0 +1,1 @@
+search_result['340']=["topic_00000000000000B2.html","ResetPasswordDto.Email Property","Endereço de email associado à conta do utilizador."];

@@ -1,0 +1,1 @@
+search_result['198']=["topic_0000000000000060.html","ProfileController.GetWhosPending Method","Obtém os pedidos de seguimento pendentes enviados para um utilizador."];

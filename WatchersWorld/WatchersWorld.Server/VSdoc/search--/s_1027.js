@@ -1,0 +1,1 @@
+search_result['1027']=["topic_000000000000022C.html","GamificationService Constructor","Inicializa uma nova instância da classe de serviço de gamificação com o contexto especificado."];

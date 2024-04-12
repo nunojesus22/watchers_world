@@ -1,0 +1,1 @@
+search_result['190']=["topic_0000000000000058.html","ProfileController.GetUser Method","Obtém informações de perfil para um utilizador especificado."];

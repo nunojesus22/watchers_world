@@ -1,1 +1,1 @@
-c['57']=[['58',"ProfileInfo Class","topic_0000000000000035.html",1],['66',"User Class","topic_000000000000003C.html",0]];
+c['57']=[['58',"Methods","topic_000000000000002C_methods--.html",1]];

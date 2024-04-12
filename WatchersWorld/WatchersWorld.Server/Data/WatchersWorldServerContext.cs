@@ -8,8 +8,8 @@ using WatchersWorld.Server.Models.Media.RatingMedia;
 using WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz;
 using WatchersWorld.Server.Models.Notifications;
 using WatchersWorld.Server.Models.Gamification;
-using WatchersWorld.Server.Chat.Models;
 using Microsoft.AspNetCore.Identity;
+using WatchersWorld.Server.Models.Chat;
 
 namespace WatchersWorld.Server.Data
 {
@@ -44,7 +44,7 @@ namespace WatchersWorld.Server.Data
         public DbSet<UserMedal> UserMedals { get; set; }
 
 
-        public DbSet<Chat.Models.Chat> Chats { get; set; }
+        public DbSet<Models.Chat.Chat> Chats { get; set; }
         public DbSet<Messages> Messages { get; set; }
         public DbSet<MessageStatus> MessagesStatus { get; set; }
         public DbSet<MessagesVisibility> MessagesVisibility { get; set; }
@@ -90,7 +90,7 @@ namespace WatchersWorld.Server.Data
           
 
 
-            modelBuilder.Entity<Chat.Models.Chat>(entity =>
+            modelBuilder.Entity<Models.Chat.Chat>(entity =>
             {
                 entity.HasOne(chat => chat.User1) 
                     .WithMany() 

@@ -1,0 +1,1 @@
+search_result['939']=["topic_00000000000001F7.html","IChatService.GetUsersThatHaveChatWith Method","Recupera os identificadores dos usuários que têm chats com um usuário específico."];

@@ -1,0 +1,1 @@
+search_result['1084']=["topic_0000000000000256.html","IProfileService.GetUserProfileAsync Method","Obtém as informações do perfil de um utilizador com base no seu nome de utilizador."];

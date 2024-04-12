@@ -1,0 +1,1 @@
+search_result['643']=["topic_0000000000000155.html","Messages Class","Representa uma mensagem individual dentro de um chat, incluindo detalhes do remetente, texto da mensagem e o momento do envio."];

@@ -1,1 +1,1 @@
-search_result['63']=["topic_000000000000001D_props--.html","LoginDto Properties",""];
+search_result['63']=["topic_000000000000001A.html","AdminController.GetTotalPrivateProfiles Method","Obtém o número total de perfis privados no sistema."];

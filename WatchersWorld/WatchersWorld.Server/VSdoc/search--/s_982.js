@@ -1,0 +1,1 @@
+search_result['982']=["topic_0000000000000213.html","IFollowersService Interface","Interface que define operações para a gestão de seguidores."];

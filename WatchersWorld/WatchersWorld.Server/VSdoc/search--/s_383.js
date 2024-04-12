@@ -1,0 +1,1 @@
+search_result['383']=["topic_00000000000000C9.html","UserMedalDto Class","Classe de transferência de dados (DTO) que representa uma medalha atribuída a um utilizador.\r\nEste DTO é utilizado para transferir informações sobre as medalhas obtidas pelos utilizadores entre camada..."];

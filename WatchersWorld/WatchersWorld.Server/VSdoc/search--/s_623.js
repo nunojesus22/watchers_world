@@ -1,0 +1,1 @@
+search_result['623']=["topic_000000000000014B.html","User Class","Representa uma entidade de utilizador que estende a classe IdentityUser fornecida pelo ASP.NET Core Identity.\r\nInclui informações básicas do utilizador e propriedades adicionais específicas à aplicaçã..."];

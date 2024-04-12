@@ -1,0 +1,1 @@
+search_result['871']=["topic_00000000000001D1.html","MessageNotification Constructor","Construtor que inicializa uma nova instância da classe MessageNotification com o tipo de evento específico."];

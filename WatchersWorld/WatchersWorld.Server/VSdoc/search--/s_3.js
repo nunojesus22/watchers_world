@@ -1,1 +1,1 @@
-search_result['3']=["topic_0000000000000001_events--.html","AccountController Events",""];
+search_result['3']=["topic_0000000000000001.html","AccountController Class","Controlador responsável por tratar das solicitações relacionadas com contas de utilizador, como autenticação, registo, confirmação de email e gestão de senha."];

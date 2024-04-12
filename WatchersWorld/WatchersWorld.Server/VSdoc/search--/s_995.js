@@ -1,0 +1,1 @@
+search_result['995']=["topic_000000000000021B.html","IFollowersService.FollowIsPending Method","Verifica se uma solicitação de seguimento está pendente."];

@@ -1,0 +1,1 @@
+search_result['399']=["topic_00000000000000CF.html","ActorDto.ActorId Property","Identificador único do ator. Este é um valor obrigatório que serve como a chave primária na base de dados."];

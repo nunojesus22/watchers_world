@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"WatchersWorld.Server Reference","topic_0000000000000044.html"],['70',"WatchersWorld.Server.Services Namespace","topic_000000000000003D.html"],['71',"EmailService Class","topic_000000000000003E.html"],['73',"Methods","topic_000000000000003E_methods--.html"]];

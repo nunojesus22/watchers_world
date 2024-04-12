@@ -1,0 +1,1 @@
+search_result['183']=["topic_0000000000000056.html","NotificationsController.MarkAllMediaNotificationsAsRead Method","Marca todas as notificações de novas mídias ou episódios como lidas para um determinado utilizador."];

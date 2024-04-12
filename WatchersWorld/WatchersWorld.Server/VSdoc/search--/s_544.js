@@ -1,0 +1,1 @@
+search_result['544']=["topic_000000000000011A.html","ProfileInfoDto.ProfilePhoto Property","URL ou caminho para a fotografia de perfil do utilizador. Esta imagem é tipicamente mostrada no perfil do utilizador ou ao lado de conteúdo gerado pelo utilizador."];

@@ -1,0 +1,1 @@
+search_result['700']=["topic_0000000000000175.html","Medals.Image Property","URL ou caminho para a imagem representativa da medalha.\r\nA imagem é utilizada para exibição visual da medalha nos perfis dos utilizadores ou em listagens de recompensas."];

@@ -1,0 +1,1 @@
+search_result['446']=["topic_00000000000000EA.html","RatingMediaDto Class","DTO que representa a avaliação de uma Media por parte de um utilizador.\r\nInclui a entidade de Media, a classificação atribuída e o nome de utilizador que efetuou a avaliação."];

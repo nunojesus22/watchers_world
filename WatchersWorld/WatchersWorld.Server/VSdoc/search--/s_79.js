@@ -1,1 +1,1 @@
-search_result['79']=["topic_0000000000000024_methods--.html","ResetPasswordDto Methods",""];
+search_result['79']=["topic_0000000000000020_vars--.html","RegisterDto Fields",""];
