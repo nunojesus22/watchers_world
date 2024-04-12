@@ -1,0 +1,1 @@
+search_result['173']=["topic_000000000000004C.html","NotificationsController.MarkAllFollowNotificationsAsRead Method","Marca todas as notificações de seguimento como lidas para um determinado utilizador."];

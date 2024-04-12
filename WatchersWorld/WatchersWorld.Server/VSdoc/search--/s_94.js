@@ -1,1 +1,1 @@
-search_result['94']=["topic_000000000000002C.html","WatchersWorld.Server.Models.Authentication.Status Namespace",""];
+search_result['94']=["topic_0000000000000025.html","AwardMedalRequest Class","Modelo de dados para a requisição de atribuição de medalhas."];

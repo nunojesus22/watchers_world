@@ -1,1 +1,1 @@
-search_result['65']=["topic_000000000000001E.html","LoginDto.Email Property","Email address of the user."];
+search_result['65']=["topic_000000000000001C.html","AdminController.GetTotalComments Method","Obtém o número total de comentários feitos em todo o sistema."];

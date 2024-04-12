@@ -1,0 +1,1 @@
+search_result['611']=["topic_000000000000013F.html","ProfileInfo.UserId Property","Identificador único do utilizador associado ao perfil, utilizado como chave estrangeira."];

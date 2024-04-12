@@ -1,0 +1,1 @@
+search_result['1104']=["topic_0000000000000260.html","IRatingMediaService.GetRatesForMedia Method","Recupera a distribuição das avaliações para uma Media específica."];

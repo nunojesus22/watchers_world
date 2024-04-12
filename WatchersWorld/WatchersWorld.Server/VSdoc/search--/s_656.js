@@ -1,0 +1,1 @@
+search_result['656']=["topic_000000000000015D.html","MessageStatus Class","Representa o estado de uma mensagem específica no sistema de mensagens, incluindo detalhes sobre o destinatário e a data/hora em que a mensagem foi lida."];

@@ -1,0 +1,1 @@
+search_result['303']=["topic_00000000000000A1.html","LoginWithExternalDto Class","DTO utilizado para login com serviços externos.\r\nContém o token de acesso, identificador do utilizador, provedor do serviço e o email do utilizador."];

@@ -1,0 +1,1 @@
+search_result['348']=["topic_00000000000000B5.html","UserDto.JWT Property","Token JWT para autenticação e autorização."];

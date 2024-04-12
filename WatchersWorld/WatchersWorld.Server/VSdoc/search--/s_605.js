@@ -1,0 +1,1 @@
+search_result['605']=["topic_000000000000013E.html","ProfileInfo Class","Classe de perfil que representa o perfil de um utilizador.\r\nAssocia detalhes adicionais como biografia, fotos e estado com um utilizador.\r\nEsta classe destina-se a capturar e transmitir informações es..."];

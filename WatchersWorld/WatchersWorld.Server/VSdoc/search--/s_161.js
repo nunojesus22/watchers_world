@@ -1,0 +1,1 @@
+search_result['161']=["topic_0000000000000045.html","MediaController.GetCommentsCountByDate Method","Obtém a contagem de comentários feitos por um usuário específico, agrupados por data de criação."];

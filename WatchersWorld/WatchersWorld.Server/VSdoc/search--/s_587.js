@@ -1,0 +1,1 @@
+search_result['587']=["topic_0000000000000131.html","ChatHub.OnDisconnectedAsync Method","Acionado quando um cliente se desconecta do hub, remove o registro da conexão."];

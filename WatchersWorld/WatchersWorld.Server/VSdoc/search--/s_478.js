@@ -1,0 +1,1 @@
+search_result['478']=["topic_00000000000000F6.html","AchievementNotificationDto.UserMedalId Property","Identificador único da medalha conquistada pelo utilizador."];

@@ -1,0 +1,1 @@
+search_result['309']=["topic_00000000000000A2.html","LoginWithExternalDto.AccessToken Property","Token de acesso fornecido pelo serviço externo."];

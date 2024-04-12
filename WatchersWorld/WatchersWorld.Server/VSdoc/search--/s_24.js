@@ -1,1 +1,1 @@
-search_result['24']=["topic_000000000000000D_attached_props--.html","AddingUserToDatabase Attached Properties",""];
+search_result['24']=["topic_000000000000000C.html","AccountController.DeleteUserByUsername Method","Elimina um utilizador e a sua informação de perfil pelo seu nome de utilizador."];

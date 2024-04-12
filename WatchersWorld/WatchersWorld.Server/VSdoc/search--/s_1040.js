@@ -1,0 +1,1 @@
+search_result['1040']=["topic_0000000000000234.html","INotificationService.GetReplyNotificationsForUserAsync Method","Obtém todas as notificações de resposta a comentários para um dado utilizador."];

@@ -33,7 +33,7 @@ export class AdminStatisticsComponent {
  * Construtor da classe AdminStatisticsComponent.
  * 
  * @param adminService O serviço responsável por operações administrativas.
- * @param authService O serviço de autenticação do usuário.
+ * @param authService O serviço de autenticação do utilizador.
  * @param router O serviço de roteamento para navegação entre páginas.
  */
   constructor(
@@ -44,10 +44,10 @@ export class AdminStatisticsComponent {
   ngOnInit(): void {
     const currentUser = this.authService.getLoggedInUserName();
     if (currentUser) {
-      // Obtem as roles do usuário atual
+      // Obtem as roles do utilizador atual
       this.authService.getUserRole(currentUser).subscribe({
         next: (roles) => {
-          // Verifica se o usuário tem a role de admin
+          // Verifica se o utilizador tem a role de admin
           if (!roles.includes('Admin')) {
             this.router.navigate(['/']); // Redireciona para a página inicial se não for admin
             return;
@@ -66,7 +66,7 @@ export class AdminStatisticsComponent {
         error: (error) => console.error("Error fetching user roles:", error)
       });
     } else {
-      // Se não estiver logado ou se o nome do usuário não estiver disponível, redireciona
+      // Se não estiver logado ou se o nome do utilizador não estiver disponível, redireciona
       this.router.navigate(['/']);
     }
   }
@@ -81,10 +81,10 @@ export class AdminStatisticsComponent {
   }
 
 /**
- * Carrega os dados de usuários banidos versus usuários registrados e define as opções do gráfico correspondente.
+ * Carrega os dados de utilizadors banidos versus utilizadors registrados e define as opções do gráfico correspondente.
  */
   loadBannedVsRegisteredData(): void {
-    // Executa em paralelo o carregamento dos usuários banidos e registrados
+    // Executa em paralelo o carregamento dos utilizadors banidos e registrados
     this.fetchTotalBannedUsers();
     this.fetchTotalRegisteredUsers(() => {
       this.setBannedVsRegisteredChartOptions();
@@ -92,12 +92,12 @@ export class AdminStatisticsComponent {
   }
 
   /**
- * Define as opções do gráfico de pizza para exibir a comparação entre usuários banidos e registrados.
+ * Define as opções do gráfico de pizza para exibir a comparação entre utilizadors banidos e registrados.
  * 
  * Certifica-se de que os dados necessários estão carregados antes de configurar o gráfico.
  * 
  * @remarks
- * Se os dados de usuários banidos e registrados estiverem disponíveis, configura as opções do gráfico.
+ * Se os dados de utilizadors banidos e registrados estiverem disponíveis, configura as opções do gráfico.
  * 
  * @returns void
  */
@@ -199,7 +199,7 @@ export class AdminStatisticsComponent {
   }
 
   /**
- * Busca o total de usuários registrados e chama a função de retorno, se fornecida.
+ * Busca o total de utilizadors registrados e chama a função de retorno, se fornecida.
  * @param callback Uma função de retorno opcional para chamar após a conclusão da busca.
  */
   private fetchTotalRegisteredUsers(callback?: () => void): void {
@@ -216,7 +216,7 @@ export class AdminStatisticsComponent {
 
 
 /**
- * Busca o total de usuários banidos.
+ * Busca o total de utilizadors banidos.
  */
   private fetchTotalBannedUsers(): void {
     this.adminService.getTotalBannedUsers().subscribe({

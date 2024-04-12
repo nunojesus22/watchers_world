@@ -1,0 +1,1 @@
+search_result['832']=["topic_00000000000001BE.html","UserMedia.UserId Property","Identificador do utilizador associado. Este campo deve conter o identificador único do utilizador\r\nque está relacionado com os Media especificados."];

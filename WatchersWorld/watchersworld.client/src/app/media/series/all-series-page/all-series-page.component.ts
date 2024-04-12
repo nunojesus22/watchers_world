@@ -36,7 +36,7 @@ export class AllSeriesPageComponent {
    * @param service O serviço da API de filmes.
    * @param authService O serviço de autenticação.
    * @param notificationService O serviço de notificações.
-   * @param profileService O serviço de perfil do usuário.
+   * @param profileService O serviço de perfil do utilizador.
    */
   constructor(private route: Router,
     private service: MovieApiServiceComponent,
@@ -55,7 +55,7 @@ export class AllSeriesPageComponent {
   }
 
 /**
-   * Recupera as séries recomendadas para o usuário e as adiciona à categoria "Séries Sugeridas".
+   * Recupera as séries recomendadas para o utilizador e as adiciona à categoria "Séries Sugeridas".
    */
   fetchRecommendedSeries(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).pipe(
@@ -211,7 +211,7 @@ export class AllSeriesPageComponent {
   }
 
   /**
- * Busca as séries que estão sendo transmitidas hoje e notifica o usuário sobre novos episódios disponíveis.
+ * Busca as séries que estão sendo transmitidas hoje e notifica o utilizador sobre novos episódios disponíveis.
  */
   fetchAiringAndWatchedSeriesAndNotify(): void {
     forkJoin({

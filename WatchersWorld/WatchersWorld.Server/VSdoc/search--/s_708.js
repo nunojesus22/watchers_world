@@ -1,0 +1,1 @@
+search_result['708']=["topic_0000000000000178.html","UserMedal.MedalId Property","Identificador único da medalha obtida.\r\nServe como chave estrangeira, referenciando a entidade Medals para identificar a medalha específica adquirida pelo utilizador."];

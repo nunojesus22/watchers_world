@@ -103,7 +103,7 @@ export class AdminComponent implements OnDestroy {
         const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
         return forkJoin(filteredProfiles.map(profile => {
           if (!profile.userName) {
-            console.warn(`Perfil sem nome de usuário encontrado:`, profile);
+            console.warn(`Perfil sem nome de utilizador encontrado:`, profile);
             return of({ ...profile, isModerator: false });
           }
           return this.adminService.getUserRole(profile.userName).pipe(
@@ -133,7 +133,7 @@ export class AdminComponent implements OnDestroy {
         this.filterUsers();
       },
       (error) => {
-        console.error("Erro ao buscar perfis de usuários:", error);
+        console.error("Erro ao buscar perfis de utilizadors:", error);
       }
     );
   }
@@ -334,7 +334,7 @@ export class AdminComponent implements OnDestroy {
   }
 
   /**
-   * Atualiza o utilizador selecionado na interface de usuário.
+   * Atualiza o utilizador selecionado na interface de utilizador.
    */
   updateSelectedUser(): void {
     this.selectedUser = this.usersProfiles.find(u => u.userName === this.selectedUsername);

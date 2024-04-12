@@ -1,0 +1,1 @@
+search_result['420']=["topic_00000000000000DF.html","CommentsCountByDateDto Class","Representa um Objeto de Transferência de Dados (DTO) para contagem do número de comentários por data."];

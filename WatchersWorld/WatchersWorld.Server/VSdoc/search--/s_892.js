@@ -1,0 +1,1 @@
+search_result['892']=["topic_00000000000001DC.html","ReplyNotification.TargetUserId Property","Identificador do utilizador destinatário da notificação de resposta."];

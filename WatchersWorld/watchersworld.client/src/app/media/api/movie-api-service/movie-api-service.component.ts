@@ -324,7 +324,7 @@ export class MovieApiServiceComponent {
   // FAVORITOS
 
   /**
- * Verifica se a mídia é favorita para o usuário atual.
+ * Verifica se a mídia é favorita para o utilizador atual.
  * @param mediaId O ID da mídia.
  * @param mediaType O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia é favorita.
@@ -335,7 +335,7 @@ export class MovieApiServiceComponent {
   }
 
   /**
- * Marca a mídia como favorita para o usuário atual.
+ * Marca a mídia como favorita para o utilizador atual.
  * @param mediaId O ID da mídia.
  * @param type O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi marcada como favorita com sucesso.
@@ -345,7 +345,7 @@ export class MovieApiServiceComponent {
   }
 
   /**
- * Remove a marcação de favorito da mídia para o usuário atual.
+ * Remove a marcação de favorito da mídia para o utilizador atual.
  * @param mediaId O ID da mídia.
  * @param type O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a marcação de favorito da mídia foi removida com sucesso.
@@ -357,7 +357,7 @@ export class MovieApiServiceComponent {
   //MARCAR COMO VISTO
 
   /**
- * Marca a mídia como assistida pelo usuário atual.
+ * Marca a mídia como assistida pelo utilizador atual.
  * @param mediaId O ID da mídia.
  * @param type O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi marcada como assistida com sucesso.
@@ -368,7 +368,7 @@ export class MovieApiServiceComponent {
 
 
   /**
- * Remove a marcação de assistido da mídia para o usuário atual.
+ * Remove a marcação de assistido da mídia para o utilizador atual.
  * @param mediaId O ID da mídia.
  * @param type O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a marcação de assistido da mídia foi removida com sucesso.
@@ -379,10 +379,10 @@ export class MovieApiServiceComponent {
 
 
   /**
- * Verifica se a mídia foi assistida pelo usuário atual.
+ * Verifica se a mídia foi assistida pelo utilizador atual.
  * @param mediaId O ID da mídia.
  * @param mediaType O tipo de mídia (por exemplo, 'serie' ou 'movie').
- * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi assistida pelo usuário.
+ * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi assistida pelo utilizador.
  */
   checkIfWatched(mediaId: number, mediaType: string): Observable<any> {
     const headers = this.getHeaders();
@@ -392,10 +392,10 @@ export class MovieApiServiceComponent {
 
   
 /**
- * Verifica se a mídia foi marcada como para assistir mais tarde pelo usuário atual.
+ * Verifica se a mídia foi marcada como para assistir mais tarde pelo utilizador atual.
  * @param mediaId O ID da mídia.
  * @param mediaType O tipo de mídia (por exemplo, 'serie' ou 'movie').
- * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi marcada para assistir mais tarde pelo usuário.
+ * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi marcada para assistir mais tarde pelo utilizador.
  */
   checkIfWatchedLater(mediaId: number, mediaType: string): Observable<any> {
     const headers = this.getHeaders();
@@ -404,7 +404,7 @@ export class MovieApiServiceComponent {
 
 
   /**
- * Marca a mídia como para assistir mais tarde pelo usuário atual.
+ * Marca a mídia como para assistir mais tarde pelo utilizador atual.
  * @param mediaId O ID da mídia.
  * @param type O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a mídia foi marcada para assistir mais tarde com sucesso.
@@ -415,7 +415,7 @@ export class MovieApiServiceComponent {
 
 
   /**
- * Remove a marcação de assistir mais tarde da mídia para o usuário atual.
+ * Remove a marcação de assistir mais tarde da mídia para o utilizador atual.
  * @param mediaId O ID da mídia.
  * @param type O tipo de mídia (por exemplo, 'serie' ou 'movie').
  * @returns Um Observable com a resposta da solicitação HTTP que indica se a marcação de assistir mais tarde da mídia foi removida com sucesso.
@@ -543,8 +543,8 @@ export class MovieApiServiceComponent {
   // RATINGS
 
   /**
- * Registra a classificação dada pelo usuário a uma mídia.
- * @param ratingMediaDto Os dados de classificação fornecidos pelo usuário.
+ * Registra a classificação dada pelo utilizador a uma mídia.
+ * @param ratingMediaDto Os dados de classificação fornecidos pelo utilizador.
  * @returns Um Observable indicando se a classificação foi registrada com sucesso.
  */
   giveRatingToMedia(ratingMediaDto: UserRatingMedia): Observable<any> {
@@ -572,10 +572,10 @@ export class MovieApiServiceComponent {
   }
 
   /**
- * Obtém a classificação dada pelo usuário à mídia.
- * @param username O nome de usuário do usuário.
+ * Obtém a classificação dada pelo utilizador à mídia.
+ * @param username O nome de utilizador do utilizador.
  * @param mediaId O ID da mídia.
- * @returns Um Observable com a classificação dada pelo usuário à mídia.
+ * @returns Um Observable com a classificação dada pelo utilizador à mídia.
  */
   getUserRatingForMedia(username: string, mediaId: number): Observable<any> {
     const headers = this.getHeaders();
@@ -604,10 +604,10 @@ export class MovieApiServiceComponent {
   }
 
   /**
- * Obtém a escolha de ator favorito feita pelo usuário para uma mídia específica.
- * @param username O nome de usuário do usuário.
+ * Obtém a escolha de ator favorito feita pelo utilizador para uma mídia específica.
+ * @param username O nome de utilizador do utilizador.
  * @param mediaId O ID da mídia.
- * @returns Um Observable com a escolha de ator favorito do usuário para a mídia.
+ * @returns Um Observable com a escolha de ator favorito do utilizador para a mídia.
  */
   getUserActorChoice(username: string, mediaId: number): Observable<any> {
     const headers = this.getHeaders();
@@ -656,9 +656,9 @@ export class MovieApiServiceComponent {
 
 
 /**
- * Obtém a contagem de comentários por data para um usuário específico.
- * @param username O nome de usuário do usuário.
- * @returns Um Observable com a contagem de comentários por data para o usuário.
+ * Obtém a contagem de comentários por data para um utilizador específico.
+ * @param username O nome de utilizador do utilizador.
+ * @returns Um Observable com a contagem de comentários por data para o utilizador.
  */
   commentsDate(username:string): Observable<any[]> {
     const headers = this.getHeaders();
@@ -666,9 +666,9 @@ export class MovieApiServiceComponent {
   }
 
   /**
- * Obtém os filmes adicionados por data para um usuário específico.
- * @param username O nome de usuário do usuário.
- * @returns Um Observable com os filmes adicionados por data para o usuário.
+ * Obtém os filmes adicionados por data para um utilizador específico.
+ * @param username O nome de utilizador do utilizador.
+ * @returns Um Observable com os filmes adicionados por data para o utilizador.
  */
   getMovieAddedByDate(username:any): Observable<any[]> {
     const headers = this.getHeaders();
@@ -677,9 +677,9 @@ export class MovieApiServiceComponent {
   }
 
 /**
- * Obtém as séries adicionadas por data para um usuário específico.
- * @param username O nome de usuário do usuário.
- * @returns Um Observable com as séries adicionadas por data para o usuário.
+ * Obtém as séries adicionadas por data para um utilizador específico.
+ * @param username O nome de utilizador do utilizador.
+ * @returns Um Observable com as séries adicionadas por data para o utilizador.
  */
   getSeriesAddedByDate(username: any): Observable<any[]> {
     const headers = this.getHeaders();

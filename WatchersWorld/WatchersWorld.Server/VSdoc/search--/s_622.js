@@ -1,0 +1,1 @@
+search_result['622']=["topic_000000000000014A.html","ProfileInfo.EndBanDate Property","Data de término de um eventual banimento do utilizador, se aplicável."];

@@ -1,0 +1,1 @@
+search_result['833']=["topic_00000000000001BF.html","UserMedia.IdTableMedia Property","Identificador da tabela de Media associada. Este campo é uma chave estrangeira que referencia\r\na tabela `MediaInfoModel`, indicando um Media específico associado ao utilizador."];

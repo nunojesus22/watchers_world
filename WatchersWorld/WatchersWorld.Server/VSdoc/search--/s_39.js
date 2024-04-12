@@ -1,1 +1,1 @@
-search_result['39']=["topic_0000000000000013.html","WatchersWorldServerContext Constructor",""];
+search_result['39']=["topic_0000000000000011.html","AdminController.GetUserRole Method","Obtém as roles de um utilizador específico."];

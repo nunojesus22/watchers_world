@@ -1,0 +1,1664 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AuthenticationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/authentication/services/authentication.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Serviço de autenticação responsável pelo gerenciamento de operações relacionadas à autenticação de utilizadores,
+como login, registro, confirmação de email, redefinição de senha, e mais.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#user$" >user$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#userSource" >userSource</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#confirmEmail" >confirmEmail</a>
+                            </li>
+                            <li>
+                                <a href="#forgotPassword" >forgotPassword</a>
+                            </li>
+                            <li>
+                                <a href="#getJWT" >getJWT</a>
+                            </li>
+                            <li>
+                                <a href="#getLoggedInUserName" >getLoggedInUserName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getStoredUser" >getStoredUser</a>
+                            </li>
+                            <li>
+                                <a href="#getUserRole" >getUserRole</a>
+                            </li>
+                            <li>
+                                <a href="#login" >login</a>
+                            </li>
+                            <li>
+                                <a href="#loginWithThirdParty" >loginWithThirdParty</a>
+                            </li>
+                            <li>
+                                <a href="#logout" >logout</a>
+                            </li>
+                            <li>
+                                <a href="#refreshUser" >refreshUser</a>
+                            </li>
+                            <li>
+                                <a href="#register" >register</a>
+                            </li>
+                            <li>
+                                <a href="#registerWithThirdParty" >registerWithThirdParty</a>
+                            </li>
+                            <li>
+                                <a href="#resendEmailConfirmationLink" >resendEmailConfirmationLink</a>
+                            </li>
+                            <li>
+                                <a href="#resetPassword" >resetPassword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#setUser" >setUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HttpClient, router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/authentication/services/authentication.service.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmEmail"></a>
+                    <span class="name">
+                        <span ><b>confirmEmail</b></span>
+                        <a href="#confirmEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmEmail(model: <a href="../interfaces/ConfirmEmail.html" target="_self">ConfirmEmail</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Confirma o email de um utilizador utilizando um token de confirmação.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ConfirmEmail.html" target="_self" >ConfirmEmail</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados necessários para a confirmação do email.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable da operação de confirmação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="forgotPassword"></a>
+                    <span class="name">
+                        <span ><b>forgotPassword</b></span>
+                        <a href="#forgotPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>forgotPassword(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:121</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Solicita a redefinição de senha para um utilizador com base no seu email.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>email</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O email do utilizador que deseja redefinir sua senha.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable da operação de solicitação de redefinição de senha.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getJWT"></a>
+                    <span class="name">
+                        <span ><b>getJWT</b></span>
+                        <a href="#getJWT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getJWT()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="212"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:212</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera o JWT do utilizador autenticado a partir do local storage.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O JWT se disponível, ou null caso contrário.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getLoggedInUserName"></a>
+                    <span class="name">
+                        <span ><b>getLoggedInUserName</b></span>
+                        <a href="#getLoggedInUserName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getLoggedInUserName()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera o nome de utilizador do utilizador autenticado atualmente.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O nome de utilizador ou null se nenhum utilizador estiver autenticado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStoredUser"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getStoredUser</b></span>
+                        <a href="#getStoredUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStoredUser()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Busca o utilizador armazenado localmente (por exemplo, em localStorage).</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >User | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O utilizador recuperado ou null se nenhum utilizador estiver armazenado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserRole"></a>
+                    <span class="name">
+                        <span ><b>getUserRole</b></span>
+                        <a href="#getUserRole"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserRole(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera o(s) papel(is) de um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador para consulta.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable contendo a lista de papéis do utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="login"></a>
+                    <span class="name">
+                        <span ><b>login</b></span>
+                        <a href="#login"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>login(model: <a href="../interfaces/Login.html" target="_self">Login</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Realiza o login de um utilizador no sistema utilizando as credenciais fornecidas.
+Este método também trata a verificação de confirmação da conta e atualiza o estado do utilizador no sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Login.html" target="_self" >Login</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados necessários para o login, incluindo email e senha.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Retorna um observable que emite o resultado da operação de login, contendo o utilizador autenticado e mensagens relevantes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loginWithThirdParty"></a>
+                    <span class="name">
+                        <span ><b>loginWithThirdParty</b></span>
+                        <a href="#loginWithThirdParty"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loginWithThirdParty(model: <a href="../classes/LoginWithExternal.html" target="_self">LoginWithExternal</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Realiza o login de um utilizador utilizando credenciais de um provedor externo.
+Semelhante ao registro, após um login bem-sucedido, as informações do utilizador são salvas e seu estado é atualizado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../classes/LoginWithExternal.html" target="_self" >LoginWithExternal</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados recebidos do provedor externo para autenticação.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Retorna um observable que processa a resposta do servidor e atualiza o estado do utilizador, caso o login seja bem-sucedido.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logout"></a>
+                    <span class="name">
+                        <span ><b>logout</b></span>
+                        <a href="#logout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>logout()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Realiza o logout do utilizador, removendo suas informações de autenticação do local storage e atualizando o estado no serviço.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="refreshUser"></a>
+                    <span class="name">
+                        <span ><b>refreshUser</b></span>
+                        <a href="#refreshUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>refreshUser(jwt: string | null)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Atualiza o utilizador autenticado com base em um token JWT.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>jwt</td>
+                                            <td>
+                                                        <code>string | null</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O JWT a ser utilizado para a atualização do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable da operação de atualização.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="register"></a>
+                    <span class="name">
+                        <span ><b>register</b></span>
+                        <a href="#register"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>register(model: <a href="../interfaces/Register.html" target="_self">Register</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registra um novo utilizador no sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Register.html" target="_self" >Register</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados de registro do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable da operação de registro.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerWithThirdParty"></a>
+                    <span class="name">
+                        <span ><b>registerWithThirdParty</b></span>
+                        <a href="#registerWithThirdParty"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>registerWithThirdParty(model: <a href="../classes/RegisterWithExternal.html" target="_self">RegisterWithExternal</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="169"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:169</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registra um utilizador no sistema utilizando credenciais de um provedor externo como Google, Facebook, etc.
+Após o registro bem-sucedido, as informações do utilizador são salvas e seu estado é atualizado no sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../classes/RegisterWithExternal.html" target="_self" >RegisterWithExternal</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados recebidos do provedor externo necessários para o registro.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Retorna um observable que processa a resposta do servidor e atualiza o estado do utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resendEmailConfirmationLink"></a>
+                    <span class="name">
+                        <span ><b>resendEmailConfirmationLink</b></span>
+                        <a href="#resendEmailConfirmationLink"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resendEmailConfirmationLink(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="111"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:111</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reenvia o link de confirmação de email para um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>email</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O email do utilizador que requer reenvio do link.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable da operação de reenvio.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetPassword"></a>
+                    <span class="name">
+                        <span ><b>resetPassword</b></span>
+                        <a href="#resetPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetPassword(model: <a href="../interfaces/ResetPassword.html" target="_self">ResetPassword</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:131</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Realiza a redefinição de senha de um utilizador utilizando o modelo de dados necessário.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ResetPassword.html" target="_self" >ResetPassword</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados necessários para a redefinição de senha.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable da operação de redefinição.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setUser"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>setUser</b></span>
+                        <a href="#setUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setUser(user: <a href="../classes/User.html" target="_self">User</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="227"
+                                    class="link-to-prism">src/app/authentication/services/authentication.service.ts:227</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Atualiza as informações locais do utilizador autenticado e notifica os observadores com o novo estado do utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="../classes/User.html" target="_self" >User</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O utilizador cujas informações foram atualizadas.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="user$"></a>
+                    <span class="name">
+                        <span ><b>user$</b></span>
+                        <a href="#user$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.userSource.asObservable()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/authentication/services/authentication.service.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userSource"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>userSource</b></span>
+                        <a href="#userSource"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new ReplaySubject&lt;User | null&gt;(1)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/authentication/services/authentication.service.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
+import { Register } from &#x27;../models/register&#x27;;
+import { environment } from &#x27;../../../environments/environment.development&#x27;;
+import { Login } from &#x27;../models/login&#x27;;
+import { User } from &#x27;../models/user&#x27;;
+import { ReplaySubject, map, of } from &#x27;rxjs&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { ConfirmEmail } from &#x27;../models/confirmEmail&#x27;;
+import { ResetPassword } from &#x27;../models/resetPassword&#x27;;
+import { LoginWithExternal } from &#x27;../models/loginWithExternals&#x27;;
+import { RegisterWithExternal } from &#x27;../models/registerWithExternal&#x27;;
+import { ChatService } from &#x27;../../chat/services/chat.service&#x27;;
+
+/**
+ * Serviço de autenticação responsável pelo gerenciamento de operações relacionadas à autenticação de utilizadores,
+ * como login, registro, confirmação de email, redefinição de senha, e mais.
+ *
+ * @class AuthenticationService
+ */
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class AuthenticationService {
+  private userSource &#x3D; new ReplaySubject&lt;User | null&gt;(1); //apenas um user dentro do user source
+  user$ &#x3D; this.userSource.asObservable();
+
+  constructor(private http: HttpClient, private router : Router) { }
+
+  /**
+   * Recupera o nome de utilizador do utilizador autenticado atualmente.
+   *
+   * @returns O nome de utilizador ou null se nenhum utilizador estiver autenticado.
+   */
+  getLoggedInUserName(): string | null {
+    const user &#x3D; this.getStoredUser();
+    return user ? user.username : null;
+  }
+
+  /**
+   * Busca o utilizador armazenado localmente (por exemplo, em localStorage).
+   *
+   * @returns O utilizador recuperado ou null se nenhum utilizador estiver armazenado.
+   */
+  private getStoredUser(): User | null {
+    const key &#x3D; localStorage.getItem(environment.userKey);
+    return key ? JSON.parse(key) : null;
+  }
+
+  /**
+   * Recupera o(s) papel(is) de um utilizador específico.
+   *
+   * @param username O nome de utilizador para consulta.
+   * @returns Observable contendo a lista de papéis do utilizador.
+   */
+  getUserRole(username: string) {
+    return this.http.get&lt;string[]&gt;(&#x60;${environment.appUrl}/api/account/getUserRole/${username}&#x60;);
+  }
+
+  /**
+   * Atualiza o utilizador autenticado com base em um token JWT.
+   *
+   * @param jwt O JWT a ser utilizado para a atualização do utilizador.
+   * @returns Observable da operação de atualização.
+   */
+  refreshUser(jwt: string | null) {
+    if (jwt &#x3D;&#x3D;&#x3D; null) {
+      this.userSource.next(null);
+      return of(undefined);
+    }
+
+    let headers &#x3D; new HttpHeaders();
+    headers &#x3D; headers.set(&quot;Authorization&quot;, &quot;Bearer &quot; + jwt);
+
+    return this.http.get&lt;User&gt;(&#x60;${environment.appUrl}/api/account/refresh-user-token&#x60;, { headers }).pipe(
+      map((user: User) &#x3D;&gt; {
+        if (user) {
+          this.setUser(user);
+        }
+      })
+    );
+  }
+
+  /**
+   * Registra um novo utilizador no sistema.
+   *
+   * @param model Os dados de registro do utilizador.
+   * @returns Observable da operação de registro.
+   */
+  register(model: Register) {
+    console.log(environment.appUrl);
+    return this.http.post(&#x60;${environment.appUrl}/api/account/register&#x60;, model);
+  }
+
+  /**
+   * Confirma o email de um utilizador utilizando um token de confirmação.
+   *
+   * @param model Os dados necessários para a confirmação do email.
+   * @returns Observable da operação de confirmação.
+   */
+  confirmEmail(model: ConfirmEmail) {
+    return this.http.put(&#x60;${environment.appUrl}/api/account/confirm-email&#x60;, model);
+  }
+
+  /**
+   * Reenvia o link de confirmação de email para um utilizador.
+   *
+   * @param email O email do utilizador que requer reenvio do link.
+   * @returns Observable da operação de reenvio.
+   */
+  resendEmailConfirmationLink(email: string) {
+    return this.http.post(&#x60;${environment.appUrl}/api/account/resend-email-confirmation-link/${email}&#x60;, {});
+  }
+
+  /**
+   * Solicita a redefinição de senha para um utilizador com base no seu email.
+   *
+   * @param email O email do utilizador que deseja redefinir sua senha.
+   * @returns Observable da operação de solicitação de redefinição de senha.
+   */
+  forgotPassword(email: string) {
+    return this.http.post(&#x60;${environment.appUrl}/api/account/forgot-password/${email}&#x60;, {});
+  }
+
+  /**
+   * Realiza a redefinição de senha de um utilizador utilizando o modelo de dados necessário.
+   *
+   * @param model Os dados necessários para a redefinição de senha.
+   * @returns Observable da operação de redefinição.
+   */
+  resetPassword(model: ResetPassword) {
+    return this.http.put(&#x60;${environment.appUrl}/api/account/reset-password&#x60;, model);
+  }
+
+  /**
+   * Realiza o login de um utilizador no sistema utilizando as credenciais fornecidas.
+   * Este método também trata a verificação de confirmação da conta e atualiza o estado do utilizador no sistema.
+   *
+   * @param model Os dados necessários para o login, incluindo email e senha.
+   * @returns Retorna um observable que emite o resultado da operação de login, contendo o utilizador autenticado e mensagens relevantes.
+   */
+  login(model: Login) {
+    return this.http.post&lt;User&gt;(&#x60;${environment.appUrl}/api/account/login&#x60;, model).pipe(
+      map((response: any) &#x3D;&gt; {
+        var user: User | undefined;
+        var message &#x3D; response.message;
+
+        if (response.message &#x3D;&#x3D;&#x3D; &quot;A conta está por confirmar!&quot;) {
+          return message;
+        }
+
+        if (response &amp;&amp; response.user.email &amp;&amp; response.user.jwt &amp;&amp; response.user.username) {
+          user &#x3D; new User(response.user.email, response.user.jwt, response.user.username);
+          this.setUser(user);
+        }
+        
+        return { user, message };
+      }),
+    );
+  }
+
+  /**
+ * Registra um utilizador no sistema utilizando credenciais de um provedor externo como Google, Facebook, etc.
+ * Após o registro bem-sucedido, as informações do utilizador são salvas e seu estado é atualizado no sistema.
+ *
+ * @param model Os dados recebidos do provedor externo necessários para o registro.
+ * @returns Retorna um observable que processa a resposta do servidor e atualiza o estado do utilizador.
+ */
+  registerWithThirdParty(model: RegisterWithExternal) {
+    return this.http.post&lt;User&gt;(&#x60;${environment.appUrl}/api/account/register-with-third-party&#x60;, model)
+      .pipe(
+        map((user: User) &#x3D;&gt; {
+          if (user) {
+            this.setUser(user);
+          }
+        })
+      );
+  }
+
+  /**
+ * Realiza o login de um utilizador utilizando credenciais de um provedor externo.
+ * Semelhante ao registro, após um login bem-sucedido, as informações do utilizador são salvas e seu estado é atualizado.
+ *
+ * @param model Os dados recebidos do provedor externo para autenticação.
+ * @returns Retorna um observable que processa a resposta do servidor e atualiza o estado do utilizador, caso o login seja bem-sucedido.
+ */
+  loginWithThirdParty(model: LoginWithExternal) {
+    return this.http.post&lt;User&gt;(&#x60;${environment.appUrl}/api/account/login-with-third-party&#x60;, model)
+      .pipe(
+        map((user: User) &#x3D;&gt; {
+          if (user) {
+            this.setUser(user);
+          }
+        })
+      );
+  }
+
+  /**
+   * Realiza o logout do utilizador, removendo suas informações de autenticação do local storage e atualizando o estado no serviço.
+   */
+  logout() {
+    localStorage.removeItem(environment.userKey);
+    this.userSource.next(null);
+    this.router.navigateByUrl(&quot;/home&quot;);
+  }
+
+  /**
+   * Recupera o JWT do utilizador autenticado a partir do local storage.
+   *
+   * @returns O JWT se disponível, ou null caso contrário.
+   */
+  getJWT() {
+    const key &#x3D; localStorage.getItem(environment.userKey);
+    if (key) {
+      const user: User &#x3D; JSON.parse(key);
+      return user.jwt;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Atualiza as informações locais do utilizador autenticado e notifica os observadores com o novo estado do utilizador.
+   *
+   * @param user O utilizador cujas informações foram atualizadas.
+   */
+  private setUser(user: User) {
+    localStorage.setItem(environment.userKey, JSON.stringify(user));
+    this.userSource.next(user);
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'AuthenticationService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

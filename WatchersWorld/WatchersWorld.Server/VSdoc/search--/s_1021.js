@@ -1,0 +1,1 @@
+search_result['1021']=["topic_000000000000022B.html","GamificationService Class","Implementa as operações de gamificação, como atribuir medalhas e recuperar medalhas bloqueadas e desbloqueadas."];

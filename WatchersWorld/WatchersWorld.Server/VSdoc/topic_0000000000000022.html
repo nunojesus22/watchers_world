@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>RegisterDto.Email Property</title>
+	<title>GamificationController Class</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">RegisterDto.Email Property</h1>
+		<h1 class="title">GamificationController Class</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_0000000000000014.html">WatchersWorld.Server.DTOs.Account</a>
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers</a>
 
 
 
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Email address for the new user account.</summary-info>
+        <summary-info>Controlador para gerir operações de gamificação, incluindo a atribuição de medalhas e consulta de medalhas desbloqueadas ou bloqueadas para os utilizadores.</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">&lt;Required(ErrorMessage = &quot;O email é obrigatório!&quot;)&gt; _&nbsp;<br />&lt;EmailAddress(ErrorMessage = &quot;A nomenclatura do email está incorreta!&quot;)&gt; _&nbsp;<br />Public Property Email() As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a></pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;Authorize()&gt; _&nbsp;<br />&lt;Route(&quot;api/[controller]&quot;)&gt; _&nbsp;<br />&lt;ApiController()&gt; _&nbsp;<br />Public Class GamificationController&nbsp;<br />    Inherits <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.controller">Controller</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">[Required(ErrorMessage = &quot;O email é obrigatório!&quot;)]&nbsp;<br />[EmailAddress(ErrorMessage = &quot;A nomenclatura do email está incorreta!&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> Email {get; set;}</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[Authorize()]&nbsp;<br />[Route(&quot;api/[controller]&quot;)]&nbsp;<br />[ApiController()]&nbsp;<br />public class GamificationController : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.controller">Controller</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">[Required(ErrorMessage = &quot;O email é obrigatório!&quot;)]&nbsp;<br />[EmailAddress(ErrorMessage = &quot;A nomenclatura do email está incorreta!&quot;)]&nbsp;<br />public: &nbsp;<br />property <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ Email {&nbsp;<br /> <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ get( );&nbsp;<br /> void set(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>^ value&nbsp;<br /> );&nbsp;<br />}</pre>			
+					<pre xml:space="preserve" class="brush: cpp">[Authorize()]&nbsp;<br />[Route(&quot;api/[controller]&quot;)]&nbsp;<br />[ApiController()]&nbsp;<br />public ref class GamificationController : public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft::aspnetcore::mvc::controller">Controller</a>^</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -257,7 +257,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">public &nbsp;<br />   Required(ErrorMessage = &quot;O email é obrigatório!&quot;)&nbsp;<br />   EmailAddress(ErrorMessage = &quot;A nomenclatura do email está incorreta!&quot;)&nbsp;<br />function get Email() : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>;&nbsp;<br />public &nbsp;<br />   Required(ErrorMessage = &quot;O email é obrigatório!&quot;)&nbsp;<br />   EmailAddress(ErrorMessage = &quot;A nomenclatura do email está incorreta!&quot;)&nbsp;<br />function set Email(value : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">String</a>);</pre>			
+					<pre xml:space="preserve" class="brush: js">public &nbsp;<br />   Authorize()&nbsp;<br />   Route(&quot;api/[controller]&quot;)&nbsp;<br />   ApiController()&nbsp;<br />class GamificationController&nbsp;<br />   extends <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.controller">Controller</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -268,11 +268,6 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</div>
 
 
-
-	<h4 class="subHeading">
-		Property Value</h4>
-	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.string">string</a> 
-	
 
 
 
@@ -289,6 +284,309 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 	</div>
 </div>
+
+
+
+<div class="section_container">
+	<div class="section_heading">
+		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Constructors</a></span>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="ConstructorsSection" class="section">	
+  <table class="memberListTable">
+    <tr>
+      <th></th>
+      <th>
+        Name
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+
+
+	
+			<tr class="
+	
+	
+	">
+	  <td>
+    <img alt="Public constructor" title="Public constructor" src="msdn2019/pubmethod.png"></img>
+
+	
+	    
+	  </td>
+	  <td>
+	    <a href="topic_0000000000000023.html">GamificationController(WatchersWorldServerContext, IGamificationService)</a>
+
+	  </td>
+	  <td>
+	
+	Inicializa uma nova instância do <a target="_top" href="topic_0000000000000022.html" onclick="this.target='';return true;">GamificationController</a> com os serviços necessários para gerir as operações de gamificação.
+	
+		</td>
+	</tr>
+	
+
+
+  </table>
+
+  <a href="#mainBody">
+    Top
+  </a>
+
+	</div>					
+</div>
+
+
+
+
+
+
+
+<div class="section_container">
+	<div class="section_heading">
+		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Methods</a></span>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="MethodsSection" class="section">	
+  <table class="memberListTable">
+    <tr>
+      <th></th>
+      <th>
+        Name
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+
+
+
+
+	<tr class="
+
+
+">
+	<td>
+<img alt="Public method" title="Public method" src="msdn2019/pubmethod.png"></img>
+
+
+    
+	</td>
+	<td>
+	<a href="topic_0000000000000024.html">AwardMedal(AwardMedalRequest)</a>
+
+	</td>
+	<td>
+
+Atribui uma medalha a um utilizador especificado.
+
+	</td>
+</tr>
+
+
+
+
+
+
+
+
+	<tr class="
+
+
+">
+	<td>
+<img alt="Public method" title="Public method" src="msdn2019/pubmethod.png"></img>
+
+
+    
+	</td>
+	<td>
+	<a href="topic_0000000000000029.html">GetAvailableMedals()</a>
+
+	</td>
+	<td>
+
+Obtém todas as medalhas disponíveis no sistema.
+
+	</td>
+</tr>
+
+
+
+
+
+
+
+
+	<tr class="
+
+
+">
+	<td>
+<img alt="Public method" title="Public method" src="msdn2019/pubmethod.png"></img>
+
+
+    
+	</td>
+	<td>
+	<a href="topic_000000000000002A.html">GetLockedMedals(string)</a>
+
+	</td>
+	<td>
+
+Obtém as medalhas que um utilizador específico ainda não desbloqueou.
+
+	</td>
+</tr>
+
+
+
+
+
+
+
+
+	<tr class="
+
+
+">
+	<td>
+<img alt="Public method" title="Public method" src="msdn2019/pubmethod.png"></img>
+
+
+    
+	</td>
+	<td>
+	<a href="topic_000000000000002B.html">GetTotalMedals(string)</a>
+
+	</td>
+	<td>
+
+Obtém o total de medalhas atribuídas a um utilizador específico.
+
+	</td>
+</tr>
+
+
+
+
+
+
+
+
+	<tr class="
+
+
+">
+	<td>
+<img alt="Public method" title="Public method" src="msdn2019/pubmethod.png"></img>
+
+
+    
+	</td>
+	<td>
+	<a href="topic_0000000000000028.html">GetUnlockedMedals(string)</a>
+
+	</td>
+	<td>
+
+Obtém as medalhas desbloqueadas por um utilizador específico.
+
+	</td>
+</tr>
+
+
+
+
+
+
+  </table>
+
+  <a href="#mainBody">
+    Top
+  </a>
+
+	</div>					
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section_container">
+	<div class="section_heading">
+		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Classes</a></span>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="ClassSection" class="section">	
+  <table class="memberListTable">
+    <tr>
+      <th></th>
+      <th>
+        Name
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+
+
+<!-- Classes -->
+	<tr class="
+	
+	
+	">
+	  <td>
+    <img alt="Public class" title="Public class" src="msdn2019/pubclass.png"></img>
+
+
+    
+	  </td>
+	  <td>
+	    <a href="topic_0000000000000025.html">AwardMedalRequest</a>
+	  </td>
+	  <td>
+
+Modelo de dados para a requisição de atribuição de medalhas.
+
+		</td>
+	</tr>
+
+<!-- Classes End -->
+
+<!-- Standard Modules -->
+
+<!-- Standard Modules End -->
+
+  </table>
+
+  <a href="#mainBody">
+    Top
+  </a>
+
+	</div>					
+</div>
+
+
+
+
 
 
 
@@ -352,6 +650,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</div>					
 </div>
 
+
 <div class="section_container">
 	<div class="section_heading">
 		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">See Also</a></span>
@@ -360,14 +659,10 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-			<a href="topic_0000000000000020.html">RegisterDto Class</a><br />
+	<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers Namespace</a><br />
 
 
-
-<a href="topic_0000000000000014.html">WatchersWorld.Server.DTOs.Account Namespace</a><br />
-
-
-			
+	
 
 		</div>
 	</div>					

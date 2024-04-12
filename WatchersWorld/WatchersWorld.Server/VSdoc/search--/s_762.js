@@ -1,0 +1,1 @@
+search_result['762']=["topic_0000000000000196.html","UserRatingMedia.UserThatRateId Property","Identificador do utilizador que efetuou a avaliação. Chave estrangeira que referencia a entidade User."];

@@ -1,0 +1,1 @@
+search_result['159']=["topic_0000000000000043.html","MediaController.GetTotalCommentsByUser Method","Obtém o total de comentários feitos por um usuário específico."];

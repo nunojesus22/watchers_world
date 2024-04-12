@@ -1,0 +1,1 @@
+search_result['697']=["topic_0000000000000172.html","Medals.Id Property","Identificador único da medalha.\r\nUtilizado internamente para referenciar uma medalha específica."];

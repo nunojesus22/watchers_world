@@ -8,6 +8,11 @@ import { ProfileChat } from './models/profileChat';
 import { DialogService } from '../confirm-dialog/services/dialog.service';
 import { ChatWithMessages } from './models/chatWithMessages';
 
+
+/**
+ * Componente Angular responsável pela interface de utilizador do chat.
+ * Gere a exibição de mensagens, interações de utilizador e atualizações de estado relacionadas ao chat.
+ */
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -16,6 +21,10 @@ import { ChatWithMessages } from './models/chatWithMessages';
 export class ChatComponent implements AfterViewChecked {
   loggedUserName: string | null = null;
 
+  /**
+   * Getter/Setter para o utilizador de chat selecionado.
+   * Atualiza as mensagens e marca as mensagens como lidas quando o utilizador é alterado.
+   */
   private _selectedUser: ProfileChat | undefined;
   get selectedUser(): ProfileChat | undefined {
     return this._selectedUser;
@@ -49,6 +58,10 @@ export class ChatComponent implements AfterViewChecked {
   shouldScrollToBottom: boolean = true;
   justUnselectedMessage: boolean = false;
 
+  /**
+   * Inicialização do componente.
+   * Subscreve aos dados necessários e recupera o perfil do utilizador selecionado da sessão, se disponível.
+   */
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -70,6 +83,9 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Subscreve ao utilizador autenticado para obter o nome de utilizador logado.
+   */
   private subscribeToUser(): void {
     this.authService.user$
       .pipe(takeUntil(this.unsubscribe$))
@@ -78,12 +94,18 @@ export class ChatComponent implements AfterViewChecked {
       });
   }
 
+  /**
+   * Subscreve aos chats disponíveis e configura a lista de contatos.
+   */
   private subscribeToChats(): void {
     this.chatService.chats$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(chats => this.setupContactItems(chats));
   }
 
+  /**
+   * Subscreve aos parâmetros da rota para atualizar o utilizador de chat selecionado conforme a navegação.
+   */
   private subscribeToRouteParams(): void {
     this.route.params
       .pipe(takeUntil(this.unsubscribe$))
@@ -95,6 +117,9 @@ export class ChatComponent implements AfterViewChecked {
       });
   }
 
+  /**
+   * Subscreve às mensagens recebidas e atualiza o chat conforme as mensagens chegam.
+   */
   private subscribeToMessageReceived(): void {
     this.chatService.onMessageReceived((message: Message) => {
       this.setupMessages();
@@ -104,15 +129,18 @@ export class ChatComponent implements AfterViewChecked {
     });
   }
 
+  /**
+   * Verifica se o chat com um determinado utilizador está aberto.
+   */
   private chatIsOpen(sendUsername: string): boolean {
-    if (this.selectedUsername == sendUsername && this._selectedUser?.userName == sendUsername) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.selectedUsername == sendUsername && this._selectedUser?.userName == sendUsername;
   }
   
-
+  /**
+   * Inicia a detecção de pressão longa em uma mensagem específica para mostrar opções adicionais.
+   * @param event O evento de mouse que iniciou a pressão longa.
+   * @param message A mensagem alvo da pressão longa.
+   */
   startLongPress(event: MouseEvent, message: any) {
     this.currentLongPressedMessage = null;
     this.shouldScrollToBottom = false;
@@ -128,20 +156,34 @@ export class ChatComponent implements AfterViewChecked {
     }, 500);
   }
 
+  /**
+  * Encerra a detecção de pressão longa e limpa o estado relevante.
+  */
   stopLongPress() {
     this.justUnselectedMessage = false;
     clearTimeout(this.longPressTimer);
     this.detectChanges();
   }
 
+  /**
+   * Força a atualização da detecção de mudanças no componente para garantir a atualização da UI.
+   */
   detectChanges() {
     this.changeDetectorRef.detectChanges();
   }
 
+  /**
+   * Seleciona um utilizador de chat e atualiza a interface de utilizador para mostrar o chat com esse utilizador.
+   * @param newUser O perfil do novo utilizador selecionado.
+   */
   selectUser(newUser: ProfileChat) {
     this.selectedUser = newUser;
   }
 
+  /**
+   * Método de ciclo de vida chamado após cada verificação de visualização do componente.
+   * Garante que a visualização de mensagens esteja sempre rolando para a última mensagem se necessário.
+   */
   ngAfterViewChecked(): void {
     if (!this.justUnselectedMessage && !this.currentLongPressedMessage) {
       this.scrollToBottom();
@@ -149,17 +191,27 @@ export class ChatComponent implements AfterViewChecked {
     this.justUnselectedMessage = false;
   }
 
+  /**
+   * Método de ciclo de vida chamado durante a destruição do componente para desfazer subscrições e evitar vazamentos de memória.
+   */
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
+  /**
+   * Rola o contêiner de mensagens para o fundo para garantir que a última mensagem seja visível.
+   */
   private scrollToBottom(): void {
     if (this.myScrollContainer && this.shouldScrollToBottom) {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     }
   }
 
+  /**
+   * Configura os itens de contato para a lista de chats, filtrando e ordenando chats baseados na existência e no horário da última mensagem.
+   * @param chats Lista de chats com mensagens para processar.
+   */
   setupContactItems(chats: ChatWithMessages[]): void {
     if (chats.length === 0) {
       this.usersProfiles = [];
@@ -183,15 +235,29 @@ export class ChatComponent implements AfterViewChecked {
     }));
 
     this.filteredUsersProfiles = [...this.usersProfiles];
-    this.showNoResults = false; // Resetar estado de não ter resultados, se necessário
+    this.showNoResults = false;
     this.setupMessages();
-    console.log(this.messages);
   }
 
+  /**
+   * Retorna uma lista de mensagens não lidas de um conjunto de mensagens.
+   * Filtra as mensagens que não foram lidas pelo utilizador logado e que foram enviadas por outros utilizadors.
+   * 
+   * @param messages Array de mensagens a ser filtrado.
+   * @returns Array de mensagens que não foram lidas pelo utilizador logado.
+   */
   private getUnreadMessages(messages: Message[]): Message[] {
     return messages.filter(message => !message.readAt && message.sendUsername !== this.loggedUserName);
   }
 
+  /**
+   * Manipula a seleção de um novo utilizador de chat pelo utilizador logado.
+   * Este método é chamado quando um utilizador seleciona outro utilizador da lista de contatos para iniciar ou continuar uma conversa.
+   * Ao selecionar um utilizador, o método atualiza a visualização para mostrar o chat com o utilizador selecionado,
+   * rola para a última mensagem e atualiza a URL de navegação para refletir a seleção.
+   * 
+   * @param newUserProfile O perfil do utilizador selecionado para o chat.
+   */
   onUserSelected(newUserProfile: ProfileChat): void {
     this.currentLongPressedMessage = null;
     this.shouldScrollToBottom = true;
@@ -202,6 +268,9 @@ export class ChatComponent implements AfterViewChecked {
     this.router.navigate([`/chat/${newUserProfile.userName}`]);
   }
 
+  /**
+  * Filtra e configura as mensagens para o utilizador de chat selecionado.
+  */
   setupMessages(): void {
     if (this._selectedUser) {
       const chat = this.chatService.getChat(this._selectedUser.userName!);
@@ -211,6 +280,9 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Envia uma nova mensagem para o utilizador selecionado.
+   */
   sendMessage(): void {
     if (this._selectedUser && this.newMessage.trim()) {
       const messageToSend: Message = {
@@ -230,6 +302,9 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Marca as mensagens não lidas como lidas quando um chat está aberto e visível para o utilizador.
+   */
   private markMessagesAsRead(): void {
     var messages = this.chatService.getMessagesUnreadFromChat(this._selectedUser?.userName!);
     var messagesToRead = this.unreadMessagesReceive(messages);
@@ -239,6 +314,10 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Filtra os utilizadors com base no termo de pesquisa inserido. Atualiza a lista de utilizadors filtrados
+   * e controla a exibição de "nenhum resultado encontrado".
+   */
   filterUsers(): void {
     if (!this.searchTerm) {
       this.filteredUsersProfiles = this.usersProfiles;
@@ -252,15 +331,22 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Alterna a visibilidade do formulário de envio de mensagens para um novo utilizador.
+   */
   toggleMessageForm(): void {
     this.messageForm = !this.messageForm;
     this.messageTextToNewUser = "";
     this.usernameOfNewReceiver = "";
   }
 
+  /**
+   * Envia uma mensagem para um novo utilizador. Verifica se o nome do utilizador e a mensagem estão presentes.
+   * Em caso de erro, trata a resposta e apresenta uma mensagem adequada.
+   */
   sendMessageToNewUser(): void {
     if (!this.usernameOfNewReceiver || !this.messageTextToNewUser.trim()) {
-      console.log('Nome do usuário destinatário e mensagem são necessários.');
+      console.log('Nome do utilizador destinatário e mensagem são necessários.');
       return;
     }
 
@@ -285,18 +371,30 @@ export class ChatComponent implements AfterViewChecked {
       });
   }
 
+  /**
+   * Limpa as mensagens de erro exibidas no componente.
+   */
   clearErrorMessage(): void {
     this.errorMessage = "";
   }
 
+  /**
+ * Ação para excluir um chat após confirmação do utilizador.
+ */
   performDeleteChatAction(event: any): void {
     this.deleteChat();
   }
 
+  /**
+   * Ação para excluir uma mensagem específica após confirmação do utilizador.
+   */
   performDeleteMessageAction(message: any) {
     this.deleteMessage(message);
   }
 
+  /**
+   * Exclui um chat e redefine o estado do utilizador selecionado.
+   */
   private deleteChat(): void {
     if (this._selectedUser) {
       this.chatService.deleteChat(this._selectedUser?.userName!);
@@ -304,12 +402,18 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+ * Exclui uma mensagem específica e atualiza o componente para refletir a mudança.
+ */
   private deleteMessage(message: any) {
     this.chatService.deleteMessage(message);
     this.currentLongPressedMessage = null;
     this.detectChanges();
   }
 
+  /**
+   * Redefine o estado do utilizador selecionado e limpa a sessão.
+   */
   resetUser(): void {
     this.selectedUser = undefined;
     this.selectedUsername = null;
@@ -317,6 +421,9 @@ export class ChatComponent implements AfterViewChecked {
     this.router.navigate(['/chat']);
   }
 
+  /**
+   * Atualiza o utilizador selecionado com base no nome de utilizador fornecido.
+   */
   updateSelectedUser(newUsername: string): void {
     this.selectedUsername = newUsername;
     const userProfile = this.usersProfiles.find(u => u.userName === newUsername);
@@ -333,6 +440,9 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Retorna a última mensagem do conjunto de mensagens fornecido.
+   */
   lastMessageReceive(messages: Message[]): Message | null {
     var lastMessageReceive = this.chatService.getLastMessageReceived(messages, this.loggedUserName!);
 
@@ -343,6 +453,9 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Retorna mensagens não lidas de um conjunto de mensagens fornecido.
+   */
   unreadMessagesReceive(messages: Message[]): Message[] | null {
     var unreadMessagesReceive = this.chatService.getMessagesUnread(messages, this.loggedUserName!);
 
@@ -353,6 +466,9 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
+  /**
+   * Verifica se há mensagens não lidas no conjunto de mensagens fornecido.
+   */
   isUnread(messages: Message[] | null): Boolean {
     if (messages !== null) {
       if (messages?.length > 0) {
@@ -361,47 +477,4 @@ export class ChatComponent implements AfterViewChecked {
     }
     return false;
   }
-
-  /*
-  setupContactItems(): void {
-    console.log(this.chatService.chats$);
-
-    this.chatService.chats$.subscribe(chats => {
-      const sortedChats = chats.sort((a, b) => {
-        const lastMessageA = a.messages[a.messages.length - 1];
-        const lastMessageB = b.messages[b.messages.length - 1];
-
-        const dateA = lastMessageA ? new Date(lastMessageA.sentAt!).getTime() : 0;
-        const dateB = lastMessageB ? new Date(lastMessageB.sentAt!).getTime() : 0;
-
-        return dateB - dateA;
-      });
-
-      const nonEmptyChats = sortedChats.filter(chat => chat.messages.length > 0 && chat.messages[chat.messages.length - 1].sentAt);
-
-      this.usersProfiles = nonEmptyChats.map(chat => {
-        var unreadMessages = this.unreadMessagesReceive(chat.messages);
-
-        return {
-          userName: chat.username,
-          profilePhoto: chat.profilePhoto,
-          lastMessage: chat.messages[chat.messages.length - 1],
-          unreadMessages: unreadMessages ?? undefined, 
-        } as ProfileChat;
-      });
-
-      this.filteredUsersProfiles = [...this.usersProfiles];
-    });
-  }
-  
-  setupMessages(): void {
-    if (this.selectedUsername) {
-      var chat = this.chatService.getChat(this.selectedUsername);
-      if (chat !== undefined) {
-        var messagesOfChat = chat!.messages;
-        this.messages = messagesOfChat;
-        this.markMessagesAsRead();
-      }
-    }
-  }*/
 }

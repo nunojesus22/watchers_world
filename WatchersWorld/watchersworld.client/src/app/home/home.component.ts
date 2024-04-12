@@ -30,14 +30,14 @@ export class HomeComponent {
   }
 
   /**
- * Envia uma mensagem para um usuário específico.
- * Verifica se o nome do usuário destinatário e a mensagem estão preenchidos antes de enviar.
+ * Envia uma mensagem para um utilizador específico.
+ * Verifica se o nome do utilizador destinatário e a mensagem estão preenchidos antes de enviar.
  * Se a validação passar, cria uma mensagem com os dados fornecidos e a envia através do serviço de chat.
  * Registra no console se a mensagem foi enviada com sucesso ou se ocorreu um erro.
  */
   sendMessage(): void {
     if (!this.usernameReceiver.trim() || !this.messageText.trim()) {
-      console.log('Nome do usuário destinatário e mensagem são necessários.');
+      console.log('Nome do utilizador destinatário e mensagem são necessários.');
       return;
     }
 
@@ -101,7 +101,7 @@ export class HomeComponent {
   }
 
   /**
- * Realiza o logout do usuário e para a conexão do serviço de chat.
+ * Realiza o logout do utilizador e para a conexão do serviço de chat.
  */
   logout() {
     this.authService.logout();

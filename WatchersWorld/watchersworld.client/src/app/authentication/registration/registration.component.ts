@@ -8,6 +8,11 @@ import { DOCUMENT } from '@angular/common';
 import { CredentialResponse } from 'google-one-tap';
 import { jwtDecode } from 'jwt-decode';
 
+/**
+ * Componente responsável pelo registro de novos usuários no sistema. Inclui opções para registro tradicional e registro através de serviços externos como Google.
+ *
+ * @Component Decorador que define a classe como um componente Angular com seu seletor, template HTML e arquivos de estilo associados.
+ */
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -21,6 +26,16 @@ export class RegistrationComponent implements OnInit{
   errorMessages: any = {};
   submittedValues: any = {};
 
+  /**
+   * Construtor para inicializar dependências e configurações.
+   *
+   * @param authService Serviço de autenticação para gerenciar o registro e autenticação de usuários.
+   * @param formBuilder Construtor de formulários para criação de formulários reativos.
+   * @param router Serviço do router para navegação.
+   * @param _renderer2 Renderer para manipulação de elementos DOM.
+   * @param ngZone Serviço para execução de operações fora do Angular.
+   * @param _document Documento para acesso ao DOM global.
+   */
   constructor(
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
@@ -40,6 +55,9 @@ export class RegistrationComponent implements OnInit{
   }
 
 
+  /**
+   * Inicializa o componente configurando o formulário e o botão do Google.
+   */
   ngOnInit(): void {
     this.initializeGoogleButton();
     this.initializeForm();
@@ -53,6 +71,9 @@ export class RegistrationComponent implements OnInit{
     this._renderer2.appendChild(this._document.body, script1);
   }
 
+  /**
+   * Define o formulário de registro com validações necessárias para username, email e senha.
+   */
   initializeForm() {
     this.registrationForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
@@ -61,6 +82,9 @@ export class RegistrationComponent implements OnInit{
     });
   }
 
+  /**
+   * Processa a submissão do formulário de registro, validando e enviando os dados para o servidor.
+   */
   register() {
     this.submitted = true;
     this.errorMessages = {};
@@ -88,16 +112,27 @@ export class RegistrationComponent implements OnInit{
     }
   }
 
+  /**
+  * Verifica se um campo específico do formulário foi modificado em relação ao valor originalmente submetido.
+  *
+  * @param fieldName Nome do campo a ser verificado.
+  * @returns Booleano indicando se o campo foi modificado ou não.
+  */
   isFieldModified(fieldName: string) {
     return this.registrationForm.get(fieldName)!.value !== this.submittedValues[fieldName];
   }
 
+  /**
+   * Salva os valores submetidos do formulário para referência futura.
+   */
   private saveSubmittedValues(): void {
     this.submittedValues["username"] = this.registrationForm.get("username")!.value;
     this.submittedValues["email"] = this.registrationForm.get("email")!.value;
   }
 
-
+  /**
+   * Configura o botão de registro do Google na página, inicializando a biblioteca de autenticação do Google e configurando o callback para o processo de autenticação.
+   */
   private initializeGoogleButton() {
     (window as any).onGoogleLibraryLoad = () => {
       //@ts-ignore
@@ -114,6 +149,12 @@ export class RegistrationComponent implements OnInit{
       );
     };
   }
+
+  /**
+   * Callback para o processo de autenticação com o Google. Trata o token recebido e envia para o servidor para autenticação e registro.
+   *
+   * @param response Resposta do serviço de autenticação do Google.
+   */
   private async googleCallBack(response: CredentialResponse) {
     this.ngZone.run(() => {
       const decodedToken: any = jwtDecode(response.credential);

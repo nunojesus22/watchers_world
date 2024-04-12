@@ -1,0 +1,1 @@
+search_result['862']=["topic_00000000000001CD.html","MediaNotification.UserMedia Property","Propriedade de navegação para a entidade UserMedia. Esta propriedade virtual permite o acesso\r\ndireto à relação UserMedia associada a esta notificação, facilitando o acesso aos detalhes\r\nda media rela..."];

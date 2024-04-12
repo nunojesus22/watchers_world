@@ -1,0 +1,1 @@
+search_result['508']=["topic_0000000000000105.html","MessageNotificationDto.TriggeredByUserPhoto Property","Caminho para a foto do utilizador que desencadeou a notificação."];

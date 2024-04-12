@@ -1,0 +1,1 @@
+search_result['417']=["topic_00000000000000DC.html","CommentDto.ParentCommentId Property","O ID do comentário pai, se este comentário for uma resposta a outro comentário."];

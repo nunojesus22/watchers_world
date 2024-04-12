@@ -24,7 +24,7 @@
 }
 
 
-/* Ajusta o título do usuário para ficar à direita da foto do perfil */
+/* Ajusta o título do utilizador para ficar à direita da foto do perfil */
 .card-title {
   position: absolute;
   left: 215px; /* Ajuste conforme a largura da sua foto do perfil */
@@ -50,7 +50,7 @@
   z-index: 2;
 }
 
-/* Ajusta o posicionamento da área de informação do usuário */
+/* Ajusta o posicionamento da área de informação do utilizador */
 .profile-info {
   display: flex;
   flex-direction: row; /* Organiza o conteúdo em linha */
@@ -102,7 +102,7 @@
     margin: 0 0 16px 0; /* Margem inferior */
   }
 
-/* Ajuste a classe para os itens de usuário e sugestões */
+/* Ajuste a classe para os itens de utilizador e sugestões */
 .item-list {
   list-style: none;
   padding: 0;
@@ -116,8 +116,8 @@
   }
 
     .item-list > li > img {
-      width: 50px; /* Largura das imagens dos usuários */
-      height: 50px; /* Altura das imagens dos usuários */
+      width: 50px; /* Largura das imagens dos utilizadors */
+      height: 50px; /* Altura das imagens dos utilizadors */
       border-radius: 50%; /* Torna as imagens redondas */
       margin-right: 10px; /* Espaço entre a imagem e o texto */
     }

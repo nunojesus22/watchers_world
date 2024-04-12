@@ -1,0 +1,1 @@
+search_result['570']=["topic_000000000000012A.html","FollowerDto Class","DTO (Data Transfer Object) utilizado para transmitir informações de seguidores, incluindo nome de utilizador e fotografia de perfil."];

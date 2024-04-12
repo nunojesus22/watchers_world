@@ -1,0 +1,1 @@
+search_result['380']=["topic_00000000000000C6.html","MedalsDto.Name Property","Nome da medalha.\r\nO nome é utilizado para identificar a medalha de forma amigável aos utilizadores."];

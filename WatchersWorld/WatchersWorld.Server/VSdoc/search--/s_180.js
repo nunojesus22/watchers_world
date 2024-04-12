@@ -1,0 +1,1 @@
+search_result['180']=["topic_0000000000000053.html","NotificationsController.MarkAllMessageNotificationsAsRead Method","Marca todas as notificações de mensagens como lidas para um determinado utilizador."];

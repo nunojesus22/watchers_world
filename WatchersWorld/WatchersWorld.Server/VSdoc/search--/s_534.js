@@ -1,0 +1,1 @@
+search_result['534']=["topic_0000000000000115.html","ProfileInfoDto Class","DTO (Objeto de Transferência de Dados) que representa as informações de perfil de um utilizador.\r\nInclui detalhes como o nome de utilizador, data de nascimento, descrição, género, fotografias de perfi..."];

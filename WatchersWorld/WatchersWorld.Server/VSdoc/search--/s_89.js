@@ -1,1 +1,1 @@
-search_result['89']=["topic_0000000000000028_props--.html","UserDto Properties",""];
+search_result['89']=["topic_0000000000000024_attached_props--.html","ResetPasswordDto Attached Properties",""];

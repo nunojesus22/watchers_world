@@ -1,0 +1,1 @@
+search_result['445']=["topic_00000000000000E9.html","MediaAddedByDateDto.Count Property","Obtém ou define o número de mídias adicionadas para a data especificada."];

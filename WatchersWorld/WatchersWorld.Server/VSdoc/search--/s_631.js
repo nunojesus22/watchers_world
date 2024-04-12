@@ -1,0 +1,1 @@
+search_result['631']=["topic_000000000000014E.html","Chat Class","Representa uma sessão de chat entre dois utilizadores, incluindo os identificadores dos utilizadores e a data de criação do chat."];

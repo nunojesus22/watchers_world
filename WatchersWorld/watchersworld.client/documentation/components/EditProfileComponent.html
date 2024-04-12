@@ -1,0 +1,3666 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  EditProfileComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/profile/edit-profile/edit-profile.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente responsável pela edição do perfil do utilizador.
+Permite aos utilizadores alterar informações do seu perfil, como foto, biografia, e preferências de privacidade.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-edit-profile</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./edit-profile.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./edit-profile.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                <a href="#birthdateEditable" >birthdateEditable</a>
+                            </li>
+                            <li>
+                                <a href="#coverPhoto" >coverPhoto</a>
+                            </li>
+                            <li>
+                                <a href="#currentDate" >currentDate</a>
+                            </li>
+                            <li>
+                                <a href="#currentUsername" >currentUsername</a>
+                            </li>
+                            <li>
+                                <a href="#errorMessages" >errorMessages</a>
+                            </li>
+                            <li>
+                                <a href="#followersCount" >followersCount</a>
+                            </li>
+                            <li>
+                                <a href="#followingCount" >followingCount</a>
+                            </li>
+                            <li>
+                                <a href="#genderEditable" >genderEditable</a>
+                            </li>
+                            <li>
+                                <a href="#hobbyEditable" >hobbyEditable</a>
+                            </li>
+                            <li>
+                                <a href="#isDateEditable" >isDateEditable</a>
+                            </li>
+                            <li>
+                                <a href="#isProfileLocked" >isProfileLocked</a>
+                            </li>
+                            <li>
+                                <a href="#loggedUserName" >loggedUserName</a>
+                            </li>
+                            <li>
+                                <a href="#medals" >medals</a>
+                            </li>
+                            <li>
+                                <a href="#message" >message</a>
+                            </li>
+                            <li>
+                                <a href="#minDate" >minDate</a>
+                            </li>
+                            <li>
+                                <a href="#nameEditable" >nameEditable</a>
+                            </li>
+                            <li>
+                                <a href="#profileForm" >profileForm</a>
+                            </li>
+                            <li>
+                                <a href="#profileLocked" >profileLocked</a>
+                            </li>
+                            <li>
+                                <a href="#profileLockedPhoto" >profileLockedPhoto</a>
+                            </li>
+                            <li>
+                                <a href="#profilePhoto" >profilePhoto</a>
+                            </li>
+                            <li>
+                                <a href="#profileUnlockedPhoto" >profileUnlockedPhoto</a>
+                            </li>
+                            <li>
+                                <a href="#showFavorites" >showFavorites</a>
+                            </li>
+                            <li>
+                                <a href="#showMedals" >showMedals</a>
+                            </li>
+                            <li>
+                                <a href="#showMovies" >showMovies</a>
+                            </li>
+                            <li>
+                                <a href="#showSeries" >showSeries</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#unsubscribed$" >unsubscribed$</a>
+                            </li>
+                            <li>
+                                <a href="#userName" >userName</a>
+                            </li>
+                            <li>
+                                <a href="#userNameEditable" >userNameEditable</a>
+                            </li>
+                            <li>
+                                <a href="#usersProfiles" >usersProfiles</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#changeImage" >changeImage</a>
+                            </li>
+                            <li>
+                                <a href="#deleteAccount" >deleteAccount</a>
+                            </li>
+                            <li>
+                                <a href="#getMedals" >getMedals</a>
+                            </li>
+                            <li>
+                                <a href="#getUserProfileInfo" >getUserProfileInfo</a>
+                            </li>
+                            <li>
+                                <a href="#getUserProfiles" >getUserProfiles</a>
+                            </li>
+                            <li>
+                                <a href="#initializeForm" >initializeForm</a>
+                            </li>
+                            <li>
+                                <a href="#isOldEnough" >isOldEnough</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#openFileInput" >openFileInput</a>
+                            </li>
+                            <li>
+                                <a href="#saveButton" >saveButton</a>
+                            </li>
+                            <li>
+                                <a href="#sendEmailChangePassword" >sendEmailChangePassword</a>
+                            </li>
+                            <li>
+                                <a href="#setFormFields" >setFormFields</a>
+                            </li>
+                            <li>
+                                <a href="#setImages" >setImages</a>
+                            </li>
+                            <li>
+                                <a href="#toggleEdit" >toggleEdit</a>
+                            </li>
+                            <li>
+                                <a href="#toggleFavorites" >toggleFavorites</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#toggleFormControl" >toggleFormControl</a>
+                            </li>
+                            <li>
+                                <a href="#toggleLock" >toggleLock</a>
+                            </li>
+                            <li>
+                                <a href="#toggleMedals" >toggleMedals</a>
+                            </li>
+                            <li>
+                                <a href="#toggleMovies" >toggleMovies</a>
+                            </li>
+                            <li>
+                                <a href="#toggleSeries" >toggleSeries</a>
+                            </li>
+                            <li>
+                                <a href="#updateFormFields" >updateFormFields</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(profileService: <a href="../injectables/ProfileService.html" target="_self">ProfileService</a>, messageService: <a href="../interfaces/Message.html" target="_self">MessageService</a>, formBuilder: FormBuilder, route: ActivatedRoute, authService: <a href="../injectables/AuthenticationService.html" target="_self">AuthenticationService</a>, router: Router, gamificationService: <a href="../injectables/GamificationService.html" target="_self">GamificationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:57</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Construtor da classe.
+Inicializa os serviços necessários e define as datas mínima e máxima para o campo de data de nascimento.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>profileService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ProfileService.html" target="_self" >ProfileService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço para operações relacionadas ao perfil do utilizador.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>messageService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/Message.html" target="_self" >MessageService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço para exibição de mensagens e notificações.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Construtor de formulário para gerenciar campos de entrada de dados.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                    <code>ActivatedRoute</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de roteamento para acesso aos parâmetros da rota.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthenticationService.html" target="_self" >AuthenticationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de autenticação para operações relacionadas à conta do utilizador.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de roteamento para navegação entre rotas.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>gamificationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/GamificationService.html" target="_self" >GamificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço para operações relacionadas à gamificação e medalhas.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeImage"></a>
+                    <span class="name">
+                        <span ><b>changeImage</b></span>
+                        <a href="#changeImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeImage(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="189"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:189</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Lida com a seleção de uma nova imagem para o perfil ou capa.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Evento contendo o arquivo de imagem selecionado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAccount"></a>
+                    <span class="name">
+                        <span ><b>deleteAccount</b></span>
+                        <a href="#deleteAccount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteAccount()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="403"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:403</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Permite ao utilizador apagar a sua conta permanentemente. Confirmação é solicitada antes de proceder com a eliminação.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMedals"></a>
+                    <span class="name">
+                        <span ><b>getMedals</b></span>
+                        <a href="#getMedals"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMedals(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="439"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:439</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carrega as medalhas desbloqueadas pelo utilizador e as exibe na interface.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do utilizador cujas medalhas serão carregadas.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserProfileInfo"></a>
+                    <span class="name">
+                        <span ><b>getUserProfileInfo</b></span>
+                        <a href="#getUserProfileInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserProfileInfo(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:229</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera informações do perfil do utilizador para preenchimento dos campos de edição.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do utilizador cujo perfil será recuperado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserProfiles"></a>
+                    <span class="name">
+                        <span ><b>getUserProfiles</b></span>
+                        <a href="#getUserProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserProfiles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="136"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carrega os perfis dos utilizadores para exibição.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeForm"></a>
+                    <span class="name">
+                        <span ><b>initializeForm</b></span>
+                        <a href="#initializeForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>initializeForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="268"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa o formulário de edição do perfil com validações e valores padrão.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOldEnough"></a>
+                    <span class="name">
+                        <span ><b>isOldEnough</b></span>
+                        <a href="#isOldEnough"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isOldEnough(birthDate: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="319"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:319</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica se o utilizador tem idade suficiente para usar a plataforma.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>birthDate</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Data de nascimento do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Booleano indicando se o utilizador tem 12 anos ou mais.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="220"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:220</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método chamado na destruição do componente.
+Realiza a limpeza dos observáveis subscritos.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método chamado na inicialização do componente.
+Configura o formulário de edição do perfil e carrega os dados do perfil atual.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openFileInput"></a>
+                    <span class="name">
+                        <span ><b>openFileInput</b></span>
+                        <a href="#openFileInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openFileInput(target: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Abre o seletor de arquivos para troca de imagens do perfil ou capa.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>target</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador do elemento de entrada de arquivo a ser aberto.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveButton"></a>
+                    <span class="name">
+                        <span ><b>saveButton</b></span>
+                        <a href="#saveButton"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveButton(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="364"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:364</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Ação executada ao clicar no botão de salvar. Valida a idade e atualiza as informações do perfil.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do utilizador que está salvando as alterações.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendEmailChangePassword"></a>
+                    <span class="name">
+                        <span ><b>sendEmailChangePassword</b></span>
+                        <a href="#sendEmailChangePassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sendEmailChangePassword()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="382"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:382</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Envia um pedido de redefinição de senha para o e-mail do utilizador. Este método é acionado quando o utilizador solicita a mudança de senha.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setFormFields"></a>
+                    <span class="name">
+                        <span ><b>setFormFields</b></span>
+                        <a href="#setFormFields"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setFormFields(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="281"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carrega os dados do utilizador e preenche os campos do formulário de edição.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do utilizador cujos dados serão carregados.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setImages"></a>
+                    <span class="name">
+                        <span ><b>setImages</b></span>
+                        <a href="#setImages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setImages(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="244"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:244</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carrega e atribui as imagens de perfil e capa do utilizador nas suas respetivas posições na interface.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do utilizador cujas imagens serão carregadas.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleEdit"></a>
+                    <span class="name">
+                        <span ><b>toggleEdit</b></span>
+                        <a href="#toggleEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleEdit(field: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Alterna o estado de edição de um campo específico do formulário.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>field</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do campo a ser editado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleFavorites"></a>
+                    <span class="name">
+                        <span ><b>toggleFavorites</b></span>
+                        <a href="#toggleFavorites"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleFavorites()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="419"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:419</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleFormControl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>toggleFormControl</b></span>
+                        <a href="#toggleFormControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleFormControl(controlName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isEditable: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="152"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:152</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Ativa ou desativa um campo de formulário com base no seu estado de edição.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>controlName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do controle de formulário a ser alterado.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>isEditable</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Estado de edição do controle.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleLock"></a>
+                    <span class="name">
+                        <span ><b>toggleLock</b></span>
+                        <a href="#toggleLock"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleLock()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="163"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Alterna o estado de bloqueio do perfil entre público e privado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleMedals"></a>
+                    <span class="name">
+                        <span ><b>toggleMedals</b></span>
+                        <a href="#toggleMedals"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleMedals()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="431"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:431</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleMovies"></a>
+                    <span class="name">
+                        <span ><b>toggleMovies</b></span>
+                        <a href="#toggleMovies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleMovies()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="423"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:423</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleSeries"></a>
+                    <span class="name">
+                        <span ><b>toggleSeries</b></span>
+                        <a href="#toggleSeries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleSeries()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="427"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:427</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateFormFields"></a>
+                    <span class="name">
+                        <span ><b>updateFormFields</b></span>
+                        <a href="#updateFormFields"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateFormFields(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="334"
+                                    class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:334</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Atualiza os campos do formulário com os dados fornecidos pelo utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nome do utilizador que está atualizando os dados.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthenticationService.html" target="_self" >AuthenticationService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description">Serviço de autenticação para operações relacionadas à conta do utilizador.</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="birthdateEditable"></a>
+                    <span class="name">
+                        <span ><b>birthdateEditable</b></span>
+                        <a href="#birthdateEditable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="coverPhoto"></a>
+                    <span class="name">
+                        <span ><b>coverPhoto</b></span>
+                        <a href="#coverPhoto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentDate"></a>
+                    <span class="name">
+                        <span ><b>currentDate</b></span>
+                        <a href="#currentDate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentUsername"></a>
+                    <span class="name">
+                        <span ><b>currentUsername</b></span>
+                        <a href="#currentUsername"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessages"></a>
+                    <span class="name">
+                        <span ><b>errorMessages</b></span>
+                        <a href="#errorMessages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followersCount"></a>
+                    <span class="name">
+                        <span ><b>followersCount</b></span>
+                        <a href="#followersCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followingCount"></a>
+                    <span class="name">
+                        <span ><b>followingCount</b></span>
+                        <a href="#followingCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="genderEditable"></a>
+                    <span class="name">
+                        <span ><b>genderEditable</b></span>
+                        <a href="#genderEditable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hobbyEditable"></a>
+                    <span class="name">
+                        <span ><b>hobbyEditable</b></span>
+                        <a href="#hobbyEditable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDateEditable"></a>
+                    <span class="name">
+                        <span ><b>isDateEditable</b></span>
+                        <a href="#isDateEditable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isProfileLocked"></a>
+                    <span class="name">
+                        <span ><b>isProfileLocked</b></span>
+                        <a href="#isProfileLocked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loggedUserName"></a>
+                    <span class="name">
+                        <span ><b>loggedUserName</b></span>
+                        <a href="#loggedUserName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medals"></a>
+                    <span class="name">
+                        <span ><b>medals</b></span>
+                        <a href="#medals"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="message"></a>
+                    <span class="name">
+                        <span ><b>message</b></span>
+                        <a href="#message"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="minDate"></a>
+                    <span class="name">
+                        <span ><b>minDate</b></span>
+                        <a href="#minDate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nameEditable"></a>
+                    <span class="name">
+                        <span ><b>nameEditable</b></span>
+                        <a href="#nameEditable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileForm"></a>
+                    <span class="name">
+                        <span ><b>profileForm</b></span>
+                        <a href="#profileForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup({})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileLocked"></a>
+                    <span class="name">
+                        <span ><b>profileLocked</b></span>
+                        <a href="#profileLocked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;Public&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileLockedPhoto"></a>
+                    <span class="name">
+                        <span ><b>profileLockedPhoto</b></span>
+                        <a href="#profileLockedPhoto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;assets/img/private.png&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profilePhoto"></a>
+                    <span class="name">
+                        <span ><b>profilePhoto</b></span>
+                        <a href="#profilePhoto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileUnlockedPhoto"></a>
+                    <span class="name">
+                        <span ><b>profileUnlockedPhoto</b></span>
+                        <a href="#profileUnlockedPhoto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;assets/img/public.png&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showFavorites"></a>
+                    <span class="name">
+                        <span ><b>showFavorites</b></span>
+                        <a href="#showFavorites"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showMedals"></a>
+                    <span class="name">
+                        <span ><b>showMedals</b></span>
+                        <a href="#showMedals"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showMovies"></a>
+                    <span class="name">
+                        <span ><b>showMovies</b></span>
+                        <a href="#showMovies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showSeries"></a>
+                    <span class="name">
+                        <span ><b>showSeries</b></span>
+                        <a href="#showSeries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribed$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>unsubscribed$</b></span>
+                        <a href="#unsubscribed$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userName"></a>
+                    <span class="name">
+                        <span ><b>userName</b></span>
+                        <a href="#userName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;NOME UTILIZADOR&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userNameEditable"></a>
+                    <span class="name">
+                        <span ><b>userNameEditable</b></span>
+                        <a href="#userNameEditable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usersProfiles"></a>
+                    <span class="name">
+                        <span ><b>usersProfiles</b></span>
+                        <a href="#usersProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Profile.html" target="_self" >Profile[] | undefined</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/profile/edit-profile/edit-profile.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, ViewChild } from &#x27;@angular/core&#x27;;
+import { FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { Subject, switchMap, take, takeUntil } from &#x27;rxjs&#x27;;
+import { Profile } from &#x27;../models/profile&#x27;;
+import { ProfileService } from &#x27;../services/profile.service&#x27;;
+import { User } from &#x27;../../authentication/models/user&#x27;;
+import { AuthenticationService } from &#x27;../../authentication/services/authentication.service&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { Title } from &#x27;@angular/platform-browser&#x27;;
+import { GamificationService } from &#x27;../../gamification/Service/gamification.service&#x27;;
+import { MessageService } from &#x27;primeng/api&#x27;
+
+/**
+ * Componente responsável pela edição do perfil do utilizador.
+ * Permite aos utilizadores alterar informações do seu perfil, como foto, biografia, e preferências de privacidade.
+ */
+@Component({
+  selector: &#x27;app-edit-profile&#x27;,
+  templateUrl: &#x27;./edit-profile.component.html&#x27;,
+  styleUrls: [&#x27;./edit-profile.component.css&#x27;]
+})
+export class EditProfileComponent {
+  currentUsername: string | undefined;
+  loggedUserName: string | null &#x3D; null;
+
+  profileForm: FormGroup &#x3D; new FormGroup({});
+
+  private unsubscribed$ &#x3D; new Subject&lt;void&gt;();
+  usersProfiles: Profile[] | undefined;
+  message: string | undefined;
+  errorMessages: any;
+  userNameEditable &#x3D; false;
+  hobbyEditable &#x3D; false;
+  genderEditable &#x3D; false;
+  birthdateEditable &#x3D; false;
+  nameEditable &#x3D; false;
+  isDateEditable: boolean &#x3D; false;
+  userName: string &#x3D; &quot;NOME UTILIZADOR&quot;;
+  coverPhoto: string &#x3D; &quot;&quot;;
+  profilePhoto: string &#x3D; &quot;&quot;;
+  profileLockedPhoto: string &#x3D; &#x27;assets/img/private.png&#x27;;
+  profileUnlockedPhoto: string &#x3D; &#x27;assets/img/public.png&#x27;;
+  isProfileLocked: boolean &#x3D; false;
+  profileLocked: string &#x3D; &quot;Public&quot;;
+
+  followersCount: number | undefined;
+  followingCount: number | undefined;
+
+  showFavorites: boolean &#x3D; false;
+  showMovies: boolean &#x3D; false;
+  showSeries: boolean &#x3D; false;
+  showMedals: boolean &#x3D; false;
+
+  currentDate: string;
+  minDate: string;
+
+  medals: any[] &#x3D; [];
+
+  /**
+   * Construtor da classe.
+   * Inicializa os serviços necessários e define as datas mínima e máxima para o campo de data de nascimento.
+   * @param profileService Serviço para operações relacionadas ao perfil do utilizador.
+   * @param messageService Serviço para exibição de mensagens e notificações.
+   * @param formBuilder Construtor de formulário para gerenciar campos de entrada de dados.
+   * @param route Serviço de roteamento para acesso aos parâmetros da rota.
+   * @param authService Serviço de autenticação para operações relacionadas à conta do utilizador.
+   * @param router Serviço de roteamento para navegação entre rotas.
+   * @param gamificationService Serviço para operações relacionadas à gamificação e medalhas.
+   */
+  constructor(private profileService: ProfileService,
+    private messageService: MessageService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute, public authService: AuthenticationService, private router: Router,
+    private gamificationService: GamificationService) {
+    const today &#x3D; new Date();
+    this.currentDate &#x3D; today.toISOString().split(&#x27;T&#x27;)[0];
+    const earliestDate &#x3D; new Date(&#x27;1900-01-01&#x27;);
+    this.minDate &#x3D; earliestDate.toISOString().split(&#x27;T&#x27;)[0];
+  }
+
+  /**
+  * Método chamado na inicialização do componente.
+  * Configura o formulário de edição do perfil e carrega os dados do perfil atual.
+  */
+  ngOnInit(): void {
+    this.route.params.subscribe(params &#x3D;&gt; {
+      if (typeof params[&#x27;username&#x27;] &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+        this.currentUsername &#x3D; params[&#x27;username&#x27;];
+        this.getUserProfileInfo(this.currentUsername);
+        this.setFormFields(this.currentUsername);
+        this.setImages(this.currentUsername);
+      }
+    });
+    this.initializeForm();
+    this.getUserProfiles();
+  }
+
+  /**
+  * Alterna o estado de edição de um campo específico do formulário.
+  * @param field Nome do campo a ser editado.
+  */
+  toggleEdit(field: string) {
+    switch (field) {
+      case &#x27;name&#x27;:
+        this.userNameEditable &#x3D; !this.userNameEditable;
+        this.toggleFormControl(&#x27;name&#x27;, this.userNameEditable);
+        break;
+      case &#x27;hobby&#x27;:
+        this.hobbyEditable &#x3D; !this.hobbyEditable;
+        this.toggleFormControl(&#x27;hobby&#x27;, this.hobbyEditable);
+        break;
+      case &#x27;gender&#x27;:
+        this.genderEditable &#x3D; !this.genderEditable;
+        this.toggleFormControl(&#x27;gender&#x27;, this.genderEditable);
+        break;
+      case &#x27;birthdate&#x27;:
+        this.birthdateEditable &#x3D; !this.birthdateEditable;
+        const control &#x3D; this.profileForm.get(&#x27;date&#x27;);
+        if (control !&#x3D; null) {
+          this.birthdateEditable ? control.enable() : control.disable();
+        }
+        break;
+      case &#x27;coverPhoto&#x27;:
+        this.openFileInput(&#x27;coverPhoto&#x27;);
+        break;
+      case &#x27;profilePhoto&#x27;:
+        this.openFileInput(&#x27;profilePhoto&#x27;);
+        break;
+      default:
+    }
+  }
+
+  /**
+   * Carrega os perfis dos utilizadores para exibição.
+   */
+  getUserProfiles() {
+    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (profiles: Profile[]) &#x3D;&gt; {
+        this.usersProfiles &#x3D; profiles;
+      },
+      (error) &#x3D;&gt; {
+        console.error(&quot;Error while fetching users&#x27; profiles:&quot;, error);
+      }
+    );
+  }
+
+  /**
+   * Ativa ou desativa um campo de formulário com base no seu estado de edição.
+   * @param controlName Nome do controle de formulário a ser alterado.
+   * @param isEditable Estado de edição do controle.
+   */
+  private toggleFormControl(controlName: string, isEditable: boolean) {
+    if (isEditable) {
+      this.profileForm.get(controlName)?.enable();
+    } else {
+      this.profileForm.get(controlName)?.disable();
+    }
+  }
+
+  /**
+   * Alterna o estado de bloqueio do perfil entre público e privado.
+   */
+  toggleLock() {
+    this.isProfileLocked &#x3D; !this.isProfileLocked;
+    console.log(this.isProfileLocked);
+    this.profileLocked &#x3D; this.profileLocked &#x3D;&#x3D;&#x3D; &quot;Public&quot; ? &quot;Private&quot; : &quot;Public&quot;;
+    console.log(this.profileLocked);
+  }
+
+  /**
+   * Abre o seletor de arquivos para troca de imagens do perfil ou capa.
+   * @param target Identificador do elemento de entrada de arquivo a ser aberto.
+   */
+  openFileInput(target: string) {
+    const fileInput &#x3D; document.getElementById(&#x27;fileInput&#x27;) as HTMLInputElement | null;
+
+    if (fileInput) {
+      fileInput.setAttribute(&#x27;data-target&#x27;, target);
+      fileInput.click();
+    } else {
+      console.error(&quot;File input element not found&quot;);
+    }
+  }
+
+  /**
+   * Lida com a seleção de uma nova imagem para o perfil ou capa.
+   * @param event Evento contendo o arquivo de imagem selecionado.
+   */
+  changeImage(event: any) {
+    const fileInput &#x3D; event.target;
+    const target &#x3D; fileInput.getAttribute(&#x27;data-target&#x27;);
+
+    if (target) {
+      const file &#x3D; (fileInput.files as FileList)[0];
+
+      if (!file.type.match(&#x27;image.*&#x27;)) {
+        this.messageService.clear();
+        this.messageService.add({ key: &#x27;toast2&#x27;, severity: &#x27;error&#x27;, summary: &#x27;Ficheiro Inválido&#x27;, detail: &#x27;Tipo de ficheiro inválido. Por favor, escolha uma imagem.&#x27; });
+        return;
+      }
+
+      const reader &#x3D; new FileReader();
+      reader.onload &#x3D; (e: any) &#x3D;&gt; {
+        if (target &#x3D;&#x3D;&#x3D; &#x27;profilePhoto&#x27;) {
+          this.profilePhoto &#x3D; e.target.result;
+        } else if (target &#x3D;&#x3D;&#x3D; &#x27;coverPhoto&#x27;) {
+          this.coverPhoto &#x3D; e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      console.error(&quot;Target not specified for changeImage&quot;);
+    }
+  }
+
+  /**
+   * Método chamado na destruição do componente.
+   * Realiza a limpeza dos observáveis subscritos.
+   */
+  ngOnDestroy(): void {
+    this.unsubscribed$.next();
+    this.unsubscribed$.complete();
+  }
+
+  /**
+   * Recupera informações do perfil do utilizador para preenchimento dos campos de edição.
+   * @param username Nome do utilizador cujo perfil será recuperado.
+   */
+  getUserProfileInfo(username: string) {
+    this.profileService.getUserData(username).subscribe({
+      next: (response: Profile) &#x3D;&gt; {
+        return response;
+      },
+      error: (error) &#x3D;&gt; {
+        return error;
+      }
+    });
+  }
+
+  /**
+  * Carrega e atribui as imagens de perfil e capa do utilizador nas suas respetivas posições na interface.
+  * @param username Nome do utilizador cujas imagens serão carregadas.
+  */
+  setImages(username: string) {
+    this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (userData: Profile) &#x3D;&gt; {
+        const coverPhotoElement &#x3D; document.querySelector(&quot;.cover-photo&quot;);
+        const profilePhotoElement &#x3D; document.querySelector(&quot;.profile-photo&quot;);
+
+        if (coverPhotoElement instanceof HTMLImageElement &amp;&amp; profilePhotoElement instanceof HTMLImageElement) {
+          coverPhotoElement.src &#x3D; userData.coverPhoto;
+          profilePhotoElement.src &#x3D; userData.profilePhoto;
+        }
+      },
+      error &#x3D;&gt; {
+        if (error.error.errors) {
+          this.errorMessages &#x3D; error.error.errors;
+        } else {
+          this.errorMessages.push(error.error);
+        }
+      }
+    );
+  }
+
+  /**
+  * Inicializa o formulário de edição do perfil com validações e valores padrão.
+  */
+  initializeForm() {
+    this.profileForm &#x3D; this.formBuilder.group({
+      hobby: [&#x27;&#x27;, [Validators.required, Validators.maxLength(50)]],
+      gender: [&#x27;&#x27;],
+      date: [{ value: &#x27;&#x27; }],
+      name: [{ value: &#x27;&#x27; }]
+    });
+  }
+
+  /**
+  * Carrega os dados do utilizador e preenche os campos do formulário de edição.
+  * @param username Nome do utilizador cujos dados serão carregados.
+  */
+  setFormFields(username: string) {
+    this.profileForm.get(&#x27;gender&#x27;)?.disable();
+    this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
+      (userData: Profile) &#x3D;&gt; {
+        console.log(userData);
+        if (userData.coverPhoto &amp;&amp; this.coverPhoto !&#x3D;&#x3D; userData.coverPhoto) { this.coverPhoto &#x3D; userData.coverPhoto; }
+        if (userData.profilePhoto &amp;&amp; this.profilePhoto !&#x3D;&#x3D; userData.profilePhoto) { this.profilePhoto &#x3D; userData.profilePhoto; }
+        if (userData.userName) {
+          this.userName &#x3D; userData.userName;
+        }
+
+        this.isProfileLocked &#x3D; userData.profileStatus &#x3D;&#x3D;&#x3D; &#x27;Private&#x27;;
+        this.profileLocked &#x3D; this.isProfileLocked ? &#x27;Private&#x27; : &#x27;Public&#x27;;
+
+        this.profileForm.patchValue({
+          name: userData.userName &#x3D; userData.userName?.toLowerCase(),
+          hobby: userData.description &#x3D; userData.description || &quot;Por definir&quot;,
+          gender: userData.gender &#x3D; userData.gender || &quot;Por definir&quot;,
+          date: userData.birthDate ? new Date(userData.birthDate).toISOString().split(&#x27;T&#x27;)[0] : &#x27;&#x27;,
+        });
+        if (this.loggedUserName)
+          this.getUserProfileInfo(this.loggedUserName);
+      },
+      error &#x3D;&gt; {
+        if (error.error.errors) {
+          this.errorMessages &#x3D; error.error.errors;
+        } else {
+          this.errorMessages.push(error.error);
+        }
+      }
+    );
+  }
+
+  /**
+  * Verifica se o utilizador tem idade suficiente para usar a plataforma.
+  * @param birthDate Data de nascimento do utilizador.
+  * @returns Booleano indicando se o utilizador tem 12 anos ou mais.
+  */
+  isOldEnough(birthDate: string): boolean {
+    const birthDateObj &#x3D; new Date(birthDate);
+    const today &#x3D; new Date();
+    var age &#x3D; today.getFullYear() - birthDateObj.getFullYear();
+    const m &#x3D; today.getMonth() - birthDateObj.getMonth();
+    if (m &lt; 0 || (m &#x3D;&#x3D;&#x3D; 0 &amp;&amp; today.getDate() &lt; birthDateObj.getDate())) {
+      age--;
+    }
+    return age &gt;&#x3D; 12;
+  }
+
+  /**
+  * Atualiza os campos do formulário com os dados fornecidos pelo utilizador.
+  * @param username Nome do utilizador que está atualizando os dados.
+  */
+  updateFormFields(username: string) {
+    const hobby &#x3D; this.profileForm.get(&#x27;hobby&#x27;)?.value;
+    const gender &#x3D; this.profileForm.get(&#x27;gender&#x27;)?.value;
+    const date &#x3D; this.profileForm.get(&#x27;date&#x27;)?.value;
+    const profilePhoto &#x3D; this.profilePhoto;
+    const coverPhoto &#x3D; this.coverPhoto;
+    const profileStatus &#x3D; this.profileLocked;
+    const numberOfFollowers &#x3D; this.followersCount || 0;
+    const numberOfFollowing &#x3D; this.followingCount || 0;
+
+    const data &#x3D; new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus, numberOfFollowers, numberOfFollowing);
+    console.log(data);
+    if (this.profileForm.valid) {
+      this.profileService.setUserData(data).subscribe({
+        next: (response: any) &#x3D;&gt; {
+          console.log(response);
+          this.setFormFields(username);
+        },
+        error: (error) &#x3D;&gt; {
+          console.error(&quot;Error during setUserData&quot;, error);
+        }
+      },
+      );
+    }
+  }
+
+  /**
+  * Ação executada ao clicar no botão de salvar. Valida a idade e atualiza as informações do perfil.
+  * @param username Nome do utilizador que está salvando as alterações.
+  */
+  saveButton(username: string) {
+    const date &#x3D; this.profileForm.get(&#x27;date&#x27;)?.value;
+
+    if (date &amp;&amp; !this.isOldEnough(date)) {
+      this.messageService.clear();
+      this.messageService.add({ key: &#x27;toast1&#x27;, severity: &#x27;error&#x27;, summary: &#x27;Data Inválida&#x27;, detail: &#x27;Data de nascimento inválida. O utilizador deve ter mais de 12 anos.&#x27; });
+      console.log(&quot;Data de nascimento inválida. O utilizador deve ter mais de 12 anos.&quot;)
+      return;
+    }
+
+    this.updateFormFields(username);
+    this.getMedals(username);
+    this.router.navigate([&#x27;/profile/&#x27;, username]);
+  }
+
+  /**
+   * Envia um pedido de redefinição de senha para o e-mail do utilizador. Este método é acionado quando o utilizador solicita a mudança de senha.
+  */
+  sendEmailChangePassword() {
+    this.authService.user$.pipe(take(1)).subscribe({
+      next: (user: User | null) &#x3D;&gt; {
+        if (user) {
+          this.authService.forgotPassword(user.email!).subscribe({
+            next: (response: any) &#x3D;&gt; {
+              this.authService.logout();
+              this.router.navigateByUrl(&#x27;/account/login&#x27;);
+            },
+            error: error &#x3D;&gt; {
+              console.log(error);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  /**
+   * Permite ao utilizador apagar a sua conta permanentemente. Confirmação é solicitada antes de proceder com a eliminação.
+  */
+  deleteAccount() {
+    if (confirm(&#x27;Tem a certeza que quer apagar a conta? Esta ação será permanente.&#x27;)) {
+      var LoggedInUsername &#x3D; this.authService.getLoggedInUserName();
+      if (LoggedInUsername)
+        this.profileService.deleteOwnAccount(LoggedInUsername).subscribe(
+          (response) &#x3D;&gt; {
+            console.log(response);
+            this.router.navigateByUrl(&#x27;/home&#x27;);
+          },
+          (error) &#x3D;&gt; {
+            console.error(&#x27;Error deleting account:&#x27;, error);
+          }
+        );
+    }
+  }
+
+  toggleFavorites() {
+    this.showFavorites &#x3D; !this.showFavorites;
+  }
+
+  toggleMovies() {
+    this.showMovies &#x3D; !this.showMovies;
+  }
+
+  toggleSeries() {
+    this.showSeries &#x3D; !this.showSeries;
+  }
+
+  toggleMedals() {
+    this.showMedals &#x3D; !this.showMedals;
+  }
+
+  /**
+  * Carrega as medalhas desbloqueadas pelo utilizador e as exibe na interface.
+  * @param username Nome do utilizador cujas medalhas serão carregadas.
+  */
+  getMedals(username: string) {
+    if (this.currentUsername) {
+      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
+        next: (medals) &#x3D;&gt; {
+          this.medals &#x3D; medals;
+        },
+        error: (err) &#x3D;&gt; {
+          console.error(&#x27;Error retrieving medals:&#x27;, err);
+        }
+      });
+    } else {
+      console.error(&#x27;User ID is not defined&#x27;);
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">
+&lt;div&gt;
+  &lt;p-toast key&#x3D;&quot;toast1&quot;&gt;&lt;/p-toast&gt;
+  &lt;p-toast key&#x3D;&quot;toast2&quot;&gt;&lt;/p-toast&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;container mt-5&quot; *ngIf&#x3D;&quot;(authService.user$ | async) as user&quot;&gt;
+  &lt;div class&#x3D;&quot;row&quot; *ngIf&#x3D;&quot;user.username &#x3D;&#x3D;&#x3D; currentUsername&quot;&gt;
+    &lt;div class&#x3D;&quot;col-12 col-lg-8&quot;&gt;
+      &lt;div class&#x3D;&quot;card mb-3&quot;&gt;
+        &lt;input type&#x3D;&quot;file&quot; id&#x3D;&quot;fileInput&quot; accept&#x3D;&quot;image/*&quot; (change)&#x3D;&quot;changeImage($event)&quot; style&#x3D;&quot;display: none;&quot;&gt;
+        &lt;img src&#x3D;&quot;{{ coverPhoto }}&quot; class&#x3D;&quot;cover-photo&quot; (click)&#x3D;&quot;openFileInput(&#x27;coverPhoto&#x27;)&quot;&gt;
+        &lt;div class&#x3D;&quot;card-body text-center&quot; &gt;
+          &lt;input type&#x3D;&quot;file&quot; id&#x3D;&quot;fileInput&quot; accept&#x3D;&quot;image/*&quot; (change)&#x3D;&quot;changeImage($event)&quot; style&#x3D;&quot;display: none;&quot;&gt;
+          &lt;img src&#x3D;&quot;{{ profilePhoto }}&quot; class&#x3D;&quot;profile-photo&quot; (click)&#x3D;&quot;openFileInput(&#x27;profilePhoto&#x27;)&quot;&gt;
+          &lt;div class&#x3D;&quot;user-details&quot; &gt;
+            &lt;div class&#x3D;&quot;user-icons&quot;&gt;
+              &lt;p&gt; Modo do perfil: &lt;/p&gt;
+              &lt;button class&#x3D;&quot;lock-button&quot; (click)&#x3D;&quot;toggleLock()&quot;&gt;
+                &lt;img [src]&#x3D;&quot;isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto&quot; alt&#x3D;&quot;Lock Status&quot;&gt;
+              &lt;/button&gt;
+              &lt;button class&#x3D;&quot;change-password-button&quot; (click)&#x3D;&quot;sendEmailChangePassword()&quot;&gt;
+                Alterar palavra-passe
+              &lt;/button&gt;
+              &lt;button class&#x3D;&quot;delete-account-button&quot; (click)&#x3D;&quot;deleteAccount()&quot;&gt;
+                Apagar conta
+              &lt;/button&gt;
+            &lt;/div&gt;
+            &lt;form [formGroup]&#x3D;&quot;profileForm&quot; class&#x3D;&quot;user-details text-left&quot;&gt;
+              &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+                &lt;label for&#x3D;&quot;hobby&quot;&gt;Descrição:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;form-check form-check-inline&quot;&gt;
+                  &lt;input formControlName&#x3D;&quot;hobby&quot; type&#x3D;&quot;text&quot; id&#x3D;&quot;hobby&quot; name&#x3D;&quot;hobby&quot; maxlength&#x3D;&quot;50&quot; class&#x3D;&quot;form-control&quot; [readonly]&#x3D;&quot;!hobbyEditable&quot;&gt;
+                  &lt;div *ngIf&#x3D;&quot;profileForm.get(&#x27;hobby&#x27;)?.invalid &amp;&amp; profileForm.get(&#x27;hobby&#x27;)?.dirty&quot;&gt;
+                    &lt;small *ngIf&#x3D;&quot;profileForm.get(&#x27;hobby&#x27;)?.errors?.[&#x27;maxlength&#x27;]&quot; class&#x3D;&quot;text-danger&quot;&gt;
+                      A descrição deve ter no máximo 50 caracteres.
+                    &lt;/small&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-link p-0 editButton&quot; (click)&#x3D;&quot;toggleEdit(&#x27;hobby&#x27;)&quot;&gt;&lt;/button&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+                &lt;label&gt;Género:  &lt;/label&gt;
+                &lt;div class&#x3D;&quot;form-check form-check-inline&quot;&gt;
+                  &lt;input formControlName&#x3D;&quot;gender&quot; type&#x3D;&quot;radio&quot; id&#x3D;&quot;male&quot; name&#x3D;&quot;gender&quot; value&#x3D;&quot;M&quot; class&#x3D;&quot;form-check-input&quot; [checked]&#x3D;&quot;profileForm.controls[&#x27;gender&#x27;].value &#x3D;&#x3D;&#x3D; &#x27;M&#x27;&quot;&gt;
+                  &lt;label class&#x3D;&quot;form-check-label&quot; for&#x3D;&quot;male&quot;&gt;Masculino&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;form-check form-check-inline&quot;&gt;
+                  &lt;input formControlName&#x3D;&quot;gender&quot; type&#x3D;&quot;radio&quot; id&#x3D;&quot;female&quot; name&#x3D;&quot;gender&quot; value&#x3D;&quot;F&quot; class&#x3D;&quot;form-check-input&quot; [checked]&#x3D;&quot;profileForm.controls[&#x27;gender&#x27;].value &#x3D;&#x3D;&#x3D; &#x27;F&#x27;&quot;&gt;
+                  &lt;label class&#x3D;&quot;form-check-label&quot; for&#x3D;&quot;female&quot;&gt;Feminino&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-link p-0 editButton&quot; (click)&#x3D;&quot;toggleEdit(&#x27;gender&#x27;)&quot;&gt;&lt;/button&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;mb-3&quot;&gt;
+                &lt;label for&#x3D;&quot;birthdate&quot;&gt;Data de nascimento:&lt;/label&gt;
+                &lt;div class&#x3D;&quot;form-check form-check-inline&quot;&gt;
+                  &lt;input formControlName&#x3D;&quot;date&quot; type&#x3D;&quot;date&quot; id&#x3D;&quot;birthdate&quot; name&#x3D;&quot;birthdate&quot;  [min]&#x3D;&quot;minDate&quot; [max]&#x3D;&quot;currentDate&quot;  class&#x3D;&quot;form-control&quot; [readonly]&#x3D;&quot;!birthdateEditable&quot;&gt;
+                &lt;/div&gt;
+                &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-link p-0 editButton&quot; (click)&#x3D;&quot;toggleEdit(&#x27;birthdate&#x27;)&quot;&gt;&lt;/button&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;text-center&quot; *ngIf&#x3D;&quot;(authService.user$ | async) as user&quot;&gt;
+                &lt;button class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;saveButton(user.username)&quot;&gt;Salvar alterações&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./edit-profile.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">/* Custom CSS para ajustar o layout com Bootstrap */
+
+/* Ajusta a imagem de capa para cobrir toda a área disponível */
+.cover-photo {
+  width: 100%;
+  height: 200px; /* Altura fixa para a imagem de capa */
+  object-fit: cover; /* Garante que a imagem cubra o espaço sem distorção */
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Estiliza a foto do perfil */
+.profile-photo {
+  position: absolute;
+  left: 2%; /* Ajuste este valor conforme necessário */
+  top: 140px; /* Ajuste vertical para alinhar com o nome, se necessário */
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  z-index: 3;
+  left: 80px;
+}
+
+
+/* Ajusta o título do utilizador para ficar à direita da foto do perfil */
+.card-title {
+  position: absolute;
+  left: 215px; /* Ajuste conforme a largura da sua foto do perfil */
+  top: 200px; /* Ajuste esta propriedade para alinhar verticalmente com a sua foto do perfil */
+  z-index: 3;
+}
+
+/* Organizar os campos do formulário e botões */
+.user-details {
+  display: flex;
+  flex-direction: column; /* Organiza os campos do formulário em coluna */
+  justify-content: flex-start; /* Alinha ao início do container */
+  align-items: flex-start;
+  padding-top: 30px;
+}
+
+.user-icons {
+  display: flex;
+  gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
+  position: absolute; /* Continua com posicionamento absoluto */
+  top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
+  left: 250px;
+  z-index: 2;
+}
+
+/* Ajusta o posicionamento da área de informação do utilizador */
+.profile-info {
+  display: flex;
+  flex-direction: row; /* Organiza o conteúdo em linha */
+}
+
+/* Título e ícones do perfil */
+.user-name-and-icons {
+  margin-top: -60px; /* Ajusta o posicionamento com base na altura da foto do perfil */
+  padding-bottom: 30px; /* Espaço extra abaixo dos ícones */
+}
+
+/* Ícones do perfil */
+.profile-icon img {
+  width: 30px; /* Tamanho fixo para os ícones */
+}
+
+/* Aumenta ligeiramente o ícone ao passar o mouse ou clicar */
+.profile-icon:hover, .profile-icon:active {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+/* Estilos para as divs laterais */
+.side-divs {
+  position: absolute; /* ou &#x27;fixed&#x27; dependendo se quer que movam com a página ou não */
+  top: 130px; /* Ajuste conforme necessário */
+  right: 250px; /* Ajuste conforme necessário */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinha as divs à direita */
+  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
+  gap: 20px; /* Espaço entre as divs */
+}
+
+.side-div-users, .side-div-suggestions {
+  background-color: white;
+  width: 300px; /* Largura das divs laterais */
+  margin: 10px 0; /* Espaço superior e inferior entre as divs */
+  padding: 20px; /* Padding interno para o conteúdo das divs */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para dar profundidade */
+  border-radius: 10px; /* Borda arredondada */
+  box-sizing: border-box; /* Garante que padding e border estão incluídos na largura */
+}
+
+  /* Títulos para cada div lateral */
+  .side-div-users &gt; h2, .side-div-suggestions &gt; h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0 0 16px 0; /* Margem inferior */
+  }
+
+/* Ajuste a classe para os itens de utilizador e sugestões */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+  .item-list &gt; li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Espaço entre os itens */
+  }
+
+    .item-list &gt; li &gt; img {
+      width: 50px; /* Largura das imagens dos utilizadors */
+      height: 50px; /* Altura das imagens dos utilizadors */
+      border-radius: 50%; /* Torna as imagens redondas */
+      margin-right: 10px; /* Espaço entre a imagem e o texto */
+    }
+
+@media (max-width: 991px) { /* Para tablets e desktops menores */
+  .side-divs {
+    position: static; /* As divs se tornam parte do fluxo normal do documento */
+    margin-top: 20px; /* Espaçamento acima das divs laterais */
+  }
+}
+
+@media (max-width: 767px) { /* Para dispositivos móveis */
+  .side-divs {
+    display: none; /* Esconde as divs laterais em dispositivos móveis */
+  }
+}
+
+/* Estilizar botões ou links para &quot;Expandir&quot; */
+.side-div-users &gt; .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+/* Estilizar botões ou links para &quot;Expandir&quot; */
+.side-div-suggestions &gt; .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.user-name {
+  font-size: 1em; /* Define o tamanho da fonte */
+  padding-top: 10px;
+  color: #333; /* Define a cor do texto */
+  font-weight: bold;
+}
+
+
+.editButton {
+  margin-left: 20px;
+  background-image: url(&#x27;/assets/img/edit.png&#x27;); /* Adicione o caminho para a sua imagem aqui */
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none; /* Remove a borda do botão, se desejar */
+  width: 20px; /* Ajuste conforme o necessário */
+  height: 20px; /* Ajuste conforme o necessário */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.lock-button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.button-container {
+ 
+}
+
+.lock-button img {
+  width: 50px;
+  height: auto;
+}
+
+.lock-button:hover img {
+  opacity: 0.5;
+}
+
+.lock-button {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+  .lock-button img {
+    width: 30px; /* Adjust the width as needed /
+    height: auto; / Maintain aspect ratio */
+  }
+
+.change-password-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  width: 200px;
+  font-weight:bold;
+}
+
+.delete-account-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  width: 120px;
+  font-weight:bold;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.favorites-section,
+.movies-section,
+.series-section,
+.medals-section {
+  padding: 10px;
+  margin-top: 20px; /* Espaço acima da seção */
+  margin-left: 90px;
+  width: 600px;
+}
+
+.favorites-section-content-expanded,
+.movies-section-content-expanded,
+.series-section-content-expanded,
+.medals-section-content-expanded {
+  height: 200px; /* Altura quando expandido */
+  /* suas outras propriedades como padding, margin, background-color, etc. */
+}
+
+.favorites-section-content-collapsed,
+.movies-section-content-collapsed,
+.series-section-content-collapsed,
+.medals-section-content-collapsed {
+  height: 0; /* Altura quando colapsado */
+  overflow: hidden; /* Esconde o conteúdo que excede a altura */
+  /* suas outras propriedades como padding, margin, background-color, etc. */
+}
+
+.favorites-section-header,
+.movies-section-header,
+.series-section-header,
+.medals-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espaça o título e o botão uniformemente */
+}
+
+.favorites-title,
+.movies-title,
+.series-title,
+.medals-title {
+  display: flex;
+  align-items: center;
+}
+
+.section-header h3 {
+  margin-right: 10px; /* Espaço entre o título e a seta */
+}
+
+.filter-button {
+  padding: 5px 10px; /* Ajuste conforme necessário */
+  background-color: #007bff; /* Cor do botão, pode ser alterada */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+  .filter-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.favorites-down-arrow,
+.movies-down-arrow,
+.series-down-arrow,
+.medals-down-arrow {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  color: #4CAEFE;
+  margin-left: 20px;
+}
+
+.favorites-right-arrow,
+.movies-right-arrow,
+.series-right-arrow,
+.medals-right-arrow {
+  cursor: pointer;
+  /* Estilos da seta para cima, você pode usar uma transformação para rotacionar a seta para baixo */
+  transform: rotate(180deg);
+}
+
+.favorites-section-content,
+.movies-section-content,
+.series-section-content,
+.medals-section-content {
+  /* TODO */
+}
+
+.filter-favorites-button,
+.filter-movies-button,
+.filter-series-button,
+.filter-medals-button {
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  font-weight: bold;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <p-toast key="toast1"></p-toast>  <p-toast key="toast2"></p-toast></div><div class="container mt-5" *ngIf="(authService.user$ | async) as user">  <div class="row" *ngIf="user.username === currentUsername">    <div class="col-12 col-lg-8">      <div class="card mb-3">        <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">        <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput(\'coverPhoto\')">        <div class="card-body text-center" >          <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">          <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput(\'profilePhoto\')">          <div class="user-details" >            <div class="user-icons">              <p> Modo do perfil: </p>              <button class="lock-button" (click)="toggleLock()">                <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">              </button>              <button class="change-password-button" (click)="sendEmailChangePassword()">                Alterar palavra-passe              </button>              <button class="delete-account-button" (click)="deleteAccount()">                Apagar conta              </button>            </div>            <form [formGroup]="profileForm" class="user-details text-left">              <div class="mb-3">                <label for="hobby">Descrição:</label>                <div class="form-check form-check-inline">                  <input formControlName="hobby" type="text" id="hobby" name="hobby" maxlength="50" class="form-control" [readonly]="!hobbyEditable">                  <div *ngIf="profileForm.get(\'hobby\')?.invalid && profileForm.get(\'hobby\')?.dirty">                    <small *ngIf="profileForm.get(\'hobby\')?.errors?.[\'maxlength\']" class="text-danger">                      A descrição deve ter no máximo 50 caracteres.                    </small>                  </div>                </div>                <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit(\'hobby\')"></button>              </div>              <div class="mb-3">                <label>Género:  </label>                <div class="form-check form-check-inline">                  <input formControlName="gender" type="radio" id="male" name="gender" value="M" class="form-check-input" [checked]="profileForm.controls[\'gender\'].value === \'M\'">                  <label class="form-check-label" for="male">Masculino</label>                </div>                <div class="form-check form-check-inline">                  <input formControlName="gender" type="radio" id="female" name="gender" value="F" class="form-check-input" [checked]="profileForm.controls[\'gender\'].value === \'F\'">                  <label class="form-check-label" for="female">Feminino</label>                </div>                <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit(\'gender\')"></button>              </div>              <div class="mb-3">                <label for="birthdate">Data de nascimento:</label>                <div class="form-check form-check-inline">                  <input formControlName="date" type="date" id="birthdate" name="birthdate"  [min]="minDate" [max]="currentDate"  class="form-control" [readonly]="!birthdateEditable">                </div>                <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit(\'birthdate\')"></button>              </div>              <div class="text-center" *ngIf="(authService.user$ | async) as user">                <button class="btn btn-primary" (click)="saveButton(user.username)">Salvar alterações</button>              </div>            </form>          </div>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutUsComponent', 'selector': 'app-about-us'},{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminStatisticsComponent', 'selector': 'app-admin-statistics'},{'name': 'AllMoviesPageComponent', 'selector': 'app-all-movies-page'},{'name': 'AllSeriesPageComponent', 'selector': 'app-all-series-page'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthenticationButtonComponent', 'selector': 'authentication-button'},{'name': 'BlockedAccountComponent', 'selector': 'app-blocked-account'},{'name': 'ChatComponent', 'selector': 'app-chat'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'EditProfileComponent', 'selector': 'app-edit-profile'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GamificationComponent', 'selector': 'app-gamification'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MovieDetailsComponent', 'selector': 'app-movie-details'},{'name': 'NavMenuComponent', 'selector': 'app-nav-menu'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'PendingVerificationComponent', 'selector': 'app-pending-verification'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RegisterWithThirdPartyComponent', 'selector': 'app-register-with-third-party'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SearchServiceComponent', 'selector': 'app-search-service'},{'name': 'SeasonDetailsComponent', 'selector': 'app-season-details'},{'name': 'SeasonDetailsInfoComponent', 'selector': 'app-season-details-info'},{'name': 'SendEmailComponent', 'selector': 'app-send-email'},{'name': 'SeriesDetailsComponent', 'selector': 'app-series-details'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'SuspendedAccountComponent', 'selector': 'app-suspended-account'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'EditProfileComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'EditProfileComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

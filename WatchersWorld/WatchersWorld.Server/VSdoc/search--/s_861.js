@@ -1,0 +1,1 @@
+search_result['861']=["topic_00000000000001CC.html","MediaNotification.UserMediaId Property","Identificador único da relação UserMedia associada à notificação.\r\nEste campo é uma chave estrangeira que referencia a tabela `UserMedia`,\r\nindicando a relação específica do utilizador com a media par..."];

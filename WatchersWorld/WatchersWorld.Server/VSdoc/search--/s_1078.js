@@ -1,0 +1,1 @@
+search_result['1078']=["topic_0000000000000255.html","IProfileService Interface","Interface que define operações de serviço para gestão de perfis de utilizadores."];

@@ -1,0 +1,1 @@
+search_result['910']=["topic_00000000000001E4.html","IAdminService.BanUserTemporarilyAsync Method","Bane temporariamente o utilizador."];

@@ -1,0 +1,1 @@
+search_result['1086']=["topic_0000000000000258.html","IProfileService.DeleteOwnAccountAsync Method","Exclui a conta e as informações de perfil de um utilizador."];

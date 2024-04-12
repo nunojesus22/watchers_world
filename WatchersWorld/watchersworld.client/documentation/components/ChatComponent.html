@@ -1,0 +1,3857 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ChatComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/chat/chat.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente Angular responsável pela interface de utilizador do chat.
+Gere a exibição de mensagens, interações de utilizador e atualizações de estado relacionadas ao chat.</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>AfterViewChecked</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-chat</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./chat.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./chat.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_selectedUser" >_selectedUser</a>
+                            </li>
+                            <li>
+                                <a href="#currentLongPressedMessage" >currentLongPressedMessage</a>
+                            </li>
+                            <li>
+                                <a href="#errorMessage" >errorMessage</a>
+                            </li>
+                            <li>
+                                <a href="#filteredUsersProfiles" >filteredUsersProfiles</a>
+                            </li>
+                            <li>
+                                <a href="#justUnselectedMessage" >justUnselectedMessage</a>
+                            </li>
+                            <li>
+                                <a href="#loggedUserName" >loggedUserName</a>
+                            </li>
+                            <li>
+                                <a href="#longPressTimer" >longPressTimer</a>
+                            </li>
+                            <li>
+                                <a href="#messageForm" >messageForm</a>
+                            </li>
+                            <li>
+                                <a href="#messages" >messages</a>
+                            </li>
+                            <li>
+                                <a href="#messageTextToNewUser" >messageTextToNewUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                <a href="#myScrollContainer" >myScrollContainer</a>
+                            </li>
+                            <li>
+                                <a href="#newMessage" >newMessage</a>
+                            </li>
+                            <li>
+                                <a href="#searchTerm" >searchTerm</a>
+                            </li>
+                            <li>
+                                <a href="#selectedUsername" >selectedUsername</a>
+                            </li>
+                            <li>
+                                <a href="#shouldScrollToBottom" >shouldScrollToBottom</a>
+                            </li>
+                            <li>
+                                <a href="#showNoResults" >showNoResults</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#unsubscribe$" >unsubscribe$</a>
+                            </li>
+                            <li>
+                                <a href="#usernameOfNewReceiver" >usernameOfNewReceiver</a>
+                            </li>
+                            <li>
+                                <a href="#usersProfiles" >usersProfiles</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#chatIsOpen" >chatIsOpen</a>
+                            </li>
+                            <li>
+                                <a href="#clearErrorMessage" >clearErrorMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteChat" >deleteChat</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#deleteMessage" >deleteMessage</a>
+                            </li>
+                            <li>
+                                <a href="#detectChanges" >detectChanges</a>
+                            </li>
+                            <li>
+                                <a href="#filterUsers" >filterUsers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getUnreadMessages" >getUnreadMessages</a>
+                            </li>
+                            <li>
+                                <a href="#isUnread" >isUnread</a>
+                            </li>
+                            <li>
+                                <a href="#lastMessageReceive" >lastMessageReceive</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#markMessagesAsRead" >markMessagesAsRead</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewChecked" >ngAfterViewChecked</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onUserSelected" >onUserSelected</a>
+                            </li>
+                            <li>
+                                <a href="#performDeleteChatAction" >performDeleteChatAction</a>
+                            </li>
+                            <li>
+                                <a href="#performDeleteMessageAction" >performDeleteMessageAction</a>
+                            </li>
+                            <li>
+                                <a href="#resetUser" >resetUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#scrollToBottom" >scrollToBottom</a>
+                            </li>
+                            <li>
+                                <a href="#selectUser" >selectUser</a>
+                            </li>
+                            <li>
+                                <a href="#sendMessage" >sendMessage</a>
+                            </li>
+                            <li>
+                                <a href="#sendMessageToNewUser" >sendMessageToNewUser</a>
+                            </li>
+                            <li>
+                                <a href="#setupContactItems" >setupContactItems</a>
+                            </li>
+                            <li>
+                                <a href="#setupMessages" >setupMessages</a>
+                            </li>
+                            <li>
+                                <a href="#startLongPress" >startLongPress</a>
+                            </li>
+                            <li>
+                                <a href="#stopLongPress" >stopLongPress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscribeToChats" >subscribeToChats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscribeToMessageReceived" >subscribeToMessageReceived</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscribeToRouteParams" >subscribeToRouteParams</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subscribeToUser" >subscribeToUser</a>
+                            </li>
+                            <li>
+                                <a href="#toggleMessageForm" >toggleMessageForm</a>
+                            </li>
+                            <li>
+                                <a href="#unreadMessagesReceive" >unreadMessagesReceive</a>
+                            </li>
+                            <li>
+                                <a href="#updateSelectedUser" >updateSelectedUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#selectedUser" >selectedUser</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: ActivatedRoute, router: Router, authService: <a href="../injectables/AuthenticationService.html" target="_self">AuthenticationService</a>, chatService: <a href="../injectables/ChatService.html" target="_self">ChatService</a>, changeDetectorRef: ChangeDetectorRef)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/chat/chat.component.ts:59</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Inicialização do componente.
+Subscreve aos dados necessários e recupera o perfil do utilizador selecionado da sessão, se disponível.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                    <code>ActivatedRoute</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthenticationService.html" target="_self" >AuthenticationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>chatService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ChatService.html" target="_self" >ChatService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>changeDetectorRef</td>
+                                                  
+                                                        <td>
+                                                                    <code>ChangeDetectorRef</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="chatIsOpen"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>chatIsOpen</b></span>
+                        <a href="#chatIsOpen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>chatIsOpen(sendUsername: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:135</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica se o chat com um determinado utilizador está aberto.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sendUsername</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearErrorMessage"></a>
+                    <span class="name">
+                        <span ><b>clearErrorMessage</b></span>
+                        <a href="#clearErrorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearErrorMessage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="377"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:377</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Limpa as mensagens de erro exibidas no componente.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteChat"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteChat</b></span>
+                        <a href="#deleteChat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteChat()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="398"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:398</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Exclui um chat e redefine o estado do utilizador selecionado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteMessage"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>deleteMessage</b></span>
+                        <a href="#deleteMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteMessage(message: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="408"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:408</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Exclui uma mensagem específica e atualiza o componente para refletir a mudança.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectChanges"></a>
+                    <span class="name">
+                        <span ><b>detectChanges</b></span>
+                        <a href="#detectChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>detectChanges()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:171</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Força a atualização da detecção de mudanças no componente para garantir a atualização da UI.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterUsers"></a>
+                    <span class="name">
+                        <span ><b>filterUsers</b></span>
+                        <a href="#filterUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filterUsers()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="321"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:321</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra os utilizadors com base no termo de pesquisa inserido. Atualiza a lista de utilizadors filtrados
+e controla a exibição de &quot;nenhum resultado encontrado&quot;.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUnreadMessages"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getUnreadMessages</b></span>
+                        <a href="#getUnreadMessages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUnreadMessages(messages: <a href="../interfaces/Message.html" target="_self">Message[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="249"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:249</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna uma lista de mensagens não lidas de um conjunto de mensagens.
+Filtra as mensagens que não foram lidas pelo utilizador logado e que foram enviadas por outros utilizadors.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>messages</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Message.html" target="_self" >Message[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Array de mensagens a ser filtrado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Message.html" target="_self" >Message[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Array de mensagens que não foram lidas pelo utilizador logado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isUnread"></a>
+                    <span class="name">
+                        <span ><b>isUnread</b></span>
+                        <a href="#isUnread"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isUnread(messages: <a href="../interfaces/Message.html" target="_self">Message[] | null</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="472"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:472</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica se há mensagens não lidas no conjunto de mensagens fornecido.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>messages</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Message.html" target="_self" >Message[] | null</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank" >Boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastMessageReceive"></a>
+                    <span class="name">
+                        <span ><b>lastMessageReceive</b></span>
+                        <a href="#lastMessageReceive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>lastMessageReceive(messages: <a href="../interfaces/Message.html" target="_self">Message[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="446"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:446</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna a última mensagem do conjunto de mensagens fornecido.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>messages</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Message.html" target="_self" >Message[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Message.html" target="_self" >Message | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markMessagesAsRead"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>markMessagesAsRead</b></span>
+                        <a href="#markMessagesAsRead"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>markMessagesAsRead()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="308"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:308</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Marca as mensagens não lidas como lidas quando um chat está aberto e visível para o utilizador.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewChecked"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewChecked</b></span>
+                        <a href="#ngAfterViewChecked"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewChecked()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método de ciclo de vida chamado após cada verificação de visualização do componente.
+Garante que a visualização de mensagens esteja sempre rolando para a última mensagem se necessário.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método de ciclo de vida chamado durante a destruição do componente para desfazer subscrições e evitar vazamentos de memória.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onUserSelected"></a>
+                    <span class="name">
+                        <span ><b>onUserSelected</b></span>
+                        <a href="#onUserSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onUserSelected(newUserProfile: <a href="../interfaces/ProfileChat.html" target="_self">ProfileChat</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="261"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:261</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Manipula a seleção de um novo utilizador de chat pelo utilizador logado.
+Este método é chamado quando um utilizador seleciona outro utilizador da lista de contatos para iniciar ou continuar uma conversa.
+Ao selecionar um utilizador, o método atualiza a visualização para mostrar o chat com o utilizador selecionado,
+rola para a última mensagem e atualiza a URL de navegação para refletir a seleção.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>newUserProfile</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ProfileChat.html" target="_self" >ProfileChat</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O perfil do utilizador selecionado para o chat.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="performDeleteChatAction"></a>
+                    <span class="name">
+                        <span ><b>performDeleteChatAction</b></span>
+                        <a href="#performDeleteChatAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>performDeleteChatAction(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="384"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:384</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Ação para excluir um chat após confirmação do utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="performDeleteMessageAction"></a>
+                    <span class="name">
+                        <span ><b>performDeleteMessageAction</b></span>
+                        <a href="#performDeleteMessageAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>performDeleteMessageAction(message: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="391"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:391</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Ação para excluir uma mensagem específica após confirmação do utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetUser"></a>
+                    <span class="name">
+                        <span ><b>resetUser</b></span>
+                        <a href="#resetUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetUser()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="417"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:417</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Redefine o estado do utilizador selecionado e limpa a sessão.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scrollToBottom"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>scrollToBottom</b></span>
+                        <a href="#scrollToBottom"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>scrollToBottom()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Rola o contêiner de mensagens para o fundo para garantir que a última mensagem seja visível.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectUser"></a>
+                    <span class="name">
+                        <span ><b>selectUser</b></span>
+                        <a href="#selectUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectUser(newUser: <a href="../interfaces/ProfileChat.html" target="_self">ProfileChat</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Seleciona um utilizador de chat e atualiza a interface de utilizador para mostrar o chat com esse utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>newUser</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ProfileChat.html" target="_self" >ProfileChat</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O perfil do novo utilizador selecionado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendMessage"></a>
+                    <span class="name">
+                        <span ><b>sendMessage</b></span>
+                        <a href="#sendMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sendMessage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="286"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:286</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Envia uma nova mensagem para o utilizador selecionado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendMessageToNewUser"></a>
+                    <span class="name">
+                        <span ><b>sendMessageToNewUser</b></span>
+                        <a href="#sendMessageToNewUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sendMessageToNewUser()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="347"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:347</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Envia uma mensagem para um novo utilizador. Verifica se o nome do utilizador e a mensagem estão presentes.
+Em caso de erro, trata a resposta e apresenta uma mensagem adequada.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setupContactItems"></a>
+                    <span class="name">
+                        <span ><b>setupContactItems</b></span>
+                        <a href="#setupContactItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setupContactItems(chats: ChatWithMessages[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="215"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:215</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Configura os itens de contato para a lista de chats, filtrando e ordenando chats baseados na existência e no horário da última mensagem.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>chats</td>
+                                            <td>
+                                                        <code>ChatWithMessages[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Lista de chats com mensagens para processar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setupMessages"></a>
+                    <span class="name">
+                        <span ><b>setupMessages</b></span>
+                        <a href="#setupMessages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setupMessages()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="274"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra e configura as mensagens para o utilizador de chat selecionado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startLongPress"></a>
+                    <span class="name">
+                        <span ><b>startLongPress</b></span>
+                        <a href="#startLongPress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>startLongPress(event: MouseEvent, message: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicia a detecção de pressão longa em uma mensagem específica para mostrar opções adicionais.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>MouseEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O evento de mouse que iniciou a pressão longa.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>A mensagem alvo da pressão longa.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopLongPress"></a>
+                    <span class="name">
+                        <span ><b>stopLongPress</b></span>
+                        <a href="#stopLongPress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stopLongPress()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="162"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:162</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Encerra a detecção de pressão longa e limpa o estado relevante.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeToChats"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscribeToChats</b></span>
+                        <a href="#subscribeToChats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeToChats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="100"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:100</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscreve aos chats disponíveis e configura a lista de contatos.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeToMessageReceived"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscribeToMessageReceived</b></span>
+                        <a href="#subscribeToMessageReceived"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeToMessageReceived()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:123</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscreve às mensagens recebidas e atualiza o chat conforme as mensagens chegam.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeToRouteParams"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscribeToRouteParams</b></span>
+                        <a href="#subscribeToRouteParams"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeToRouteParams()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="109"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:109</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscreve aos parâmetros da rota para atualizar o utilizador de chat selecionado conforme a navegação.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subscribeToUser"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subscribeToUser</b></span>
+                        <a href="#subscribeToUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>subscribeToUser()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Subscreve ao utilizador autenticado para obter o nome de utilizador logado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleMessageForm"></a>
+                    <span class="name">
+                        <span ><b>toggleMessageForm</b></span>
+                        <a href="#toggleMessageForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleMessageForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="337"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:337</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Alterna a visibilidade do formulário de envio de mensagens para um novo utilizador.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unreadMessagesReceive"></a>
+                    <span class="name">
+                        <span ><b>unreadMessagesReceive</b></span>
+                        <a href="#unreadMessagesReceive"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>unreadMessagesReceive(messages: <a href="../interfaces/Message.html" target="_self">Message[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="459"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:459</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna mensagens não lidas de um conjunto de mensagens fornecido.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>messages</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Message.html" target="_self" >Message[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>[] | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSelectedUser"></a>
+                    <span class="name">
+                        <span ><b>updateSelectedUser</b></span>
+                        <a href="#updateSelectedUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateSelectedUser(newUsername: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="427"
+                                    class="link-to-prism">src/app/chat/chat.component.ts:427</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Atualiza o utilizador selecionado com base no nome de utilizador fornecido.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>newUsername</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_selectedUser"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_selectedUser</b></span>
+                        <a href="#_selectedUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProfileChat.html" target="_self" >ProfileChat | undefined</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/chat/chat.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Getter/Setter para o utilizador de chat selecionado.
+Atualiza as mensagens e marca as mensagens como lidas quando o utilizador é alterado.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentLongPressedMessage"></a>
+                    <span class="name">
+                        <span ><b>currentLongPressedMessage</b></span>
+                        <a href="#currentLongPressedMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/chat/chat.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessage"></a>
+                    <span class="name">
+                        <span ><b>errorMessage</b></span>
+                        <a href="#errorMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/chat/chat.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filteredUsersProfiles"></a>
+                    <span class="name">
+                        <span ><b>filteredUsersProfiles</b></span>
+                        <a href="#filteredUsersProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProfileChat.html" target="_self" >ProfileChat[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/chat/chat.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="justUnselectedMessage"></a>
+                    <span class="name">
+                        <span ><b>justUnselectedMessage</b></span>
+                        <a href="#justUnselectedMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/app/chat/chat.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loggedUserName"></a>
+                    <span class="name">
+                        <span ><b>loggedUserName</b></span>
+                        <a href="#loggedUserName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/chat/chat.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="longPressTimer"></a>
+                    <span class="name">
+                        <span ><b>longPressTimer</b></span>
+                        <a href="#longPressTimer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/chat/chat.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageForm"></a>
+                    <span class="name">
+                        <span ><b>messageForm</b></span>
+                        <a href="#messageForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/chat/chat.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messages"></a>
+                    <span class="name">
+                        <span ><b>messages</b></span>
+                        <a href="#messages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/chat/chat.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageTextToNewUser"></a>
+                    <span class="name">
+                        <span ><b>messageTextToNewUser</b></span>
+                        <a href="#messageTextToNewUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/app/chat/chat.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="myScrollContainer"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Private</span>
+                        <span ><b>myScrollContainer</b></span>
+                        <a href="#myScrollContainer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef | undefined</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;scrollMe&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/chat/chat.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newMessage"></a>
+                    <span class="name">
+                        <span ><b>newMessage</b></span>
+                        <a href="#newMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/chat/chat.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchTerm"></a>
+                    <span class="name">
+                        <span ><b>searchTerm</b></span>
+                        <a href="#searchTerm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/chat/chat.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedUsername"></a>
+                    <span class="name">
+                        <span ><b>selectedUsername</b></span>
+                        <a href="#selectedUsername"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/chat/chat.component.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shouldScrollToBottom"></a>
+                    <span class="name">
+                        <span ><b>shouldScrollToBottom</b></span>
+                        <a href="#shouldScrollToBottom"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>true</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/chat/chat.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showNoResults"></a>
+                    <span class="name">
+                        <span ><b>showNoResults</b></span>
+                        <a href="#showNoResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/chat/chat.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unsubscribe$"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>unsubscribe$</b></span>
+                        <a href="#unsubscribe$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;void&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/chat/chat.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usernameOfNewReceiver"></a>
+                    <span class="name">
+                        <span ><b>usernameOfNewReceiver</b></span>
+                        <a href="#usernameOfNewReceiver"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&quot;&quot;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/chat/chat.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usersProfiles"></a>
+                    <span class="name">
+                        <span ><b>usersProfiles</b></span>
+                        <a href="#usersProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ProfileChat.html" target="_self" >ProfileChat[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/chat/chat.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedUser"></a>
+                        <span class="name"><b>selectedUser</b><a href="#selectedUser"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>selectedUser()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/chat/chat.component.ts:29</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>selectedUser(value: <a href="../interfaces/ProfileChat.html" target="_self">ProfileChat | undefined</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/chat/chat.component.ts:32</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="../interfaces/ProfileChat.html" target="_self" >ProfileChat | undefined</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, AfterViewChecked, ViewChild, ElementRef, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+import { Subject, switchMap, takeUntil, tap } from &#x27;rxjs&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { AuthenticationService } from &#x27;../authentication/services/authentication.service&#x27;;
+import { ChatService } from &#x27;./services/chat.service&#x27;;
+import { Message } from &#x27;./models/messages&#x27;;
+import { ProfileChat } from &#x27;./models/profileChat&#x27;;
+import { DialogService } from &#x27;../confirm-dialog/services/dialog.service&#x27;;
+import { ChatWithMessages } from &#x27;./models/chatWithMessages&#x27;;
+
+
+/**
+ * Componente Angular responsável pela interface de utilizador do chat.
+ * Gere a exibição de mensagens, interações de utilizador e atualizações de estado relacionadas ao chat.
+ */
+@Component({
+  selector: &#x27;app-chat&#x27;,
+  templateUrl: &#x27;./chat.component.html&#x27;,
+  styleUrls: [&#x27;./chat.component.css&#x27;] 
+})
+export class ChatComponent implements AfterViewChecked {
+  loggedUserName: string | null &#x3D; null;
+
+  /**
+   * Getter/Setter para o utilizador de chat selecionado.
+   * Atualiza as mensagens e marca as mensagens como lidas quando o utilizador é alterado.
+   */
+  private _selectedUser: ProfileChat | undefined;
+  get selectedUser(): ProfileChat | undefined {
+    return this._selectedUser;
+  }
+  set selectedUser(value: ProfileChat | undefined) {
+    if (value !&#x3D;&#x3D; this._selectedUser) {
+      this._selectedUser &#x3D; value;
+      this.setupMessages();
+      this.markMessagesAsRead();
+    }
+  }
+
+  selectedUsername: string | null &#x3D; null;
+  private unsubscribe$ &#x3D; new Subject&lt;void&gt;();
+
+  usersProfiles: ProfileChat[] &#x3D; [];
+  filteredUsersProfiles: ProfileChat[] &#x3D; [];
+  newMessage: string &#x3D; &#x27;&#x27;;
+  messages: any[] &#x3D; [];
+
+  searchTerm: string &#x3D; &#x27;&#x27;;
+  showNoResults: boolean &#x3D; false;
+
+  messageForm: boolean &#x3D; false;
+  usernameOfNewReceiver: string &#x3D; &quot;&quot;;
+  messageTextToNewUser: string &#x3D; &quot;&quot;;
+  errorMessage: string &#x3D; &#x27;&#x27;;
+
+  currentLongPressedMessage: any &#x3D; null;
+  longPressTimer: any;
+  shouldScrollToBottom: boolean &#x3D; true;
+  justUnselectedMessage: boolean &#x3D; false;
+
+  /**
+   * Inicialização do componente.
+   * Subscreve aos dados necessários e recupera o perfil do utilizador selecionado da sessão, se disponível.
+   */
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthenticationService,
+    private chatService: ChatService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
+
+  @ViewChild(&#x27;scrollMe&#x27;) private myScrollContainer: ElementRef | undefined;
+
+  ngOnInit(): void {
+    this.subscribeToUser();
+    this.subscribeToChats();
+    this.subscribeToRouteParams();
+    this.subscribeToMessageReceived();
+    const userProfileString &#x3D; sessionStorage.getItem(&#x27;selectedUserProfile&#x27;);
+    if (userProfileString) {
+      this.selectedUser &#x3D; JSON.parse(userProfileString) as ProfileChat;
+    }
+  }
+
+  /**
+   * Subscreve ao utilizador autenticado para obter o nome de utilizador logado.
+   */
+  private subscribeToUser(): void {
+    this.authService.user$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(user &#x3D;&gt; {
+        this.loggedUserName &#x3D; user ? user.username : null;
+      });
+  }
+
+  /**
+   * Subscreve aos chats disponíveis e configura a lista de contatos.
+   */
+  private subscribeToChats(): void {
+    this.chatService.chats$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(chats &#x3D;&gt; this.setupContactItems(chats));
+  }
+
+  /**
+   * Subscreve aos parâmetros da rota para atualizar o utilizador de chat selecionado conforme a navegação.
+   */
+  private subscribeToRouteParams(): void {
+    this.route.params
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(params &#x3D;&gt; {
+        const newUsername &#x3D; params[&#x27;username&#x27;];
+        if (newUsername &amp;&amp; newUsername !&#x3D;&#x3D; this.selectedUsername) {
+          this.updateSelectedUser(newUsername);
+        }
+      });
+  }
+
+  /**
+   * Subscreve às mensagens recebidas e atualiza o chat conforme as mensagens chegam.
+   */
+  private subscribeToMessageReceived(): void {
+    this.chatService.onMessageReceived((message: Message) &#x3D;&gt; {
+      this.setupMessages();
+      if (this.chatIsOpen(message.sendUsername)) {
+        this.markMessagesAsRead();
+      }
+    });
+  }
+
+  /**
+   * Verifica se o chat com um determinado utilizador está aberto.
+   */
+  private chatIsOpen(sendUsername: string): boolean {
+    return this.selectedUsername &#x3D;&#x3D; sendUsername &amp;&amp; this._selectedUser?.userName &#x3D;&#x3D; sendUsername;
+  }
+  
+  /**
+   * Inicia a detecção de pressão longa em uma mensagem específica para mostrar opções adicionais.
+   * @param event O evento de mouse que iniciou a pressão longa.
+   * @param message A mensagem alvo da pressão longa.
+   */
+  startLongPress(event: MouseEvent, message: any) {
+    this.currentLongPressedMessage &#x3D; null;
+    this.shouldScrollToBottom &#x3D; false;
+    this.detectChanges();
+
+    this.longPressTimer &#x3D; setTimeout(() &#x3D;&gt; {
+      if (this.currentLongPressedMessage &#x3D;&#x3D;&#x3D; message) {
+        this.justUnselectedMessage &#x3D; true;
+      } else {
+        this.currentLongPressedMessage &#x3D; message;
+      }
+      this.detectChanges();
+    }, 500);
+  }
+
+  /**
+  * Encerra a detecção de pressão longa e limpa o estado relevante.
+  */
+  stopLongPress() {
+    this.justUnselectedMessage &#x3D; false;
+    clearTimeout(this.longPressTimer);
+    this.detectChanges();
+  }
+
+  /**
+   * Força a atualização da detecção de mudanças no componente para garantir a atualização da UI.
+   */
+  detectChanges() {
+    this.changeDetectorRef.detectChanges();
+  }
+
+  /**
+   * Seleciona um utilizador de chat e atualiza a interface de utilizador para mostrar o chat com esse utilizador.
+   * @param newUser O perfil do novo utilizador selecionado.
+   */
+  selectUser(newUser: ProfileChat) {
+    this.selectedUser &#x3D; newUser;
+  }
+
+  /**
+   * Método de ciclo de vida chamado após cada verificação de visualização do componente.
+   * Garante que a visualização de mensagens esteja sempre rolando para a última mensagem se necessário.
+   */
+  ngAfterViewChecked(): void {
+    if (!this.justUnselectedMessage &amp;&amp; !this.currentLongPressedMessage) {
+      this.scrollToBottom();
+    }
+    this.justUnselectedMessage &#x3D; false;
+  }
+
+  /**
+   * Método de ciclo de vida chamado durante a destruição do componente para desfazer subscrições e evitar vazamentos de memória.
+   */
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /**
+   * Rola o contêiner de mensagens para o fundo para garantir que a última mensagem seja visível.
+   */
+  private scrollToBottom(): void {
+    if (this.myScrollContainer &amp;&amp; this.shouldScrollToBottom) {
+      this.myScrollContainer.nativeElement.scrollTop &#x3D; this.myScrollContainer.nativeElement.scrollHeight;
+    }
+  }
+
+  /**
+   * Configura os itens de contato para a lista de chats, filtrando e ordenando chats baseados na existência e no horário da última mensagem.
+   * @param chats Lista de chats com mensagens para processar.
+   */
+  setupContactItems(chats: ChatWithMessages[]): void {
+    if (chats.length &#x3D;&#x3D;&#x3D; 0) {
+      this.usersProfiles &#x3D; [];
+      this.filteredUsersProfiles &#x3D; [];
+      this.showNoResults &#x3D; true; 
+      return;
+    }
+
+    const nonEmptyChats &#x3D; chats.filter(chat &#x3D;&gt; chat.messages &amp;&amp; chat.messages.length &gt; 0);
+    const sortedChats &#x3D; [...nonEmptyChats].sort((a, b) &#x3D;&gt; {
+      const lastMessageA &#x3D; a.messages[a.messages.length - 1];
+      const lastMessageB &#x3D; b.messages[b.messages.length - 1];
+      return new Date(lastMessageB.sentAt!).getTime() - new Date(lastMessageA.sentAt!).getTime();
+    });
+
+    this.usersProfiles &#x3D; sortedChats.map(chat &#x3D;&gt; ({
+      userName: chat.username,
+      profilePhoto: chat.profilePhoto,
+      lastMessage: chat.messages[chat.messages.length - 1],
+      unreadMessages: this.getUnreadMessages(chat.messages) ?? undefined,
+    }));
+
+    this.filteredUsersProfiles &#x3D; [...this.usersProfiles];
+    this.showNoResults &#x3D; false;
+    this.setupMessages();
+  }
+
+  /**
+   * Retorna uma lista de mensagens não lidas de um conjunto de mensagens.
+   * Filtra as mensagens que não foram lidas pelo utilizador logado e que foram enviadas por outros utilizadors.
+   * 
+   * @param messages Array de mensagens a ser filtrado.
+   * @returns Array de mensagens que não foram lidas pelo utilizador logado.
+   */
+  private getUnreadMessages(messages: Message[]): Message[] {
+    return messages.filter(message &#x3D;&gt; !message.readAt &amp;&amp; message.sendUsername !&#x3D;&#x3D; this.loggedUserName);
+  }
+
+  /**
+   * Manipula a seleção de um novo utilizador de chat pelo utilizador logado.
+   * Este método é chamado quando um utilizador seleciona outro utilizador da lista de contatos para iniciar ou continuar uma conversa.
+   * Ao selecionar um utilizador, o método atualiza a visualização para mostrar o chat com o utilizador selecionado,
+   * rola para a última mensagem e atualiza a URL de navegação para refletir a seleção.
+   * 
+   * @param newUserProfile O perfil do utilizador selecionado para o chat.
+   */
+  onUserSelected(newUserProfile: ProfileChat): void {
+    this.currentLongPressedMessage &#x3D; null;
+    this.shouldScrollToBottom &#x3D; true;
+    this.scrollToBottom();
+
+
+    sessionStorage.setItem(&#x27;selectedUser&#x27;, JSON.stringify(newUserProfile));
+    this.router.navigate([&#x60;/chat/${newUserProfile.userName}&#x60;]);
+  }
+
+  /**
+  * Filtra e configura as mensagens para o utilizador de chat selecionado.
+  */
+  setupMessages(): void {
+    if (this._selectedUser) {
+      const chat &#x3D; this.chatService.getChat(this._selectedUser.userName!);
+      if (chat) {
+        this.messages &#x3D; chat.messages;
+      }
+    }
+  }
+
+  /**
+   * Envia uma nova mensagem para o utilizador selecionado.
+   */
+  sendMessage(): void {
+    if (this._selectedUser &amp;&amp; this.newMessage.trim()) {
+      const messageToSend: Message &#x3D; {
+        messageId: undefined,
+        sendUsername: this.loggedUserName!,
+        text: this.newMessage,
+        sentAt: undefined, 
+        readAt: undefined, 
+      };
+
+      this.chatService.sendMessage(this._selectedUser?.userName!, messageToSend).then(() &#x3D;&gt; {
+        this.newMessage &#x3D; &quot;&quot;;
+        this.scrollToBottom();
+      }).catch(error &#x3D;&gt; {
+        this.errorMessage &#x3D; &quot;Erro ao enviar mensagem: &quot; + error;
+      });
+    }
+  }
+
+  /**
+   * Marca as mensagens não lidas como lidas quando um chat está aberto e visível para o utilizador.
+   */
+  private markMessagesAsRead(): void {
+    var messages &#x3D; this.chatService.getMessagesUnreadFromChat(this._selectedUser?.userName!);
+    var messagesToRead &#x3D; this.unreadMessagesReceive(messages);
+
+    if (messagesToRead !&#x3D;&#x3D; null &amp;&amp; messagesToRead!.length !&#x3D;&#x3D; 0) {
+      this.chatService.markMessagesAsRead(messagesToRead!);
+    }
+  }
+
+  /**
+   * Filtra os utilizadors com base no termo de pesquisa inserido. Atualiza a lista de utilizadors filtrados
+   * e controla a exibição de &quot;nenhum resultado encontrado&quot;.
+   */
+  filterUsers(): void {
+    if (!this.searchTerm) {
+      this.filteredUsersProfiles &#x3D; this.usersProfiles;
+      this.showNoResults &#x3D; false;
+    } else {
+      const filtered &#x3D; this.usersProfiles.filter(user &#x3D;&gt;
+        user.userName?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      this.showNoResults &#x3D; filtered.length &#x3D;&#x3D;&#x3D; 0 || filtered.every(u &#x3D;&gt; u.userName &#x3D;&#x3D;&#x3D; this.loggedUserName);
+      this.filteredUsersProfiles &#x3D; filtered;
+    }
+  }
+
+  /**
+   * Alterna a visibilidade do formulário de envio de mensagens para um novo utilizador.
+   */
+  toggleMessageForm(): void {
+    this.messageForm &#x3D; !this.messageForm;
+    this.messageTextToNewUser &#x3D; &quot;&quot;;
+    this.usernameOfNewReceiver &#x3D; &quot;&quot;;
+  }
+
+  /**
+   * Envia uma mensagem para um novo utilizador. Verifica se o nome do utilizador e a mensagem estão presentes.
+   * Em caso de erro, trata a resposta e apresenta uma mensagem adequada.
+   */
+  sendMessageToNewUser(): void {
+    if (!this.usernameOfNewReceiver || !this.messageTextToNewUser.trim()) {
+      console.log(&#x27;Nome do utilizador destinatário e mensagem são necessários.&#x27;);
+      return;
+    }
+
+    var messageToSend: Message &#x3D; {
+      messageId: undefined,
+      sendUsername: this.authService.getLoggedInUserName()!,
+      text: this.messageTextToNewUser.trim(),
+      sentAt: undefined,
+      readAt: undefined,
+    }
+
+    this.chatService.sendMessage(this.usernameOfNewReceiver, messageToSend)
+      .then(() &#x3D;&gt; {
+        this.toggleMessageForm();
+      })
+      .catch(error &#x3D;&gt; {
+        if (error &amp;&amp; error.includes(&quot;ID do utilizador receptor não pode ser null.&quot;)) {
+          this.errorMessage &#x3D; &quot;Utilizador não encontrado!&quot;;
+        } else {
+          console.error(&quot;Erro ao enviar mensagem:&quot;, error);
+        }
+      });
+  }
+
+  /**
+   * Limpa as mensagens de erro exibidas no componente.
+   */
+  clearErrorMessage(): void {
+    this.errorMessage &#x3D; &quot;&quot;;
+  }
+
+  /**
+ * Ação para excluir um chat após confirmação do utilizador.
+ */
+  performDeleteChatAction(event: any): void {
+    this.deleteChat();
+  }
+
+  /**
+   * Ação para excluir uma mensagem específica após confirmação do utilizador.
+   */
+  performDeleteMessageAction(message: any) {
+    this.deleteMessage(message);
+  }
+
+  /**
+   * Exclui um chat e redefine o estado do utilizador selecionado.
+   */
+  private deleteChat(): void {
+    if (this._selectedUser) {
+      this.chatService.deleteChat(this._selectedUser?.userName!);
+      this.resetUser();
+    }
+  }
+
+  /**
+ * Exclui uma mensagem específica e atualiza o componente para refletir a mudança.
+ */
+  private deleteMessage(message: any) {
+    this.chatService.deleteMessage(message);
+    this.currentLongPressedMessage &#x3D; null;
+    this.detectChanges();
+  }
+
+  /**
+   * Redefine o estado do utilizador selecionado e limpa a sessão.
+   */
+  resetUser(): void {
+    this.selectedUser &#x3D; undefined;
+    this.selectedUsername &#x3D; null;
+    sessionStorage.removeItem(&#x27;selectedUser&#x27;);
+    this.router.navigate([&#x27;/chat&#x27;]);
+  }
+
+  /**
+   * Atualiza o utilizador selecionado com base no nome de utilizador fornecido.
+   */
+  updateSelectedUser(newUsername: string): void {
+    this.selectedUsername &#x3D; newUsername;
+    const userProfile &#x3D; this.usersProfiles.find(u &#x3D;&gt; u.userName &#x3D;&#x3D;&#x3D; newUsername);
+    if (userProfile) {
+      this.selectedUser &#x3D; userProfile;
+    } else {
+      const userProfileString &#x3D; sessionStorage.getItem(&#x27;selectedUserProfile&#x27;);
+      if (userProfileString) {
+        this.selectedUser &#x3D; JSON.parse(userProfileString);
+        sessionStorage.removeItem(&#x27;selectedUserProfile&#x27;);
+      } else {
+        this.resetUser();
+      }
+    }
+  }
+
+  /**
+   * Retorna a última mensagem do conjunto de mensagens fornecido.
+   */
+  lastMessageReceive(messages: Message[]): Message | null {
+    var lastMessageReceive &#x3D; this.chatService.getLastMessageReceived(messages, this.loggedUserName!);
+
+    if (lastMessageReceive !&#x3D;&#x3D; undefined) {
+      return lastMessageReceive;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Retorna mensagens não lidas de um conjunto de mensagens fornecido.
+   */
+  unreadMessagesReceive(messages: Message[]): Message[] | null {
+    var unreadMessagesReceive &#x3D; this.chatService.getMessagesUnread(messages, this.loggedUserName!);
+
+    if (unreadMessagesReceive !&#x3D;&#x3D; undefined) {
+      return unreadMessagesReceive;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Verifica se há mensagens não lidas no conjunto de mensagens fornecido.
+   */
+  isUnread(messages: Message[] | null): Boolean {
+    if (messages !&#x3D;&#x3D; null) {
+      if (messages?.length &gt; 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;button *ngIf&#x3D;&quot;!this.messageForm&quot; class&#x3D;&quot;btn btn-primary&quot; (click)&#x3D;&quot;toggleMessageForm()&quot;&gt;Enviar mensagem&lt;/button&gt;
+
+&lt;div *ngIf&#x3D;&quot;this.messageForm&quot; class&#x3D;&quot;chat-container mt-4 p-4&quot;&gt;
+  &lt;h5 class&#x3D;&quot;text-white&quot;&gt;Enviar Mensagem&lt;/h5&gt;
+  &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;usernameOfNewReceiver&quot; placeholder&#x3D;&quot;Nome do utilizador Destinatário&quot; class&#x3D;&quot;form-control my-2&quot; (input)&#x3D;&quot;clearErrorMessage()&quot;&gt;
+  &lt;div *ngIf&#x3D;&quot;errorMessage&quot; class&#x3D;&quot;error-message&quot;&gt;{{ errorMessage }}&lt;/div&gt;
+  &lt;textarea [(ngModel)]&#x3D;&quot;messageTextToNewUser&quot; placeholder&#x3D;&quot;Digite sua mensagem aqui...&quot; class&#x3D;&quot;form-control my-2&quot;&gt;&lt;/textarea&gt;
+  &lt;div class&#x3D;&quot;d-flex justify-content-between&quot;&gt;
+    &lt;button (click)&#x3D;&quot;sendMessageToNewUser()&quot; class&#x3D;&quot;btn btn-primary&quot;&gt;Enviar Mensagem&lt;/button&gt;
+    &lt;button (click)&#x3D;&quot;toggleMessageForm()&quot; class&#x3D;&quot;btn btn-danger&quot;&gt;Cancelar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;container&quot;&gt;
+  &lt;!-- Chat Section --&gt;
+  &lt;div class&#x3D;&quot;row&quot;&gt;
+    &lt;!-- Contact List --&gt;
+    &lt;div class&#x3D;&quot;col-lg-4 mb-3&quot;&gt;
+      &lt;div class&#x3D;&quot;contact-list&quot;&gt;
+        &lt;!-- Search Bar --&gt;
+        &lt;div class&#x3D;&quot;p-2&quot;&gt;
+          &lt;div class&#x3D;&quot;search-bar&quot;&gt;
+            &lt;i class&#x3D;&quot;fa fa-search search-icon&quot;&gt;&lt;/i&gt;
+            &lt;input type&#x3D;&quot;text&quot;
+                   placeholder&#x3D;&quot;Procurar...&quot;
+                   class&#x3D;&quot;search-input&quot;
+                   [(ngModel)]&#x3D;&quot;searchTerm&quot;
+                   (input)&#x3D;&quot;filterUsers()&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;!-- Contact Items --&gt;
+        &lt;div class&#x3D;&quot;user-list-container&quot;&gt;
+          &lt;ul *ngIf&#x3D;&quot;filteredUsersProfiles.length &gt; 0 &amp;&amp; !showNoResults; else noResults&quot; class&#x3D;&quot;list-group&quot;&gt;
+            &lt;ng-container *ngFor&#x3D;&quot;let userProfile of filteredUsersProfiles&quot;&gt;
+              &lt;li *ngIf&#x3D;&quot;userProfile.userName !&#x3D;&#x3D; loggedUserName&quot; (click)&#x3D;&quot;onUserSelected(userProfile)&quot; class&#x3D;&quot;list-group-item&quot;&gt;
+                &lt;div class&#x3D;&quot;user-item&quot;&gt;
+                  &lt;img class&#x3D;&quot;other-users-user-photo&quot; [src]&#x3D;&quot;userProfile.profilePhoto&quot;&gt;
+                  &lt;span class&#x3D;&quot;other-users-user-name&quot; [ngClass]&#x3D;&quot;{&#x27;unread-message&#x27;: isUnread(userProfile.unreadMessages)}&quot;&gt;{{ userProfile.userName }}&lt;/span&gt;
+                  &lt;span class&#x3D;&quot;last-message-time&quot;&gt;{{ userProfile.lastMessage!.sentAt | date:&#x27;HH:mm&#x27; }}&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/li&gt;
+            &lt;/ng-container&gt;
+          &lt;/ul&gt;
+          &lt;ng-template #noResults&gt;
+            &lt;div class&#x3D;&quot;no-results-message&quot;&gt;
+              Não existe nenhum utilizador com esse nome.
+            &lt;/div&gt;
+          &lt;/ng-template&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Messages Section --&gt;
+    &lt;div class&#x3D;&quot;col-lg-8&quot;&gt;
+      &lt;!-- Chat Card --&gt;
+      &lt;div class&#x3D;&quot;card chat-card&quot;&gt;
+        &lt;!-- Chat Header --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedUser; else noUserSelected&quot; class&#x3D;&quot;card-header d-flex justify-content-between align-items-center&quot;&gt;
+          &lt;img class&#x3D;&quot;other-users-user-photo&quot; [src]&#x3D;&quot;selectedUser.profilePhoto&quot; [routerLink]&#x3D;&quot;[&#x27;/profile&#x27;, selectedUser.userName]&quot;&gt;
+          &lt;span class&#x3D;&quot;other-users-user-name&quot;&gt;{{ selectedUser.userName }}&lt;/span&gt;
+          &lt;!-- &lt;button class&#x3D;&quot;btn btn-danger&quot; (click)&#x3D;&quot;deleteChat()&quot;&gt;Eliminar conversa&lt;/button&gt;  --&gt;
+          &lt;app-confirm-dialog [classCss]&#x3D;&quot;&#x27;btn btn-danger&#x27;&quot;
+                              [titleButton]&#x3D;&quot;&#x27;Eliminar Conversa&#x27;&quot;
+                              [titlePopup]&#x3D;&quot;&#x27;Confirmação&#x27;&quot;
+                              [messagePopup]&#x3D;&quot;&#x27;Tem certeza que deseja eliminar esta conversa?&#x27;&quot;
+                              [confirmationTextButton]&#x3D;&quot;&#x27;Confirmar&#x27;&quot;
+                              [cancelTextButton]&#x3D;&quot;&#x27;Cancelar&#x27;&quot;
+                              (confirmAction)&#x3D;&quot;performDeleteChatAction($event)&quot;&gt;&lt;/app-confirm-dialog&gt;
+          &lt;!-- &lt;button class&#x3D;&quot;btn btn-danger&quot; (click)&#x3D;&quot;deleteChat()&quot;&gt;Eliminar mensagem&lt;/button&gt;  --&gt;
+          &lt;app-confirm-dialog *ngIf&#x3D;&quot;currentLongPressedMessage&quot;
+                              [classCss]&#x3D;&quot;&#x27;btn btn-danger&#x27;&quot;
+                              [titleButton]&#x3D;&quot;&#x27;Eliminar Mensagem&#x27;&quot;
+                              [titlePopup]&#x3D;&quot;&#x27;Confirmação&#x27;&quot;
+                              [messagePopup]&#x3D;&quot;&#x27;Tem certeza que deseja eliminar esta mensagem?&#x27;&quot;
+                              [confirmationTextButton]&#x3D;&quot;&#x27;Confirmar&#x27;&quot;
+                              [cancelTextButton]&#x3D;&quot;&#x27;Cancelar&#x27;&quot;
+                              (confirmAction)&#x3D;&quot;performDeleteMessageAction(currentLongPressedMessage)&quot;&gt;&lt;/app-confirm-dialog&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Messages Area --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedUser; else noMessages&quot; class&#x3D;&quot;card-body chat-message-area&quot; #scrollMe&gt;
+
+          &lt;div *ngFor&#x3D;&quot;let message of messages&quot; class&#x3D;&quot;message&quot;
+               [ngClass]&#x3D;&quot;{&#x27;incoming&#x27;: message.sendUsername &#x3D;&#x3D;&#x3D; selectedUsername, &#x27;outgoing&#x27;: message.sendUsername !&#x3D;&#x3D; selectedUsername}&quot;
+               [class.selected-message]&#x3D;&quot;currentLongPressedMessage &#x3D;&#x3D;&#x3D; message&quot;
+               (mousedown)&#x3D;&quot;startLongPress($event, message)&quot; 
+               (mouseup)&#x3D;&quot;stopLongPress()&quot; &gt;
+            &lt;span class&#x3D;&quot;message-content&quot;&gt;{{ message.text }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;message-timestamp&quot;&gt;{{ message.sentAt | date:&#x27;HH:mm, dd/MM/yyyy&#x27; }}&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;!-- More messages here --&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Input for new message --&gt;
+        &lt;div *ngIf&#x3D;&quot;selectedUser&quot; class&#x3D;&quot;card-footer&quot;&gt;
+          &lt;form (submit)&#x3D;&quot;sendMessage()&quot;&gt;
+            &lt;div class&#x3D;&quot;input-group&quot;&gt;
+              &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; [(ngModel)]&#x3D;&quot;newMessage&quot; name&#x3D;&quot;newMessage&quot; placeholder&#x3D;&quot;Escrever mensagem...&quot; required&gt;
+              &lt;div class&#x3D;&quot;input-group-append&quot;&gt;
+                &lt;img src&#x3D;&quot;assets/img/Send.png&quot; class&#x3D;&quot;send-button&quot; (click)&#x3D;&quot;sendMessage()&quot; alt&#x3D;&quot;Enviar&quot;&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+
+        &lt;!-- No User Selected Placeholder --&gt;
+        &lt;ng-template #noUserSelected&gt;
+          &lt;div class&#x3D;&quot;card-header d-flex justify-content-between align-items-center&quot; style&#x3D;&quot;visibility: hidden;&quot;&gt;
+            &lt;span&gt;Placeholder&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/ng-template&gt;
+
+        &lt;!-- No Messages Placeholder --&gt;
+        &lt;ng-template #noMessages&gt;
+          &lt;div class&#x3D;&quot;card-body chat-message-area&quot;&gt;
+            &lt;div class&#x3D;&quot;p-3 no-user-selected&quot;&gt;
+              &lt;h3 class&#x3D;&quot;placeholder-text&quot; style&#x3D;&quot;color:white&quot;&gt;Selecione um utilizador para começar a conversar.&lt;/h3&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ng-template&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./chat.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.incoming.selected-message,
+.outgoing.selected-message{
+  background-color: #5e5e5e !important;
+  color: white !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.incoming.selected-message .message-timestamp {
+  color: white !important;
+}
+
+.unread-message {
+  color: red!important;
+}
+
+.error-message {
+  color: #d32f2f; /* Cor vermelha para a mensagem de erro */
+  background-color: #f9e0e0; /* Fundo sutil para a mensagem de erro */
+  border-color: #f9e0e0;
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Espaço antes do próximo campo de texto */
+  box-sizing: border-box;
+  font-size: 0.9em;
+}
+
+.container {
+  margin-top: 1rem; /* ajuste se necessário para a sua página */
+}
+
+.contact-list {
+  border-radius: 15px; /* Arredonda os cantos */
+  margin-bottom: 1rem; /* Espaço entre os elementos */
+  height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
+  background-color: white; /* Fundo branco para ambos os painéis */
+}
+
+.chat-card {
+  border-radius: 15px; /* Arredonda os cantos */
+  margin-bottom: 1rem; /* Espaço entre os elementos */
+  height: calc(100vh - 12rem); /* Altura para igualar a área de mensagem com o envio */
+  background-color: transparent; /* Fundo branco para ambos os painéis */
+  overflow-y: auto;
+  border: 1px solid #f0f0f0;
+}
+
+.contact-list {
+  border: 1px solid #ddd; /* Linha de divisão */
+}
+
+
+
+.chat-card {
+  display: flex;
+  flex-direction: column; /* Organiza o layout da card */
+}
+
+.card-header,
+.card-footer {
+  background-color: #f8f9fa; /* Fundo do cabeçalho e rodapé */
+}
+
+.chat-message-area {
+  overflow-y: auto;
+  flex-grow: 1; /* Ocupa o espaço disponível */
+}
+
+.message {
+  padding: 10px 20px;
+  margin: 8px 0; /* Adiciona uma margem acima e abaixo de cada mensagem */
+  border-radius: 10px;
+  background-color: white; /* Cor de fundo para mensagens recebidas */
+  max-width: 75%;
+  word-wrap: break-word;
+  position: relative; /* Posicionamento relativo para utilizar &#x27;clear&#x27; */
+  clear: both; /* Evita que mensagens se sobreponham */
+}
+
+.incoming {
+  background-color: white;
+  color: black;
+  text-align: left;
+  float: left;
+}
+
+.outgoing {
+  background-color: #4CAEFE;
+  color: white;
+  text-align: right;
+  float: right;
+}
+
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid #ddd;
+}
+
+.send-button {
+  cursor: pointer; /* Muda o cursor para o símbolo de clique */
+  width: 30px; /* Largura da imagem */
+  height: auto; /* Altura automática para manter a proporção */
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.input-group .form-control {
+  margin-right: 0.5rem; /* Adiciona um espaço entre o input e o botão enviar */
+}
+
+/* Clear floats after the messages */
+.chat-message-area:after {
+  content: &quot;&quot;;
+  display: table;
+  clear: both;
+}
+
+/* Ajustar a área de mensagens para ter uma margem interna */
+.chat-message-area {
+  padding: 8px 20px; /* Espaço interno para evitar que mensagens toquem as bordas */
+  overflow-y: auto;
+  height: calc(100vh - 160px); /* Ajuste a altura conforme necessário */
+}
+
+.message-timestamp {
+  display: block; /* ou inline-block, dependendo do seu layout desejado */
+  color: white; /* Cor cinza para a data/hora */
+  font-size: 0.85em; /* Um tamanho de fonte menor */
+  margin-top: 5px; /* Espaçamento no topo */
+  text-align: right; /* Alinha a data/hora à direita */
+}
+
+.message.incoming .message-timestamp {
+  text-align: left; /* Alinha a data/hora à esquerda para mensagens recebidas */
+  color: black
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens nos extremos opostos */
+  align-items: center; /* Alinha os itens da lista verticalmente */
+  padding: 0.5rem 1rem; /* Espaço interno */
+}
+
+.other-users-user-photo {
+  border-radius: 50%; /* Faz a foto do perfil circular */
+  width: 40px; /* Tamanho da foto do perfil */
+  height: 40px; /* Altura da foto do perfil */
+}
+
+.other-users-user-name {
+  flex-grow: 1; /* Permite que o nome do utilizador ocupe qualquer espaço extra */
+  margin-left: 1rem; /* Espaço entre a foto e o nome do utilizador */
+  font-weight: bold;
+  color: #333;
+}
+
+.last-message-time {
+  font-size: 0.85em; /* Tamanho menor para a hora */
+  color: #6c757d; /* Uma cor cinza */
+}
+
+.search-bar {
+  margin-top: 0.5rem; /* Adiciona um espaçamento no topo */
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  position: -webkit-sticky; /* Para suporte ao Safari */
+  position: sticky;
+  top: 0; /* Fica no topo dentro do .contact-list */
+  background: white; /* Cor de fundo para cobrir o conteúdo por baixo quando rolar */
+}
+
+/* Adicione um contêiner em torno da lista de utilizadors para permitir rolagem apenas nessa seção */
+.user-list-container {
+  height: calc(100vh - 18rem); /* Ajuste a altura para compensar a barra de pesquisa */
+  overflow-y: auto; /* Ativa a barra de rolagem */
+}
+
+.list-group-item {
+  border-radius: 0%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #474747;
+}
+
+.search-input {
+  padding: 10px;
+  padding-left: 50px; /* Ajusta para deixar espaço para o ícone de pesquisa */
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: &#x27;Inter&#x27;;
+  width: 100%; /* Se desejar que ocupe toda a largura disponível */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  outline: none;
+  border: 3px solid black;
+}
+
+  .search-input::placeholder {
+    color: #aaa;
+  }
+
+  .search-input:focus {
+    border-color: #4CAEFE;
+  }
+
+.no-results-message {
+  padding: 10px;
+  text-align: center;
+  color: #666;
+}
+
+::-webkit-scrollbar {
+  width: auto; /* Largura da barra de rolagem */
+  height: auto; /* Altura da barra de rolagem */
+}
+
+
+/* Estiliza o fundo da barra (a trilha) */
+::-webkit-scrollbar-track {
+  background: white; /* Cor de fundo da trilha */
+}
+
+/* Estiliza a alça da barra de rolagem (o &quot;thumb&quot;) */
+::-webkit-scrollbar-thumb {
+  background: #4CAEFE; /* Cor do &quot;thumb&quot; da barra de rolagem */
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><button *ngIf="!this.messageForm" class="btn btn-primary" (click)="toggleMessageForm()">Enviar mensagem</button><div *ngIf="this.messageForm" class="chat-container mt-4 p-4">  <h5 class="text-white">Enviar Mensagem</h5>  <input type="text" [(ngModel)]="usernameOfNewReceiver" placeholder="Nome do utilizador Destinatário" class="form-control my-2" (input)="clearErrorMessage()">  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>  <textarea [(ngModel)]="messageTextToNewUser" placeholder="Digite sua mensagem aqui..." class="form-control my-2"></textarea>  <div class="d-flex justify-content-between">    <button (click)="sendMessageToNewUser()" class="btn btn-primary">Enviar Mensagem</button>    <button (click)="toggleMessageForm()" class="btn btn-danger">Cancelar</button>  </div></div><div class="container">  <!-- Chat Section -->  <div class="row">    <!-- Contact List -->    <div class="col-lg-4 mb-3">      <div class="contact-list">        <!-- Search Bar -->        <div class="p-2">          <div class="search-bar">            <i class="fa fa-search search-icon"></i>            <input type="text"                   placeholder="Procurar..."                   class="search-input"                   [(ngModel)]="searchTerm"                   (input)="filterUsers()">          </div>        </div>        <!-- Contact Items -->        <div class="user-list-container">          <ul *ngIf="filteredUsersProfiles.length > 0 && !showNoResults; else noResults" class="list-group">            <ng-container *ngFor="let userProfile of filteredUsersProfiles">              <li *ngIf="userProfile.userName !== loggedUserName" (click)="onUserSelected(userProfile)" class="list-group-item">                <div class="user-item">                  <img class="other-users-user-photo" [src]="userProfile.profilePhoto">                  <span class="other-users-user-name" [ngClass]="{\'unread-message\': isUnread(userProfile.unreadMessages)}">{{ userProfile.userName }}</span>                  <span class="last-message-time">{{ userProfile.lastMessage!.sentAt | date:\'HH:mm\' }}</span>                </div>              </li>            </ng-container>          </ul>          <ng-template #noResults>            <div class="no-results-message">              Não existe nenhum utilizador com esse nome.            </div>          </ng-template>        </div>      </div>    </div>    <!-- Messages Section -->    <div class="col-lg-8">      <!-- Chat Card -->      <div class="card chat-card">        <!-- Chat Header -->        <div *ngIf="selectedUser; else noUserSelected" class="card-header d-flex justify-content-between align-items-center">          <img class="other-users-user-photo" [src]="selectedUser.profilePhoto" [routerLink]="[\'/profile\', selectedUser.userName]">          <span class="other-users-user-name">{{ selectedUser.userName }}</span>          <!-- <button class="btn btn-danger" (click)="deleteChat()">Eliminar conversa</button>  -->          <app-confirm-dialog [classCss]="\'btn btn-danger\'"                              [titleButton]="\'Eliminar Conversa\'"                              [titlePopup]="\'Confirmação\'"                              [messagePopup]="\'Tem certeza que deseja eliminar esta conversa?\'"                              [confirmationTextButton]="\'Confirmar\'"                              [cancelTextButton]="\'Cancelar\'"                              (confirmAction)="performDeleteChatAction($event)"></app-confirm-dialog>          <!-- <button class="btn btn-danger" (click)="deleteChat()">Eliminar mensagem</button>  -->          <app-confirm-dialog *ngIf="currentLongPressedMessage"                              [classCss]="\'btn btn-danger\'"                              [titleButton]="\'Eliminar Mensagem\'"                              [titlePopup]="\'Confirmação\'"                              [messagePopup]="\'Tem certeza que deseja eliminar esta mensagem?\'"                              [confirmationTextButton]="\'Confirmar\'"                              [cancelTextButton]="\'Cancelar\'"                              (confirmAction)="performDeleteMessageAction(currentLongPressedMessage)"></app-confirm-dialog>        </div>        <!-- Messages Area -->        <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>          <div *ngFor="let message of messages" class="message"               [ngClass]="{\'incoming\': message.sendUsername === selectedUsername, \'outgoing\': message.sendUsername !== selectedUsername}"               [class.selected-message]="currentLongPressedMessage === message"               (mousedown)="startLongPress($event, message)"                (mouseup)="stopLongPress()" >            <span class="message-content">{{ message.text }}</span>            <span class="message-timestamp">{{ message.sentAt | date:\'HH:mm, dd/MM/yyyy\' }}</span>          </div>          <!-- More messages here -->        </div>        <!-- Input for new message -->        <div *ngIf="selectedUser" class="card-footer">          <form (submit)="sendMessage()">            <div class="input-group">              <input type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Escrever mensagem..." required>              <div class="input-group-append">                <img src="assets/img/Send.png" class="send-button" (click)="sendMessage()" alt="Enviar">              </div>            </div>          </form>        </div>        <!-- No User Selected Placeholder -->        <ng-template #noUserSelected>          <div class="card-header d-flex justify-content-between align-items-center" style="visibility: hidden;">            <span>Placeholder</span>          </div>        </ng-template>        <!-- No Messages Placeholder -->        <ng-template #noMessages>          <div class="card-body chat-message-area">            <div class="p-3 no-user-selected">              <h3 class="placeholder-text" style="color:white">Selecione um utilizador para começar a conversar.</h3>            </div>          </div>        </ng-template>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutUsComponent', 'selector': 'app-about-us'},{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminStatisticsComponent', 'selector': 'app-admin-statistics'},{'name': 'AllMoviesPageComponent', 'selector': 'app-all-movies-page'},{'name': 'AllSeriesPageComponent', 'selector': 'app-all-series-page'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthenticationButtonComponent', 'selector': 'authentication-button'},{'name': 'BlockedAccountComponent', 'selector': 'app-blocked-account'},{'name': 'ChatComponent', 'selector': 'app-chat'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'EditProfileComponent', 'selector': 'app-edit-profile'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GamificationComponent', 'selector': 'app-gamification'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MovieDetailsComponent', 'selector': 'app-movie-details'},{'name': 'NavMenuComponent', 'selector': 'app-nav-menu'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'PendingVerificationComponent', 'selector': 'app-pending-verification'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RegisterWithThirdPartyComponent', 'selector': 'app-register-with-third-party'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SearchServiceComponent', 'selector': 'app-search-service'},{'name': 'SeasonDetailsComponent', 'selector': 'app-season-details'},{'name': 'SeasonDetailsInfoComponent', 'selector': 'app-season-details-info'},{'name': 'SendEmailComponent', 'selector': 'app-send-email'},{'name': 'SeriesDetailsComponent', 'selector': 'app-series-details'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'SuspendedAccountComponent', 'selector': 'app-suspended-account'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ChatComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ChatComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

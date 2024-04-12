@@ -1,0 +1,1 @@
+search_result['224']=["topic_0000000000000070.html","UserRatingMediaController Class","Controlador para a gestão de avaliações de media por parte dos utilizadores.\r\nPermite atribuir avaliações a media, obter avaliações e a avaliação média de uma media específica."];

@@ -1,0 +1,1 @@
+search_result['895']=["topic_00000000000001DF.html","EmailService Class","Classe de serviço para o envio de e-mails.\r\nEsta classe é responsável por gerir as operações de e-mail utilizando a API do MailJet."];

@@ -1,0 +1,1 @@
+search_result['1106']=["topic_0000000000000262.html","IRatingMediaService.GetAverageRatingForMedia Method","Calcula a avaliação média para uma Media específica."];

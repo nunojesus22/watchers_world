@@ -1,0 +1,1 @@
+search_result['761']=["topic_0000000000000195.html","UserRatingMedia.Rating Property","Avaliação atribuída pelo utilizador ao item de Media. Valor numérico que representa a classificação."];

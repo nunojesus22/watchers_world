@@ -1,0 +1,1595 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >NotificationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/notifications/services/notification.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Serviço responsável por gerenciar todas as operações relacionadas às notificações dos utilizadores,
+incluindo a obtenção de diferentes tipos de notificações, marcar notificações como lidas e limpar notificações.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clearNotifications" >clearNotifications</a>
+                            </li>
+                            <li>
+                                <a href="#getAchievementNotifications" >getAchievementNotifications</a>
+                            </li>
+                            <li>
+                                <a href="#getFollowNotificationsForUser" >getFollowNotificationsForUser</a>
+                            </li>
+                            <li>
+                                <a href="#getHeaders" >getHeaders</a>
+                            </li>
+                            <li>
+                                <a href="#getJWT" >getJWT</a>
+                            </li>
+                            <li>
+                                <a href="#getMediaNotifications" >getMediaNotifications</a>
+                            </li>
+                            <li>
+                                <a href="#getMessageNotificationsForUser" >getMessageNotificationsForUser</a>
+                            </li>
+                            <li>
+                                <a href="#getReplyNotifications" >getReplyNotifications</a>
+                            </li>
+                            <li>
+                                <a href="#hasUnreadNotifications" >hasUnreadNotifications</a>
+                            </li>
+                            <li>
+                                <a href="#markAllAchievementNotificationsAsRead" >markAllAchievementNotificationsAsRead</a>
+                            </li>
+                            <li>
+                                <a href="#markAllFollowNotificationsAsRead" >markAllFollowNotificationsAsRead</a>
+                            </li>
+                            <li>
+                                <a href="#markAllMediaNotificationsAsRead" >markAllMediaNotificationsAsRead</a>
+                            </li>
+                            <li>
+                                <a href="#markAllMessageNotificationsAsRead" >markAllMessageNotificationsAsRead</a>
+                            </li>
+                            <li>
+                                <a href="#markAllReplyNotificationsAsRead" >markAllReplyNotificationsAsRead</a>
+                            </li>
+                            <li>
+                                <a href="#notifyNewEpisode" >notifyNewEpisode</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HttpClient)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/notifications/services/notification.service.ts:20</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearNotifications"></a>
+                    <span class="name">
+                        <span ><b>clearNotifications</b></span>
+                        <a href="#clearNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearNotifications(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:135</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Limpa todas as notificações para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador cujas notificações serão limpas.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAchievementNotifications"></a>
+                    <span class="name">
+                        <span ><b>getAchievementNotifications</b></span>
+                        <a href="#getAchievementNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAchievementNotifications(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém as notificações de novas conquistas para um utilizador autenticado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador autenticado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;AchievementNotificationModel[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable de um array de AchievementNotificationModel.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowNotificationsForUser"></a>
+                    <span class="name">
+                        <span ><b>getFollowNotificationsForUser</b></span>
+                        <a href="#getFollowNotificationsForUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFollowNotificationsForUser(authenticatedUsername: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém as notificações de novos seguidores para um utilizador autenticado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>authenticatedUsername</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador autenticado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FollowNotificationModel[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable de um array de FollowNotificationModel.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHeaders"></a>
+                    <span class="name">
+                        <span ><b>getHeaders</b></span>
+                        <a href="#getHeaders"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getHeaders()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Constrói o cabeçalho HTTP necessário para as requisições autenticadas.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um objeto HttpHeaders com o token de autenticação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getJWT"></a>
+                    <span class="name">
+                        <span ><b>getJWT</b></span>
+                        <a href="#getJWT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getJWT()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera o token JWT do localStorage para uso nas requisições autenticadas.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O token JWT se disponível; caso contrário, retorna &#39;No JWT&#39;.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMediaNotifications"></a>
+                    <span class="name">
+                        <span ><b>getMediaNotifications</b></span>
+                        <a href="#getMediaNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMediaNotifications(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém as notificações de nova mídia para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador cujas notificações de nova mídia são solicitadas.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;MediaNotificationModel[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable de um array de MediaNotificationModel, representando as notificações de nova mídia.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMessageNotificationsForUser"></a>
+                    <span class="name">
+                        <span ><b>getMessageNotificationsForUser</b></span>
+                        <a href="#getMessageNotificationsForUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMessageNotificationsForUser(authenticatedUsername: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém as notificações de novas mensagens para um utilizador autenticado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>authenticatedUsername</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador autenticado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Message.html" target="_self" >Observable&lt;MessageNotificationModel[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable de um array de MessageNotificationModel.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getReplyNotifications"></a>
+                    <span class="name">
+                        <span ><b>getReplyNotifications</b></span>
+                        <a href="#getReplyNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getReplyNotifications(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém as notificações de respostas a comentários para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;ReplyNotificationModel[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable de um array de ReplyNotificationModel.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hasUnreadNotifications"></a>
+                    <span class="name">
+                        <span ><b>hasUnreadNotifications</b></span>
+                        <a href="#hasUnreadNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>hasUnreadNotifications(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica se um utilizador possui notificações não lidas.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite verdadeiro se houver notificações não lidas; falso caso contrário.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markAllAchievementNotificationsAsRead"></a>
+                    <span class="name">
+                        <span ><b>markAllAchievementNotificationsAsRead</b></span>
+                        <a href="#markAllAchievementNotificationsAsRead"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>markAllAchievementNotificationsAsRead(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="115"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:115</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Marca todas as notificações de novas conquistas como lidas para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markAllFollowNotificationsAsRead"></a>
+                    <span class="name">
+                        <span ><b>markAllFollowNotificationsAsRead</b></span>
+                        <a href="#markAllFollowNotificationsAsRead"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>markAllFollowNotificationsAsRead(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Marca todas as notificações de novo seguidor como lidas para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markAllMediaNotificationsAsRead"></a>
+                    <span class="name">
+                        <span ><b>markAllMediaNotificationsAsRead</b></span>
+                        <a href="#markAllMediaNotificationsAsRead"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>markAllMediaNotificationsAsRead(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:185</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Marca todas as notificações de nova mídia como lidas para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markAllMessageNotificationsAsRead"></a>
+                    <span class="name">
+                        <span ><b>markAllMessageNotificationsAsRead</b></span>
+                        <a href="#markAllMessageNotificationsAsRead"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>markAllMessageNotificationsAsRead(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Marca todas as notificações de novas mensagens como lidas para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="markAllReplyNotificationsAsRead"></a>
+                    <span class="name">
+                        <span ><b>markAllReplyNotificationsAsRead</b></span>
+                        <a href="#markAllReplyNotificationsAsRead"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>markAllReplyNotificationsAsRead(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Marca todas as notificações de novas respostas como lidas para um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notifyNewEpisode"></a>
+                    <span class="name">
+                        <span ><b>notifyNewEpisode</b></span>
+                        <a href="#notifyNewEpisode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>notifyNewEpisode(notification: <a href="../classes/MediaNotificationModel.html" target="_self">MediaNotificationModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="155"
+                                    class="link-to-prism">src/app/notifications/services/notification.service.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Notifica os utilizadores sobre um novo episódio de uma série ou atualização de mídia.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>notification</td>
+                                            <td>
+                                                            <code><a href="../classes/MediaNotificationModel.html" target="_self" >MediaNotificationModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>A notificação a ser enviada, contendo detalhes como o ID do utilizador que disparou a notificação, mensagem, etc.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable do resultado da operação de notificação.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { environment } from &#x27;../../../environments/environment.development&#x27;;
+import { NotificationModel } from &#x27;../models/notification-model&#x27;;
+import { User } from &#x27;../../authentication/models/user&#x27;;
+import { FollowNotificationModel } from &#x27;../models/follow-notification-model&#x27;;
+import { ReplyNotificationModel } from &#x27;../models/reply-notification-model&#x27;;
+import { AchievementNotificationModel } from &#x27;../models/achievement-notification-model&#x27;;
+import { MessageNotificationModel } from &#x27;../models/message-notification-model&#x27;;
+import { MediaNotificationModel } from &#x27;../models/media-notification-model&#x27;;
+
+/**
+ * Serviço responsável por gerenciar todas as operações relacionadas às notificações dos utilizadores,
+ * incluindo a obtenção de diferentes tipos de notificações, marcar notificações como lidas e limpar notificações.
+ */
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class NotificationService {
+  constructor(private http: HttpClient) { }
+
+  /**
+   * Recupera o token JWT do localStorage para uso nas requisições autenticadas.
+   * @returns O token JWT se disponível; caso contrário, retorna &#x27;No JWT&#x27;.
+   */
+  getJWT() {
+    const key &#x3D; localStorage.getItem(environment.userKey);
+    if (key) {
+      const user &#x3D; JSON.parse(key) as User;
+      return user.jwt;
+    } else {
+      return &#x27;No JWT&#x27;;
+    }
+  }
+
+  /**
+   * Constrói o cabeçalho HTTP necessário para as requisições autenticadas.
+   * @returns Um objeto HttpHeaders com o token de autenticação.
+   */
+  getHeaders() {
+    const jwt &#x3D; this.getJWT();
+    const headers &#x3D; new HttpHeaders({
+      &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      &#x27;Authorization&#x27;: &#x60;Bearer ${jwt}&#x60;
+    });
+    return headers;
+  }
+
+  /**
+   * Obtém as notificações de novos seguidores para um utilizador autenticado.
+   * @param authenticatedUsername O nome do utilizador autenticado.
+   * @returns Um Observable de um array de FollowNotificationModel.
+   */
+  getFollowNotificationsForUser(authenticatedUsername: string): Observable&lt;FollowNotificationModel[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;FollowNotificationModel[]&gt;(&#x60;${environment.appUrl}/api/notifications/followNotifications/${authenticatedUsername}&#x60;, { headers });
+  }
+
+  /**
+   * Obtém as notificações de respostas a comentários para um utilizador específico.
+   * @param username O nome do utilizador.
+   * @returns Um Observable de um array de ReplyNotificationModel.
+   */
+  getReplyNotifications(username: string): Observable&lt;ReplyNotificationModel[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;ReplyNotificationModel[]&gt;(&#x60;${environment.appUrl}/api/notifications/replyNotifications/${username}&#x60;, { headers });
+  }
+
+  /**
+  * Obtém as notificações de novas conquistas para um utilizador autenticado.
+  * @param username O nome do utilizador autenticado.
+  * @returns Um Observable de um array de AchievementNotificationModel.
+  */
+  getAchievementNotifications(username: string): Observable&lt;AchievementNotificationModel[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;AchievementNotificationModel[]&gt;(&#x60;${environment.appUrl}/api/notifications/achievementNotifications/${username}&#x60;, { headers });
+  }
+
+  /**
+  * Obtém as notificações de novas mensagens para um utilizador autenticado.
+  * @param authenticatedUsername O nome do utilizador autenticado.
+  * @returns Um Observable de um array de MessageNotificationModel.
+  */
+  getMessageNotificationsForUser(authenticatedUsername: string): Observable&lt;MessageNotificationModel[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;MessageNotificationModel[]&gt;(&#x60;${environment.appUrl}/api/notifications/messageNotifications/${authenticatedUsername}&#x60;, { headers });
+  }
+
+  /**
+   * Marca todas as notificações de novo seguidor como lidas para um utilizador específico.
+   * @param username O nome do utilizador.
+   * @returns Um Observable do resultado da operação.
+   */
+  markAllFollowNotificationsAsRead(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post(&#x60;${environment.appUrl}/api/notifications/followNotifications/mark-all-as-read/${username}&#x60;, {}, { headers });
+  }
+
+  /**
+   * Marca todas as notificações de novas respostas como lidas para um utilizador específico.
+   * @param username O nome do utilizador.
+   * @returns Um Observable do resultado da operação.
+   */
+  markAllReplyNotificationsAsRead(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post(&#x60;${environment.appUrl}/api/notifications/replyNotifications/mark-all-as-read/${username}&#x60;, {}, { headers });
+  }
+
+  /**
+   * Marca todas as notificações de novas conquistas como lidas para um utilizador específico.
+   * @param username O nome do utilizador.
+   * @returns Um Observable do resultado da operação.
+   */
+  markAllAchievementNotificationsAsRead(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post(&#x60;${environment.appUrl}/api/notifications/achievementNotifications/mark-all-as-read/${username}&#x60;, {}, { headers });
+  }
+
+  /**
+   * Marca todas as notificações de novas mensagens como lidas para um utilizador específico.
+   * @param username O nome do utilizador.
+   * @returns Um Observable do resultado da operação.
+   */
+  markAllMessageNotificationsAsRead(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post(&#x60;${environment.appUrl}/api/notifications/messageNotifications/mark-all-as-read/${username}&#x60;, {}, { headers });
+  }
+
+  /**
+  * Limpa todas as notificações para um utilizador específico.
+  * @param username O nome do utilizador cujas notificações serão limpas.
+  * @returns Um Observable do resultado da operação.
+  */
+  clearNotifications(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.delete(&#x60;${environment.appUrl}/api/notifications/clearNotifications/${username}&#x60;, { headers });
+  }
+
+  /**
+  * Verifica se um utilizador possui notificações não lidas.
+  * @param username O nome do utilizador.
+  * @returns Um Observable que emite verdadeiro se houver notificações não lidas; falso caso contrário.
+  */
+  hasUnreadNotifications(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get(&#x60;${environment.appUrl}/api/notifications/hasUnread/${username}&#x60;, { headers });
+  }
+
+  /**
+  * Notifica os utilizadores sobre um novo episódio de uma série ou atualização de mídia.
+  * @param notification A notificação a ser enviada, contendo detalhes como o ID do utilizador que disparou a notificação, mensagem, etc.
+  * @returns Um Observable do resultado da operação de notificação.
+  */
+  notifyNewEpisode(notification: MediaNotificationModel): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    const body &#x3D; {
+      triggeredByUserId: notification.triggeredByUserId,
+      message: notification.message,
+      createdAt: notification.createdAt,
+      isRead: notification.isRead,
+      eventType: notification.eventType,
+      mediaName: notification.mediaName,
+      mediaPhoto: notification.mediaPhoto,
+      userMediaId: notification.userMediaId
+    };
+    return this.http.post(&#x60;${environment.appUrl}/api/notifications/notify-new-episode&#x60;, body, { headers });
+  }
+
+  /**
+  * Obtém as notificações de nova mídia para um utilizador específico.
+  * @param username O nome do utilizador cujas notificações de nova mídia são solicitadas.
+  * @returns Um Observable de um array de MediaNotificationModel, representando as notificações de nova mídia.
+  */
+  getMediaNotifications(username: string): Observable&lt;MediaNotificationModel[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;MediaNotificationModel[]&gt;(&#x60;${environment.appUrl}/api/notifications/mediaNotifications/${username}&#x60;, { headers });
+  }
+
+  /**
+  * Marca todas as notificações de nova mídia como lidas para um utilizador específico.
+  * @param username O nome do utilizador.
+  * @returns Um Observable do resultado da operação.
+  */
+  markAllMediaNotificationsAsRead(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post(&#x60;${environment.appUrl}/api/notifications/mediaNotifications/mark-all-as-read/${username}&#x60;, {}, { headers });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'NotificationService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

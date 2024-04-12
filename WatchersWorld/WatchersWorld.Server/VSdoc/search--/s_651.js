@@ -1,0 +1,1 @@
+search_result['651']=["topic_0000000000000158.html","Messages.Chat Property","Referência virtual ao chat associado a esta mensagem. Estabelece uma relação de chave estrangeira com a tabela de Chat."];

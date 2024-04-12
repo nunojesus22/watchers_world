@@ -1,0 +1,1 @@
+search_result['463']=["topic_00000000000000F1.html","UserMediaDto Class","DTO que representa uma entidade de Media associada a um utilizador.\r\nInclui o identificador da Media e o seu tipo."];

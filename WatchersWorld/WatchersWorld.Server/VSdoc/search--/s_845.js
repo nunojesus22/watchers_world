@@ -1,0 +1,1 @@
+search_result['845']=["topic_00000000000001C6.html","AchievementNotification.UserMedalId Property","Identificador da medalha do utilizador associada à notificação.\r\nEste campo é uma chave estrangeira que referencia a tabela `UserMedals`,\r\nindicando a medalha específica do utilizador para a qual a no..."];

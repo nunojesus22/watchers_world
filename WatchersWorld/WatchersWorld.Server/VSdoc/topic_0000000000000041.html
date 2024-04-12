@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>JWTService Class</title>
+	<title>MediaController.GetSortedMostLikedComments Method</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">JWTService Class</h1>
+		<h1 class="title">MediaController.GetSortedMostLikedComments Method</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_000000000000003D.html">WatchersWorld.Server.Services</a>
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers</a>
 
 
 
@@ -89,8 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Service class for creating JSON Web Tokens (JWT).
-This class is responsible for generating JWTs for user authentication.</summary-info>
+        <summary-info>Remove uma descurtida de um comentário em uma mídia.</summary-info>
 
 
 
@@ -140,7 +139,7 @@ This class is responsible for generating JWTs for user authentication.</summary-
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Public Class JWTService</pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;Authorize()&gt; _&nbsp;<br />&lt;HttpGet(&quot;/api/media/get-sorted-comments-by-likes/{mediaId}&quot;)&gt; _&nbsp;<br />Public Function GetSortedMostLikedComments( _&nbsp;<br />   ByVal <i>mediaId</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">Integer</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>(Of <a target="_top" href="topic_00000000000000D1.html" onclick="this.target='';return true;">CommentDto</a>))</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -179,7 +178,7 @@ This class is responsible for generating JWTs for user authentication.</summary-
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">public class JWTService</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[Authorize()]&nbsp;<br />[HttpGet(&quot;/api/media/get-sorted-comments-by-likes/{mediaId}&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a target="_top" href="topic_00000000000000D1.html" onclick="this.target='';return true;">CommentDto</a>&gt;&gt; GetSortedMostLikedComments(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a> <i>mediaId</i>&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -219,7 +218,7 @@ This class is responsible for generating JWTs for user authentication.</summary-
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">public ref class JWTService </pre>			
+					<pre xml:space="preserve" class="brush: cpp">[Authorize()]&nbsp;<br />[HttpGet(&quot;/api/media/get-sorted-comments-by-likes/{mediaId}&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a target="_top" href="topic_00000000000000D1.html" onclick="this.target='';return true;">CommentDto</a>^&gt;^&gt;^ GetSortedMostLikedComments(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a> <i>mediaId</i>&nbsp;<br />) </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -258,7 +257,7 @@ This class is responsible for generating JWTs for user authentication.</summary-
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">public class JWTService</pre>			
+					<pre xml:space="preserve" class="brush: js">JScript does not support generic types and methods.</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -269,6 +268,30 @@ This class is responsible for generating JWTs for user authentication.</summary-
 	</div>
 
 
+<h4 class="subHeading">
+	Parameters</h4><dl paramName="mediaId" class="parameterList">
+	<dt>
+		<span class="parameter">
+			mediaId
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.int32">int</a> 
+	</dd>
+</dl>
+<p>
+	 
+</p>
+
+<p />
+
+	<h4 class="subHeading">
+		Return Value</h4>
+	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a target="_top" href="topic_00000000000000D1.html" onclick="this.target='';return true;">CommentDto</a>&gt;&gt; 
+		<p>
+		Um objeto indicando que a descurtida foi removida com sucesso. 
+	</p>
+	
 
 
 
@@ -285,149 +308,6 @@ This class is responsible for generating JWTs for user authentication.</summary-
 
 	</div>
 </div>
-
-
-
-<div class="section_container">
-	<div class="section_heading">
-		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Constructors</a></span>
-		<div>&nbsp;</div>
-	</div>
-
-	<div id="ConstructorsSection" class="section">	
-  <table class="memberListTable">
-    <tr>
-      <th></th>
-      <th>
-        Name
-      </th>
-      <th>
-        Description
-      </th>
-    </tr>
-
-
-	
-			<tr class="
-	
-	
-	">
-	  <td>
-    <img alt="Public constructor" title="Public constructor" src="msdn2019/pubmethod.png"></img>
-
-	
-	    
-	  </td>
-	  <td>
-	    <a href="topic_0000000000000042.html">JWTService(IConfiguration)</a>
-
-	  </td>
-	  <td>
-	
-	Initializes a new instance of the JWTService class.
-	
-		</td>
-	</tr>
-	
-
-
-  </table>
-
-  <a href="#mainBody">
-    Top
-  </a>
-
-	</div>					
-</div>
-
-
-
-
-
-
-
-<div class="section_container">
-	<div class="section_heading">
-		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Methods</a></span>
-		<div>&nbsp;</div>
-	</div>
-
-	<div id="MethodsSection" class="section">	
-  <table class="memberListTable">
-    <tr>
-      <th></th>
-      <th>
-        Name
-      </th>
-      <th>
-        Description
-      </th>
-    </tr>
-
-
-
-
-	<tr class="
-
-
-">
-	<td>
-<img alt="Public method" title="Public method" src="msdn2019/pubmethod.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_0000000000000043.html">CreateJWT(User)</a>
-
-	</td>
-	<td>
-
-Creates a JWT for a given user.
-
-	</td>
-</tr>
-
-
-
-
-
-
-  </table>
-
-  <a href="#mainBody">
-    Top
-  </a>
-
-	</div>					
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-<!-- Classes -->
-
-<!-- Classes End -->
-
-<!-- Standard Modules -->
-
-<!-- Standard Modules End -->
-
-  
-
-
-
 
 
 
@@ -491,7 +371,6 @@ Creates a JWT for a given user.
 	</div>					
 </div>
 
-
 <div class="section_container">
 	<div class="section_heading">
 		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">See Also</a></span>
@@ -500,10 +379,14 @@ Creates a JWT for a given user.
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-	<a href="topic_000000000000003D.html">WatchersWorld.Server.Services Namespace</a><br />
+			<a href="topic_000000000000002C.html">MediaController Class</a><br />
 
 
-	
+
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers Namespace</a><br />
+
+
+			
 
 		</div>
 	</div>					

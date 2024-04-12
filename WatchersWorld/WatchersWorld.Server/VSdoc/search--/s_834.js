@@ -1,0 +1,1 @@
+search_result['834']=["topic_00000000000001C0.html","UserMedia.IdListMedia Property","Identificador opcional da lista de Media associada. Este campo é uma chave estrangeira que pode\r\nreferenciar a tabela `MediaListModel`, indicando que o utilizador está associado a uma lista\r\nespecífic..."];

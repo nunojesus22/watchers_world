@@ -1,1 +1,1 @@
-search_result['11']=["topic_0000000000000006.html","AccountController.ConfirmEmail Method","Confirms a user\u0027s email address."];
+search_result['11']=["topic_0000000000000004.html","AccountController.LoginWithThirdParty Method","Processa o login de um utilizador através de um serviço externo (ex: Google)."];

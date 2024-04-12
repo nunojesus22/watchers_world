@@ -1,1 +1,1 @@
-search_result['87']=["topic_0000000000000028_events--.html","UserDto Events",""];
+search_result['87']=["topic_0000000000000023.html","GamificationController Constructor","Inicializa uma nova instância do GamificationController com os serviços necessários para gerir as operações de gamificação."];
