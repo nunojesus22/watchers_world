@@ -248,7 +248,7 @@ namespace WatchersWorld.Server.Services
 
             if (triggeredByUser == null || targetUser == null)
             {
-                throw new NullReferenceException("Perfil de usuário não encontrado.");
+                throw new NullReferenceException("Perfil de utilizador não encontrado.");
             }
 
             var mediaInfo = await _context.MediaInfoModel
@@ -500,7 +500,7 @@ namespace WatchersWorld.Server.Services
 
             if (medal == null || user == null)
             {
-                throw new NullReferenceException("Medalha ou usuário não encontrados.");
+                throw new NullReferenceException("Medalha ou utilizador não encontrados.");
             }
 
             string message = $"Desbloqueaste a medalha: {medal.Name}";

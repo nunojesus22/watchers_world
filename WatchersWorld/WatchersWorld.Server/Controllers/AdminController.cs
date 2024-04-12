@@ -183,10 +183,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Obtém o número total de usuários banidos no sistema.
+        /// Obtém o número total de utilizadores banidos no sistema.
         /// </summary>
-        /// <returns>Um número inteiro representando o total de usuários banidos.</returns>
-        /// <response code="200">Retorna o total de usuários banidos.</response>
+        /// <returns>Um número inteiro representando o total de utilizadores banidos.</returns>
+        /// <response code="200">Retorna o total de utilizadores banidos.</response>
         [HttpGet("api/admin/total-banned-users")]
         public async Task<ActionResult<int>> GetTotalBannedUsers()
         {
@@ -195,10 +195,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Obtém o número total de usuários registrados no sistema.
+        /// Obtém o número total de utilizadores registrados no sistema.
         /// </summary>
-        /// <returns>Um número inteiro representando o total de usuários registrados.</returns>
-        /// <response code="200">Retorna o total de usuários registrados.</response>
+        /// <returns>Um número inteiro representando o total de utilizadores registrados.</returns>
+        /// <response code="200">Retorna o total de utilizadores registrados.</response>
         [HttpGet("api/admin/total-registered-users")]
         public async Task<ActionResult<int>> GetTotalRegisteredUsers()
         {

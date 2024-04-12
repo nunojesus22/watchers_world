@@ -1,7 +1,7 @@
 ﻿namespace WatchersWorld.Server.DTOs.Chat
 {
     /// <summary>
-    /// DTO (Data Transfer Object) utilizado para representar um chat, incluindo informações do usuário e uma lista de mensagens.
+    /// DTO (Data Transfer Object) utilizado para representar um chat, incluindo informações do utilizador e uma lista de mensagens.
     /// </summary>
     public class ChatWithMessagesDto
     {

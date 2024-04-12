@@ -1,1 +1,1 @@
-search_result['579']=["topic_000000000000012E.html","ChatHub Class","Hub SignalR que gerencia as interações de chat em tempo real entre usuários, manipulando mensagens, estados de chat e notificações."];
+search_result['579']=["topic_000000000000012E.html","ChatHub Class","Hub SignalR que gerencia as interações de chat em tempo real entre utilizadores, manipulando mensagens, estados de chat e notificações."];

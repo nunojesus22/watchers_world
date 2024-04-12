@@ -23,7 +23,7 @@ namespace WatchersWorld.Server.Models.Media
         
         
         /// <summary>
-        /// O ID do usuário que deu a descurtida.
+        /// O ID do utilizador que deu a descurtida.
         /// </summary>
         public string UserId { get; set; }
 
@@ -36,7 +36,7 @@ namespace WatchersWorld.Server.Models.Media
 
         
         /// <summary>
-        /// O usuário que deu a descurtida.
+        /// O utilizador que deu a descurtida.
         /// </summary>
         [ForeignKey("UserId")]
         public User User { get; set; }

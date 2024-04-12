@@ -1,1 +1,1 @@
-search_result['664']=["topic_0000000000000160.html","MessageStatus.RecipientUserId Property","Identificador do usuário destinatário da mensagem. Este campo é obrigatório."];
+search_result['664']=["topic_0000000000000160.html","MessageStatus.RecipientUserId Property","Identificador do utilizador destinatário da mensagem. Este campo é obrigatório."];

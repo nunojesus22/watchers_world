@@ -1,1 +1,1 @@
-search_result['778']=["topic_00000000000001A1.html","Comment.User Property","O usuário que fez o comentário."];
+search_result['778']=["topic_00000000000001A1.html","Comment.User Property","O utilizador que fez o comentário."];

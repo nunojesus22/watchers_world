@@ -1,1 +1,1 @@
-search_result['935']=["topic_00000000000001F3.html","IChatService.CreateChat Method","Cria um chat entre dois usuários."];
+search_result['935']=["topic_00000000000001F3.html","IChatService.CreateChat Method","Cria um chat entre dois utilizadores."];

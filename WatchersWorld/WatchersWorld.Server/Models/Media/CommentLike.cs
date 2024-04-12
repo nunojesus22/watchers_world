@@ -22,7 +22,7 @@ namespace WatchersWorld.Server.Models.Media
         public int CommentId { get; set; }
         
         /// <summary>
-        /// O ID do usuário que deu a curtida.
+        /// O ID do utilizador que deu a curtida.
         /// </summary>
         public string UserId { get; set; }
 
@@ -34,7 +34,7 @@ namespace WatchersWorld.Server.Models.Media
         public virtual Comment Comment { get; set; }
 
         /// <summary>
-        /// O usuário que deu a curtida.
+        /// O utilizador que deu a curtida.
         /// </summary>
         [ForeignKey("UserId")]
         public virtual User User { get; set;}

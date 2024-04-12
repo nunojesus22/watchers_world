@@ -16,7 +16,7 @@ namespace WatchersWorld.Server.Models.Media
         public int Id { get; set; }
 
         /// <summary>
-        /// O ID do usuário que fez o comentário.
+        /// O ID do utilizador que fez o comentário.
         /// </summary>
         public string UserId { get; set; }
 
@@ -38,7 +38,7 @@ namespace WatchersWorld.Server.Models.Media
 
 
         /// <summary>
-        /// O usuário que fez o comentário.
+        /// O utilizador que fez o comentário.
         /// </summary>
         public User User { get; set; }
 

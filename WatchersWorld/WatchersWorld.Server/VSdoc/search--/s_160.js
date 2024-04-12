@@ -1,1 +1,1 @@
-search_result['160']=["topic_0000000000000044.html","MediaController.GetTotalLikesReceived Method","Obtém o total de comentários feitos por um usuário específico."];
+search_result['160']=["topic_0000000000000044.html","MediaController.GetTotalLikesReceived Method","Obtém o total de comentários feitos por um utilizador específico."];

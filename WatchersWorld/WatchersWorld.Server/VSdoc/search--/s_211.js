@@ -1,1 +1,1 @@
-search_result['211']=["topic_0000000000000068.html","QuizController.CheckQuizStatus Method","Verifica o status do quiz para uma mídia específica para o usuário autenticado."];
+search_result['211']=["topic_0000000000000068.html","QuizController.CheckQuizStatus Method","Verifica o status do quiz para uma mídia específica para o utilizador autenticado."];

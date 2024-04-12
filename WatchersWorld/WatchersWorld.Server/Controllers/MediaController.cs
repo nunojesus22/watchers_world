@@ -200,7 +200,7 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
-                return Unauthorized(); // Se não houver usuário logado, retorne um erro
+                return Unauthorized(); // Se não houver utilizador logado, retorne um erro
             }
 
             var isWatched = _context.UserMedia
@@ -222,7 +222,7 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
-                return Unauthorized(); // Se não houver usuário logado, retorne um erro
+                return Unauthorized(); // Se não houver utilizador logado, retorne um erro
             }
 
             var isToWatchLater = _context.UserMedia
@@ -444,7 +444,7 @@ namespace WatchersWorld.Server.Controllers
         [HttpGet("/api/media/get-comments/{mediaId}")]
         public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do usuário atual
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do utilizador atual
 
             // Obter todos os comentários (principais e respostas) para o MediaId fornecido
             var allComments = _context.Comments
@@ -724,12 +724,12 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Obtém o total de comentários feitos por um usuário específico.
+        /// Obtém o total de comentários feitos por um utilizador específico.
         /// </summary>
-        /// <param name="username">O nome de usuário do usuário para o qual o total de comentários deve ser obtido.</param>
+        /// <param name="username">O nome de utilizador do utilizador para o qual o total de comentários deve ser obtido.</param>
         /// <returns>
-        /// Um número inteiro representando o total de comentários feitos pelo usuário especificado,
-        /// ou uma mensagem de erro se o usuário não for encontrado.
+        /// Um número inteiro representando o total de comentários feitos pelo utilizador especificado,
+        /// ou uma mensagem de erro se o utilizador não for encontrado.
         /// </returns>
         [Authorize]
         [HttpGet("/api/media/get-total-comments/{username}")]
@@ -747,10 +747,10 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Obtém o total de comentários feitos por um usuário específico.
+        /// Obtém o total de comentários feitos por um utilizador específico.
         /// </summary>
-        /// <param name="username">O nome de usuário do usuário para o qual o total de comentários deve ser obtido.</param>
-        /// <returns>O número total de comentários feitos pelo usuário especificado.</returns>
+        /// <param name="username">O nome de utilizador do utilizador para o qual o total de comentários deve ser obtido.</param>
+        /// <returns>O número total de comentários feitos pelo utilizador especificado.</returns>
         [HttpGet("/api/media/get-total-likes-received/{username}")]
         public async Task<ActionResult<int>> GetTotalLikesReceived(string username)
         {
@@ -767,11 +767,11 @@ namespace WatchersWorld.Server.Controllers
 
 
         /// <summary>
-        /// Obtém a contagem de comentários feitos por um usuário específico, agrupados por data de criação.
+        /// Obtém a contagem de comentários feitos por um utilizador específico, agrupados por data de criação.
         /// </summary>
-        /// <param name="username">O nome de usuário do usuário para o qual a contagem de comentários por data deve ser obtida.</param>
+        /// <param name="username">O nome de utilizador do utilizador para o qual a contagem de comentários por data deve ser obtida.</param>
         /// <returns>
-        /// Uma lista de objetos que representam a contagem de comentários feitos pelo usuário especificado, agrupados por data de criação.
+        /// Uma lista de objetos que representam a contagem de comentários feitos pelo utilizador especificado, agrupados por data de criação.
         /// Cada objeto contém a data e o número de comentários feitos nesse dia.
         /// </returns>
         [HttpGet("/api/media/get-comments-count-by-date/{username}")]
@@ -798,11 +798,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Obtém a contagem de mídias adicionadas por um usuário específico, agrupadas por data de adição.
+        /// Obtém a contagem de mídias adicionadas por um utilizador específico, agrupadas por data de adição.
         /// </summary>
-        /// <param name="username">O nome de usuário do usuário para o qual a contagem de mídias adicionadas por data deve ser obtida.</param>
+        /// <param name="username">O nome de utilizador do utilizador para o qual a contagem de mídias adicionadas por data deve ser obtida.</param>
         /// <returns>
-        /// Uma lista de objetos que representam a contagem de mídias adicionadas pelo usuário especificado, agrupadas por data de adição.
+        /// Uma lista de objetos que representam a contagem de mídias adicionadas pelo utilizador especificado, agrupadas por data de adição.
         /// Cada objeto contém a data e o número de mídias adicionadas nesse dia.
         /// </returns>
         [HttpGet("/api/media/get-media-added-by-date/{username}")]
@@ -830,11 +830,11 @@ namespace WatchersWorld.Server.Controllers
 
 
         /// <summary>
-        /// Obtém a contagem de séries adicionadas por um usuário específico, agrupadas por data de adição.
+        /// Obtém a contagem de séries adicionadas por um utilizador específico, agrupadas por data de adição.
         /// </summary>
-        /// <param name="username">O nome de usuário do usuário para o qual a contagem de séries adicionadas por data deve ser obtida.</param>
+        /// <param name="username">O nome de utilizador do utilizador para o qual a contagem de séries adicionadas por data deve ser obtida.</param>
         /// <returns>
-        /// Uma lista de objetos que representam a contagem de séries adicionadas pelo usuário especificado, agrupadas por data de adição.
+        /// Uma lista de objetos que representam a contagem de séries adicionadas pelo utilizador especificado, agrupadas por data de adição.
         /// Cada objeto contém a data e o número de séries adicionadas nesse dia.
         /// </returns>
         [HttpGet("/api/media/get-serie-added-by-date/{username}")]

@@ -1,1 +1,1 @@
-search_result['940']=["topic_00000000000001F8.html","IChatService.SendMessage Method","Envia uma mensagem de um usuário para outro."];
+search_result['940']=["topic_00000000000001F8.html","IChatService.SendMessage Method","Envia uma mensagem de um utilizador para outro."];

@@ -1,1 +1,1 @@
-search_result['56']=["topic_0000000000000018.html","AdminController.GetTotalBannedUsers Method","Obtém o número total de usuários banidos no sistema."];
+search_result['56']=["topic_0000000000000018.html","AdminController.GetTotalBannedUsers Method","Obtém o número total de utilizadores banidos no sistema."];

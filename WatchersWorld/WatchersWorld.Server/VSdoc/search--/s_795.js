@@ -1,1 +1,1 @@
-search_result['795']=["topic_00000000000001AD.html","CommentDislike.User Property","O usuário que deu a descurtida."];
+search_result['795']=["topic_00000000000001AD.html","CommentDislike.User Property","O utilizador que deu a descurtida."];

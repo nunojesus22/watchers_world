@@ -28,13 +28,13 @@ namespace WatchersWorld.Server.Models.Chat
         public virtual Chat Chat { get; set; }
 
         /// <summary>
-        /// Identificador do usuário que enviou a mensagem. Este campo é obrigatório.
+        /// Identificador do utilizador que enviou a mensagem. Este campo é obrigatório.
         /// </summary>
         [Required]
         public string SendUserId { get; set; }
 
         /// <summary>
-        /// Referência virtual ao usuário que enviou a mensagem. Estabelece uma relação de chave estrangeira com a tabela de User.
+        /// Referência virtual ao utilizador que enviou a mensagem. Estabelece uma relação de chave estrangeira com a tabela de User.
         /// </summary>
         [ForeignKey("SendUserId")]
         public virtual User SendUser { get; set; }

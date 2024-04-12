@@ -7,53 +7,53 @@ using WatchersWorld.Server.Models.Chat;
 namespace WatchersWorld.Server.Services
 {
     /// <summary>
-    /// Define os serviços disponíveis para manipulação de chats e mensagens entre usuários.
+    /// Define os serviços disponíveis para manipulação de chats e mensagens entre utilizadores.
     /// </summary>
     public interface IChatService
     {
         /// <summary>
-        /// Cria um chat entre dois usuários.
+        /// Cria um chat entre dois utilizadores.
         /// </summary>
-        /// <param name="user1Id">Identificador do primeiro usuário.</param>
-        /// <param name="user2Id">Identificador do segundo usuário.</param>
+        /// <param name="user1Id">Identificador do primeiro utilizador.</param>
+        /// <param name="user2Id">Identificador do segundo utilizador.</param>
         /// <returns>True se o chat foi criado com sucesso, false caso contrário.</returns>
         Task<bool> CreateChat(string user1Id, string user2Id);
 
         /// <summary>
-        /// Deleta um chat existente entre dois usuários.
+        /// Deleta um chat existente entre dois utilizadores.
         /// </summary>
-        /// <param name="user1Id">Identificador do primeiro usuário.</param>
-        /// <param name="user2Id">Identificador do segundo usuário.</param>
+        /// <param name="user1Id">Identificador do primeiro utilizador.</param>
+        /// <param name="user2Id">Identificador do segundo utilizador.</param>
         /// <returns>True se o chat foi deletado com sucesso, false caso contrário.</returns>
         Task<bool> DeleteChat(string user1Id, string user2Id);
 
         /// <summary>
-        /// Deleta uma mensagem específica enviada por um usuário.
+        /// Deleta uma mensagem específica enviada por um utilizador.
         /// </summary>
-        /// <param name="user1Id">Identificador do usuário que enviou a mensagem.</param>
+        /// <param name="user1Id">Identificador do utilizador que enviou a mensagem.</param>
         /// <param name="messageId">Identificador da mensagem a ser deletada.</param>
         /// <returns>True se a mensagem foi deletada com sucesso, false caso contrário.</returns>
         Task<bool> DeleteMessage(string user1Id, string messageId);
 
         /// <summary>
-        /// Recupera todos os chats em que um usuário específico está envolvido.
+        /// Recupera todos os chats em que um utilizador específico está envolvido.
         /// </summary>
-        /// <param name="userId">Identificador do usuário.</param>
-        /// <returns>Lista de chats do usuário.</returns>
+        /// <param name="userId">Identificador do utilizador.</param>
+        /// <returns>Lista de chats do utilizador.</returns>
         Task<List<Models.Chat.Chat>> GetChatsByUser(string userId);
 
         /// <summary>
-        /// Recupera os identificadores dos usuários que têm chats com um usuário específico.
+        /// Recupera os identificadores dos utilizadores que têm chats com um utilizador específico.
         /// </summary>
-        /// <param name="userId">Identificador do usuário.</param>
-        /// <returns>Lista de identificadores de usuários.</returns>
+        /// <param name="userId">Identificador do utilizador.</param>
+        /// <returns>Lista de identificadores de utilizadores.</returns>
         Task<List<string>> GetUsersThatHaveChatWith(string userId);
 
         /// <summary>
-        /// Envia uma mensagem de um usuário para outro.
+        /// Envia uma mensagem de um utilizador para outro.
         /// </summary>
-        /// <param name="userSenderId">Identificador do usuário que envia a mensagem.</param>
-        /// <param name="userReceiverId">Identificador do usuário que recebe a mensagem.</param>
+        /// <param name="userSenderId">Identificador do utilizador que envia a mensagem.</param>
+        /// <param name="userReceiverId">Identificador do utilizador que recebe a mensagem.</param>
         /// <param name="textMessage">Conteúdo da mensagem.</param>
         /// <param name="sentAt">Data e hora opcional de envio da mensagem.</param>
         /// <returns>A mensagem enviada como DTO.</returns>
@@ -74,18 +74,18 @@ namespace WatchersWorld.Server.Services
         Task<List<MessageDto>> GetAllMessagesByChat(string chatId);
 
         /// <summary>
-        /// Recupera todas as mensagens trocadas entre dois usuários.
+        /// Recupera todas as mensagens trocadas entre dois utilizadores.
         /// </summary>
-        /// <param name="user1Id">Identificador do primeiro usuário.</param>
-        /// <param name="user2Id">Identificador do segundo usuário.</param>
+        /// <param name="user1Id">Identificador do primeiro utilizador.</param>
+        /// <param name="user2Id">Identificador do segundo utilizador.</param>
         /// <returns>Lista de mensagens trocadas como DTOs.</returns>
         Task<List<MessageDto>> GetAllMessagesByUsers(string user1Id, string user2Id);
 
         /// <summary>
-        /// Recupera o chat entre dois usuários específicos.
+        /// Recupera o chat entre dois utilizadores específicos.
         /// </summary>
-        /// <param name="user1Id">Identificador do primeiro usuário.</param>
-        /// <param name="user2Id">Identificador do segundo usuário.</param>
+        /// <param name="user1Id">Identificador do primeiro utilizador.</param>
+        /// <param name="user2Id">Identificador do segundo utilizador.</param>
         /// <returns>O chat encontrado, ou null se não existir.</returns>
         Task<Models.Chat.Chat> GetChatByUsers(string user1Id, string user2Id);
     }

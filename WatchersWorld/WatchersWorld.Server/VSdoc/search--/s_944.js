@@ -1,1 +1,1 @@
-search_result['944']=["topic_00000000000001FC.html","IChatService.GetChatByUsers Method","Recupera o chat entre dois usuários específicos."];
+search_result['944']=["topic_00000000000001FC.html","IChatService.GetChatByUsers Method","Recupera o chat entre dois utilizadores específicos."];

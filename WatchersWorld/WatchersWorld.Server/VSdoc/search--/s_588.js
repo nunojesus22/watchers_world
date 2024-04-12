@@ -1,1 +1,1 @@
-search_result['588']=["topic_0000000000000132.html","ChatHub.SendMessage Method","Envia uma mensagem de um usuário para outro e notifica o receptor se estiver conectado."];
+search_result['588']=["topic_0000000000000132.html","ChatHub.SendMessage Method","Envia uma mensagem de um utilizador para outro e notifica o receptor se estiver conectado."];

@@ -1,1 +1,1 @@
-search_result['415']=["topic_00000000000000DA.html","CommentDto.HasLiked Property","Indica se o usuário atual curtiu o comentário."];
+search_result['415']=["topic_00000000000000DA.html","CommentDto.HasLiked Property","Indica se o utilizador atual curtiu o comentário."];

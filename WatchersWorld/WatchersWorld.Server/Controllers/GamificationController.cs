@@ -24,7 +24,7 @@ namespace WatchersWorld.Server.Controllers
         /// <summary>
         /// Inicializa uma nova instância do <see cref="GamificationController"/> com os serviços necessários para gerir as operações de gamificação.
         /// </summary>
-        /// <param name="context">O contexto do banco de dados utilizado para operações de dados diretamente relacionadas às medalhas e usuários.</param>
+        /// <param name="context">O contexto do banco de dados utilizado para operações de dados diretamente relacionadas às medalhas e utilizadores.</param>
         /// <param name="gamificationService">O serviço que fornece métodos específicos de gamificação, como atribuição e consulta de medalhas.</param>
 
         public GamificationController(WatchersWorldServerContext context, IGamificationService gamificationService)

@@ -82,14 +82,14 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Recupera o número total de atores favoritos para o usuário autenticado.
+        /// Recupera o número total de atores favoritos para o utilizador autenticado.
         /// </summary>
         /// <returns>
-        /// Retorna um número inteiro indicando o total de atores favoritos do usuário.
-        /// Caso o usuário não esteja autenticado ou não encontrado, retorna uma mensagem de erro.
+        /// Retorna um número inteiro indicando o total de atores favoritos do utilizador.
+        /// Caso o utilizador não esteja autenticado ou não encontrado, retorna uma mensagem de erro.
         /// </returns>
-        /// <response code="200">Retorna o total de atores favoritos do usuário autenticado.</response>
-        /// <response code="400">Retorna um erro se nenhum usuário estiver autenticado ou se o usuário não puder ser encontrado.</response>
+        /// <response code="200">Retorna o total de atores favoritos do utilizador autenticado.</response>
+        /// <response code="400">Retorna um erro se nenhum utilizador estiver autenticado ou se o utilizador não puder ser encontrado.</response>
         [HttpGet("get-total-favorite-actors")]
         public async Task<IActionResult> GetTotalFavoriteActors()
         {

@@ -376,7 +376,7 @@ namespace WatchersWorld.Server.Controllers
                 // Pode optar por retornar uma resposta indicando falha ou simplesmente registrar o erro e continuar
             }
 
-            // Retornar o DTO do usuário criado
+            // Retornar o DTO do utilizador criado
             return CreateApplicationUserDto(userToAdd);
         }
 

@@ -1,1 +1,1 @@
-search_result['591']=["topic_0000000000000135.html","ChatHub.DeleteChat Method","Deleta um chat entre dois usuários e retorna a lista atualizada de chats para o usuário solicitante."];
+search_result['591']=["topic_0000000000000135.html","ChatHub.DeleteChat Method","Deleta um chat entre dois utilizadores e retorna a lista atualizada de chats para o utilizador solicitante."];

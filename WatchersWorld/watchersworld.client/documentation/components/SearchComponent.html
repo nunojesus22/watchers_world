@@ -701,6 +701,8 @@
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Método executado quando o componente é inicializado.</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -1509,7 +1511,7 @@ import { MovieApiServiceComponent } from &#x27;../api/movie-api-service/movie-ap
       }
     }
 
-  
+    /** Método executado quando o componente é inicializado. */
     ngOnInit() {
       this.route.queryParams.subscribe(params &#x3D;&gt; {
         const genreId &#x3D; params[&#x27;genre&#x27;];

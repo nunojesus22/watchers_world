@@ -1,1 +1,1 @@
-search_result['80']=["topic_0000000000000021.html","FavoriteActorChoiceController.GetTotalFavoriteActors Method","Recupera o número total de atores favoritos para o usuário autenticado."];
+search_result['80']=["topic_0000000000000021.html","FavoriteActorChoiceController.GetTotalFavoriteActors Method","Recupera o número total de atores favoritos para o utilizador autenticado."];

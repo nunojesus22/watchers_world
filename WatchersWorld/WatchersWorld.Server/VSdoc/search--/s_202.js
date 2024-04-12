@@ -1,1 +1,1 @@
-search_result['202']=["topic_0000000000000064.html","ProfileController.DeleteAccount Method","Deleta a conta de um usuário especificado, juntamente com todas as informações associadas."];
+search_result['202']=["topic_0000000000000064.html","ProfileController.DeleteAccount Method","Deleta a conta de um utilizador especificado, juntamente com todas as informações associadas."];

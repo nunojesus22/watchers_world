@@ -23,13 +23,13 @@ namespace WatchersWorld.Server.Models.Chat
         public virtual Messages Message { get; set; }
 
         /// <summary>
-        /// Identificador do usuário destinatário da mensagem. Este campo é obrigatório.
+        /// Identificador do utilizador destinatário da mensagem. Este campo é obrigatório.
         /// </summary>
         [Required]
         public string RecipientUserId { get; set; }
 
         /// <summary>
-        /// Referência virtual ao usuário destinatário da mensagem. Estabelece uma relação de chave estrangeira com a tabela de User.
+        /// Referência virtual ao utilizador destinatário da mensagem. Estabelece uma relação de chave estrangeira com a tabela de User.
         /// </summary>
         [ForeignKey("RecipientUserId")]
         public virtual User RecipientUser { get; set; }

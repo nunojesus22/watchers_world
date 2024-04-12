@@ -1,1 +1,1 @@
-search_result['652']=["topic_0000000000000159.html","Messages.SendUserId Property","Identificador do usuário que enviou a mensagem. Este campo é obrigatório."];
+search_result['652']=["topic_0000000000000159.html","Messages.SendUserId Property","Identificador do utilizador que enviou a mensagem. Este campo é obrigatório."];

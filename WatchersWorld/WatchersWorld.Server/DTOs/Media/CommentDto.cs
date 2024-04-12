@@ -13,7 +13,7 @@ namespace WatchersWorld.Server.DTOs.Media
         public int Id { get; set; }
 
         /// <summary>
-        /// O nome de usuário do autor do comentário.
+        /// O nome de utilizador do autor do comentário.
         /// </summary>
         public string UserName { get; set; }
 
@@ -53,12 +53,12 @@ namespace WatchersWorld.Server.DTOs.Media
     
 
         /// <summary>
-        /// Indica se o usuário atual curtiu o comentário.
+        /// Indica se o utilizador atual curtiu o comentário.
         /// </summary>
         public bool HasLiked { get; set; }
 
         /// <summary>
-        /// Indica se o usuário atual descurtiu o comentário.
+        /// Indica se o utilizador atual descurtiu o comentário.
         /// </summary>
         public bool HasDisliked { get; set; }
 

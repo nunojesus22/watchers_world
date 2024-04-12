@@ -19,7 +19,7 @@
             public int MediaId { get; set; } 
 
             /// <summary>
-            /// O ID do usuário que fez a tentativa de quiz.
+            /// O ID do utilizador que fez a tentativa de quiz.
             /// </summary>
             public string UserId { get; set; } 
 

@@ -29,7 +29,7 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Submete uma tentativa de quiz para uma mídia específica para o usuário autenticado.
+        /// Submete uma tentativa de quiz para uma mídia específica para o utilizador autenticado.
         /// </summary>
         /// <param name="attemptDto">Os detalhes da tentativa de quiz a serem submetidos.</param>
         /// <returns>
@@ -54,13 +54,13 @@ namespace WatchersWorld.Server.Controllers
         }
 
         /// <summary>
-        /// Verifica o status do quiz para uma mídia específica para o usuário autenticado.
+        /// Verifica o status do quiz para uma mídia específica para o utilizador autenticado.
         /// </summary>
         /// <param name="mediaId">O ID da mídia para a qual o status do quiz deve ser verificado.</param>
         /// <returns>
         /// Um objeto contendo informações sobre o status do quiz:
-        /// - "hasCompleted": Indica se o usuário já completou o quiz para a mídia especificada.
-        /// - "score" (opcional): A pontuação obtida pelo usuário na última tentativa de quiz, se houver.
+        /// - "hasCompleted": Indica se o utilizador já completou o quiz para a mídia especificada.
+        /// - "score" (opcional): A pontuação obtida pelo utilizador na última tentativa de quiz, se houver.
         /// </returns>
         [HttpGet("/api/quiz/check-completed/{mediaId}")]
         public async Task<ActionResult> CheckQuizStatus(int mediaId)
@@ -79,12 +79,12 @@ namespace WatchersWorld.Server.Controllers
 
 
         /// <summary>
-        /// Obtém o total de tentativas de quiz feitas por um usuário específico.
+        /// Obtém o total de tentativas de quiz feitas por um utilizador específico.
         /// </summary>
-        /// <param name="username">O nome de usuário do usuário para o qual o total de tentativas de quiz deve ser obtido.</param>
+        /// <param name="username">O nome de utilizador do utilizador para o qual o total de tentativas de quiz deve ser obtido.</param>
         /// <returns>
-        /// Um número inteiro representando o total de tentativas de quiz feitas pelo usuário especificado,
-        /// ou uma mensagem de erro se o usuário não for encontrado.
+        /// Um número inteiro representando o total de tentativas de quiz feitas pelo utilizador especificado,
+        /// ou uma mensagem de erro se o utilizador não for encontrado.
         /// </returns>
         [HttpGet("/api/quiz/total-attempts/{username}")]
         public async Task<ActionResult<int>> GetTotalQuizAttempts(string username)

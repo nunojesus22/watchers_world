@@ -9,7 +9,7 @@ using WatchersWorld.Server.Services;
 namespace WatchersWorld.Server.Hubs
 {
     /// <summary>
-    /// Hub SignalR que gerencia as interações de chat em tempo real entre usuários, manipulando mensagens, estados de chat e notificações.
+    /// Hub SignalR que gerencia as interações de chat em tempo real entre utilizadores, manipulando mensagens, estados de chat e notificações.
     /// </summary>
     public class ChatHub : Hub
     {
@@ -22,7 +22,7 @@ namespace WatchersWorld.Server.Hubs
         private readonly ITimeZoneConverterService _timeZoneConverterService;
 
         /// <summary>
-        /// Dicionário estático para armazenar as conexões dos usuários.
+        /// Dicionário estático para armazenar as conexões dos utilizadores.
         /// </summary>
         private static readonly Dictionary<string, string> _userConnections = new Dictionary<string, string>();
 
@@ -31,7 +31,7 @@ namespace WatchersWorld.Server.Hubs
         /// </summary>
         /// <param name="chatService">Serviço de gerenciamento de chats.</param>
         /// <param name="notificationsService">Serviço de notificações.</param>
-        /// <param name="userManager">Gerenciador de usuários para operações relacionadas a usuários.</param>
+        /// <param name="userManager">Gerenciador de utilizadores para operações relacionadas a utilizadores.</param>
         /// <param name="context">Contexto do banco de dados para operações relacionadas a dados.</param>
         /// <param name="timeZoneConverterService">Serviço para conversão de fusos horários.</param>
         public ChatHub(IChatService chatService, INotificationService notificationsService, UserManager<User> userManager, WatchersWorldServerContext context, ITimeZoneConverterService timeZoneConverterService)
@@ -44,7 +44,7 @@ namespace WatchersWorld.Server.Hubs
         }
 
         /// <summary>
-        /// Acionado quando um cliente se conecta ao hub, registra a conexão e carrega os chats do usuário.
+        /// Acionado quando um cliente se conecta ao hub, registra a conexão e carrega os chats do utilizador.
         /// </summary>
         public override async Task OnConnectedAsync()
         {
@@ -83,9 +83,9 @@ namespace WatchersWorld.Server.Hubs
         }
 
         /// <summary>
-        /// Envia uma mensagem de um usuário para outro e notifica o receptor se estiver conectado.
+        /// Envia uma mensagem de um utilizador para outro e notifica o receptor se estiver conectado.
         /// </summary>
-        /// <param name="usernameReceiver">Nome de usuário do receptor da mensagem.</param>
+        /// <param name="usernameReceiver">Nome de utilizador do receptor da mensagem.</param>
         /// <param name="message">Objeto DTO contendo detalhes da mensagem.</param>
         /// <param name="timeZone">Fuso horário do cliente para conversão de data/hora.</param>
         /// <returns>Objeto MessageDto representando a mensagem enviada, incluindo o horário convertido para o fuso horário do cliente.</returns>
@@ -153,11 +153,11 @@ namespace WatchersWorld.Server.Hubs
         }
 
         /// <summary>
-        /// Obtém todos os chats de um usuário, incluindo mensagens visíveis, convertendo as datas para o fuso horário especificado.
+        /// Obtém todos os chats de um utilizador, incluindo mensagens visíveis, convertendo as datas para o fuso horário especificado.
         /// </summary>
-        /// <param name="userSenderId">Identificador do usuário cujos chats são recuperados.</param>
+        /// <param name="userSenderId">Identificador do utilizador cujos chats são recuperados.</param>
         /// <param name="timeZone">Fuso horário do cliente para a conversão das datas das mensagens.</param>
-        /// <returns>Uma coleção de ChatWithMessagesDto com todos os chats e mensagens visíveis do usuário.</returns>
+        /// <returns>Uma coleção de ChatWithMessagesDto com todos os chats e mensagens visíveis do utilizador.</returns>
         public async Task<IEnumerable<ChatWithMessagesDto>> GetUserChatsWithMessages(string userSenderId, string timeZone)
         {
             var chats = await _chatService.GetChatsByUser(userSenderId);
@@ -194,9 +194,9 @@ namespace WatchersWorld.Server.Hubs
         }
 
         /// <summary>
-        /// Deleta um chat entre dois usuários e retorna a lista atualizada de chats para o usuário solicitante.
+        /// Deleta um chat entre dois utilizadores e retorna a lista atualizada de chats para o utilizador solicitante.
         /// </summary>
-        /// <param name="usernameReceiver">Nome de usuário do segundo participante do chat.</param>
+        /// <param name="usernameReceiver">Nome de utilizador do segundo participante do chat.</param>
         /// <param name="timeZone">Fuso horário do cliente para a conversão das datas das mensagens.</param>
         /// <returns>Uma coleção de ChatWithMessagesDto após a exclusão do chat especificado.</returns>
         public async Task<IEnumerable<ChatWithMessagesDto>> DeleteChat(string usernameReceiver, string timeZone)
@@ -221,7 +221,7 @@ namespace WatchersWorld.Server.Hubs
         }
 
         /// <summary>
-        /// Deleta uma mensagem específica e retorna a lista atualizada de chats para o usuário solicitante.
+        /// Deleta uma mensagem específica e retorna a lista atualizada de chats para o utilizador solicitante.
         /// </summary>
         /// <param name="timeZone">Fuso horário do cliente para a conversão das datas das mensagens.</param>
         /// <param name="message">MessageDto contendo a identificação da mensagem a ser deletada.</param>
@@ -245,7 +245,7 @@ namespace WatchersWorld.Server.Hubs
         }
 
         /// <summary>
-        /// Marca várias mensagens como lidas pelo usuário e retorna a lista atualizada de chats.
+        /// Marca várias mensagens como lidas pelo utilizador e retorna a lista atualizada de chats.
         /// </summary>
         /// <param name="messages">Coleção de MessageDto das mensagens que devem ser marcadas como lidas.</param>
         /// <param name="timeZone">Fuso horário do cliente para a conversão das datas das mensagens.</param>
