@@ -1,0 +1,1388 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AdminService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/admin/service/admin.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Este serviço é responsável pela gestão de operações administrativas,
+incluindo a administração de utilizadores, a alteração de papéis de utilizadores,
+e a recolha de estatísticas gerais sobre o sistema.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#banUserPermanently" >banUserPermanently</a>
+                            </li>
+                            <li>
+                                <a href="#BanUserTemporarily" >BanUserTemporarily</a>
+                            </li>
+                            <li>
+                                <a href="#changeRoleToModerator" >changeRoleToModerator</a>
+                            </li>
+                            <li>
+                                <a href="#changeRoleToUser" >changeRoleToUser</a>
+                            </li>
+                            <li>
+                                <a href="#deleteUserByUsername" >deleteUserByUsername</a>
+                            </li>
+                            <li>
+                                <a href="#getHeaders" >getHeaders</a>
+                            </li>
+                            <li>
+                                <a href="#getJWT" >getJWT</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalBannedUsers" >getTotalBannedUsers</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalComments" >getTotalComments</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalPrivateProfiles" >getTotalPrivateProfiles</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalPublicProfiles" >getTotalPublicProfiles</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalRegisteredUsers" >getTotalRegisteredUsers</a>
+                            </li>
+                            <li>
+                                <a href="#getUserRole" >getUserRole</a>
+                            </li>
+                            <li>
+                                <a href="#unbanUser" >unbanUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HttpClient, router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/admin/service/admin.service.ts:17</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="banUserPermanently"></a>
+                    <span class="name">
+                        <span ><b>banUserPermanently</b></span>
+                        <a href="#banUserPermanently"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>banUserPermanently(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Proíbe permanentemente um utilizador de aceder ao sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador a ser banido permanentemente.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de proibição.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BanUserTemporarily"></a>
+                    <span class="name">
+                        <span ><b>BanUserTemporarily</b></span>
+                        <a href="#BanUserTemporarily"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>BanUserTemporarily(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, banDurationInDays: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Proíbe temporariamente um utilizador de aceder ao sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador a ser banido temporariamente.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>banDurationInDays</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>A duração da proibição em dias.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de proibição.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeRoleToModerator"></a>
+                    <span class="name">
+                        <span ><b>changeRoleToModerator</b></span>
+                        <a href="#changeRoleToModerator"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeRoleToModerator(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:118</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Altera o papel de um utilizador para Moderador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador cujo papel será alterado para Moderador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de alteração de papel.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeRoleToUser"></a>
+                    <span class="name">
+                        <span ><b>changeRoleToUser</b></span>
+                        <a href="#changeRoleToUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeRoleToUser(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:132</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Altera o papel de um utilizador para Utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador cujo papel será alterado para Utilizador.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de alteração de papel.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteUserByUsername"></a>
+                    <span class="name">
+                        <span ><b>deleteUserByUsername</b></span>
+                        <a href="#deleteUserByUsername"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteUserByUsername(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Apaga um utilizador do sistema pelo seu nome de utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador a ser apagado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de apagar.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHeaders"></a>
+                    <span class="name">
+                        <span ><b>getHeaders</b></span>
+                        <a href="#getHeaders"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getHeaders()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Constrói os cabeçalhos HTTP para inclusão do token JWT nas requisições à API.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um objeto HttpHeaders configurado com o tipo de conteúdo e o token JWT.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getJWT"></a>
+                    <span class="name">
+                        <span ><b>getJWT</b></span>
+                        <a href="#getJWT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getJWT()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera o token JWT do localStorage do navegador. Este token é utilizado para
+autenticação nas requisições à API.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O token JWT ou &#39;No JWT&#39; se o token não estiver presente.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalBannedUsers"></a>
+                    <span class="name">
+                        <span ><b>getTotalBannedUsers</b></span>
+                        <a href="#getTotalBannedUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalBannedUsers()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="155"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:155</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o número total de utilizadores proibidos no sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de utilizadores proibidos.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalComments"></a>
+                    <span class="name">
+                        <span ><b>getTotalComments</b></span>
+                        <a href="#getTotalComments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalComments()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:185</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o número total de comentários feitos no sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de comentários.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalPrivateProfiles"></a>
+                    <span class="name">
+                        <span ><b>getTotalPrivateProfiles</b></span>
+                        <a href="#getTotalPrivateProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalPrivateProfiles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o número total de perfis privados no sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de perfis privados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalPublicProfiles"></a>
+                    <span class="name">
+                        <span ><b>getTotalPublicProfiles</b></span>
+                        <a href="#getTotalPublicProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalPublicProfiles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o número total de perfis públicos no sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de perfis públicos.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalRegisteredUsers"></a>
+                    <span class="name">
+                        <span ><b>getTotalRegisteredUsers</b></span>
+                        <a href="#getTotalRegisteredUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalRegisteredUsers()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o número total de utilizadores registados no sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de utilizadores registados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserRole"></a>
+                    <span class="name">
+                        <span ><b>getUserRole</b></span>
+                        <a href="#getUserRole"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserRole(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o papel de um utilizador no sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador cujo papel é solicitado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite os papéis do utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unbanUser"></a>
+                    <span class="name">
+                        <span ><b>unbanUser</b></span>
+                        <a href="#unbanUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>unbanUser(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/admin/service/admin.service.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Revoga a proibição de um utilizador, permitindo o seu acesso ao sistema novamente.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador a ser desproibido.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de desproibição.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { User } from &#x27;../../authentication/models/user&#x27;;
+import { environment } from &#x27;../../../environments/environment.development&#x27;;
+import { Profile } from &#x27;../../profile/models/profile&#x27;;
+
+/**
+ * Este serviço é responsável pela gestão de operações administrativas,
+ * incluindo a administração de utilizadores, a alteração de papéis de utilizadores,
+ * e a recolha de estatísticas gerais sobre o sistema.
+ */
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class AdminService {
+
+  constructor(private http: HttpClient, private router: Router) { }
+
+  /**
+   * Recupera o token JWT do localStorage do navegador. Este token é utilizado para
+   * autenticação nas requisições à API.
+   * 
+   * @returns O token JWT ou &#x27;No JWT&#x27; se o token não estiver presente.
+   */
+  getJWT() {
+    const key &#x3D; localStorage.getItem(environment.userKey);
+    if (key) {
+      const user &#x3D; JSON.parse(key) as User;
+      return user.jwt;
+    } else {
+      return &#x27;No JWT&#x27;;
+    }
+  }
+
+  /**
+   * Constrói os cabeçalhos HTTP para inclusão do token JWT nas requisições à API.
+   * 
+   * @returns Um objeto HttpHeaders configurado com o tipo de conteúdo e o token JWT.
+   */
+  getHeaders() {
+    const jwt &#x3D; this.getJWT();
+
+    // Set up the headers with the authentication token
+    const headers &#x3D; new HttpHeaders({
+      &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      &#x27;Authorization&#x27;: &#x60;Bearer ${jwt}&#x60;
+    });
+
+    return headers;
+  }
+
+  /**
+  * Proíbe permanentemente um utilizador de aceder ao sistema.
+  * 
+  * @param username O nome de utilizador a ser banido permanentemente.
+  * @returns Um Observable que emite o resultado da operação de proibição.
+  */
+  banUserPermanently(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post&lt;any&gt;(&#x60;${environment.appUrl}/api/admin/ban-user-permanently/${encodeURIComponent(username)}&#x60;, {}, { headers });
+  }
+
+  /**
+   * Proíbe temporariamente um utilizador de aceder ao sistema.
+   * 
+   * @param username O nome de utilizador a ser banido temporariamente.
+   * @param banDurationInDays A duração da proibição em dias.
+   * @returns Um Observable que emite o resultado da operação de proibição.
+   */
+  BanUserTemporarily(username: string, banDurationInDays: number): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    // Append the ban duration as a query parameter
+    const url &#x3D; &#x60;${environment.appUrl}/api/admin/ban-user-temporarily/${encodeURIComponent(username)}?banDurationInDays&#x3D;${banDurationInDays}&#x60;;
+    return this.http.post&lt;any&gt;(url, {}, { headers });
+  }
+
+  /**
+   * Apaga um utilizador do sistema pelo seu nome de utilizador.
+   * 
+   * @param username O nome de utilizador do utilizador a ser apagado.
+   * @returns Um Observable que emite o resultado da operação de apagar.
+   */
+  deleteUserByUsername(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.delete(&#x60;${environment.appUrl}/api/admin/users/${encodeURIComponent(username)}&#x60;,
+      { headers, responseType: &#x27;text&#x27; }); // Expecting a text response
+  }
+
+  /**
+  * Obtém o papel de um utilizador no sistema.
+  * 
+  * @param username O nome de utilizador do utilizador cujo papel é solicitado.
+  * @returns Um Observable que emite os papéis do utilizador.
+  */
+  getUserRole(username: string): Observable&lt;string[]&gt; {
+    return this.http.get&lt;string[]&gt;(&#x60;${environment.appUrl}/api/admin/getUserRole/${username}&#x60;);
+  }
+
+  /**
+   * Revoga a proibição de um utilizador, permitindo o seu acesso ao sistema novamente.
+   * 
+   * @param username O nome de utilizador do utilizador a ser desproibido.
+   * @returns Um Observable que emite o resultado da operação de desproibição.
+   */
+  unbanUser(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.put&lt;any&gt;(&#x60;${environment.appUrl}/api/admin/unban-user/${encodeURIComponent(username)}&#x60;, {}, { headers });
+  }
+
+  /**
+   * Altera o papel de um utilizador para Moderador.
+   * 
+   * @param username O nome de utilizador do utilizador cujo papel será alterado para Moderador.
+   * @returns Um Observable que emite o resultado da operação de alteração de papel.
+   */
+  changeRoleToModerator(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.put(&#x60;${environment.appUrl}/api/admin/change-role-to-moderator/${encodeURIComponent(username)}&#x60;, {}, {
+      headers: headers,
+      responseType: &#x27;text&#x27;
+    });
+  }
+
+  /**
+   * Altera o papel de um utilizador para Utilizador.
+   * 
+   * @param username O nome de utilizador do utilizador cujo papel será alterado para Utilizador.
+   * @returns Um Observable que emite o resultado da operação de alteração de papel.
+   */
+  changeRoleToUser(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.put(&#x60;${environment.appUrl}/api/admin/change-role-to-user/${encodeURIComponent(username)}&#x60;, {}, {
+      headers: headers,
+      responseType: &#x27;text&#x27;
+    });
+  }
+
+  /**
+   * Obtém o número total de utilizadores registados no sistema.
+   * 
+   * @returns Um Observable que emite o número total de utilizadores registados.
+   */
+  getTotalRegisteredUsers(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/admin/total-registered-users&#x60;, { headers });
+  }
+
+  /**
+   * Obtém o número total de utilizadores proibidos no sistema.
+   * 
+   * @returns Um Observable que emite o número total de utilizadores proibidos.
+   */
+  getTotalBannedUsers(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/admin/total-banned-users&#x60;, { headers });
+  }
+
+  /**
+   * Obtém o número total de perfis privados no sistema.
+   * 
+   * @returns Um Observable que emite o número total de perfis privados.
+   */
+  getTotalPrivateProfiles(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/admin/total-private-profiles&#x60;, { headers });
+  }
+
+  /**
+  * Obtém o número total de perfis públicos no sistema.
+  * 
+  * @returns Um Observable que emite o número total de perfis públicos.
+  */
+  getTotalPublicProfiles(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/admin/total-public-profiles&#x60;, { headers });
+  }
+
+  /**
+   * Obtém o número total de comentários feitos no sistema.
+   * 
+   * @returns Um Observable que emite o número total de comentários.
+   */
+  getTotalComments(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/admin/total-comments&#x60;, { headers });
+  }
+
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

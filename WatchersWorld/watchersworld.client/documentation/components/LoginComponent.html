@@ -1,0 +1,1541 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  LoginComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/authentication/login/login.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente responsável pela interface de login de usuários, incluindo autenticação por email/senha e serviços externos como Google.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-login</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./login.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./login.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#banDurationMessage" >banDurationMessage</a>
+                            </li>
+                            <li>
+                                <a href="#errorMessages" >errorMessages</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#googleButton" >googleButton</a>
+                            </li>
+                            <li>
+                                <a href="#loginForm" >loginForm</a>
+                            </li>
+                            <li>
+                                <a href="#returnUrl" >returnUrl</a>
+                            </li>
+                            <li>
+                                <a href="#submitted" >submitted</a>
+                            </li>
+                            <li>
+                                <a href="#submittedValues" >submittedValues</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#connectChatHub" >connectChatHub</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#googleCallBack" >googleCallBack</a>
+                            </li>
+                            <li>
+                                <a href="#initializeForm" >initializeForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initializeGoogleButton" >initializeGoogleButton</a>
+                            </li>
+                            <li>
+                                <a href="#isFieldModified" >isFieldModified</a>
+                            </li>
+                            <li>
+                                <a href="#login" >login</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#saveSubmittedValues" >saveSubmittedValues</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(authService: <a href="../injectables/AuthenticationService.html" target="_self">AuthenticationService</a>, formBuilder: FormBuilder, router: Router, activatedRoute: ActivatedRoute, _renderer2: Renderer2, ngZone: NgZone, chatService: <a href="../injectables/ChatService.html" target="_self">ChatService</a>, _document: Document)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/authentication/login/login.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Construtor para inicializar dependências e configurações.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthenticationService.html" target="_self" >AuthenticationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de autenticação para gerenciar a autenticação de usuários.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Construtor de formulários para criação de formulários reativos.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço do router para navegação.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>activatedRoute</td>
+                                                  
+                                                        <td>
+                                                                    <code>ActivatedRoute</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de rota ativada para acesso a parâmetros de rota.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>_renderer2</td>
+                                                  
+                                                        <td>
+                                                                    <code>Renderer2</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Renderer para manipulação de elementos DOM.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>ngZone</td>
+                                                  
+                                                        <td>
+                                                                    <code>NgZone</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço para execução de operações dentro da zona Angular.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>chatService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ChatService.html" target="_self" >ChatService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de chat para gerenciar conexões de websocket.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>_document</td>
+                                                  
+                                                        <td>
+                                                                    <code>Document</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Documento para acesso ao DOM global.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="connectChatHub"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>connectChatHub</b></span>
+                        <a href="#connectChatHub"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>connectChatHub()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicia a conexão com o serviço de chat através do ChatService, configurando o usuário para receber e enviar mensagens em tempo real.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="googleCallBack"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>googleCallBack</b></span>
+                        <a href="#googleCallBack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>googleCallBack(response: CredentialResponse)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:173</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método de callback para lidar com a autenticação bem-sucedida ou falhas usando o Google One Tap.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>response</td>
+                                            <td>
+                                                        <code>CredentialResponse</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Resposta da autenticação Google One Tap.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeForm"></a>
+                    <span class="name">
+                        <span ><b>initializeForm</b></span>
+                        <a href="#initializeForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>initializeForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa o formulário de login com validações básicas.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initializeGoogleButton"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initializeGoogleButton</b></span>
+                        <a href="#initializeGoogleButton"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initializeGoogleButton()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Configura o botão de login do Google One Tap na página de login. Este método é responsável por carregar a biblioteca do Google, inicializar o botão de login com as configurações desejadas e definir o callback para o processo de autenticação.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isFieldModified"></a>
+                    <span class="name">
+                        <span ><b>isFieldModified</b></span>
+                        <a href="#isFieldModified"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isFieldModified(fieldName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="233"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:233</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica se um campo do formulário foi modificado em relação ao valor originalmente submetido.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fieldName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do campo do formulário a ser verificado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Booleano indicando se o valor do campo foi modificado ou não.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="login"></a>
+                    <span class="name">
+                        <span ><b>login</b></span>
+                        <a href="#login"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>login()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Submete o formulário de login e processa a resposta.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carrega e configura o script externo do Google para o botão de login.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa o componente e prepara o ambiente, como o botão do Google e o formulário de login.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveSubmittedValues"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>saveSubmittedValues</b></span>
+                        <a href="#saveSubmittedValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveSubmittedValues()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="240"
+                                    class="link-to-prism">src/app/authentication/login/login.component.ts:240</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Salva os valores submetidos do formulário de login para comparações futuras. Isso é útil para verificar se os campos foram modificados desde a última submissão.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="banDurationMessage"></a>
+                    <span class="name">
+                        <span ><b>banDurationMessage</b></span>
+                        <a href="#banDurationMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/authentication/login/login.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorMessages"></a>
+                    <span class="name">
+                        <span ><b>errorMessages</b></span>
+                        <a href="#errorMessages"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/authentication/login/login.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="googleButton"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>googleButton</b></span>
+                        <a href="#googleButton"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new ElementRef({})</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;googleButton&#x27;, {static: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/authentication/login/login.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loginForm"></a>
+                    <span class="name">
+                        <span ><b>loginForm</b></span>
+                        <a href="#loginForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/authentication/login/login.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="returnUrl"></a>
+                    <span class="name">
+                        <span ><b>returnUrl</b></span>
+                        <a href="#returnUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/authentication/login/login.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitted"></a>
+                    <span class="name">
+                        <span ><b>submitted</b></span>
+                        <a href="#submitted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/authentication/login/login.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submittedValues"></a>
+                    <span class="name">
+                        <span ><b>submittedValues</b></span>
+                        <a href="#submittedValues"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/authentication/login/login.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, ElementRef, Inject, Renderer2, ViewChild, NgZone } from &#x27;@angular/core&#x27;;
+import { FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { ActivatedRoute, Route, Router } from &#x27;@angular/router&#x27;;
+import { AuthenticationService } from &#x27;../services/authentication.service&#x27;;
+import { take } from &#x27;rxjs&#x27;;
+import { User } from &#x27;../models/user&#x27;;
+import { CredentialResponse } from &#x27;google-one-tap&#x27;;
+import { LoginWithExternal } from &#x27;../models/loginWithExternals&#x27;;
+import { jwtDecode } from &#x27;jwt-decode&#x27;;
+import { DOCUMENT } from &#x27;@angular/common&#x27;;
+import { ChatService } from &#x27;../../chat/services/chat.service&#x27;;
+
+/**
+ * Componente responsável pela interface de login de usuários, incluindo autenticação por email/senha e serviços externos como Google.
+ *
+ * @Component Decorador que define a classe como um componente Angular com seu seletor e metadados associados.
+ */
+@Component({
+  selector: &#x27;app-login&#x27;,
+  templateUrl: &#x27;./login.component.html&#x27;,
+  styleUrl: &#x27;./login.component.css&#x27;
+})
+export class LoginComponent {
+  @ViewChild(&#x27;googleButton&#x27;, { static: true }) googleButton: ElementRef &#x3D; new ElementRef({});
+  loginForm: FormGroup &#x3D; new FormGroup([]);
+  submitted &#x3D; false;
+  errorMessages: any &#x3D; {};
+  submittedValues: any &#x3D; {};
+  returnUrl: string | null &#x3D; null;
+  banDurationMessage: string &#x3D; &#x27;&#x27;;
+
+  /**
+   * Construtor para inicializar dependências e configurações.
+   *
+   * @param authService Serviço de autenticação para gerenciar a autenticação de usuários.
+   * @param formBuilder Construtor de formulários para criação de formulários reativos.
+   * @param router Serviço do router para navegação.
+   * @param activatedRoute Serviço de rota ativada para acesso a parâmetros de rota.
+   * @param _renderer2 Renderer para manipulação de elementos DOM.
+   * @param ngZone Serviço para execução de operações dentro da zona Angular.
+   * @param chatService Serviço de chat para gerenciar conexões de websocket.
+   * @param _document Documento para acesso ao DOM global.
+   */
+  constructor(
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private _renderer2: Renderer2,
+    private ngZone: NgZone,
+    private chatService: ChatService,
+
+    @Inject(DOCUMENT) private _document: Document
+  ) {
+    this.authService.user$.pipe(take(1)).subscribe({
+      next: (user: User | null) &#x3D;&gt; {
+        if (user) {
+          this.router.navigateByUrl(&quot;/home&quot;);
+        } else {
+          this.activatedRoute.queryParamMap.subscribe({
+            next: (params: any) &#x3D;&gt; {
+              if (params) {
+                this.returnUrl &#x3D; params.get(&#x27;returnUrl&#x27;);
+              }
+            }
+          })
+        }
+      }
+    });
+  }
+
+  /**
+   * Inicializa o componente e prepara o ambiente, como o botão do Google e o formulário de login.
+   */
+  ngOnInit(): void {
+    this.initializeGoogleButton();
+    this.initializeForm();
+  }
+
+  /**
+   * Inicializa o formulário de login com validações básicas.
+   */
+  initializeForm() {
+    this.loginForm &#x3D; this.formBuilder.group({
+      email: [&#x27;&#x27;, [Validators.required]],
+      password: [&#x27;&#x27;, [Validators.required]]
+    });
+  }
+
+  /**
+   * Carrega e configura o script externo do Google para o botão de login.
+   */
+  ngAfterViewInit() {
+    const script1 &#x3D; this._renderer2.createElement(&#x27;script&#x27;);
+    script1.src &#x3D; &#x27;https://accounts.google.com/gsi/client&#x27;;
+    script1.async &#x3D; &#x27;true&#x27;;
+    script1.defer &#x3D; &#x27;true&#x27;;
+    this._renderer2.appendChild(this._document.body, script1);
+
+  }
+
+  /**
+   * Submete o formulário de login e processa a resposta.
+   */
+  login() {
+    this.submitted &#x3D; true;
+    this.errorMessages &#x3D; {};
+    this.submittedValues &#x3D; {};
+
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response: any) &#x3D;&gt; {
+          if (response.message &#x3D;&#x3D;&#x3D; &quot;A conta está por confirmar!&quot;) {
+            this.router.navigateByUrl(&#x27;/account/confirm-email&#x27;);
+          } else if (this.returnUrl) {
+            this.router.navigateByUrl(this.returnUrl);
+            this.connectChatHub();
+          } else {
+            this.router.navigateByUrl(&#x27;/home&#x27;);
+            this.connectChatHub();
+          }
+        },
+        error: (error) &#x3D;&gt; {
+          // Handle the banned user case
+          if (error.error.Field &#x3D;&#x3D;&#x3D; &quot;Banned&quot;) {
+            this.router.navigateByUrl(&#x27;/suspendedAccount&#x27;);
+            return;
+          }
+
+          // Handle other errors
+          if (error.error.errors) {
+            error.error.errors.forEach((value: any) &#x3D;&gt; {
+              if (!this.errorMessages[value.field]) {
+                this.errorMessages[value.field] &#x3D; value.message;
+              }
+            });
+            this.saveSubmittedValues();
+          } else {
+            this.errorMessages[error.error.field] &#x3D; error.error.message;
+            this.saveSubmittedValues();
+          }
+        }
+      });
+    }
+  }
+
+
+  /**
+ * Configura o botão de login do Google One Tap na página de login. Este método é responsável por carregar a biblioteca do Google, inicializar o botão de login com as configurações desejadas e definir o callback para o processo de autenticação.
+ */
+  private initializeGoogleButton() {
+    (window as any).onGoogleLibraryLoad &#x3D; () &#x3D;&gt; {
+      //@ts-ignore
+      google.accounts.id.initialize({
+        client_id: &#x27;290666772375-5s2b58vflc2ohpc01f7q1hguo9k5gpi7.apps.googleusercontent.com&#x27;,
+        callback: this.googleCallBack.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+      //@ts-ignore
+      google.accounts.id.renderButton(
+        this.googleButton.nativeElement,
+        { size: &#x27;medium&#x27;, shape: &#x27;rectangular&#x27;, text: &#x27;signin_with&#x27;, logo_alignment: &#x27;center&#x27; }
+      );
+    };
+  }
+
+  /**
+   * Método de callback para lidar com a autenticação bem-sucedida ou falhas usando o Google One Tap.
+   * 
+   * @param response Resposta da autenticação Google One Tap.
+   */
+  private async googleCallBack(response: CredentialResponse) {
+    this.errorMessages &#x3D; {};
+    this.submittedValues &#x3D; {};
+
+    if (response.credential) {
+      const decodedToken: any &#x3D; jwtDecode(response.credential);
+      this.authService.loginWithThirdParty(new LoginWithExternal(response.credential, decodedToken.sub, &quot;google&quot;, decodedToken.email)).subscribe({
+        next: _ &#x3D;&gt; {
+          this.ngZone.run(() &#x3D;&gt; {
+            if (this.returnUrl) {
+              this.router.navigateByUrl(this.returnUrl);
+              this.connectChatHub();
+            } else {
+              this.router.navigateByUrl(&#x27;/&#x27;);
+              this.connectChatHub();
+            }
+          });
+        },
+        error: error &#x3D;&gt; {
+          this.ngZone.run(() &#x3D;&gt; {
+            // Check if the error field indicates the user is banned and handle the message
+            if (error.error.field &#x3D;&#x3D;&#x3D; &quot;Banned&quot;) {
+              // Here we assume the backend sends a readable ban duration in the response
+              //this.banDurationMessage &#x3D; &#x60;A sua conta encontra-se suspensa por ${error.error.BanDuration}.&#x60;;
+              this.banDurationMessage &#x3D; &#x60;A sua conta encontra-se suspensa.&#x60;;
+              this.router.navigateByUrl(&#x27;/suspendedAccount&#x27;, { state: { banDurationMessage: this.banDurationMessage } });
+            } else {
+              // Handle other errors by displaying them to the user
+              if (error.error.errors) {
+                // If there are multiple error messages, process them
+                console.log(error.error.errors);
+                error.error.errors.forEach((value: any) &#x3D;&gt; {
+                  this.errorMessages[value.field] &#x3D; value.message;
+                });
+              } else {
+                // If there&#x27;s a single error message, display it
+                if (error.error.message &#x3D;&#x3D;&#x3D; &quot;Não existe nenhuma conta associada a esse email!&quot;) {
+                  const decodedToken: any &#x3D; jwtDecode(response.credential);
+                  this.router.navigateByUrl(&#x60;/account/register/third-party/google?access_token&#x3D;${response.credential}&amp;userId&#x3D;${decodedToken.sub}&amp;email&#x3D;${decodedToken.email}&#x60;);
+                }
+                this.errorMessages[error.error.field] &#x3D; error.error.message;
+              }
+              this.saveSubmittedValues();
+            }
+          });
+        }
+      });
+    } else {
+      // Handle the case where the Google sign-in response did not include a credential
+      this.errorMessages[&#x27;googleLogin&#x27;] &#x3D; &#x27;Failed to sign in with Google.&#x27;;
+      this.saveSubmittedValues();
+    }
+  }
+
+  /**
+ * Verifica se um campo do formulário foi modificado em relação ao valor originalmente submetido.
+ *
+ * @param fieldName O nome do campo do formulário a ser verificado.
+ * @returns Booleano indicando se o valor do campo foi modificado ou não.
+ */
+  isFieldModified(fieldName: string): boolean {
+    return this.loginForm.get(fieldName)!.value !&#x3D;&#x3D; this.submittedValues[fieldName];
+  }
+
+  /**
+ * Salva os valores submetidos do formulário de login para comparações futuras. Isso é útil para verificar se os campos foram modificados desde a última submissão.
+ */
+  private saveSubmittedValues(): void {
+    this.submittedValues[&quot;email&quot;] &#x3D; this.loginForm.get(&quot;email&quot;)!.value;
+    this.submittedValues[&quot;password&quot;] &#x3D; this.loginForm.get(&quot;password&quot;)!.value;
+  }
+
+  /**
+ * Inicia a conexão com o serviço de chat através do ChatService, configurando o usuário para receber e enviar mensagens em tempo real.
+ */
+  private connectChatHub(): void {
+    this.chatService.startConnectionAndListen();
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;login-container&quot;&gt;
+  &lt;img src&#x3D;&quot;assets/img/Logo.png&quot; alt&#x3D;&quot;Logo Image&quot; class&#x3D;&quot;logo&quot; /&gt;
+  &lt;div class&#x3D;&quot;login-form-container&quot;&gt;
+
+    &lt;form [formGroup]&#x3D;&quot;loginForm&quot; class&#x3D;&quot;login-form&quot; (ngSubmit)&#x3D;&quot;login()&quot; autocomplete&#x3D;&quot;off&quot;&gt;
+
+
+      &lt;div class&#x3D;&quot;input-with-icon&quot;
+           [class.has-error]&#x3D;&quot;(submitted &amp;&amp; (loginForm.get(&#x27;email&#x27;)?.errors || (errorMessages[&#x27;Email&#x27;] &amp;&amp; !isFieldModified(&#x27;email&#x27;)))) || errorMessages[&#x27;ThirdPartyEmail&#x27;]&quot;&gt;
+        &lt;i class&#x3D;&quot;fa fa-envelope&quot;&gt;&lt;/i&gt;
+        &lt;input formControlName&#x3D;&quot;email&quot; type&#x3D;&quot;email&quot; placeholder&#x3D;&quot;EMAIL&quot;
+               [class.is-invalid]&#x3D;&quot;submitted &amp;&amp; loginForm.get(&#x27;email&#x27;)?.errors&quot; /&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;error-container&quot; *ngIf&#x3D;&quot;(submitted &amp;&amp; (loginForm.get(&#x27;email&#x27;)?.errors || errorMessages[&#x27;Email&#x27;])) || errorMessages[&#x27;ThirdPartyEmail&#x27;]&quot;&gt;
+        &lt;span class&#x3D;&quot;error-message&quot; *ngIf&#x3D;&quot;loginForm.get(&#x27;email&#x27;)?.hasError(&#x27;required&#x27;) &amp;&amp; !errorMessages[&#x27;ThirdPartyEmail&#x27;]&quot;&gt;
+          O email é obrigatório!
+        &lt;/span&gt;
+        &lt;span class&#x3D;&quot;error-message&quot; *ngIf&#x3D;&quot;!loginForm.get(&#x27;email&#x27;)?.errors &amp;&amp; errorMessages[&#x27;Email&#x27;] &amp;&amp; !isFieldModified(&#x27;email&#x27;)&quot;&gt;
+          {{ errorMessages[&#x27;Email&#x27;] }}
+        &lt;/span&gt;
+        &lt;span class&#x3D;&quot;error-message&quot; *ngIf&#x3D;&quot;errorMessages[&#x27;ThirdPartyEmail&#x27;]&quot;&gt;
+          {{ errorMessages[&#x27;ThirdPartyEmail&#x27;] }}
+        &lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;input-with-icon&quot;
+           [class.has-error]&#x3D;&quot;submitted &amp;&amp; (loginForm.get(&#x27;password&#x27;)?.errors || (errorMessages[&#x27;Password&#x27;] &amp;&amp; !isFieldModified(&#x27;password&#x27;)))&quot;&gt;
+        &lt;i class&#x3D;&quot;fa fa-lock&quot;&gt;&lt;/i&gt;
+        &lt;input formControlName&#x3D;&quot;password&quot; type&#x3D;&quot;password&quot; placeholder&#x3D;&quot;PALAVRA-PASSE&quot;
+               [class.is-invalid]&#x3D;&quot;submitted &amp;&amp; loginForm.get(&#x27;password&#x27;)?.errors&quot; /&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;error-container&quot; *ngIf&#x3D;&quot;submitted &amp;&amp; (loginForm.get(&#x27;password&#x27;)?.errors || errorMessages[&#x27;Password&#x27;])&quot;&gt;
+        &lt;span class&#x3D;&quot;error-message&quot; *ngIf&#x3D;&quot;loginForm.get(&#x27;password&#x27;)?.hasError(&#x27;required&#x27;)&quot;&gt;
+          A palavra-passe é obrigatória!
+        &lt;/span&gt;
+        &lt;span class&#x3D;&quot;error-message&quot; *ngIf&#x3D;&quot;!loginForm.get(&#x27;password&#x27;)?.errors &amp;&amp; errorMessages[&#x27;Password&#x27;] &amp;&amp; !isFieldModified(&#x27;password&#x27;)&quot;&gt;
+          {{ errorMessages[&#x27;Password&#x27;] }}
+        &lt;/span&gt;
+      &lt;/div&gt;
+
+
+      &lt;authentication-button [buttonText]&#x3D;&quot;&#x27;LOGIN&#x27;&quot; [buttonType]&#x3D;&quot;&#x27;submit&#x27;&quot;&gt;&lt;/authentication-button&gt;
+      &lt;a routerLink&#x3D;&quot;/account/send-email/forgot-password&quot; class&#x3D;&quot;forgot-password-link&quot;&gt;Esqueceu-se da palavra-passe?&lt;/a&gt;
+      &lt;div class&#x3D;&quot;divider&quot;&gt;&lt;/div&gt;
+      &lt;div #googleButton&gt;&lt;/div&gt;
+
+      &lt;!--&lt;authentication-button [buttonText]&#x3D;&quot;&#x27;LOGIN COM GOOGLE&#x27;&quot; [buttonType]&#x3D;&quot;&#x27;submit&#x27;&quot; [icon]&#x3D;&quot;&#x27;assets/img/google.png&#x27;&quot;&gt;&lt;/authentication-button&gt;--&gt;
+      &lt;span class&#x3D;&quot;register-link&quot;&gt;
+        Não possui conta?
+        &lt;span class&#x3D;&quot;login-separator&quot;&gt; &lt;/span&gt; &lt;!-- Espaçador --&gt;
+        &lt;a routerLink&#x3D;&quot;/account/register&quot; class&#x3D;&quot;login-link&quot;&gt;Registe-se aqui!&lt;/a&gt;
+      &lt;/span&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="login-container">  <img src="assets/img/Logo.png" alt="Logo Image" class="logo" />  <div class="login-form-container">    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()" autocomplete="off">      <div class="input-with-icon"           [class.has-error]="(submitted && (loginForm.get(\'email\')?.errors || (errorMessages[\'Email\'] && !isFieldModified(\'email\')))) || errorMessages[\'ThirdPartyEmail\']">        <i class="fa fa-envelope"></i>        <input formControlName="email" type="email" placeholder="EMAIL"               [class.is-invalid]="submitted && loginForm.get(\'email\')?.errors" />      </div>      <div class="error-container" *ngIf="(submitted && (loginForm.get(\'email\')?.errors || errorMessages[\'Email\'])) || errorMessages[\'ThirdPartyEmail\']">        <span class="error-message" *ngIf="loginForm.get(\'email\')?.hasError(\'required\') && !errorMessages[\'ThirdPartyEmail\']">          O email é obrigatório!        </span>        <span class="error-message" *ngIf="!loginForm.get(\'email\')?.errors && errorMessages[\'Email\'] && !isFieldModified(\'email\')">          {{ errorMessages[\'Email\'] }}        </span>        <span class="error-message" *ngIf="errorMessages[\'ThirdPartyEmail\']">          {{ errorMessages[\'ThirdPartyEmail\'] }}        </span>      </div>      <div class="input-with-icon"           [class.has-error]="submitted && (loginForm.get(\'password\')?.errors || (errorMessages[\'Password\'] && !isFieldModified(\'password\')))">        <i class="fa fa-lock"></i>        <input formControlName="password" type="password" placeholder="PALAVRA-PASSE"               [class.is-invalid]="submitted && loginForm.get(\'password\')?.errors" />      </div>      <div class="error-container" *ngIf="submitted && (loginForm.get(\'password\')?.errors || errorMessages[\'Password\'])">        <span class="error-message" *ngIf="loginForm.get(\'password\')?.hasError(\'required\')">          A palavra-passe é obrigatória!        </span>        <span class="error-message" *ngIf="!loginForm.get(\'password\')?.errors && errorMessages[\'Password\'] && !isFieldModified(\'password\')">          {{ errorMessages[\'Password\'] }}        </span>      </div>      <authentication-button [buttonText]="\'LOGIN\'" [buttonType]="\'submit\'"></authentication-button>      <a routerLink="/account/send-email/forgot-password" class="forgot-password-link">Esqueceu-se da palavra-passe?</a>      <div class="divider"></div>      <div #googleButton></div>      <!--<authentication-button [buttonText]="\'LOGIN COM GOOGLE\'" [buttonType]="\'submit\'" [icon]="\'assets/img/google.png\'"></authentication-button>-->      <span class="register-link">        Não possui conta?        <span class="login-separator"> </span> <!-- Espaçador -->        <a routerLink="/account/register" class="login-link">Registe-se aqui!</a>      </span>    </form>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutUsComponent', 'selector': 'app-about-us'},{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminStatisticsComponent', 'selector': 'app-admin-statistics'},{'name': 'AllMoviesPageComponent', 'selector': 'app-all-movies-page'},{'name': 'AllSeriesPageComponent', 'selector': 'app-all-series-page'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthenticationButtonComponent', 'selector': 'authentication-button'},{'name': 'BlockedAccountComponent', 'selector': 'app-blocked-account'},{'name': 'ChatComponent', 'selector': 'app-chat'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'EditProfileComponent', 'selector': 'app-edit-profile'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GamificationComponent', 'selector': 'app-gamification'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MovieDetailsComponent', 'selector': 'app-movie-details'},{'name': 'NavMenuComponent', 'selector': 'app-nav-menu'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'PendingVerificationComponent', 'selector': 'app-pending-verification'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RegisterWithThirdPartyComponent', 'selector': 'app-register-with-third-party'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SearchServiceComponent', 'selector': 'app-search-service'},{'name': 'SeasonDetailsComponent', 'selector': 'app-season-details'},{'name': 'SeasonDetailsInfoComponent', 'selector': 'app-season-details-info'},{'name': 'SendEmailComponent', 'selector': 'app-send-email'},{'name': 'SeriesDetailsComponent', 'selector': 'app-series-details'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'SuspendedAccountComponent', 'selector': 'app-suspended-account'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'LoginComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LoginComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

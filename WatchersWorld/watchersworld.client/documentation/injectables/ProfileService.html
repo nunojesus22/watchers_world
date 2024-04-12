@@ -1,0 +1,2685 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ProfileService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/profile/services/profile.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Este serviço é responsável pela gestão de operações relacionadas ao perfil do utilizador,
+como obter e atualizar dados do perfil, seguir e deixar de seguir utilizadores,
+obter listas de media favoritos e outras ações relacionadas.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#acceptFollowRequest" >acceptFollowRequest</a>
+                            </li>
+                            <li>
+                                <a href="#alreadyFollows" >alreadyFollows</a>
+                            </li>
+                            <li>
+                                <a href="#banUserPermanently" >banUserPermanently</a>
+                            </li>
+                            <li>
+                                <a href="#BanUserTemporarily" >BanUserTemporarily</a>
+                            </li>
+                            <li>
+                                <a href="#deleteOwnAccount" >deleteOwnAccount</a>
+                            </li>
+                            <li>
+                                <a href="#followUser" >followUser</a>
+                            </li>
+                            <li>
+                                <a href="#getFavoriteMedia" >getFavoriteMedia</a>
+                            </li>
+                            <li>
+                                <a href="#getFollowers" >getFollowers</a>
+                            </li>
+                            <li>
+                                <a href="#getFollowing" >getFollowing</a>
+                            </li>
+                            <li>
+                                <a href="#getHeaders" >getHeaders</a>
+                            </li>
+                            <li>
+                                <a href="#getJWT" >getJWT</a>
+                            </li>
+                            <li>
+                                <a href="#getPendingFollowRequests" >getPendingFollowRequests</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalFavoriteActors" >getTotalFavoriteActors</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalQuizAttempts" >getTotalQuizAttempts</a>
+                            </li>
+                            <li>
+                                <a href="#getTotalRatingsByUser" >getTotalRatingsByUser</a>
+                            </li>
+                            <li>
+                                <a href="#getUserData" >getUserData</a>
+                            </li>
+                            <li>
+                                <a href="#getUserProfiles" >getUserProfiles</a>
+                            </li>
+                            <li>
+                                <a href="#getUserProfilesNotLoggedIn" >getUserProfilesNotLoggedIn</a>
+                            </li>
+                            <li>
+                                <a href="#getUserRole" >getUserRole</a>
+                            </li>
+                            <li>
+                                <a href="#getUserTotalComments" >getUserTotalComments</a>
+                            </li>
+                            <li>
+                                <a href="#getUserTotalLikesReceived" >getUserTotalLikesReceived</a>
+                            </li>
+                            <li>
+                                <a href="#getUserTotalMedals" >getUserTotalMedals</a>
+                            </li>
+                            <li>
+                                <a href="#getUserWatchedMedia" >getUserWatchedMedia</a>
+                            </li>
+                            <li>
+                                <a href="#getUserWatchLaterMedia" >getUserWatchLaterMedia</a>
+                            </li>
+                            <li>
+                                <a href="#rejectFollowRequest" >rejectFollowRequest</a>
+                            </li>
+                            <li>
+                                <a href="#setUserData" >setUserData</a>
+                            </li>
+                            <li>
+                                <a href="#unfollowUser" >unfollowUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: HttpClient, router: Router)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/profile/services/profile.service.ts:19</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpClient</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="acceptFollowRequest"></a>
+                    <span class="name">
+                        <span ><b>acceptFollowRequest</b></span>
+                        <a href="#acceptFollowRequest"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>acceptFollowRequest(usernameAuthenticated: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, usernameWhoSend: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="238"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:238</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Aceita uma solicitação de seguimento de outro utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usernameAuthenticated</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador autenticado que aceita a solicitação.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>usernameWhoSend</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil que enviou a solicitação de seguimento.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de aceitação de seguimento.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alreadyFollows"></a>
+                    <span class="name">
+                        <span ><b>alreadyFollows</b></span>
+                        <a href="#alreadyFollows"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>alreadyFollows(usernameAuthenticated: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, usernameToFollow: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="148"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica se o utilizador autenticado já segue outro utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usernameAuthenticated</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador autenticado.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>usernameToFollow</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil potencialmente seguido.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite um valor booleano indicando se já existe uma relação de seguimento.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="banUserPermanently"></a>
+                    <span class="name">
+                        <span ><b>banUserPermanently</b></span>
+                        <a href="#banUserPermanently"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>banUserPermanently(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:192</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Bane permanentemente um utilizador do sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil a ser banido permanentemente.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de banimento.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BanUserTemporarily"></a>
+                    <span class="name">
+                        <span ><b>BanUserTemporarily</b></span>
+                        <a href="#BanUserTemporarily"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>BanUserTemporarily(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, banDurationInDays: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="204"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:204</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Bane um utilizador temporariamente do sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil a ser banido temporariamente.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>banDurationInDays</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>A duração do banimento em dias.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de banimento temporário.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteOwnAccount"></a>
+                    <span class="name">
+                        <span ><b>deleteOwnAccount</b></span>
+                        <a href="#deleteOwnAccount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteOwnAccount(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="325"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:325</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Permite a um utilizador eliminar a sua própria conta e todos os dados associados.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador que deseja eliminar a sua conta.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de eliminação da conta.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followUser"></a>
+                    <span class="name">
+                        <span ><b>followUser</b></span>
+                        <a href="#followUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>followUser(usernameAuthenticated: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, usernameToFollow: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Permite a um utilizador seguir outro utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usernameAuthenticated</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador que realizará a ação de seguir.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>usernameToFollow</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil a ser seguido.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de seguir.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFavoriteMedia"></a>
+                    <span class="name">
+                        <span ><b>getFavoriteMedia</b></span>
+                        <a href="#getFavoriteMedia"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFavoriteMedia(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém a lista de media favoritos de um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cuja lista de media favoritos é solicitada.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UserMedia.html" target="_self" >Observable&lt;UserMedia[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista de media favoritos do utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowers"></a>
+                    <span class="name">
+                        <span ><b>getFollowers</b></span>
+                        <a href="#getFollowers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFollowers(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém a lista de seguidores de um determinado utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cuja lista de seguidores é solicitada.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FollowerProfile[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite a lista de perfis que seguem o utilizador especificado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowing"></a>
+                    <span class="name">
+                        <span ><b>getFollowing</b></span>
+                        <a href="#getFollowing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFollowing(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="136"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém a lista de utilizadores que um determinado utilizador segue.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cuja lista de seguidos é solicitada.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FollowerProfile[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite a lista de perfis seguidos pelo utilizador especificado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHeaders"></a>
+                    <span class="name">
+                        <span ><b>getHeaders</b></span>
+                        <a href="#getHeaders"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getHeaders()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Constrói os cabeçalhos HTTP para inclusão do token JWT nas requisições à API.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um objeto HttpHeaders configurado com o tipo de conteúdo e o token JWT.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getJWT"></a>
+                    <span class="name">
+                        <span ><b>getJWT</b></span>
+                        <a href="#getJWT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getJWT()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Recupera o token JWT do localStorage do navegador. Este token é utilizado para
+autenticação nas requisições à API.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O token JWT ou &#39;No JWT&#39; se o token não estiver presente.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPendingFollowRequests"></a>
+                    <span class="name">
+                        <span ><b>getPendingFollowRequests</b></span>
+                        <a href="#getPendingFollowRequests"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPendingFollowRequests(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="226"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:226</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém as solicitações de seguimento pendentes para um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cujas solicitações pendentes são solicitadas.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;FollowerProfile[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista de perfis que enviaram solicitações de seguimento.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalFavoriteActors"></a>
+                    <span class="name">
+                        <span ><b>getTotalFavoriteActors</b></span>
+                        <a href="#getTotalFavoriteActors"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalFavoriteActors()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="293"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:293</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o total de atores favoritos escolhidos pelos utilizadores na plataforma.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de atores favoritos escolhidos por todos os utilizadores.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalQuizAttempts"></a>
+                    <span class="name">
+                        <span ><b>getTotalQuizAttempts</b></span>
+                        <a href="#getTotalQuizAttempts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalQuizAttempts(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="283"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o total de tentativas em quizzes feitas por um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador cujo total de tentativas em quizzes é solicitado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de tentativas feitas pelo utilizador em quizzes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTotalRatingsByUser"></a>
+                    <span class="name">
+                        <span ><b>getTotalRatingsByUser</b></span>
+                        <a href="#getTotalRatingsByUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTotalRatingsByUser()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="303"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:303</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o total de avaliações feitas por um utilizador.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de avaliações feitas pelo utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserData"></a>
+                    <span class="name">
+                        <span ><b>getUserData</b></span>
+                        <a href="#getUserData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserData(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém os dados do perfil de um utilizador específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cujos dados do perfil são solicitados.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Profile.html" target="_self" >Observable&lt;Profile&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite os dados do perfil do utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserProfiles"></a>
+                    <span class="name">
+                        <span ><b>getUserProfiles</b></span>
+                        <a href="#getUserProfiles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserProfiles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="79"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém os perfis de todos os utilizadores.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Profile.html" target="_self" >Observable&lt;Profile[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista de perfis de utilizadores.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserProfilesNotLoggedIn"></a>
+                    <span class="name">
+                        <span ><b>getUserProfilesNotLoggedIn</b></span>
+                        <a href="#getUserProfilesNotLoggedIn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserProfilesNotLoggedIn(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém os perfis de utilizadores que não estão atualmente logados.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil a ser excluído da lista.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Profile.html" target="_self" >Observable&lt;Profile[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista de perfis de utilizadores excluindo o utilizador atual.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserRole"></a>
+                    <span class="name">
+                        <span ><b>getUserRole</b></span>
+                        <a href="#getUserRole"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserRole(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="216"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:216</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o(s) papel(eis) de um utilizador no sistema.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cujo(s) papel(eis) é(são) solicitado(s).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista contendo o(s) papel(eis) do utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserTotalComments"></a>
+                    <span class="name">
+                        <span ><b>getUserTotalComments</b></span>
+                        <a href="#getUserTotalComments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserTotalComments(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="261"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:261</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o total de comentários feitos por um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador cujo total de comentários é solicitado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de comentários feitos pelo utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserTotalLikesReceived"></a>
+                    <span class="name">
+                        <span ><b>getUserTotalLikesReceived</b></span>
+                        <a href="#getUserTotalLikesReceived"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserTotalLikesReceived(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="272"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o total de likes recebidos nos comentários de um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador cujo total de likes recebidos é solicitado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de likes recebidos pelo utilizador em seus comentários.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserTotalMedals"></a>
+                    <span class="name">
+                        <span ><b>getUserTotalMedals</b></span>
+                        <a href="#getUserTotalMedals"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserTotalMedals(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="314"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:314</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o total de medalhas conquistadas por um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome do utilizador cujo total de medalhas conquistadas é solicitado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o número total de medalhas conquistadas pelo utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserWatchedMedia"></a>
+                    <span class="name">
+                        <span ><b>getUserWatchedMedia</b></span>
+                        <a href="#getUserWatchedMedia"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserWatchedMedia(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="170"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:170</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém a lista de media assistidos por um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cuja lista de media assistidos é solicitada.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UserMedia.html" target="_self" >Observable&lt;UserMedia[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista de media assistidos pelo utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserWatchLaterMedia"></a>
+                    <span class="name">
+                        <span ><b>getUserWatchLaterMedia</b></span>
+                        <a href="#getUserWatchLaterMedia"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUserWatchLaterMedia(username: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém a lista de media para assistir mais tarde por um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>username</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador cuja lista de media para assistir mais tarde é solicitada.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UserMedia.html" target="_self" >Observable&lt;UserMedia[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite uma lista de media marcados para assistir mais tarde pelo utilizador.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rejectFollowRequest"></a>
+                    <span class="name">
+                        <span ><b>rejectFollowRequest</b></span>
+                        <a href="#rejectFollowRequest"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>rejectFollowRequest(usernameAuthenticated: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, usernameWhoSend: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="250"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:250</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Rejeita uma solicitação de seguimento de outro utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usernameAuthenticated</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do utilizador autenticado que rejeita a solicitação.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>usernameWhoSend</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil que enviou a solicitação de seguimento.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de rejeição de seguimento.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setUserData"></a>
+                    <span class="name">
+                        <span ><b>setUserData</b></span>
+                        <a href="#setUserData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setUserData(model: <a href="../classes/Profile.html" target="_self">Profile</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Atualiza os dados do perfil de um utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../classes/Profile.html" target="_self" >Profile</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os dados do perfil a serem atualizados.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de atualização.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unfollowUser"></a>
+                    <span class="name">
+                        <span ><b>unfollowUser</b></span>
+                        <a href="#unfollowUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>unfollowUser(usernameAuthenticated: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, usernameToFollow: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/app/profile/services/profile.service.ts:114</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Permite a um utilizador deixar de seguir outro utilizador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usernameAuthenticated</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador que realizará a ação de deixar de seguir.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>usernameToFollow</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome de utilizador do perfil a ser deixado de seguir.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Um Observable que emite o resultado da operação de deixar de seguir.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { User } from &#x27;../../authentication/models/user&#x27;;
+import { environment } from &#x27;../../../environments/environment.development&#x27;;
+import { Profile } from &#x27;../models/profile&#x27;;
+import { FollowerProfile } from &#x27;../models/follower-profile&#x27;;
+import { UserMedia } from &#x27;../models/user-media&#x27;;
+
+/**
+ * Este serviço é responsável pela gestão de operações relacionadas ao perfil do utilizador,
+ * como obter e atualizar dados do perfil, seguir e deixar de seguir utilizadores,
+ * obter listas de media favoritos e outras ações relacionadas.
+ */
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class ProfileService {
+  constructor(private http: HttpClient, private router: Router) { }
+
+  /**
+   * Recupera o token JWT do localStorage do navegador. Este token é utilizado para
+   * autenticação nas requisições à API.
+   * 
+   * @returns O token JWT ou &#x27;No JWT&#x27; se o token não estiver presente.
+   */
+  getJWT() {
+    const key &#x3D; localStorage.getItem(environment.userKey);
+    if (key) {
+      const user &#x3D; JSON.parse(key) as User;
+      return user.jwt;
+    } else {
+      return &#x27;No JWT&#x27;;
+    }
+  }
+
+  /**
+   * Constrói os cabeçalhos HTTP para inclusão do token JWT nas requisições à API.
+   * 
+   * @returns Um objeto HttpHeaders configurado com o tipo de conteúdo e o token JWT.
+   */
+  getHeaders() {
+    const jwt &#x3D; this.getJWT();
+    const headers &#x3D; new HttpHeaders({
+      &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      &#x27;Authorization&#x27;: &#x60;Bearer ${jwt}&#x60;
+    });
+    return headers;
+  }
+
+  /**
+   * Obtém os dados do perfil de um utilizador específico.
+   * 
+   * @param username O nome de utilizador cujos dados do perfil são solicitados.
+   * @returns Um Observable que emite os dados do perfil do utilizador.
+   */
+  getUserData(username: string): Observable&lt;Profile&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;Profile&gt;(&#x60;${environment.appUrl}/api/profile/get-user-info/${username}&#x60;, { headers });
+  }
+
+  /**
+   * Atualiza os dados do perfil de um utilizador.
+   * 
+   * @param model Os dados do perfil a serem atualizados.
+   * @returns Um Observable que emite o resultado da operação de atualização.
+   */
+  setUserData(model: Profile): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.put&lt;Profile&gt;(&#x60;${environment.appUrl}/api/profile/update-user-info&#x60;, model, { headers });
+  }
+
+  /**
+  * Obtém os perfis de todos os utilizadores.
+  * 
+  * @returns Um Observable que emite uma lista de perfis de utilizadores.
+  */
+  getUserProfiles(): Observable&lt;Profile[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;Profile[]&gt;(&#x60;${environment.appUrl}/api/profile/get-users-profiles&#x60;, { headers });
+  }
+
+  /**
+   * Obtém os perfis de utilizadores que não estão atualmente logados.
+   * 
+   * @param username O nome de utilizador do perfil a ser excluído da lista.
+   * @returns Um Observable que emite uma lista de perfis de utilizadores excluindo o utilizador atual.
+   */
+  getUserProfilesNotLoggedIn(username: string): Observable&lt;Profile[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;Profile[]&gt;(&#x60;${environment.appUrl}/api/profile/get-users-profiles-not-logged-in/${username}&#x60;, { headers });
+  }
+
+  /**
+   * Permite a um utilizador seguir outro utilizador.
+   * 
+   * @param usernameAuthenticated O nome de utilizador que realizará a ação de seguir.
+   * @param usernameToFollow O nome de utilizador do perfil a ser seguido.
+   * @returns Um Observable que emite o resultado da operação de seguir.
+   */
+  followUser(usernameAuthenticated: string, usernameToFollow: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post&lt;any&gt;(&#x60;${environment.appUrl}/api/profile/follow/${usernameAuthenticated}/${usernameToFollow}&#x60;, {}, { headers });
+  }
+
+  /**
+   * Permite a um utilizador deixar de seguir outro utilizador.
+   * 
+   * @param usernameAuthenticated O nome de utilizador que realizará a ação de deixar de seguir.
+   * @param usernameToFollow O nome de utilizador do perfil a ser deixado de seguir.
+   * @returns Um Observable que emite o resultado da operação de deixar de seguir.
+   */
+  unfollowUser(usernameAuthenticated: string, usernameToFollow: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.delete&lt;any&gt;(&#x60;${environment.appUrl}/api/profile/unfollow/${usernameAuthenticated}/${usernameToFollow}&#x60;, { headers });
+  }
+
+  /**
+    * Obtém a lista de seguidores de um determinado utilizador.
+    * 
+    * @param username O nome de utilizador cuja lista de seguidores é solicitada.
+    * @returns Um Observable que emite a lista de perfis que seguem o utilizador especificado.
+    */
+  getFollowers(username: string): Observable&lt;FollowerProfile[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;FollowerProfile[]&gt;(&#x60;${environment.appUrl}/api/profile/get-followers/${username}&#x60;, { headers });
+  }
+
+  /**
+   * Obtém a lista de utilizadores que um determinado utilizador segue.
+   * 
+   * @param username O nome de utilizador cuja lista de seguidos é solicitada.
+   * @returns Um Observable que emite a lista de perfis seguidos pelo utilizador especificado.
+   */
+  getFollowing(username: string): Observable&lt;FollowerProfile[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;FollowerProfile[]&gt;(&#x60;${environment.appUrl}/api/profile/get-whoFollow/${username}&#x60;, { headers });
+  }
+
+  /**
+  * Verifica se o utilizador autenticado já segue outro utilizador específico.
+  * 
+  * @param usernameAuthenticated O nome de utilizador do utilizador autenticado.
+  * @param usernameToFollow O nome de utilizador do perfil potencialmente seguido.
+  * @returns Um Observable que emite um valor booleano indicando se já existe uma relação de seguimento.
+  */
+  alreadyFollows(usernameAuthenticated: string, usernameToFollow: string): Observable&lt;boolean&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;boolean&gt;(&#x60;${environment.appUrl}/api/profile/alreadyFollows/${usernameAuthenticated}/${usernameToFollow}&#x60;, { headers });
+  }
+
+  /**
+  * Obtém a lista de media favoritos de um utilizador.
+  * 
+  * @param username O nome de utilizador cuja lista de media favoritos é solicitada.
+  * @returns Um Observable que emite uma lista de media favoritos do utilizador.
+  */
+  getFavoriteMedia(username: string): Observable&lt;UserMedia[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;UserMedia[]&gt;(&#x60;${environment.appUrl}/api/media/get-media-favorites-list/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Obtém a lista de media assistidos por um utilizador.
+   * 
+   * @param username O nome de utilizador cuja lista de media assistidos é solicitada.
+   * @returns Um Observable que emite uma lista de media assistidos pelo utilizador.
+   */
+  getUserWatchedMedia(username: string): Observable&lt;UserMedia[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;UserMedia[]&gt;(&#x60;${environment.appUrl}/api/media/get-media-watched-list/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Obtém a lista de media para assistir mais tarde por um utilizador.
+   * 
+   * @param username O nome de utilizador cuja lista de media para assistir mais tarde é solicitada.
+   * @returns Um Observable que emite uma lista de media marcados para assistir mais tarde pelo utilizador.
+   */
+  getUserWatchLaterMedia(username: string): Observable&lt;UserMedia[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;UserMedia[]&gt;(&#x60;${environment.appUrl}/api/media/get-watch-later-list/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Bane permanentemente um utilizador do sistema.
+   * 
+   * @param username O nome de utilizador do perfil a ser banido permanentemente.
+   * @returns Um Observable que emite o resultado da operação de banimento.
+   */
+  banUserPermanently(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post&lt;any&gt;(&#x60;${environment.appUrl}/api/account/ban-user-permanently/${encodeURIComponent(username)}&#x60;, {}, { headers });
+  }
+
+   /**
+   * Bane um utilizador temporariamente do sistema.
+   * 
+   * @param username O nome de utilizador do perfil a ser banido temporariamente.
+   * @param banDurationInDays A duração do banimento em dias.
+   * @returns Um Observable que emite o resultado da operação de banimento temporário.
+   */
+  BanUserTemporarily(username: string, banDurationInDays: number): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    const url &#x3D; &#x60;${environment.appUrl}/api/account/ban-user-temporarily/${encodeURIComponent(username)}?banDurationInDays&#x3D;${banDurationInDays}&#x60;;
+    return this.http.post&lt;any&gt;(url, {}, { headers });
+  }
+
+   /**
+   * Obtém o(s) papel(eis) de um utilizador no sistema.
+   * 
+   * @param username O nome de utilizador cujo(s) papel(eis) é(são) solicitado(s).
+   * @returns Um Observable que emite uma lista contendo o(s) papel(eis) do utilizador.
+   */
+  getUserRole(username: string) {
+    return this.http.get&lt;string[]&gt;(&#x60;${environment.appUrl}/api/account/getUserRole/${username}&#x60;);
+  }
+
+   /**
+   * Obtém as solicitações de seguimento pendentes para um utilizador.
+   * 
+   * @param username O nome de utilizador cujas solicitações pendentes são solicitadas.
+   * @returns Um Observable que emite uma lista de perfis que enviaram solicitações de seguimento.
+   */
+  getPendingFollowRequests(username: string): Observable&lt;FollowerProfile[]&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;FollowerProfile[]&gt;(&#x60;${environment.appUrl}/api/profile/get-whosPending/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Aceita uma solicitação de seguimento de outro utilizador.
+   * 
+   * @param usernameAuthenticated O nome de utilizador do utilizador autenticado que aceita a solicitação.
+   * @param usernameWhoSend O nome de utilizador do perfil que enviou a solicitação de seguimento.
+   * @returns Um Observable que emite o resultado da operação de aceitação de seguimento.
+   */
+  acceptFollowRequest(usernameAuthenticated: string, usernameWhoSend: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.post&lt;any&gt;(&#x60;${environment.appUrl}/api/profile/acceptFollow/${usernameAuthenticated}/${usernameWhoSend}&#x60;, {}, { headers });
+  }
+
+   /**
+   * Rejeita uma solicitação de seguimento de outro utilizador.
+   * 
+   * @param usernameAuthenticated O nome de utilizador do utilizador autenticado que rejeita a solicitação.
+   * @param usernameWhoSend O nome de utilizador do perfil que enviou a solicitação de seguimento.
+   * @returns Um Observable que emite o resultado da operação de rejeição de seguimento.
+   */
+  rejectFollowRequest(usernameAuthenticated: string, usernameWhoSend: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.delete&lt;any&gt;(&#x60;${environment.appUrl}/api/profile/rejectFollow/${usernameAuthenticated}/${usernameWhoSend}&#x60;, { headers });
+  }
+
+   /**
+   * Obtém o total de comentários feitos por um utilizador.
+   * 
+   * @param username O nome do utilizador cujo total de comentários é solicitado.
+   * @returns Um Observable que emite o número total de comentários feitos pelo utilizador.
+   */
+  getUserTotalComments(username: string): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/media/get-total-comments/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Obtém o total de likes recebidos nos comentários de um utilizador.
+   * 
+   * @param username O nome do utilizador cujo total de likes recebidos é solicitado.
+   * @returns Um Observable que emite o número total de likes recebidos pelo utilizador em seus comentários.
+   */
+  getUserTotalLikesReceived(username: string): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/media/get-total-likes-received/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Obtém o total de tentativas em quizzes feitas por um utilizador.
+   * 
+   * @param username O nome do utilizador cujo total de tentativas em quizzes é solicitado.
+   * @returns Um Observable que emite o número total de tentativas feitas pelo utilizador em quizzes.
+   */
+  getTotalQuizAttempts(username: string): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/quiz/total-attempts/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Obtém o total de atores favoritos escolhidos pelos utilizadores na plataforma.
+   * 
+   * @returns Um Observable que emite o número total de atores favoritos escolhidos por todos os utilizadores.
+   */
+  getTotalFavoriteActors(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/FavoriteActorChoice/get-total-favorite-actors&#x60;, { headers });
+  }
+
+   /**
+   * Obtém o total de avaliações feitas por um utilizador.
+   * 
+   * @returns Um Observable que emite o número total de avaliações feitas pelo utilizador.
+   */
+  getTotalRatingsByUser(): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/UserRatingMedia/get-rating-by-user&#x60;, { headers });
+  }
+
+   /**
+   * Obtém o total de medalhas conquistadas por um utilizador.
+   * 
+   * @param username O nome do utilizador cujo total de medalhas conquistadas é solicitado.
+   * @returns Um Observable que emite o número total de medalhas conquistadas pelo utilizador.
+   */
+  getUserTotalMedals(username: string): Observable&lt;number&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.get&lt;number&gt;(&#x60;${environment.appUrl}/api/gamification/medals/${username}&#x60;, { headers });
+  }
+
+   /**
+   * Permite a um utilizador eliminar a sua própria conta e todos os dados associados.
+   * 
+   * @param username O nome do utilizador que deseja eliminar a sua conta.
+   * @returns Um Observable que emite o resultado da operação de eliminação da conta.
+   */
+  deleteOwnAccount(username: string): Observable&lt;any&gt; {
+    const headers &#x3D; this.getHeaders();
+    return this.http.delete&lt;any&gt;(&#x60;${environment.appUrl}/api/profile/deleteAccount/${username}&#x60;, { headers });
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ProfileService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
