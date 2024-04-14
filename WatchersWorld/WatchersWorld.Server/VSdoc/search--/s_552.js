@@ -1,0 +1,1 @@
+search_result['552']=["topic_0000000000000122.html","ActorVotePercentageDto Class","DTO utilizado para representar a percentagem de votos atribuídos a um ator, incluindo o identificador do ator e a percentagem de votos."];

@@ -1,0 +1,1880 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  SearchComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/media/search/search.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-search</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./search.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./search.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentFilter" >currentFilter</a>
+                            </li>
+                            <li>
+                                <a href="#currentPage" >currentPage</a>
+                            </li>
+                            <li>
+                                <a href="#genresMovies" >genresMovies</a>
+                            </li>
+                            <li>
+                                <a href="#genresSeries" >genresSeries</a>
+                            </li>
+                            <li>
+                                <a href="#isGenreSelected" >isGenreSelected</a>
+                            </li>
+                            <li>
+                                <a href="#originalSearchResult" >originalSearchResult</a>
+                            </li>
+                            <li>
+                                <a href="#searchForm" >searchForm</a>
+                            </li>
+                            <li>
+                                <a href="#searchResult" >searchResult</a>
+                            </li>
+                            <li>
+                                <a href="#selectedGenreId" >selectedGenreId</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#applyCurrentFilter" >applyCurrentFilter</a>
+                            </li>
+                            <li>
+                                <a href="#changeType" >changeType</a>
+                            </li>
+                            <li>
+                                <a href="#filterByGenre" >filterByGenre</a>
+                            </li>
+                            <li>
+                                <a href="#nextPage" >nextPage</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSearch" >onSearch</a>
+                            </li>
+                            <li>
+                                <a href="#previousPage" >previousPage</a>
+                            </li>
+                            <li>
+                                <a href="#processSearchResults" >processSearchResults</a>
+                            </li>
+                            <li>
+                                <a href="#submitForm" >submitForm</a>
+                            </li>
+                            <li>
+                                <a href="#updateSearch" >updateSearch</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#totalPagesArray" >totalPagesArray</a>
+                                </li>
+                                <li>
+                                    <a href="#displayPages" >displayPages</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(service: <a href="../injectables/MovieApiServiceComponent.html" target="_self">MovieApiServiceComponent</a>, route: ActivatedRoute, router: Router, title: Title, meta: Meta, formBuilder: FormBuilder, searchService: <a href="../components/SearchServiceComponent.html" target="_self">SearchServiceComponent</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/media/search/search.component.ts:74</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Construtor da classe SearchComponent.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>service</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MovieApiServiceComponent.html" target="_self" >MovieApiServiceComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O serviço de API de filmes.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                    <code>ActivatedRoute</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O serviço de roteamento ativado.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O serviço de roteamento.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>title</td>
+                                                  
+                                                        <td>
+                                                                    <code>Title</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O serviço para definir o título da página.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>meta</td>
+                                                  
+                                                        <td>
+                                                                    <code>Meta</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O serviço para manipular meta tags HTML.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                    <code>FormBuilder</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O construtor de formulários reativos.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>searchService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../components/SearchServiceComponent.html" target="_self" >SearchServiceComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>O serviço de pesquisa.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyCurrentFilter"></a>
+                    <span class="name">
+                        <span ><b>applyCurrentFilter</b></span>
+                        <a href="#applyCurrentFilter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>applyCurrentFilter()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="182"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:182</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Aplica o filtro de pesquisa atual aos resultados da pesquisa.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeType"></a>
+                    <span class="name">
+                        <span ><b>changeType</b></span>
+                        <a href="#changeType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>changeType(newType: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="110"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:110</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>newType</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filterByGenre"></a>
+                    <span class="name">
+                        <span ><b>filterByGenre</b></span>
+                        <a href="#filterByGenre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filterByGenre(genreId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra os resultados da pesquisa por gênero.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>genreId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O ID do gênero a ser filtrado.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextPage"></a>
+                    <span class="name">
+                        <span ><b>nextPage</b></span>
+                        <a href="#nextPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nextPage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="273"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:273</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Avança para a próxima página de resultados.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método executado quando o componente é inicializado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSearch"></a>
+                    <span class="name">
+                        <span ><b>onSearch</b></span>
+                        <a href="#onSearch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSearch()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método executado quando o formulário de pesquisa é submetido.
+Atualiza a pesquisa e a URL quando o formulário é submetido.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="previousPage"></a>
+                    <span class="name">
+                        <span ><b>previousPage</b></span>
+                        <a href="#previousPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>previousPage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="282"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:282</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrocede para a página anterior de resultados.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processSearchResults"></a>
+                    <span class="name">
+                        <span ><b>processSearchResults</b></span>
+                        <a href="#processSearchResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>processSearchResults(result: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="233"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:233</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Processa os resultados da pesquisa.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>result</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Os resultados da pesquisa.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="submitForm"></a>
+                    <span class="name">
+                        <span ><b>submitForm</b></span>
+                        <a href="#submitForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>submitForm(page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="212"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:212</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Submete o formulário de pesquisa com os valores atuais e atualiza os resultados da pesquisa.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>page</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O número da página a ser exibida.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSearch"></a>
+                    <span class="name">
+                        <span ><b>updateSearch</b></span>
+                        <a href="#updateSearch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateSearch(page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="190"
+                                    class="link-to-prism">src/app/media/search/search.component.ts:190</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Atualiza os parâmetros de consulta da URL com os valores atuais do formulário de pesquisa.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>page</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>this.currentPage</code>
+                                            </td>
+
+                                            <td>
+                                                    <p>O número da página a ser exibida.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentFilter"></a>
+                    <span class="name">
+                        <span ><b>currentFilter</b></span>
+                        <a href="#currentFilter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/media/search/search.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentPage"></a>
+                    <span class="name">
+                        <span ><b>currentPage</b></span>
+                        <a href="#currentPage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/media/search/search.component.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="genresMovies"></a>
+                    <span class="name">
+                        <span ><b>genresMovies</b></span>
+                        <a href="#genresMovies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+      { &quot;id&quot;: 28, &quot;name&quot;: &quot;Action&quot; },
+      { &quot;id&quot;: 12, &quot;name&quot;: &quot;Adventure&quot; },
+      { &quot;id&quot;: 16, &quot;name&quot;: &quot;Animation&quot; },
+      { &quot;id&quot;: 35, &quot;name&quot;: &quot;Comedy&quot; },
+      { &quot;id&quot;: 80, &quot;name&quot;: &quot;Crime&quot; },
+      { &quot;id&quot;: 99, &quot;name&quot;: &quot;Documentary&quot; },
+      { &quot;id&quot;: 18, &quot;name&quot;: &quot;Drama&quot; },
+      { &quot;id&quot;: 10751, &quot;name&quot;: &quot;Family&quot; },
+      { &quot;id&quot;: 14, &quot;name&quot;: &quot;Fantasy&quot; },
+      { &quot;id&quot;: 36, &quot;name&quot;: &quot;History&quot; },
+      { &quot;id&quot;: 27, &quot;name&quot;: &quot;Horror&quot; },
+      { &quot;id&quot;: 10402, &quot;name&quot;: &quot;Music&quot; },
+      { &quot;id&quot;: 9648, &quot;name&quot;: &quot;Mystery&quot; },
+      { &quot;id&quot;: 10749, &quot;name&quot;: &quot;Romance&quot; },
+      { &quot;id&quot;: 878, &quot;name&quot;: &quot;Science Fiction&quot; },
+      { &quot;id&quot;: 10770, &quot;name&quot;: &quot;TV Movie&quot; },
+      { &quot;id&quot;: 53, &quot;name&quot;: &quot;Thriller&quot; },
+      { &quot;id&quot;: 10752, &quot;name&quot;: &quot;War&quot; },
+      { &quot;id&quot;: 37, &quot;name&quot;: &quot;Western&quot; }
+    ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/media/search/search.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="genresSeries"></a>
+                    <span class="name">
+                        <span ><b>genresSeries</b></span>
+                        <a href="#genresSeries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+      { &quot;id&quot;: 10759, &quot;name&quot;: &quot;Action &amp; Adventure&quot; },
+      { &quot;id&quot;: 16, &quot;name&quot;: &quot;Animation&quot; },
+      { &quot;id&quot;: 35, &quot;name&quot;: &quot;Comedy&quot; },
+      { &quot;id&quot;: 80, &quot;name&quot;: &quot;Crime&quot; },
+      { &quot;id&quot;: 99, &quot;name&quot;: &quot;Documentary&quot; },
+      { &quot;id&quot;: 18, &quot;name&quot;: &quot;Drama&quot; },
+      { &quot;id&quot;: 10751, &quot;name&quot;: &quot;Family&quot; },
+      { &quot;id&quot;: 10762, &quot;name&quot;: &quot;Kids&quot; },
+      { &quot;id&quot;: 9648, &quot;name&quot;: &quot;Mystery&quot; },
+      { &quot;id&quot;: 10763, &quot;name&quot;: &quot;News&quot; },
+      { &quot;id&quot;: 10764, &quot;name&quot;: &quot;Reality&quot; },
+      { &quot;id&quot;: 10765, &quot;name&quot;: &quot;Sci-Fi &amp; Fantasy&quot; },
+      { &quot;id&quot;: 10766, &quot;name&quot;: &quot;Soap&quot; },
+      { &quot;id&quot;: 10767, &quot;name&quot;: &quot;Talk&quot; },
+      { &quot;id&quot;: 10768, &quot;name&quot;: &quot;War &amp; Politics&quot; },
+      { &quot;id&quot;: 37, &quot;name&quot;: &quot;Western&quot; }
+      // ...
+    ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/media/search/search.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isGenreSelected"></a>
+                    <span class="name">
+                        <span ><b>isGenreSelected</b></span>
+                        <a href="#isGenreSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/media/search/search.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="originalSearchResult"></a>
+                    <span class="name">
+                        <span ><b>originalSearchResult</b></span>
+                        <a href="#originalSearchResult"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/media/search/search.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchForm"></a>
+                    <span class="name">
+                        <span ><b>searchForm</b></span>
+                        <a href="#searchForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new FormGroup({
+      &#x27;movieName&#x27;: new FormControl(&#x27;&#x27;),
+      &#x27;type&#x27;: new FormControl(&#x27;movie&#x27;),
+      &#x27;total_pages&#x27;: new FormControl()
+    })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/media/search/search.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchResult"></a>
+                    <span class="name">
+                        <span ><b>searchResult</b></span>
+                        <a href="#searchResult"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/media/search/search.component.ts:21</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedGenreId"></a>
+                    <span class="name">
+                        <span ><b>selectedGenreId</b></span>
+                        <a href="#selectedGenreId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/media/search/search.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="totalPagesArray"></a>
+                        <span class="name"><b>totalPagesArray</b><a href="#totalPagesArray"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>totalPagesArray()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="245" class="link-to-prism">src/app/media/search/search.component.ts:245</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Obtém um array com o número total de páginas disponíveis para exibição.</p>
+</div>
+
+                                <div>
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="displayPages"></a>
+                        <span class="name"><b>displayPages</b><a href="#displayPages"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>displayPages()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="253" class="link-to-prism">src/app/media/search/search.component.ts:253</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Obtém uma lista de páginas para exibição com base na página atual.</p>
+</div>
+
+                                <div>
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+  import { Meta, Title } from &#x27;@angular/platform-browser&#x27;;
+  import { FormBuilder, FormControl, FormGroup } from &#x27;@angular/forms&#x27;;
+import { SearchServiceComponent } from &#x27;../search-service/search-service.component&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { MovieApiServiceComponent } from &#x27;../api/movie-api-service/movie-api-service.component&#x27;;
+
+  @Component({
+    selector: &#x27;app-search&#x27;,
+    templateUrl: &#x27;./search.component.html&#x27;,
+    styleUrl: &#x27;./search.component.css&#x27;
+  })
+
+
+  /**
+ * Componente responsável por realizar pesquisas de filmes e séries.
+ */
+  export class SearchComponent implements OnInit {
+
+    currentPage: any;
+    searchResult: any;
+    searchForm &#x3D; new FormGroup({
+      &#x27;movieName&#x27;: new FormControl(&#x27;&#x27;),
+      &#x27;type&#x27;: new FormControl(&#x27;movie&#x27;),
+      &#x27;total_pages&#x27;: new FormControl()
+    });
+
+    selectedGenreId: any;
+    isGenreSelected &#x3D; false;
+    originalSearchResult: any;
+    currentFilter: any &#x3D; null;
+
+
+    genresSeries &#x3D; [
+      { &quot;id&quot;: 10759, &quot;name&quot;: &quot;Action &amp; Adventure&quot; },
+      { &quot;id&quot;: 16, &quot;name&quot;: &quot;Animation&quot; },
+      { &quot;id&quot;: 35, &quot;name&quot;: &quot;Comedy&quot; },
+      { &quot;id&quot;: 80, &quot;name&quot;: &quot;Crime&quot; },
+      { &quot;id&quot;: 99, &quot;name&quot;: &quot;Documentary&quot; },
+      { &quot;id&quot;: 18, &quot;name&quot;: &quot;Drama&quot; },
+      { &quot;id&quot;: 10751, &quot;name&quot;: &quot;Family&quot; },
+      { &quot;id&quot;: 10762, &quot;name&quot;: &quot;Kids&quot; },
+      { &quot;id&quot;: 9648, &quot;name&quot;: &quot;Mystery&quot; },
+      { &quot;id&quot;: 10763, &quot;name&quot;: &quot;News&quot; },
+      { &quot;id&quot;: 10764, &quot;name&quot;: &quot;Reality&quot; },
+      { &quot;id&quot;: 10765, &quot;name&quot;: &quot;Sci-Fi &amp; Fantasy&quot; },
+      { &quot;id&quot;: 10766, &quot;name&quot;: &quot;Soap&quot; },
+      { &quot;id&quot;: 10767, &quot;name&quot;: &quot;Talk&quot; },
+      { &quot;id&quot;: 10768, &quot;name&quot;: &quot;War &amp; Politics&quot; },
+      { &quot;id&quot;: 37, &quot;name&quot;: &quot;Western&quot; }
+      // ...
+    ];
+
+    genresMovies &#x3D; [
+      { &quot;id&quot;: 28, &quot;name&quot;: &quot;Action&quot; },
+      { &quot;id&quot;: 12, &quot;name&quot;: &quot;Adventure&quot; },
+      { &quot;id&quot;: 16, &quot;name&quot;: &quot;Animation&quot; },
+      { &quot;id&quot;: 35, &quot;name&quot;: &quot;Comedy&quot; },
+      { &quot;id&quot;: 80, &quot;name&quot;: &quot;Crime&quot; },
+      { &quot;id&quot;: 99, &quot;name&quot;: &quot;Documentary&quot; },
+      { &quot;id&quot;: 18, &quot;name&quot;: &quot;Drama&quot; },
+      { &quot;id&quot;: 10751, &quot;name&quot;: &quot;Family&quot; },
+      { &quot;id&quot;: 14, &quot;name&quot;: &quot;Fantasy&quot; },
+      { &quot;id&quot;: 36, &quot;name&quot;: &quot;History&quot; },
+      { &quot;id&quot;: 27, &quot;name&quot;: &quot;Horror&quot; },
+      { &quot;id&quot;: 10402, &quot;name&quot;: &quot;Music&quot; },
+      { &quot;id&quot;: 9648, &quot;name&quot;: &quot;Mystery&quot; },
+      { &quot;id&quot;: 10749, &quot;name&quot;: &quot;Romance&quot; },
+      { &quot;id&quot;: 878, &quot;name&quot;: &quot;Science Fiction&quot; },
+      { &quot;id&quot;: 10770, &quot;name&quot;: &quot;TV Movie&quot; },
+      { &quot;id&quot;: 53, &quot;name&quot;: &quot;Thriller&quot; },
+      { &quot;id&quot;: 10752, &quot;name&quot;: &quot;War&quot; },
+      { &quot;id&quot;: 37, &quot;name&quot;: &quot;Western&quot; }
+    ];
+
+
+     /**
+   * Construtor da classe SearchComponent.
+   * @param service O serviço de API de filmes.
+   * @param route O serviço de roteamento ativado.
+   * @param router O serviço de roteamento.
+   * @param title O serviço para definir o título da página.
+   * @param meta O serviço para manipular meta tags HTML.
+   * @param formBuilder O construtor de formulários reativos.
+   * @param searchService O serviço de pesquisa.
+   */
+    constructor(private service: MovieApiServiceComponent, private route: ActivatedRoute,
+      private router: Router, private title: Title, private meta: Meta, private formBuilder: FormBuilder, private searchService: SearchServiceComponent) {
+
+
+      this.searchForm &#x3D; new FormGroup({
+        &#x27;movieName&#x27;: new FormControl(&#x27;&#x27;),
+        &#x27;type&#x27;: new FormControl(&#x27;&#x27;), // Remova o valor padrão aqui
+        &#x27;total_pages&#x27;: new FormControl()
+      });
+
+    }
+
+     /**
+   * Método executado quando o formulário de pesquisa é submetido.
+   * Atualiza a pesquisa e a URL quando o formulário é submetido.
+   */
+    onSearch(): void {
+      // Atualiza a pesquisa e a URL quando o formulário é submetido.
+      this.updateSearch(1);
+      this.submitForm(1);// Isso atualizará a URL e submeterá a forma com a primeira página.
+    }
+
+
+    changeType(newType: string): void {
+      // Se o novo tipo for diferente do atual, então atualize o formulário e faça uma nova busca.
+      if (this.searchForm.value.type !&#x3D;&#x3D; newType) {
+        this.searchForm.controls[&#x27;type&#x27;].setValue(newType);
+
+        // Resetar estados relacionados se necessário
+        this.isGenreSelected &#x3D; false;
+        this.selectedGenreId &#x3D; null;
+        this.currentFilter &#x3D; null; // Reseta o filtro de gênero
+
+        
+        this.updateSearch(1); // Passa &#x27;1&#x27; para resetar para a primeira página após mudança de tipo.
+        this.submitForm(1); // Passa &#x27;1&#x27; para resetar para a primeira página após mudança de tipo.
+
+      }
+    }
+
+    /** Método executado quando o componente é inicializado. */
+    ngOnInit() {
+      this.route.queryParams.subscribe(params &#x3D;&gt; {
+        const genreId &#x3D; params[&#x27;genre&#x27;];
+        const title &#x3D; params[&#x27;title&#x27;];
+        const type &#x3D; params[&#x27;type&#x27;] || this.searchForm.value.type || &#x27;movie&#x27;; // Usa o valor da URL ou o valor anterior ou &#x27;movie&#x27; como último recurso
+        const page &#x3D; parseInt(params[&#x27;page&#x27;], 10) || 1;
+
+        let shouldUpdateSearch &#x3D; false;
+
+        if (page !&#x3D;&#x3D; this.currentPage || genreId !&#x3D;&#x3D; this.selectedGenreId?.toString() || title !&#x3D;&#x3D; this.searchForm.value.movieName || type !&#x3D;&#x3D; this.searchForm.value.type) {
+          shouldUpdateSearch &#x3D; true;
+          this.currentPage &#x3D; page;
+          this.selectedGenreId &#x3D; genreId ? parseInt(genreId, 10) : null;
+          this.isGenreSelected &#x3D; !!genreId;
+          this.searchForm.setValue({
+            movieName: title || &#x27;&#x27;,
+            type: type,
+            total_pages: this.searchForm.get(&#x27;total_pages&#x27;)?.value || 0
+          });
+        }
+
+        if (shouldUpdateSearch) {
+          this.submitForm(this.currentPage);
+        }
+      });
+    }
+
+
+      /**
+   * Filtra os resultados da pesquisa por gênero.
+   * @param genreId O ID do gênero a ser filtrado.
+   */
+    filterByGenre(genreId: number) {
+      if (this.selectedGenreId &#x3D;&#x3D;&#x3D; genreId) {
+        // Se o gênero selecionado é o mesmo que o gênero atualmente filtrado,
+        // remova o filtro e retorne todos os resultados da pesquisa original.
+        this.isGenreSelected &#x3D; false;
+        this.selectedGenreId &#x3D; null;
+        this.currentFilter &#x3D; null;
+      } else {
+        // Caso contrário, aplique o filtro como antes.
+        this.isGenreSelected &#x3D; true;
+        this.selectedGenreId &#x3D; genreId;
+        this.currentFilter &#x3D; genreId;
+      }
+      this.applyCurrentFilter();
+      this.updateSearch(1);
+
+    }
+
+
+      /**
+   * Aplica o filtro de pesquisa atual aos resultados da pesquisa.
+   */
+    applyCurrentFilter() {
+      this.searchResult &#x3D; this.currentFilter ? this.originalSearchResult.filter((result: any) &#x3D;&gt; result.genre_ids.includes(this.currentFilter)) : [...this.originalSearchResult];
+    }
+
+ /**
+   * Atualiza os parâmetros de consulta da URL com os valores atuais do formulário de pesquisa.
+   * @param page O número da página a ser exibida.
+   */
+    updateSearch(page: number &#x3D; this.currentPage): void {
+      const title &#x3D; this.searchForm.get(&#x27;movieName&#x27;)?.value;
+      const type &#x3D; this.searchForm.get(&#x27;type&#x27;)?.value; // Isso agora incluirá &#x27;movie&#x27; ou &#x27;serie&#x27;
+
+      // Navega para a mesma rota mas com os parâmetros de consulta atualizados.
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          title: title || null,
+          type: type, // Garanta que o tipo atualizado seja refletido na URL.
+          page: page || null,
+          genre: this.selectedGenreId || null
+        },
+        queryParamsHandling: &#x27;merge&#x27;, // Mescla com outros queryParams existentes.
+      });
+    }
+
+
+     /**
+   * Submete o formulário de pesquisa com os valores atuais e atualiza os resultados da pesquisa.
+   * @param page O número da página a ser exibida.
+   */
+    submitForm(page: number): void {
+      this.currentPage &#x3D; page;
+      const searchValue &#x3D; { ...this.searchForm.value, page };
+
+      // Chamada de serviço baseada no tipo; ajuste conforme seu caso de uso
+      if (searchValue.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27;) {
+        this.service.getSearchSerie(searchValue).subscribe((result) &#x3D;&gt; {
+          this.processSearchResults(result);
+        });
+      } else {
+        this.service.getSearchMovie(searchValue).subscribe((result) &#x3D;&gt; {
+          this.processSearchResults(result);
+        });
+      }
+    }
+
+
+    /**
+ * Processa os resultados da pesquisa.
+ * @param result Os resultados da pesquisa.
+ */
+    processSearchResults(result: any): void { // Ajuste o tipo &#x27;any&#x27; conforme necessário
+      this.originalSearchResult &#x3D; [...result.results];
+      this.applyCurrentFilter(); // Aplica filtro atual aos novos resultados
+      this.searchForm.patchValue({ total_pages: result.total_pages });
+    }
+  
+
+
+/**
+ * Obtém um array com o número total de páginas disponíveis para exibição.
+ * @returns Um array contendo o número total de páginas.
+ */
+    get totalPagesArray() {
+      return Array.from({ length: this.searchForm.value.total_pages }, (_, i) &#x3D;&gt; i + 1);
+    }
+
+    /**
+ * Obtém uma lista de páginas para exibição com base na página atual.
+ * @returns Uma lista de páginas para exibição.
+ */
+    get displayPages() {
+      let start &#x3D; this.currentPage - 1;
+      let end &#x3D; this.currentPage + 2;
+
+      if (start &lt; 1) {
+        start &#x3D; 1;
+        end &#x3D; 4;
+      }
+
+      if (end &gt; this.totalPagesArray.length) {
+        end &#x3D; this.totalPagesArray.length;
+        start &#x3D; end - 3 &gt; 0 ? end - 3 : 1;
+      }
+
+      return this.totalPagesArray.slice(start - 1, end);
+    }
+
+    /**
+ * Avança para a próxima página de resultados.
+ */
+nextPage(): void {
+  const newPage &#x3D; this.currentPage + 1;
+  // Certifique-se de que newPage não exceda totalPages
+  this.updateSearch(newPage);
+}
+
+/**
+ * Retrocede para a página anterior de resultados.
+ */
+previousPage(): void {
+  const newPage &#x3D; this.currentPage - 1;
+  // Certifique-se de que newPage seja pelo menos 1
+  this.updateSearch(newPage);
+}
+  }
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;white_container mt-5 p-5&quot;&gt;
+  &lt;div class&#x3D;&quot;row&quot;&gt;
+    &lt;form [formGroup]&#x3D;&quot;searchForm&quot; (ngSubmit)&#x3D;&quot;onSearch()&quot;&gt;
+      &lt;div class&#x3D;&quot;d-flex&quot;&gt;
+        &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control flex-grow-1&quot; formControlName&#x3D;&quot;movieName&quot; placeholder&#x3D;&quot;Procurar Filmes ou Series Aqui...&quot;&gt;
+        &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-md ml-2&quot;&gt;Procurar&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;div class&#x3D;&quot;col-md-3 mt-5 &quot;&gt;
+      &lt;div class&#x3D;&quot;settings_panel no_margin shadow-sm bg-white rounded&quot;&gt;
+        &lt;h6 class&#x3D;&quot;background_color light_blue&quot;&gt;Resultados da Pesquisa&lt;/h6&gt;
+        &lt;div id&#x3D;&quot;search_menu_scroller&quot; class&#x3D;&quot;&quot;&gt;
+          &lt;ul class&#x3D;&quot;settings panel with_counts scroller&quot;&gt;
+            &lt;li [class.selected]&#x3D;&quot;searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;movie&#x27;&quot; (click)&#x3D;&quot;changeType(&#x27;movie&#x27;)&quot; class&#x3D;&quot;genre_tab&quot;&gt;
+              &lt;i class&#x3D;&quot;fa-solid fa-film&quot;&gt;&lt;/i&gt;
+              &lt;a id&#x3D;&quot;movie&quot; class&#x3D;&quot;search_tab&quot; title&#x3D;&quot;Filmes&quot; alt&#x3D;&quot;Filmes&quot;&gt;Filmes&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li [class.selected]&#x3D;&quot;searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27;&quot; (click)&#x3D;&quot;changeType(&#x27;serie&#x27;)&quot; class&#x3D;&quot;genre_tab&quot;&gt;
+              &lt;i class&#x3D;&quot;fa-solid fa-tv&quot;&gt;&lt;/i&gt;
+              &lt;a id&#x3D;&quot;serie&quot; class&#x3D;&quot;search_tab&quot; title&#x3D;&quot;Series&quot; alt&#x3D;&quot;Series&quot;&gt;Series&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;a id&#x3D;&quot;utilizadores&quot; class&#x3D;&quot;search_tab&quot; title&#x3D;&quot;Utilizadores&quot; alt&#x3D;&quot;Utilizadores&quot;&gt;Utilizadores&lt;/a&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;i class&#x3D;&quot;fas fa-info-circle&quot;&gt;&lt;/i&gt;
+        &lt;span&gt; Dica: O utilizador pode pesquisar pelo nome original do filme, mesmo que esse nao seja do mesmo idioma da pagina. Exemplo: &#x27;기생충&#x27; (Parasite).&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;br&gt;
+
+      &lt;div class&#x3D;&quot;settings_panel no_margin shadow-sm bg-white rounded&quot;&gt;
+        &lt;h6 class&#x3D;&quot;background_color light_blue&quot;&gt;Categorias&lt;/h6&gt;
+        &lt;div id&#x3D;&quot;search_menu_scroller&quot; class&#x3D;&quot;&quot;&gt;
+          &lt;ul class&#x3D;&quot;settings panel with_counts scroller&quot;&gt;
+            &lt;!-- Mostra os gêneros de filmes quando o tipo é &#x27;movie&#x27; --&gt;
+            &lt;ng-container *ngIf&#x3D;&quot;searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;movie&#x27;&quot;&gt;
+              &lt;li *ngFor&#x3D;&quot;let genre of genresMovies&quot; [class.selected]&#x3D;&quot;selectedGenreId &#x3D;&#x3D;&#x3D; genre.id&quot; class&#x3D;&quot;genre_tab&quot;&gt;
+                &lt;a class&#x3D;&quot;search_tab&quot; (click)&#x3D;&quot;filterByGenre(genre.id)&quot; id&#x3D;&quot;{{genre.id}}&quot; title&#x3D;&quot;Gêneros&quot;&gt;{{genre.name}}&lt;/a&gt;
+              &lt;/li&gt;
+            &lt;/ng-container&gt;
+            &lt;ng-container *ngIf&#x3D;&quot;searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27;&quot;&gt;
+              &lt;li *ngFor&#x3D;&quot;let genre of genresSeries&quot; [class.selected]&#x3D;&quot;selectedGenreId &#x3D;&#x3D;&#x3D; genre.id&quot; class&#x3D;&quot;genre_tab&quot;&gt;
+                &lt;a class&#x3D;&quot;search_tab&quot; (click)&#x3D;&quot;filterByGenre(genre.id)&quot; id&#x3D;&quot;{{genre.id}}&quot; title&#x3D;&quot;Gêneros&quot;&gt;{{genre.name}}&lt;/a&gt;
+              &lt;/li&gt;
+            &lt;/ng-container&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;col-md-9&quot;&gt;
+      &lt;div class&#x3D;&quot;row mt-5&quot;&gt;
+        &lt;div class&#x3D;&quot;col-md-12&quot; *ngFor&#x3D;&quot;let media of searchResult&quot;&gt;
+          &lt;div class&#x3D;&quot;row mb-4 shadow-sm bg-white rounded&quot;&gt;
+            &lt;div class&#x3D;&quot;col-md-2&quot;&gt;
+              &lt;img class&#x3D;&quot;bd-placeholder-img&quot; *ngIf&#x3D;&quot;media.poster_path; else defaultImage&quot; src&#x3D;&quot;https://image.tmdb.org/t/p/original/{{ media.poster_path }}&quot;
+                   [routerLink]&#x3D;&quot;[searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27; ? &#x27;/serie&#x27; : &#x27;/movie&#x27;, media.id]&quot;&gt;
+              &lt;ng-template #defaultImage&gt;
+                &lt;img class&#x3D;&quot;bd-placeholder-img&quot; src&#x3D;&quot;../assets/img/default_media_pic.jpg&quot; [routerLink]&#x3D;&quot;[searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27; ? &#x27;/serie&#x27; : &#x27;/movie&#x27;, media.id]&quot;&gt;
+              &lt;/ng-template&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;col-md-10&quot;&gt;
+              &lt;div *ngIf&#x3D;&quot;searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27;; else movieBlock&quot;&gt;
+                &lt;h5 class&#x3D;&quot;card-title&quot;&gt;&lt;a [routerLink]&#x3D;&quot;[searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27; ? &#x27;/serie&#x27; : &#x27;/movie&#x27;, media.id]&quot;&gt;{{media.name}}&lt;/a&gt;&lt;/h5&gt;
+                &lt;h6 class&#x3D;&quot;card-subtitle mb-2 text-muted&quot;&gt;{{media.first_air_date}}&lt;/h6&gt;
+                &lt;h6 class&#x3D;&quot;card-subtitle mb-2 text-muted&quot;&gt;{{media.overview | slice:0:250}}...&lt;/h6&gt;
+              &lt;/div&gt;
+              &lt;ng-template #movieBlock&gt;
+                &lt;h5 class&#x3D;&quot;card-title&quot;&gt;&lt;a [routerLink]&#x3D;&quot;[searchForm.value.type &#x3D;&#x3D;&#x3D; &#x27;serie&#x27; ? &#x27;/serie&#x27; : &#x27;/movie&#x27;, media.id]&quot;&gt;{{media.title}}&lt;/a&gt;&lt;/h5&gt;
+                &lt;h6 class&#x3D;&quot;card-subtitle mb-2 text-muted&quot;&gt;{{media.release_date}}&lt;/h6&gt;
+                &lt;h6 class&#x3D;&quot;card-subtitle mb-2 text-muted&quot;&gt;{{media.overview | slice:0:250}}...&lt;/h6&gt;
+              &lt;/ng-template&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;mt-3 d-flex justify-content-center&quot;&gt;
+          &lt;button class&#x3D;&quot;btn btn-md&quot; *ngIf&#x3D;&quot;currentPage &gt; 1&quot; (click)&#x3D;&quot;updateSearch(currentPage - 1)&quot;&gt;&amp;lt;&lt;/button&gt;
+          &lt;button class&#x3D;&quot;btn btn-md&quot; *ngFor&#x3D;&quot;let page of displayPages&quot; [class.active]&#x3D;&quot;page &#x3D;&#x3D;&#x3D; currentPage&quot; (click)&#x3D;&quot;updateSearch(page)&quot;&gt;{{ page }}&lt;/button&gt;
+          &lt;button class&#x3D;&quot;btn btn-md&quot; *ngIf&#x3D;&quot;currentPage &lt; totalPagesArray.length&quot; (click)&#x3D;&quot;updateSearch(currentPage + 1)&quot;&gt;&amp;gt;&lt;/button&gt;
+        &lt;/div&gt;
+
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="white_container mt-5 p-5">  <div class="row">    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">      <div class="d-flex">        <input type="text" class="form-control flex-grow-1" formControlName="movieName" placeholder="Procurar Filmes ou Series Aqui...">        <button type="submit" class="btn btn-md ml-2">Procurar</button>      </div>    </form>    <div class="col-md-3 mt-5 ">      <div class="settings_panel no_margin shadow-sm bg-white rounded">        <h6 class="background_color light_blue">Resultados da Pesquisa</h6>        <div id="search_menu_scroller" class="">          <ul class="settings panel with_counts scroller">            <li [class.selected]="searchForm.value.type === \'movie\'" (click)="changeType(\'movie\')" class="genre_tab">              <i class="fa-solid fa-film"></i>              <a id="movie" class="search_tab" title="Filmes" alt="Filmes">Filmes</a>            </li>            <li [class.selected]="searchForm.value.type === \'serie\'" (click)="changeType(\'serie\')" class="genre_tab">              <i class="fa-solid fa-tv"></i>              <a id="serie" class="search_tab" title="Series" alt="Series">Series</a>            </li>            <li>              <a id="utilizadores" class="search_tab" title="Utilizadores" alt="Utilizadores">Utilizadores</a>            </li>          </ul>        </div>      </div>      <div>        <i class="fas fa-info-circle"></i>        <span> Dica: O utilizador pode pesquisar pelo nome original do filme, mesmo que esse nao seja do mesmo idioma da pagina. Exemplo: \'기생충\' (Parasite).</span>      </div>      <br>      <div class="settings_panel no_margin shadow-sm bg-white rounded">        <h6 class="background_color light_blue">Categorias</h6>        <div id="search_menu_scroller" class="">          <ul class="settings panel with_counts scroller">            <!-- Mostra os gêneros de filmes quando o tipo é \'movie\' -->            <ng-container *ngIf="searchForm.value.type === \'movie\'">              <li *ngFor="let genre of genresMovies" [class.selected]="selectedGenreId === genre.id" class="genre_tab">                <a class="search_tab" (click)="filterByGenre(genre.id)" id="{{genre.id}}" title="Gêneros">{{genre.name}}</a>              </li>            </ng-container>            <ng-container *ngIf="searchForm.value.type === \'serie\'">              <li *ngFor="let genre of genresSeries" [class.selected]="selectedGenreId === genre.id" class="genre_tab">                <a class="search_tab" (click)="filterByGenre(genre.id)" id="{{genre.id}}" title="Gêneros">{{genre.name}}</a>              </li>            </ng-container>          </ul>        </div>      </div>    </div>    <div class="col-md-9">      <div class="row mt-5">        <div class="col-md-12" *ngFor="let media of searchResult">          <div class="row mb-4 shadow-sm bg-white rounded">            <div class="col-md-2">              <img class="bd-placeholder-img" *ngIf="media.poster_path; else defaultImage" src="https://image.tmdb.org/t/p/original/{{ media.poster_path }}"                   [routerLink]="[searchForm.value.type === \'serie\' ? \'/serie\' : \'/movie\', media.id]">              <ng-template #defaultImage>                <img class="bd-placeholder-img" src="../assets/img/default_media_pic.jpg" [routerLink]="[searchForm.value.type === \'serie\' ? \'/serie\' : \'/movie\', media.id]">              </ng-template>            </div>            <div class="col-md-10">              <div *ngIf="searchForm.value.type === \'serie\'; else movieBlock">                <h5 class="card-title"><a [routerLink]="[searchForm.value.type === \'serie\' ? \'/serie\' : \'/movie\', media.id]">{{media.name}}</a></h5>                <h6 class="card-subtitle mb-2 text-muted">{{media.first_air_date}}</h6>                <h6 class="card-subtitle mb-2 text-muted">{{media.overview | slice:0:250}}...</h6>              </div>              <ng-template #movieBlock>                <h5 class="card-title"><a [routerLink]="[searchForm.value.type === \'serie\' ? \'/serie\' : \'/movie\', media.id]">{{media.title}}</a></h5>                <h6 class="card-subtitle mb-2 text-muted">{{media.release_date}}</h6>                <h6 class="card-subtitle mb-2 text-muted">{{media.overview | slice:0:250}}...</h6>              </ng-template>            </div>          </div>        </div>        <div class="mt-3 d-flex justify-content-center">          <button class="btn btn-md" *ngIf="currentPage > 1" (click)="updateSearch(currentPage - 1)">&lt;</button>          <button class="btn btn-md" *ngFor="let page of displayPages" [class.active]="page === currentPage" (click)="updateSearch(page)">{{ page }}</button>          <button class="btn btn-md" *ngIf="currentPage < totalPagesArray.length" (click)="updateSearch(currentPage + 1)">&gt;</button>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutUsComponent', 'selector': 'app-about-us'},{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminStatisticsComponent', 'selector': 'app-admin-statistics'},{'name': 'AllMoviesPageComponent', 'selector': 'app-all-movies-page'},{'name': 'AllSeriesPageComponent', 'selector': 'app-all-series-page'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthenticationButtonComponent', 'selector': 'authentication-button'},{'name': 'BlockedAccountComponent', 'selector': 'app-blocked-account'},{'name': 'ChatComponent', 'selector': 'app-chat'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'EditProfileComponent', 'selector': 'app-edit-profile'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GamificationComponent', 'selector': 'app-gamification'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MovieDetailsComponent', 'selector': 'app-movie-details'},{'name': 'NavMenuComponent', 'selector': 'app-nav-menu'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'PendingVerificationComponent', 'selector': 'app-pending-verification'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RegisterWithThirdPartyComponent', 'selector': 'app-register-with-third-party'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SearchServiceComponent', 'selector': 'app-search-service'},{'name': 'SeasonDetailsComponent', 'selector': 'app-season-details'},{'name': 'SeasonDetailsInfoComponent', 'selector': 'app-season-details-info'},{'name': 'SendEmailComponent', 'selector': 'app-send-email'},{'name': 'SeriesDetailsComponent', 'selector': 'app-series-details'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'SuspendedAccountComponent', 'selector': 'app-suspended-account'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'SearchComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'SearchComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

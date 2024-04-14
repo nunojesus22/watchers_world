@@ -1,0 +1,1 @@
+search_result['231']=["topic_0000000000000072.html","UserRatingMediaController.GetChoicesForMedia Method","Obtém as avaliações de uma media específica."];

@@ -1,0 +1,1 @@
+search_result['389']=["topic_00000000000000CA.html","UserMedalDto.UserName Property","Nome de utilizador que obteve a medalha.\r\nIdentifica o utilizador que conquistou a medalha, permitindo a associação entre a medalha e o seu detentor."];

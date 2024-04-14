@@ -1,0 +1,1 @@
+search_result['454']=["topic_00000000000000ED.html","RatingMediaDto.Username Property","Nome de utilizador que efetuou a avaliação. Permite associar a avaliação a um perfil específico de utilizador."];

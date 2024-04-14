@@ -1,1 +1,1 @@
-search_result['73']=["topic_0000000000000021.html","RegisterDto.Username Property","Username for the new user account."];
+search_result['73']=["topic_000000000000001F.html","FavoriteActorChoiceController.GetChoicesForMedia Method","Obtém as percentagens de escolha de atores favoritos para uma media específica."];

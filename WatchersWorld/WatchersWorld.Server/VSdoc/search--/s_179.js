@@ -1,0 +1,1 @@
+search_result['179']=["topic_0000000000000052.html","NotificationsController.MarkAllAchievementNotificationsAsRead Method","Marca todas as notificações de conquistas como lidas para um determinado utilizador."];

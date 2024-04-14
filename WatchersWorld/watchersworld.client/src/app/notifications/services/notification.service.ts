@@ -149,7 +149,7 @@ export class NotificationService {
 
   /**
   * Notifica os utilizadores sobre um novo episódio de uma série ou atualização de mídia.
-  * @param notification A notificação a ser enviada, contendo detalhes como o ID do usuário que disparou a notificação, mensagem, etc.
+  * @param notification A notificação a ser enviada, contendo detalhes como o ID do utilizador que disparou a notificação, mensagem, etc.
   * @returns Um Observable do resultado da operação de notificação.
   */
   notifyNewEpisode(notification: MediaNotificationModel): Observable<any> {

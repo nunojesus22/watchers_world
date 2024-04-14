@@ -1,0 +1,1 @@
+search_result['994']=["topic_000000000000021A.html","IFollowersService.RejectFollowSend Method","Rejeita uma pedido para seguir pendente."];

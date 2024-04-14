@@ -28,6 +28,10 @@ export class SeasonDetailsComponent implements AfterViewInit {
     // Já que a chamada de rolar a tela depende dos dados carregados, movemos isso para getSerieDetails
   }
 
+  /**
+   * Get the details of a series.
+   * @param id The ID of the series.
+   */
   getSerieDetails(id: any) {
     this.service.getSerieDetails(id).subscribe(result => {
       this.getSerieDetailsResult = result;
@@ -38,6 +42,9 @@ export class SeasonDetailsComponent implements AfterViewInit {
     });
   }
 
+   /**
+   * Scroll to the last season of the series.
+   */
   scrollToLastSeason(): void {
     if (this.lastSeason) {
       const element = this.lastSeason.nativeElement;

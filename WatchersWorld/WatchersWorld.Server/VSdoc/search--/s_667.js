@@ -1,0 +1,1 @@
+search_result['667']=["topic_0000000000000163.html","MessagesVisibility Class","Representa a visibilidade de uma mensagem para um utilizador específico, indicando se a mensagem deve ser visível ou não para esse utilizador."];

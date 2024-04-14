@@ -1,0 +1,1 @@
+search_result['1037']=["topic_0000000000000231.html","INotificationService.CreateFollowNotificationAsync Method","Cria e armazena uma notificação de seguimento."];

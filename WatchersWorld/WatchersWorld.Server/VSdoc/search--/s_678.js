@@ -1,0 +1,1 @@
+search_result['678']=["topic_0000000000000169.html","MessagesVisibility.Visibility Property","Um valor booleano que determina se a mensagem é visível para o utilizador. Verdadeiro indica que a mensagem é visível, falso indica que não é."];

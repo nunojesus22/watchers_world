@@ -10,6 +10,11 @@ import { jwtDecode } from 'jwt-decode';
 import { DOCUMENT } from '@angular/common';
 import { ChatService } from '../../chat/services/chat.service';
 
+/**
+ * Componente responsável pela interface de login de usuários, incluindo autenticação por email/senha e serviços externos como Google.
+ *
+ * @Component Decorador que define a classe como um componente Angular com seu seletor e metadados associados.
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -24,7 +29,18 @@ export class LoginComponent {
   returnUrl: string | null = null;
   banDurationMessage: string = '';
 
-
+  /**
+   * Construtor para inicializar dependências e configurações.
+   *
+   * @param authService Serviço de autenticação para gerenciar a autenticação de usuários.
+   * @param formBuilder Construtor de formulários para criação de formulários reativos.
+   * @param router Serviço do router para navegação.
+   * @param activatedRoute Serviço de rota ativada para acesso a parâmetros de rota.
+   * @param _renderer2 Renderer para manipulação de elementos DOM.
+   * @param ngZone Serviço para execução de operações dentro da zona Angular.
+   * @param chatService Serviço de chat para gerenciar conexões de websocket.
+   * @param _document Documento para acesso ao DOM global.
+   */
   constructor(
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
@@ -53,17 +69,27 @@ export class LoginComponent {
     });
   }
 
+  /**
+   * Inicializa o componente e prepara o ambiente, como o botão do Google e o formulário de login.
+   */
   ngOnInit(): void {
     this.initializeGoogleButton();
     this.initializeForm();
   }
 
+  /**
+   * Inicializa o formulário de login com validações básicas.
+   */
   initializeForm() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
+
+  /**
+   * Carrega e configura o script externo do Google para o botão de login.
+   */
   ngAfterViewInit() {
     const script1 = this._renderer2.createElement('script');
     script1.src = 'https://accounts.google.com/gsi/client';
@@ -73,6 +99,9 @@ export class LoginComponent {
 
   }
 
+  /**
+   * Submete o formulário de login e processa a resposta.
+   */
   login() {
     this.submitted = true;
     this.errorMessages = {};
@@ -116,7 +145,9 @@ export class LoginComponent {
   }
 
 
-
+  /**
+ * Configura o botão de login do Google One Tap na página de login. Este método é responsável por carregar a biblioteca do Google, inicializar o botão de login com as configurações desejadas e definir o callback para o processo de autenticação.
+ */
   private initializeGoogleButton() {
     (window as any).onGoogleLibraryLoad = () => {
       //@ts-ignore
@@ -134,6 +165,11 @@ export class LoginComponent {
     };
   }
 
+  /**
+   * Método de callback para lidar com a autenticação bem-sucedida ou falhas usando o Google One Tap.
+   * 
+   * @param response Resposta da autenticação Google One Tap.
+   */
   private async googleCallBack(response: CredentialResponse) {
     this.errorMessages = {};
     this.submittedValues = {};
@@ -188,16 +224,27 @@ export class LoginComponent {
     }
   }
 
-
+  /**
+ * Verifica se um campo do formulário foi modificado em relação ao valor originalmente submetido.
+ *
+ * @param fieldName O nome do campo do formulário a ser verificado.
+ * @returns Booleano indicando se o valor do campo foi modificado ou não.
+ */
   isFieldModified(fieldName: string): boolean {
     return this.loginForm.get(fieldName)!.value !== this.submittedValues[fieldName];
   }
 
+  /**
+ * Salva os valores submetidos do formulário de login para comparações futuras. Isso é útil para verificar se os campos foram modificados desde a última submissão.
+ */
   private saveSubmittedValues(): void {
     this.submittedValues["email"] = this.loginForm.get("email")!.value;
     this.submittedValues["password"] = this.loginForm.get("password")!.value;
   }
 
+  /**
+ * Inicia a conexão com o serviço de chat através do ChatService, configurando o usuário para receber e enviar mensagens em tempo real.
+ */
   private connectChatHub(): void {
     this.chatService.startConnectionAndListen();
   }

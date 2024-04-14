@@ -1,0 +1,1385 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>watchersworld.client documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">watchersworld.client documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AllMoviesPageComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/media/movies/all-movies-page/all-movies-page.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-all-movies-page</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./all-movies-page.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./all-movies-page.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#categories" >categories</a>
+                            </li>
+                            <li>
+                                <a href="#currentUser" >currentUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#fetchMovies" >fetchMovies</a>
+                            </li>
+                            <li>
+                                <a href="#fetchRecommendedMovies" >fetchRecommendedMovies</a>
+                            </li>
+                            <li>
+                                <a href="#getCategoryActiveIndex" >getCategoryActiveIndex</a>
+                            </li>
+                            <li>
+                                <a href="#getCategoryResults" >getCategoryResults</a>
+                            </li>
+                            <li>
+                                <a href="#getRows" >getRows</a>
+                            </li>
+                            <li>
+                                <a href="#initCategories" >initCategories</a>
+                            </li>
+                            <li>
+                                <a href="#nextCategory" >nextCategory</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#prevCategory" >prevCategory</a>
+                            </li>
+                            <li>
+                                <a href="#toggleShowAll" >toggleShowAll</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: Router, service: <a href="../injectables/MovieApiServiceComponent.html" target="_self">MovieApiServiceComponent</a>, authService: <a href="../injectables/AuthenticationService.html" target="_self">AuthenticationService</a>, profileService: <a href="../injectables/ProfileService.html" target="_self">ProfileService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Construtor da classe.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                    <code>Router</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de roteamento.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>service</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MovieApiServiceComponent.html" target="_self" >MovieApiServiceComponent</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de API de filmes.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthenticationService.html" target="_self" >AuthenticationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de autenticação.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>profileService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ProfileService.html" target="_self" >ProfileService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Serviço de perfil de utilizador.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchMovies"></a>
+                    <span class="name">
+                        <span ><b>fetchMovies</b></span>
+                        <a href="#fetchMovies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchMovies()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método executado quando o componente é inicializado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchRecommendedMovies"></a>
+                    <span class="name">
+                        <span ><b>fetchRecommendedMovies</b></span>
+                        <a href="#fetchRecommendedMovies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchRecommendedMovies()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Busca os filmes recomendados com base no histórico do utilizador.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCategoryActiveIndex"></a>
+                    <span class="name">
+                        <span ><b>getCategoryActiveIndex</b></span>
+                        <a href="#getCategoryActiveIndex"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCategoryActiveIndex(categoryName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="150"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:150</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém o índice ativo da categoria especificada.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome da categoria.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>O índice ativo da categoria.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCategoryResults"></a>
+                    <span class="name">
+                        <span ><b>getCategoryResults</b></span>
+                        <a href="#getCategoryResults"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCategoryResults(categoryName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtém os resultados da categoria especificada.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome da categoria.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>any[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Uma matriz contendo os resultados da categoria.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRows"></a>
+                    <span class="name">
+                        <span ><b>getRows</b></span>
+                        <a href="#getRows"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getRows(movies: any[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="200"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:200</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Converte uma matriz de filmes em uma matriz de linhas, cada uma contendo até 4 filmes.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>movies</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>A matriz de filmes.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{}</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Uma matriz de linhas de filmes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initCategories"></a>
+                    <span class="name">
+                        <span ><b>initCategories</b></span>
+                        <a href="#initCategories"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>initCategories()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa as categorias de filmes.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextCategory"></a>
+                    <span class="name">
+                        <span ><b>nextCategory</b></span>
+                        <a href="#nextCategory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>nextCategory(categoryName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega para o próximo lote de resultados da categoria especificada.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome da categoria.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Método executado quando o componente é inicializado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prevCategory"></a>
+                    <span class="name">
+                        <span ><b>prevCategory</b></span>
+                        <a href="#prevCategory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prevCategory(categoryName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega para o lote de resultados anterior da categoria especificada.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome da categoria.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleShowAll"></a>
+                    <span class="name">
+                        <span ><b>toggleShowAll</b></span>
+                        <a href="#toggleShowAll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleShowAll(categoryName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Alterna a exibição de todos os resultados da categoria especificada.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>O nome da categoria.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="categories"></a>
+                    <span class="name">
+                        <span ><b>categories</b></span>
+                        <a href="#categories"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MovieCategory[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentUser"></a>
+                    <span class="name">
+                        <span ><b>currentUser</b></span>
+                        <a href="#currentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/media/movies/all-movies-page/all-movies-page.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { MovieApiServiceComponent } from &#x27;../../api/movie-api-service/movie-api-service.component&#x27;;
+import { AuthenticationService } from &#x27;../../../authentication/services/authentication.service&#x27;;
+import { ProfileService } from &#x27;../../../profile/services/profile.service&#x27;;
+import { flatMap, forkJoin, map, switchMap } from &#x27;rxjs&#x27;;
+
+
+
+interface MovieCategory {
+  name: string;
+  results: any[];
+  activeIndex: number;
+  showAll: boolean; 
+
+}
+@Component({
+  selector: &#x27;app-all-movies-page&#x27;,
+  templateUrl: &#x27;./all-movies-page.component.html&#x27;,
+  styleUrl: &#x27;./all-movies-page.component.css&#x27;
+})
+
+/**
+ * Componente responsável por exibir todas as categorias de filmes.
+ */
+export class AllMoviesPageComponent {
+  categories: MovieCategory[] &#x3D; [];
+  currentUser: any;
+
+
+   /**
+   * Construtor da classe.
+   * @param route Serviço de roteamento.
+   * @param service Serviço de API de filmes.
+   * @param authService Serviço de autenticação.
+   * @param profileService Serviço de perfil de utilizador.
+   */
+  constructor(private route: Router,
+    private service: MovieApiServiceComponent,
+    private authService: AuthenticationService,
+    private profileService: ProfileService,
+
+) { }
+
+  /** Método executado quando o componente é inicializado. */
+  ngOnInit(): void {
+    this.currentUser &#x3D; this.authService.getLoggedInUserName();
+    this.initCategories();
+    this.fetchRecommendedMovies();
+  }
+  /** Inicializa as categorias de filmes. */
+
+  initCategories() {
+    this.categories &#x3D; [
+      { name: &#x27;Filmes em Destaque&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes de Ação&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes de Aventura&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes de Comédia&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes de Animação&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes Documentário&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes de Ficção Científica&#x27;, results: [], activeIndex: 0, showAll: false },
+      { name: &#x27;Filmes de Thriller&#x27;, results: [], activeIndex: 0, showAll: false },
+    ];
+
+    this.fetchMovies();
+  }
+
+  /** Método executado quando o componente é inicializado. */
+  fetchMovies() {
+    const fetchMethods &#x3D; [
+     
+      this.service.trendingMovieApiData(),
+      this.service.fetchActionMovies(),
+      this.service.fetchAdventureMovies(),
+      this.service.fetchComedyMovies(),
+      this.service.fetchAnimationMovies(),
+      this.service.fetchDocumentaryMovies(),
+      this.service.fetchScienceFictionMovies(),
+      this.service.fetchThrillerMovies(),
+    ];
+
+    fetchMethods.forEach((fetchMethod, index) &#x3D;&gt; {
+      fetchMethod.subscribe((result) &#x3D;&gt; {
+        this.categories[index].results &#x3D; result.results;
+      });
+    });
+  }
+
+  /** Busca os filmes recomendados com base no histórico do utilizador. */
+
+  fetchRecommendedMovies(): void {
+    this.profileService.getUserWatchedMedia(this.currentUser).pipe(
+      switchMap((watchedMedia: any[]) &#x3D;&gt; {
+        const movieIds &#x3D; watchedMedia
+          .filter(media &#x3D;&gt; media.type &#x3D;&#x3D;&#x3D; &#x27;movie&#x27;)
+          .map(media &#x3D;&gt; media.mediaId);
+        return forkJoin(movieIds.map(id &#x3D;&gt; this.service.getSimilarMovie(id)));
+      }),
+      map(movieArrays &#x3D;&gt; movieArrays.flatMap(movies &#x3D;&gt; movies.results)),
+      map(recommendedMovies &#x3D;&gt; {
+        const uniqueMovieIds &#x3D; new Set();
+        const uniqueMovies &#x3D; [];
+        console.log(recommendedMovies);
+        for (const movie of recommendedMovies) {
+          if (movie.poster_path &amp;&amp; !uniqueMovieIds.has(movie.id)) {
+            uniqueMovieIds.add(movie.id);
+            uniqueMovies.unshift(movie); 
+          }
+        }
+
+        return uniqueMovies.slice(0, 100);
+      })
+    ).subscribe((uniqueRecommendedMovies: any[]) &#x3D;&gt; {
+      const recommendedCategoryIndex &#x3D; this.categories.findIndex(category &#x3D;&gt; category.name &#x3D;&#x3D;&#x3D; &#x27;Filmes Sugeridos&#x27;);
+      if (recommendedCategoryIndex !&#x3D;&#x3D; -1) {
+
+        this.categories[recommendedCategoryIndex].results &#x3D; [
+          ...uniqueRecommendedMovies,
+          ...this.categories[recommendedCategoryIndex].results,
+        ];
+      } else {
+
+        this.categories.unshift({
+          name: &#x27;Filmes Sugeridos&#x27;,
+          results: uniqueRecommendedMovies,
+          activeIndex: 0,
+          showAll: false
+        });
+      }
+    });
+  }
+
+
+  /**
+   * Obtém os resultados da categoria especificada.
+   * @param categoryName O nome da categoria.
+   * @returns Uma matriz contendo os resultados da categoria.
+   */
+  getCategoryResults(categoryName: string): any[] {
+    const category &#x3D; this.categories.find(cat &#x3D;&gt; cat.name &#x3D;&#x3D;&#x3D; categoryName);
+    return category ? category.results : [];
+  }
+
+    /**
+   * Obtém o índice ativo da categoria especificada.
+   * @param categoryName O nome da categoria.
+   * @returns O índice ativo da categoria.
+   */
+
+  getCategoryActiveIndex(categoryName: string): number {
+    const category &#x3D; this.categories.find(cat &#x3D;&gt; cat.name &#x3D;&#x3D;&#x3D; categoryName);
+    return category ? category.activeIndex : 0;
+  }
+
+
+   /**
+   * Navega para o próximo lote de resultados da categoria especificada.
+   * @param categoryName O nome da categoria.
+   */
+  nextCategory(categoryName: string) {
+    const category &#x3D; this.categories.find(cat &#x3D;&gt; cat.name &#x3D;&#x3D;&#x3D; categoryName);
+    if (category) {
+      const batchSize &#x3D; 4; // Defina o tamanho do lote aqui
+      const newIndex &#x3D; category.activeIndex + batchSize;
+      category.activeIndex &#x3D; newIndex &gt;&#x3D; category.results.length ? 0 : newIndex;
+    }
+  }
+
+    /**
+   * Navega para o lote de resultados anterior da categoria especificada.
+   * @param categoryName O nome da categoria.
+   */
+
+  prevCategory(categoryName: string) {
+    const category &#x3D; this.categories.find(cat &#x3D;&gt; cat.name &#x3D;&#x3D;&#x3D; categoryName);
+    if (category) {
+      const batchSize &#x3D; 4; // Defina o tamanho do lote aqui
+      const newIndex &#x3D; category.activeIndex - batchSize;
+      category.activeIndex &#x3D; newIndex &lt; 0 ? Math.max(0, category.results.length - batchSize) : newIndex;
+    }
+  }
+
+  /**
+   * Alterna a exibição de todos os resultados da categoria especificada.
+   * @param categoryName O nome da categoria.
+   */
+  toggleShowAll(categoryName: string) { // Adicione este método
+    const category &#x3D; this.categories.find(cat &#x3D;&gt; cat.name &#x3D;&#x3D;&#x3D; categoryName);
+    if (category) {
+      category.showAll &#x3D; !category.showAll;
+    }
+  }
+
+  
+  /**
+   * Converte uma matriz de filmes em uma matriz de linhas, cada uma contendo até 4 filmes.
+   * @param movies A matriz de filmes.
+   * @returns Uma matriz de linhas de filmes.
+   */
+  getRows(movies: any[]) {
+    const rows &#x3D; [];
+    for (let i &#x3D; 0; i &lt; movies.length; i +&#x3D; 4) {
+      rows.push(movies.slice(i, i + 4));
+    }
+    return rows;
+  }
+
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;contain mt-3 mb-5 p-4&quot;&gt;
+  &lt;div *ngFor&#x3D;&quot;let category of categories.slice(0)&quot; class&#x3D;&quot;row&quot;&gt;
+    &lt;div class&#x3D;&quot;d-flex justify-content-between align-items-center&quot;&gt;
+      &lt;h5 class&#x3D;&quot;text-white&quot;&gt;{{ category?.name }}&lt;/h5&gt;
+      &lt;button (click)&#x3D;&quot;toggleShowAll(category.name)&quot; class&#x3D;&quot;expand-button&quot;&gt;{{ category?.showAll ? &#x27;Mostrar menos&#x27; : &#x27;Expandir&#x27; }}&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div *ngIf&#x3D;&quot;!category.showAll&quot; class&#x3D;&quot;rowposter mt-3 p-2 d-flex flex-wrap&quot;&gt;
+      &lt;button *ngIf&#x3D;&quot;!category.showAll&quot; (click)&#x3D;&quot;prevCategory(category.name)&quot; class&#x3D;&quot;button-nav&quot;&gt;&amp;lt;&lt;/button&gt;
+      &lt;ng-container *ngFor&#x3D;&quot;let movie of category.results.slice(category.activeIndex, category.activeIndex + 4); let i &#x3D; index&quot;&gt;
+        &lt;img *ngIf&#x3D;&quot;movie.poster_path&quot; src&#x3D;&quot;https://image.tmdb.org/t/p/original/{{ movie?.poster_path }}&quot; class&#x3D;&quot;rowimg largeposter&quot; alt&#x3D;&quot;...&quot; [routerLink]&#x3D;&quot;[&#x27;/movie&#x27;, movie.id]&quot;&gt;
+      &lt;/ng-container&gt;
+      &lt;button *ngIf&#x3D;&quot;!category.showAll&quot; (click)&#x3D;&quot;nextCategory(category.name)&quot; class&#x3D;&quot;button-nav&quot;&gt;&amp;gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div *ngIf&#x3D;&quot;category.showAll&quot; class&#x3D;&quot;container mt-3&quot;&gt;
+      &lt;div class&#x3D;&quot;row&quot; *ngFor&#x3D;&quot;let row of getRows(category.results)&quot;&gt;
+
+        &lt;div class&#x3D;&quot;col-3&quot; *ngFor&#x3D;&quot;let movie of row&quot;&gt;
+          &lt;img *ngIf&#x3D;&quot;movie.poster_path&quot; src&#x3D;&quot;https://image.tmdb.org/t/p/original/{{ movie?.poster_path }}&quot; class&#x3D;&quot;rowimg largeposter&quot; alt&#x3D;&quot;...&quot; [routerLink]&#x3D;&quot;[&#x27;/movie&#x27;, movie.id]&quot;&gt;
+        &lt;/div&gt;
+
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="contain mt-3 mb-5 p-4">  <div *ngFor="let category of categories.slice(0)" class="row">    <div class="d-flex justify-content-between align-items-center">      <h5 class="text-white">{{ category?.name }}</h5>      <button (click)="toggleShowAll(category.name)" class="expand-button">{{ category?.showAll ? \'Mostrar menos\' : \'Expandir\' }}</button>    </div>    <div *ngIf="!category.showAll" class="rowposter mt-3 p-2 d-flex flex-wrap">      <button *ngIf="!category.showAll" (click)="prevCategory(category.name)" class="button-nav">&lt;</button>      <ng-container *ngFor="let movie of category.results.slice(category.activeIndex, category.activeIndex + 4); let i = index">        <img *ngIf="movie.poster_path" src="https://image.tmdb.org/t/p/original/{{ movie?.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="[\'/movie\', movie.id]">      </ng-container>      <button *ngIf="!category.showAll" (click)="nextCategory(category.name)" class="button-nav">&gt;</button>    </div>    <div *ngIf="category.showAll" class="container mt-3">      <div class="row" *ngFor="let row of getRows(category.results)">        <div class="col-3" *ngFor="let movie of row">          <img *ngIf="movie.poster_path" src="https://image.tmdb.org/t/p/original/{{ movie?.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="[\'/movie\', movie.id]">        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AboutUsComponent', 'selector': 'app-about-us'},{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AdminStatisticsComponent', 'selector': 'app-admin-statistics'},{'name': 'AllMoviesPageComponent', 'selector': 'app-all-movies-page'},{'name': 'AllSeriesPageComponent', 'selector': 'app-all-series-page'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthenticationButtonComponent', 'selector': 'authentication-button'},{'name': 'BlockedAccountComponent', 'selector': 'app-blocked-account'},{'name': 'ChatComponent', 'selector': 'app-chat'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'EditProfileComponent', 'selector': 'app-edit-profile'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'GamificationComponent', 'selector': 'app-gamification'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoadingComponent', 'selector': 'app-loading'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MovieDetailsComponent', 'selector': 'app-movie-details'},{'name': 'NavMenuComponent', 'selector': 'app-nav-menu'},{'name': 'NotificationsComponent', 'selector': 'app-notifications'},{'name': 'PendingVerificationComponent', 'selector': 'app-pending-verification'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RegisterWithThirdPartyComponent', 'selector': 'app-register-with-third-party'},{'name': 'RegistrationComponent', 'selector': 'app-registration'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SearchServiceComponent', 'selector': 'app-search-service'},{'name': 'SeasonDetailsComponent', 'selector': 'app-season-details'},{'name': 'SeasonDetailsInfoComponent', 'selector': 'app-season-details-info'},{'name': 'SendEmailComponent', 'selector': 'app-send-email'},{'name': 'SeriesDetailsComponent', 'selector': 'app-series-details'},{'name': 'StatisticsComponent', 'selector': 'app-statistics'},{'name': 'SuspendedAccountComponent', 'selector': 'app-suspended-account'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'AllMoviesPageComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AllMoviesPageComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

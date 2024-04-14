@@ -1,0 +1,1 @@
+search_result['541']=["topic_0000000000000117.html","ProfileInfoDto.BirthDate Property","Data de nascimento do utilizador. Pode ser utilizada para verificação de idade ou exibida no perfil do utilizador para fins de personalização."];

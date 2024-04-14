@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>AccountController Constructor</title>
+	<title>AccountController.RefreshUserToken Method</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,7 +74,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">AccountController Constructor</h1>
+		<h1 class="title">AccountController.RefreshUserToken Method</h1>
         
 		<div class="metadata">
         Namespace:
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Constructor for AccountController.</summary-info>
+        <summary-info>Renova o token de um utilizador autenticado.</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Public Sub New( _&nbsp;<br />   ByVal <i>jWTService</i> As <a target="_top" href="topic_0000000000000041.html" onclick="this.target='';return true;">JWTService</a>, _&nbsp;<br />   ByVal <i>signInManager</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.signinmanager-1">SignInManager</a>(Of <a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>), _&nbsp;<br />   ByVal <i>userManager</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>(Of <a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>), _&nbsp;<br />   ByVal <i>emailService</i> As <a target="_top" href="topic_000000000000003E.html" onclick="this.target='';return true;">EmailService</a>, _&nbsp;<br />   ByVal <i>config</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> _&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;Authorize()&gt; _&nbsp;<br />&lt;HttpGet(&quot;api/account/refresh-user-token&quot;)&gt; _&nbsp;<br />Public Function RefreshUserToken() As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>(Of <a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>))</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">public AccountController(&nbsp;<br />   <a target="_top" href="topic_0000000000000041.html" onclick="this.target='';return true;">JWTService</a> <i>jWTService</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.signinmanager-1">SignInManager</a>&lt;<a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>&gt; <i>signInManager</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>&gt; <i>userManager</i>,&nbsp;<br />   <a target="_top" href="topic_000000000000003E.html" onclick="this.target='';return true;">EmailService</a> <i>emailService</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> <i>config</i>&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[Authorize()]&nbsp;<br />[HttpGet(&quot;api/account/refresh-user-token&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; RefreshUserToken()</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />AccountController(&nbsp;<br />   <a target="_top" href="topic_0000000000000041.html" onclick="this.target='';return true;">JWTService</a>^ <i>jWTService</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.signinmanager-1">SignInManager</a>&lt;<a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>^&gt;^ <i>signInManager</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>^&gt;^ <i>userManager</i>,&nbsp;<br />   <a target="_top" href="topic_000000000000003E.html" onclick="this.target='';return true;">EmailService</a>^ <i>emailService</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a>^ <i>config</i>&nbsp;<br />) </pre>			
+					<pre xml:space="preserve" class="brush: cpp">[Authorize()]&nbsp;<br />[HttpGet(&quot;api/account/refresh-user-token&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>^&gt;^&gt;^ RefreshUserToken() </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -268,75 +268,14 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</div>
 
 
-<h4 class="subHeading">
-	Parameters</h4><dl paramName="jWTService" class="parameterList">
-	<dt>
-		<span class="parameter">
-			jWTService
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="topic_0000000000000041.html" onclick="this.target='';return true;">JWTService</a> 
-	</dd>
-</dl>
-<p>
-	Service for generating JWT tokens. 
-</p>
-<dl paramName="signInManager" class="parameterList">
-	<dt>
-		<span class="parameter">
-			signInManager
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.signinmanager-1">SignInManager</a>&lt;<a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>&gt; 
-	</dd>
-</dl>
-<p>
-	Manager for handling sign-in processes. 
-</p>
-<dl paramName="userManager" class="parameterList">
-	<dt>
-		<span class="parameter">
-			userManager
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_000000000000003C.html" onclick="this.target='';return true;">User</a>&gt; 
-	</dd>
-</dl>
-<p>
-	Manager for user-related operations. 
-</p>
-<dl paramName="emailService" class="parameterList">
-	<dt>
-		<span class="parameter">
-			emailService
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="topic_000000000000003E.html" onclick="this.target='';return true;">EmailService</a> 
-	</dd>
-</dl>
-<p>
-	Service for handling email operations. 
-</p>
-<dl paramName="config" class="parameterList">
-	<dt>
-		<span class="parameter">
-			config
-		</span>
-	</dt>
-	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> 
-	</dd>
-</dl>
-<p>
-	Application configuration settings. 
-</p>
 
-<p />
-
+	<h4 class="subHeading">
+		Return Value</h4>
+	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; 
+		<p>
+		Um novo UserDto com o token renovado. 
+	</p>
+	
 
 
 

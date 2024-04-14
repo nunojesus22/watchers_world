@@ -16,7 +16,6 @@ using WatchersWorld.Server.Models.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using WatchersWorld.Server.Controllers;
-using WatchersWorld.Server.Chat.Services;
 using WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 

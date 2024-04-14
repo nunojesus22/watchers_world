@@ -1,0 +1,1 @@
+search_result['870']=["topic_00000000000001D0.html","MessageNotification.TargetUserId Property","Identificador do utilizador destinatário da notificação de mensagem."];

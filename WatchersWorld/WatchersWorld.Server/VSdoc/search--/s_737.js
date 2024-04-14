@@ -1,0 +1,1 @@
+search_result['737']=["topic_0000000000000186.html","FavoriteActorChoice.UserThatChooseId Property","Identificador do utilizador que fez a escolha. Chave estrangeira que referencia a entidade User."];

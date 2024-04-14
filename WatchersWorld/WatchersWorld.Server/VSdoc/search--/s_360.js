@@ -1,0 +1,1 @@
+search_result['360']=["topic_00000000000000BC.html","ChatWithMessagesDto.Messages Property","Lista das mensagens trocadas no chat. Cada mensagem é representada como um objeto de tipo MessageDto."];

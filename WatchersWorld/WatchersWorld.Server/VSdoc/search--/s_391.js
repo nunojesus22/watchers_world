@@ -1,0 +1,1 @@
+search_result['391']=["topic_00000000000000CC.html","UserMedalDto.AcquiredDate Property","Data em que a medalha foi adquirida pelo utilizador.\r\nEste campo permite rastrear o momento exato da conquista, podendo ser utilizado para exibição de timelines ou registros históricos de conquistas."];

@@ -1,0 +1,1 @@
+search_result['913']=["topic_00000000000001E7.html","IAdminService.ChangeRoleToModeratorAsync Method","Altera a role de um utilizador para Moderator."];

@@ -30,7 +30,7 @@
 }
 
 
-/* Ajusta o título do usuário para ficar à direita da foto do perfil */
+/* Ajusta o título do utilizador para ficar à direita da foto do perfil */
 .card-title {
   position: absolute;
   left: 215px; /* Ajuste conforme a largura da sua foto do perfil */
@@ -70,7 +70,7 @@
   margin-bottom: 2rem;
 }
 
-/* Ajusta o posicionamento da área de informação do usuário */
+/* Ajusta o posicionamento da área de informação do utilizador */
 .profile-info {
   display: flex;
   flex-direction: row; /* Organiza o conteúdo em linha */

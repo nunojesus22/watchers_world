@@ -37,7 +37,11 @@ namespace WatchersWorld.Server.Data
 
         }
 
-
+        /// <summary>
+        /// Garante a criação de roles necessárias para o sistema.
+        /// </summary>
+        /// <param name="roleManager">Gestor de roles para a criação de roles.</param>
+        /// <returns>Tarefa assíncrona que indica o sucesso ou falha na criação das roles.</returns>
         private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             string[] roles = ["Admin", "Moderator", "User"];
@@ -51,6 +55,12 @@ namespace WatchersWorld.Server.Data
             }
         }
 
+        /// <summary>
+        /// Garante a criação e configuração de uma conta administrativa padrão.
+        /// </summary>
+        /// <param name="userManager">Gestor de utilizadores para a criação de contas de utilizador.</param>
+        /// <param name="roleManager">Gestor de roles para a atribuição de roles.</param>
+        /// <returns>Tarefa assíncrona que indica o sucesso ou falha na criação do utilizador administrador.</returns>
         private static async Task EnsureAdminUserAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             string adminEmail = "admin@admin.com";
@@ -77,11 +87,12 @@ namespace WatchersWorld.Server.Data
         }
 
         /// <summary>
-        /// Semeia utilizadores de teste no contexto e no gestor de utilizadores.
+        /// Semeia utilizadores de teste com perfis pré-configurados no sistema.
         /// </summary>
-        /// <param name="context">Contexto do servidor WatchersWorld.</param>
-        /// <param name="userManager">Gestor de utilizadores.</param>
-        /// <returns>Tarefa assíncrona.</returns>
+        /// <param name="context">Contexto do servidor para operações de base de dados.</param>
+        /// <param name="userManager">Gestor de utilizadores para a criação de contas de utilizador.</param>
+        /// <param name="roleManager">Gestor de roles para a atribuição de roles aos utilizadores.</param>
+        /// <returns>Tarefa assíncrona que reflete o estado da operação de seeding dos utilizadores de teste.</returns>
         private static async Task SeedTestUser(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             await AddUserWithProfileAsync(context, userManager, roleManager, "usertest1@gmail.com", "UserTest1", "google", true, "Public");
@@ -103,17 +114,17 @@ namespace WatchersWorld.Server.Data
         }
 
         /// <summary>
-        /// Adiciona um utilizador com perfil ao contexto e ao gestor de utilizadores.
+        /// Adiciona um único utilizador com perfil ao sistema.
         /// </summary>
-        /// <param name="context">Contexto do servidor WatchersWorld.</param>
+        /// <param name="context">Contexto do servidor.</param>
         /// <param name="userManager">Gestor de utilizadores.</param>
-        /// <param name="roleManager">Gestor de roles dos utilizadores.</param>
+        /// <param name="roleManager">Gestor de roles.</param>
         /// <param name="email">Email do utilizador.</param>
         /// <param name="userName">Nome de utilizador.</param>
-        /// <param name="provider">Provedor de autenticação.</param>
+        /// <param name="provider">Provedor de autenticação do utilizador.</param>
         /// <param name="emailConfirmed">Indica se o email está confirmado.</param>
-        /// <param name="profileStatus">Estado do perfil (Público ou Privado).</param>
-        /// <returns>Tarefa assíncrona.</returns>
+        /// <param name="profileStatus">Estado do perfil do utilizador.</param>
+        /// <returns>Tarefa assíncrona indicando o sucesso ou falha na adição do utilizador e seu perfil.</returns>
         private static async Task AddUserWithProfileAsync(WatchersWorldServerContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, string email, string userName, string provider, bool emailConfirmed, string profileStatus = "Public")
         {
             var user = new User
@@ -157,6 +168,15 @@ namespace WatchersWorld.Server.Data
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Semeia medalhas no contexto do banco de dados, se ainda não existirem.
+        /// </summary>
+        /// <param name="context">Contexto do servidor WatchersWorld para operações de base de dados.</param>
+        /// <returns>Uma tarefa assíncrona que reflete o estado da operação de seeding das medalhas.</returns>
+        /// <remarks>
+        /// Este método adiciona um conjunto inicial de medalhas ao banco de dados se a tabela de medalhas estiver vazia.
+        /// Cada medalha é definida com um nome, descrição e um caminho para uma imagem representativa.
+        /// </remarks>
         public static async Task SeedMedalsAsync(WatchersWorldServerContext context)
         {
             if (!context.Medals.Any()) // Check if the Medals table is empty
@@ -176,6 +196,16 @@ namespace WatchersWorld.Server.Data
             }
         }
 
+        /// <summary>
+        /// Atribui medalhas a utilizadores específicos baseado numa lista pré-definida de e-mails e nomes de medalhas.
+        /// </summary>
+        /// <param name="context">Contexto do servidor WatchersWorld para operações de base de dados.</param>
+        /// <param name="userManager">Gestor de utilizadores para identificação e manipulação de contas de utilizador.</param>
+        /// <returns>Uma tarefa assíncrona que indica o sucesso ou falha na atribuição de medalhas.</returns>
+        /// <remarks>
+        /// Este método percorre uma lista de pares de e-mail e nome de medalha, atribuindo medalhas aos utilizadores correspondentes.
+        /// Ele verifica se o utilizador e a medalha existem e, em seguida, adiciona a medalha ao perfil do utilizador se ela ainda não foi concedida.
+        /// </remarks>
         private static async Task SeedUserMedalsAsync(WatchersWorldServerContext context, UserManager<User> userManager)
         {
             // Assume you have a list of user email addresses and corresponding medals they should receive

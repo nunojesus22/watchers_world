@@ -1,0 +1,1 @@
+search_result['929']=["topic_00000000000001F2.html","IChatService Interface","Define os serviços disponíveis para manipulação de chats e mensagens entre utilizadores."];

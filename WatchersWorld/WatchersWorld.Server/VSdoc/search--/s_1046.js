@@ -1,0 +1,1 @@
+search_result['1046']=["topic_000000000000023A.html","INotificationService.GetAchievementNotificationsForUserAsync Method","Obtém todas as notificações de medalhas para um dado utilizador."];

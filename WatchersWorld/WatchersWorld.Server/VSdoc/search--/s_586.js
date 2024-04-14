@@ -1,0 +1,1 @@
+search_result['586']=["topic_0000000000000130.html","ChatHub.OnConnectedAsync Method","Acionado quando um cliente se conecta ao hub, registra a conexão e carrega os chats do utilizador."];

@@ -1,1 +1,1 @@
-search_result['62']=["topic_000000000000001D_methods--.html","LoginDto Methods",""];
+search_result['62']=["topic_0000000000000019.html","AdminController.GetTotalRegisteredUsers Method","Obtém o número total de utilizadores registrados no sistema."];

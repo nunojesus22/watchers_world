@@ -1,0 +1,1 @@
+search_result['641']=["topic_0000000000000153.html","Chat.User2 Property","Referência virtual ao segundo utilizador envolvido no chat. Associação criada através da chave estrangeira User2Id."];

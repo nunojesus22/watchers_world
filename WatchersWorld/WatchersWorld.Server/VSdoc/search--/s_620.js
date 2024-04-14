@@ -1,0 +1,1 @@
+search_result['620']=["topic_0000000000000148.html","ProfileInfo.Following Property","Número de utilizadores que este utilizador segue."];

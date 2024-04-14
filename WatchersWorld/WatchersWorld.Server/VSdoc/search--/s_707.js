@@ -1,0 +1,1 @@
+search_result['707']=["topic_0000000000000177.html","UserMedal.UserName Property","Nome de utilizador associado à medalha.\r\nServe como chave estrangeira, referenciando a entidade User para identificar o utilizador que obteve a medalha."];

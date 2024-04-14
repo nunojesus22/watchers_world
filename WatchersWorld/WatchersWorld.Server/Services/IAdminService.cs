@@ -43,7 +43,7 @@ namespace WatchersWorld.Server.Services
         /// <summary>
         /// Apaga a conta de um utilizador e as suas informações relacionadas.
         /// </summary>
-        /// <param name="username">O nome de usuário.</param>
+        /// <param name="username">O nome de utilizador.</param>
         /// <returns>Mensagem indicando o sucesso ou falha da operação.</returns>
         Task<string> DeleteUserByUsernameAsync(string username);
 

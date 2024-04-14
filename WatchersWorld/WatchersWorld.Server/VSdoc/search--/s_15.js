@@ -1,1 +1,1 @@
-search_result['15']=["topic_000000000000000A.html","ProfileController Class",""];
+search_result['15']=["topic_0000000000000008.html","AccountController.ResendEmailConfirmationLink Method","Reenvia o link de confirmação de email para um utilizador."];

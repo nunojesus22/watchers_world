@@ -1,0 +1,1 @@
+search_result['981']=["topic_0000000000000212.html","FavoriteActorService.GetUserChoice Method","Obtém a escolha de ator favorito feita por um utilizador para uma mídia específica."];

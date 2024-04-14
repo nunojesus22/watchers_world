@@ -80,6 +80,16 @@ namespace WatchersWorld.Server.Controllers
             // Altere de BadRequest para Ok e retorne null ou um identificador claro que possa ser tratado pelo frontend
             return Ok(new { ChoiceId = (int?)null });
         }
+
+        /// <summary>
+        /// Recupera o número total de atores favoritos para o utilizador autenticado.
+        /// </summary>
+        /// <returns>
+        /// Retorna um número inteiro indicando o total de atores favoritos do utilizador.
+        /// Caso o utilizador não esteja autenticado ou não encontrado, retorna uma mensagem de erro.
+        /// </returns>
+        /// <response code="200">Retorna o total de atores favoritos do utilizador autenticado.</response>
+        /// <response code="400">Retorna um erro se nenhum utilizador estiver autenticado ou se o utilizador não puder ser encontrado.</response>
         [HttpGet("get-total-favorite-actors")]
         public async Task<IActionResult> GetTotalFavoriteActors()
         {

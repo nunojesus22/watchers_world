@@ -1,0 +1,1 @@
+search_result['677']=["topic_0000000000000168.html","MessagesVisibility.User Property","Referência virtual ao utilizador associado a esta configuração de visibilidade. Estabelece uma relação de chave estrangeira com a tabela de User."];

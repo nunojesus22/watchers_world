@@ -1,0 +1,1 @@
+search_result['371']=["topic_00000000000000C2.html","MessageDto.ReadAt Property","Data e hora em que a mensagem foi lida pelo destinatário. É opcional e pode ser nulo se a mensagem ainda não tiver sido lida."];

@@ -43,7 +43,7 @@ namespace WatchersWorld.Server.Controllers
             var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
             if (userAuthenticated == null)
             {
-                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+                return NotFound(new { message = $"utilizador autenticado '{authenticatedUsername}' não encontrado." });
             }
 
             var userIdAuthenticated = userAuthenticated.Id;
@@ -63,7 +63,7 @@ namespace WatchersWorld.Server.Controllers
             var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
             if (userAuthenticated == null)
             {
-                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+                return NotFound(new { message = $"utilizador autenticado '{authenticatedUsername}' não encontrado." });
             }
 
             var userIdAuthenticated = userAuthenticated.Id;
@@ -131,7 +131,7 @@ namespace WatchersWorld.Server.Controllers
             var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
             if (userAuthenticated == null)
             {
-                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+                return NotFound(new { message = $"utilizador autenticado '{authenticatedUsername}' não encontrado." });
             }
 
             var userIdAuthenticated = userAuthenticated.Id;
@@ -151,7 +151,7 @@ namespace WatchersWorld.Server.Controllers
             var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
             if (userAuthenticated == null)
             {
-                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+                return NotFound(new { message = $"utilizador autenticado '{authenticatedUsername}' não encontrado." });
             }
 
             var userIdAuthenticated = userAuthenticated.Id;
@@ -218,7 +218,7 @@ namespace WatchersWorld.Server.Controllers
             var userAuthenticated = await _userManager.FindByNameAsync(authenticatedUsername);
             if (userAuthenticated == null)
             {
-                return NotFound(new { message = $"Usuário autenticado '{authenticatedUsername}' não encontrado." });
+                return NotFound(new { message = $"utilizador autenticado '{authenticatedUsername}' não encontrado." });
             }
 
             var userIdAuthenticated = userAuthenticated.Id;

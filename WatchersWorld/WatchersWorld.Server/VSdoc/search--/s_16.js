@@ -1,1 +1,1 @@
-search_result['16']=["topic_000000000000000A_attached_props--.html","ProfileController Attached Properties",""];
+search_result['16']=["topic_0000000000000009.html","AccountController.ForgotPassword Method","Trata o processo de redefinição de senha para um utilizador que esqueceu a sua senha."];

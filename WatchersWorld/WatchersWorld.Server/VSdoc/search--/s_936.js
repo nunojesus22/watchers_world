@@ -1,0 +1,1 @@
+search_result['936']=["topic_00000000000001F4.html","IChatService.DeleteChat Method","Deleta um chat existente entre dois utilizadores."];

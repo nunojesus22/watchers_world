@@ -19,10 +19,22 @@ interface MovieCategory {
   templateUrl: './all-movies-page.component.html',
   styleUrl: './all-movies-page.component.css'
 })
+
+/**
+ * Componente responsável por exibir todas as categorias de filmes.
+ */
 export class AllMoviesPageComponent {
   categories: MovieCategory[] = [];
   currentUser: any;
 
+
+   /**
+   * Construtor da classe.
+   * @param route Serviço de roteamento.
+   * @param service Serviço de API de filmes.
+   * @param authService Serviço de autenticação.
+   * @param profileService Serviço de perfil de utilizador.
+   */
   constructor(private route: Router,
     private service: MovieApiServiceComponent,
     private authService: AuthenticationService,
@@ -30,11 +42,13 @@ export class AllMoviesPageComponent {
 
 ) { }
 
+  /** Método executado quando o componente é inicializado. */
   ngOnInit(): void {
     this.currentUser = this.authService.getLoggedInUserName();
     this.initCategories();
     this.fetchRecommendedMovies();
   }
+  /** Inicializa as categorias de filmes. */
 
   initCategories() {
     this.categories = [
@@ -51,6 +65,7 @@ export class AllMoviesPageComponent {
     this.fetchMovies();
   }
 
+  /** Método executado quando o componente é inicializado. */
   fetchMovies() {
     const fetchMethods = [
      
@@ -70,6 +85,8 @@ export class AllMoviesPageComponent {
       });
     });
   }
+
+  /** Busca os filmes recomendados com base no histórico do utilizador. */
 
   fetchRecommendedMovies(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).pipe(
@@ -114,17 +131,32 @@ export class AllMoviesPageComponent {
   }
 
 
-
+  /**
+   * Obtém os resultados da categoria especificada.
+   * @param categoryName O nome da categoria.
+   * @returns Uma matriz contendo os resultados da categoria.
+   */
   getCategoryResults(categoryName: string): any[] {
     const category = this.categories.find(cat => cat.name === categoryName);
     return category ? category.results : [];
   }
+
+    /**
+   * Obtém o índice ativo da categoria especificada.
+   * @param categoryName O nome da categoria.
+   * @returns O índice ativo da categoria.
+   */
 
   getCategoryActiveIndex(categoryName: string): number {
     const category = this.categories.find(cat => cat.name === categoryName);
     return category ? category.activeIndex : 0;
   }
 
+
+   /**
+   * Navega para o próximo lote de resultados da categoria especificada.
+   * @param categoryName O nome da categoria.
+   */
   nextCategory(categoryName: string) {
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
@@ -134,6 +166,11 @@ export class AllMoviesPageComponent {
     }
   }
 
+    /**
+   * Navega para o lote de resultados anterior da categoria especificada.
+   * @param categoryName O nome da categoria.
+   */
+
   prevCategory(categoryName: string) {
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
@@ -142,12 +179,24 @@ export class AllMoviesPageComponent {
       category.activeIndex = newIndex < 0 ? Math.max(0, category.results.length - batchSize) : newIndex;
     }
   }
+
+  /**
+   * Alterna a exibição de todos os resultados da categoria especificada.
+   * @param categoryName O nome da categoria.
+   */
   toggleShowAll(categoryName: string) { // Adicione este método
     const category = this.categories.find(cat => cat.name === categoryName);
     if (category) {
       category.showAll = !category.showAll;
     }
   }
+
+  
+  /**
+   * Converte uma matriz de filmes em uma matriz de linhas, cada uma contendo até 4 filmes.
+   * @param movies A matriz de filmes.
+   * @returns Uma matriz de linhas de filmes.
+   */
   getRows(movies: any[]) {
     const rows = [];
     for (let i = 0; i < movies.length; i += 4) {

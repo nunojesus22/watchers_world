@@ -2,11 +2,11 @@ import { NotificationModel } from "./notification-model";
 
 /**
  * Modelo para notificações de mensagens. Estende o modelo de notificação base,
- * incluindo propriedades específicas como ID do usuário alvo e foto do usuário que disparou a notificação.
+ * incluindo propriedades específicas como ID do utilizador alvo e foto do utilizador que disparou a notificação.
  *
  * Propriedades:
- * - targetUserId: Identificador do usuário alvo da notificação.
- * - triggeredByUserPhoto: Foto do usuário que disparou a notificação.
+ * - targetUserId: Identificador do utilizador alvo da notificação.
+ * - triggeredByUserPhoto: Foto do utilizador que disparou a notificação.
  */
 export class MessageNotificationModel extends NotificationModel {
   targetUserId: string;

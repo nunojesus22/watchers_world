@@ -1,0 +1,1 @@
+search_result['592']=["topic_0000000000000136.html","ChatHub.DeleteMessage Method","Deleta uma mensagem específica e retorna a lista atualizada de chats para o utilizador solicitante."];

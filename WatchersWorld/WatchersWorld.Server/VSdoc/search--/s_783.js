@@ -1,0 +1,1 @@
+search_result['783']=["topic_00000000000001A6.html","Comment.ParentComment Property","O comentário pai, se este comentário for uma resposta a outro comentário."];

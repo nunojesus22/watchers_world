@@ -1,87 +1,246 @@
+
 <div class="about-us-container">
   <div class="about-us-box">
-    <div class="about-us-header">Estatísticas Pessoais</div>
-    <button [routerLink]="['/profile',currentUser]" class="btn btn-secondary shadow-sm">
+    <button [routerLink]="['/profile', currentUser]" class="btn btn-secondary shadow-sm">
       <i class="fas fa-arrow-left"></i> Voltar
     </button>
-    <div class="statistics">
-      <div class="media-stats">
-        <h3 class="statistics-section">Pessoal</h3>
-        <p class="statistcs-p">Número Total de Seguidores: {{ followersCount }}</p>
-        <p class="statistcs-p">Número Total de A Seguir: {{ followingCount }}</p>
 
+    <div class="about-us-header">Estatísticas Pessoais</div>
+
+    <!-- Seção Pessoal -->
+    <div class="statistics">
+      <h3 class="statistics-section">Pessoal</h3>
+
+      <div class="row justify-content-center mb-4">
+        <!-- Cartão de Seguidores -->
+        <div class="col-auto">
+          <div class="card border-secondary h-100">
+            <div class="card-body text-center">
+              <h5 class="card-title">Número Total de Seguidores</h5>
+              <p class="card-text"><strong>{{ followersCount }}</strong></p>
+            </div>
+          </div>
+        </div>
+        <!-- Cartão de Seguindo -->
+        <div class="col-auto">
+          <div class="card border-secondary h-100">
+            <div class="card-body text-center">
+              <h5 class="card-title">Número Total de A Seguir</h5>
+              <p class="card-text"><strong>{{ followingCount }}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="statistics-chart">
         <highcharts-chart [Highcharts]="Highcharts"
                           [options]="chartFollowers"
                           style="width: 100%; height: 400px; display: block;">
         </highcharts-chart>
-      </div>
-      </div>
-      <div class="statistics">
-        <div class="media-stats">
+
+
+
+        <!-- Seção Pessoal -->
+        <div class="statistics">
+          <h3 class="statistics-section">Tempo em Series e Filmes</h3>
+          <div class="row justify-content-center mb-4">
+            <!-- Cartão de Seguidores -->
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Total de Horas a Ver Filmes:</h5>
+                  <p class="card-text"><strong style="font-size: 22px;">{{ totalWatchedTimeFormatted }}</strong></p>
+                </div>
+              </div>
+            </div>
+            <!-- Cartão de Seguindo -->
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Total de Horas a Ver Series:</h5>
+                  <p class="card-text"><strong style="font-size: 22px;">{{ totalWatchedSeriesTimeFormatted }}</strong></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="statistics">
+          <h3 class="statistics-section">Total Series e Filmes</h3>
+          <div class="statistics-chart">
+
+            <highcharts-chart [Highcharts]="Highcharts"
+                              [options]="chartComparisonMedia"
+                              style="width: 100%; height: 400px; display: block;">
+            </highcharts-chart>
+
+          </div>
+
+        </div>
+
+
+        <div class="statistics">
           <h3 class="statistics-section">Filmes</h3>
 
-          <p class="statistcs-p">Número Total de Horas a Ver Filmes: {{ totalWatchedTimeFormatted }}</p>
-          <p class="statistcs-p">Número Total de Horas a Ver Series: {{ totalWatchedSeriesTimeFormatted }}</p>
-          <p class="statistcs-p">Número Total de Filmes Marcados como Vistos: {{ watchedMoviesCount }}</p>
+          <div class="row justify-content-center mb-4">
+            <!-- Cartão de Seguidores -->
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Filmes Marcados como Vistos:</h5>
+                  <p class="card-text"><strong>{{ watchedMoviesCount }}</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Filmes Marcados Ver Mais Tarde:</h5>
+                  <p class="card-text"><strong>{{ watchLaterMoviesCount }}</strong></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="statistics-chart">
           <highcharts-chart [Highcharts]="Highcharts"
                             [options]="chartMovieAdded"
                             style="width: 100%; height: 400px; display: block;">
           </highcharts-chart>
-          <p class="statistcs-p">Número Total de Filmes Marcados como Ver Mais Tarde: {{ watchLaterMoviesCount }}</p>
+        </div>
 
 
 
-
+        <div class="statistics">
           <h3 class="statistics-section">Series</h3>
-          <p class="statistcs-p">Número Total de Episodios Visto: {{ totalWatchedEpisodes }}</p>
-          <p class="statistcs-p">Número Total de Series Marcadas como Vistos: {{ watchedSeriesCount }}</p>
 
+          <div class="row justify-content-center mb-4">
+            <!-- Cartão de Seguidores -->
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title"> Series Marcados como Vistos:</h5>
+                  <p class="card-text"><strong>{{ watchedSeriesCount }}</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title"> Series Marcados Ver Mais Tarde::</h5>
+                  <p class="card-text"><strong>{{ watchLaterSeriesCount }}</strong></p>
+                </div>
+              </div>
+            </div>
 
+          </div>
+        </div>
+
+        <div class="statistics-chart">
           <highcharts-chart [Highcharts]="Highcharts"
                             [options]="chartSerieAdded"
                             style="width: 100%; height: 400px; display: block;">
           </highcharts-chart>
-
-          <p class="statistcs-p">Número Total de Series Marcadas como Ver Mais Tarde: {{ watchLaterSeriesCount }}</p>
         </div>
 
-        <div class="media-stats">
+
+
+
+        <div class="statistics">
           <h3 class="statistics-section">Comentarios</h3>
-          <p class="statistcs-p">Número Total de Comentários/replys realizados: {{ totalCommentsCount }}</p>
-          <p class="statistcs-p">Número Total Likes Recebidos: {{totalLikesReceivedCount}}</p>
+
+          <div class="row justify-content-center mb-4">
+            <!-- Cartão de Seguidores -->
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Número Total de Comentários/replys realizados:</h5>
+                  <p class="card-text"><strong>{{ watchedMoviesCount }}</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Número Total Likes Recebidos:</h5>
+                  <p class="card-text"><strong>{{ watchLaterSeriesCount }}</strong></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="statistics-chart">
           <highcharts-chart [Highcharts]="Highcharts"
                             [options]="chartOptions"
                             style="width: 100%; height: 400px; display: block;">
           </highcharts-chart>
         </div>
 
-        <div class="media-stats">
+        <div class="statistics">
           <h3 class="statistics-section">Quizes e Ratings</h3>
 
-          <p class="statistcs-p">Número Total Quizes Realizados: {{totalQuizAttempts}}</p>
-          <p class="statistcs-p">Número Total de Atores Marcados como Favoritos: {{ totalFavoriteActors }}</p>
-          <p class="statistcs-p">Número Total de Ratings feitos a Media: {{ totalRatigns }}</p>
+          <div class="row justify-content-center mb-4">
 
-          <highcharts-chart [Highcharts]="Highcharts"
-                            [options]="chartQuizAndRatings"
-                            style="width: 100%; height: 400px; display: block;">
-          </highcharts-chart>
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title"> Quizes Realizados:</h5>
+                  <p class="card-text"><strong>{{ totalQuizAttempts }}</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title"> Atores Marcados Favorito:</h5>
+                  <p class="card-text"><strong>{{ totalFavoriteActors }}</strong></p>
+                </div>
+              </div>
+            </div>
 
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title"> Ratings feitos a Media:</h5>
+                  <p class="card-text"><strong>{{ totalRatigns }}</strong></p>
+                </div>
+              </div>
+            </div>
 
-          <h3 class="statistics-section">Medalhas</h3>
+          </div>
 
-          <p class="statistcs-p">Número Total Medalhas Ganhas Realizados: {{totalMedals }}</p>
+          <div class="statistics-chart">
+            <highcharts-chart [Highcharts]="Highcharts"
+                              [options]="chartQuizAndRatings"
+                              style="width: 100%; height: 400px; display: block;">
+            </highcharts-chart>
 
-
+          </div>
 
         </div>
 
+        <div class="statistics">
+          <h3 class="statistics-section">Medalhas</h3>
 
-
-
+          <div class="row justify-content-center mb-4">
+            <!-- Cartão de Seguidores -->
+            <div class="col-auto">
+              <div class="card border-secondary h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Total Medalhas Ganhas Realizados:</h5>
+                  <p class="card-text"><strong>{{ totalMedals }}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 </div>
-
-
-

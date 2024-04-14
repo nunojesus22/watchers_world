@@ -1,1 +1,1 @@
-search_result['13']=["topic_0000000000000008.html","AccountController.ForgotPassword Method","Handles the process for a user to reset their forgotten password."];
+search_result['13']=["topic_0000000000000006.html","AccountController.RegisterWithThirdParty Method",""];

@@ -1,1 +1,1 @@
-search_result['88']=["topic_0000000000000028_methods--.html","UserDto Methods",""];
+search_result['88']=["topic_0000000000000024.html","GamificationController.AwardMedal Method","Atribui uma medalha a um utilizador especificado."];

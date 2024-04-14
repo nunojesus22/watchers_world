@@ -1,0 +1,1 @@
+search_result['352']=["topic_00000000000000B9.html","ChatWithMessagesDto Class","DTO (Data Transfer Object) utilizado para representar um chat, incluindo informações do utilizador e uma lista de mensagens."];

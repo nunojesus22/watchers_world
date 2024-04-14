@@ -12,8 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using WatchersWorld.Server.Chat;
-using WatchersWorld.Server.Chat.Services;
+using WatchersWorld.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 

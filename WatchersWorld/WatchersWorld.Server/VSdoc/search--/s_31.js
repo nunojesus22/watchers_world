@@ -1,1 +1,1 @@
-search_result['31']=["topic_0000000000000010.html","AddingUserToDatabase.BuildTargetModel Method",""];
+search_result['31']=["topic_000000000000000E.html","AccountController.BanUserTemporarily Method","Bane um utilizador temporariamente."];

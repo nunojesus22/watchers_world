@@ -1,0 +1,1 @@
+c['721']=[['722',"GetAverageRatingForMedia Method","topic_0000000000000262.html",0],['723',"GetRatesForMedia Method","topic_0000000000000260.html",0],['724',"GetTotalRatinsByUser Method","topic_0000000000000263.html",0],['725',"GetUserRate Method","topic_0000000000000261.html",0],['726',"GiveRatingToMedia Method","topic_000000000000025F.html",0]];

@@ -1,0 +1,1 @@
+search_result['1050']=["topic_000000000000023E.html","INotificationService.MarkAllMessageNotificationsAsReadAsync Method","Marca todas as notificações de mensagens de um utilizador como lidas."];

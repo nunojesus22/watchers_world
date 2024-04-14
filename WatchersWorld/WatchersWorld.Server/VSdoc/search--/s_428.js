@@ -1,0 +1,1 @@
+search_result['428']=["topic_00000000000000E2.html","CreateCommentDto Class","DTO (Data Transfer Object) que representa os dados necessários para criar um novo comentário."];

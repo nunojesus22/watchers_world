@@ -9,8 +9,7 @@ using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Media.FavoriteActor;
 using WatchersWorld.Server.Models.Media;
 using WatchersWorld.Server.Services;
-using WatchersWorld.Server.Chat.Services;
-using WatchersWorld.Server.Chat.Models;
+using WatchersWorld.Server.Models.Chat;
 
 namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
 {

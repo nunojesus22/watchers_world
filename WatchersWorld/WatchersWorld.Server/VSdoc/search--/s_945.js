@@ -1,0 +1,1 @@
+search_result['945']=["topic_00000000000001FD.html","ChatService Class","Serviço que implementa a interface IChatService para gerenciar operações de chat."];

@@ -1,1 +1,1 @@
-search_result['49']=["topic_0000000000000018.html","EmailSendDto Class","Data Transfer Object (DTO) for sending email.\r\nContains the necessary properties to construct an email message."];
+search_result['49']=["topic_0000000000000015_attached_props--.html","ConfirmEmailDto Attached Properties",""];

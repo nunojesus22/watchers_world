@@ -1,0 +1,1 @@
+search_result['942']=["topic_00000000000001FA.html","IChatService.GetAllMessagesByChat Method","Recupera todas as mensagens de um chat específico."];

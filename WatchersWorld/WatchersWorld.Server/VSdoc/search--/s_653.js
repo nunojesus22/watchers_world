@@ -1,0 +1,1 @@
+search_result['653']=["topic_000000000000015A.html","Messages.SendUser Property","Referência virtual ao utilizador que enviou a mensagem. Estabelece uma relação de chave estrangeira com a tabela de User."];

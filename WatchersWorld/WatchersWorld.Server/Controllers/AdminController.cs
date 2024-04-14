@@ -182,16 +182,23 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = result });
         }
 
+        /// <summary>
+        /// Obtém o número total de utilizadores banidos no sistema.
+        /// </summary>
+        /// <returns>Um número inteiro representando o total de utilizadores banidos.</returns>
+        /// <response code="200">Retorna o total de utilizadores banidos.</response>
+        [HttpGet("api/admin/total-banned-users")]
+        public async Task<ActionResult<int>> GetTotalBannedUsers()
+        {
+            int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.StartBanDate != null);
+            return Ok(totalBannedUsers);
+        }
 
-        // In ProfileController.cs or a relevant controller
-
-        //[HttpGet("api/admin/total-banned-users")]
-        //public async Task<ActionResult<int>> GetTotalBannedUsers()
-        //{
-        //    int totalBannedUsers = await _context.ProfileInfo.CountAsync(p => p.IsBanned);
-        //    return Ok(totalBannedUsers);
-        //}
-
+        /// <summary>
+        /// Obtém o número total de utilizadores registrados no sistema.
+        /// </summary>
+        /// <returns>Um número inteiro representando o total de utilizadores registrados.</returns>
+        /// <response code="200">Retorna o total de utilizadores registrados.</response>
         [HttpGet("api/admin/total-registered-users")]
         public async Task<ActionResult<int>> GetTotalRegisteredUsers()
         {
@@ -199,6 +206,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(totalUsers);
         }
 
+        /// <summary>
+        /// Obtém o número total de perfis privados no sistema.
+        /// </summary>
+        /// <returns>Um número inteiro representando o total de perfis privados.</returns>
+        /// <response code="200">Retorna o total de perfis privados.</response>
         [HttpGet("api/admin/total-private-profiles")]
         public async Task<ActionResult<int>> GetTotalPrivateProfiles()
         {
@@ -206,6 +218,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(totalPrivateProfiles);
         }
 
+        /// <summary>
+        /// Obtém o número total de perfis públicos no sistema.
+        /// </summary>
+        /// <returns>Um número inteiro representando o total de perfis públicos.</returns>
+        /// <response code="200">Retorna o total de perfis públicos.</response>
         [HttpGet("api/admin/total-public-profiles")]
         public async Task<ActionResult<int>> GetTotalPublicProfiles()
         {
@@ -213,11 +230,17 @@ namespace WatchersWorld.Server.Controllers
             return Ok(totalPublicProfiles);
         }
 
+        /// <summary>
+        /// Obtém o número total de comentários feitos em todo o sistema.
+        /// </summary>
+        /// <returns>Um número inteiro representando o total de comentários.</returns>
+        /// <response code="200">Retorna o total de comentários.</response>
         [HttpGet("api/admin/total-comments")]
         public async Task<ActionResult<int>> GetTotalComments()
         {
             int totalComments = await _context.Comments.CountAsync();
             return Ok(totalComments);
         }
+
     }
 }

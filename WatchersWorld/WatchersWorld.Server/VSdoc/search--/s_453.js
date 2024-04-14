@@ -1,0 +1,1 @@
+search_result['453']=["topic_00000000000000EC.html","RatingMediaDto.Rating Property","A classificação atribuída à peça de Media pelo utilizador. Representa a opinião do utilizador sobre a qualidade da Media."];

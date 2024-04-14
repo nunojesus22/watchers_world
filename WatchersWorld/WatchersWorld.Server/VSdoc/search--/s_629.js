@@ -1,0 +1,1 @@
+search_result['629']=["topic_000000000000014C.html","User.Provider Property","Fornecedor utilizado pelo utilizador para se registar ou autenticar na aplicação."];

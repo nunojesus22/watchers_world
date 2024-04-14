@@ -1,1 +1,1 @@
-search_result['32']=["topic_0000000000000011.html","WatchersWorld.Server.Data Namespace",""];
+search_result['32']=["topic_000000000000000F.html","AdminController Class","Controlador para operações administrativas, incluindo gestão de utilizadores e obtenção de estatísticas."];

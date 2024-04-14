@@ -13,6 +13,10 @@ import * as Highcharts from 'highcharts';
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })
+
+/**
+ * StatisticsComponent class
+ */
 export class StatisticsComponent implements OnInit {
   followersCount: number | undefined;
   followingCount: number | undefined;
@@ -48,6 +52,8 @@ export class StatisticsComponent implements OnInit {
   chartQuizAndRatings: any; // opções para o gráfico circular
 
   chartFollowers: any;
+  chartComparisonMedia: any; 
+
   constructor(
     private profileService: ProfileService,
     private authService: AuthenticationService,
@@ -74,23 +80,93 @@ export class StatisticsComponent implements OnInit {
       this.loadSerieAddedByDate();
       this.loadPieChartData();
       this.loadFollowersData();
-      //this.test();
+      this.loadMoviesVsSeriesData();
     }
   }
 
+  loadMoviesVsSeriesData(): void {
+    forkJoin({
+      watchedMedia: this.profileService.getUserWatchedMedia(this.currentUser),
+      watchLaterMedia: this.profileService.getUserWatchLaterMedia(this.currentUser)
+    }).subscribe({
+      next: (results) => {
+        this.watchedMoviesCount = results.watchedMedia.filter(m => m.type === 'movie').length;
+        this.watchedSeriesCount = results.watchedMedia.filter(m => m.type === 'serie').length;
+        this.watchLaterMoviesCount = results.watchLaterMedia.filter(m => m.type === 'movie').length;
+        this.watchLaterSeriesCount = results.watchLaterMedia.filter(m => m.type === 'serie').length;
+        this.setWatchedComparisonChartOptions();
+      },
+      error: (error) => console.error("Error fetching media counts:", error)
+    });
+  }
+
+
+  /**
+ * Configura as opções do gráfico de comparação entre filmes e séries assistidas.
+ */
+  setWatchedComparisonChartOptions(): void {
+    this.chartComparisonMedia = {
+      chart: {
+        type: 'pie',
+        options3d: {
+          enabled: true,
+          alpha: 45
+        }
+      },
+      subtitle: {
+        text: 'Numero de Filmes Vistos Vs Series Vistas  '
+      },
+      title: {
+        text: 'Comparação de Filmes e Séries Assistidas'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          innerSize: 100,
+          depth: 45
+        }
+      },
+      series: [{
+        name: 'Assistidos',
+        colorByPoint: true,
+        data: [{
+          name: 'Filmes',
+          y: this.watchedMoviesCount,
+          sliced: true,
+          selected: true
+        }, {
+          name: 'Séries',
+          y: this.watchedSeriesCount
+        }]
+      }]
+    };
+  }
+
+
+  /**
+   * Carrega seguidores
+   */
   loadFollowersData(): void {
     this.profileService.getUserData(this.currentUser).subscribe({
       next: (profileData) => {
         this.followersCount = profileData.followers;
         this.followingCount = profileData.following;
-        // Chama a função para configurar o gráfico de seguidores
         this.setFollowersPieChartOptions();
       },
       error: (error) => console.error("Error fetching followers data:", error)
     });
   }
 
-
+  /**
+   * PieChart Followers
+   */
   setFollowersPieChartOptions(): void {
     // Verificamos se já temos os dados antes de configurar o gráfico
     if (this.followersCount !== undefined && this.followingCount !== undefined) {
@@ -106,7 +182,7 @@ export class StatisticsComponent implements OnInit {
           text: 'Seguidores e Seguindo'
         },
         subtitle: {
-          text: 'Visão geral do engajamento social'
+          text: 'Visão geral da parte social'
         },
         plotOptions: {
           pie: {
@@ -124,6 +200,10 @@ export class StatisticsComponent implements OnInit {
       };
     }
   }
+
+  /**
+   * Carrega o PieChart
+   */
   loadPieChartData(): void {
     forkJoin({
       quizAttempts: this.profileService.getTotalQuizAttempts(this.currentUser),
@@ -142,7 +222,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Define o Pie Chart
+   */
   setPieChartOptions(): void {
     this.chartQuizAndRatings = {
       chart: {
@@ -175,9 +257,10 @@ export class StatisticsComponent implements OnInit {
     };
   }
 
-  // ... restante da classe ...
 
-
+  /**
+   * Carrega os comentarios pela data
+   */
   loadCommentsCountByDate(): void {
     this.apiService.commentsDate(this.currentUser).subscribe(data => {
       this.commentsCountByDate = data;
@@ -185,7 +268,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Carrega os Media pela data
+   */
   loadMediaAddedByDate(): void {
     this.apiService.getMovieAddedByDate(this.currentUser).subscribe(data => {
       this.mediaAddedByDate = data;
@@ -193,6 +278,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+   /**
+   * Carrega os Series pela data
+   */
   loadSerieAddedByDate(): void {
     this.apiService.getSeriesAddedByDate(this.currentUser).subscribe(data => {
       this.mediaSerieByDate = data;
@@ -200,10 +288,13 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+     /**
+   * Carrega os Media Pie Chart
+   */
   setMediaAddedChartOptions(): void {
     this.chartMovieAdded = {
       chart: {
-        type: 'column' // 'column' para gráfico de colunas verticais, 'bar' para barras horizontais
+        type: 'column' 
       },
       title: {
         text: 'Filmes Vistos por Data'
@@ -247,6 +338,9 @@ export class StatisticsComponent implements OnInit {
   }
 
 
+  /**
+   * Carrega os Serie Pie Chart
+   */
   setSerieAddedChartOptions(): void {
     this.chartSerieAdded = {
       chart: {
@@ -292,6 +386,11 @@ export class StatisticsComponent implements OnInit {
       }]
     };
   }
+
+  
+  /**
+   * Carrega os Comentarios Pie Chart
+   */
   setChartOptions(): void {
     this.chartOptions = {
       chart: {
@@ -343,7 +442,9 @@ export class StatisticsComponent implements OnInit {
 
 
 
-
+/**
+ * Calcula o tempo total assistido pelo utilizador e formata em meses, dias e horas.
+ */
   calculateTotalWatchedTime(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
       // Filter only movies from the watchedMedia list
@@ -370,6 +471,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Calcula o tempo total assistido de séries pelo utilizador e formata em meses, dias e horas.
+ */
   calculateTotalWatchedSeriesTime(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
       // Filter only series from the watchedMedia list
@@ -396,7 +500,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+/**
+ * Calcula o número total de episódios assistidos pelo utilizador.
+ */
   calculateTotalWatchedEpisodes(): void {
     this.profileService.getUserWatchedMedia(this.currentUser).subscribe(watchedMedia => {
       // Filtra apenas as séries da lista de mídias assistidas
@@ -421,7 +527,10 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-
+/**
+ * Busca as estatísticas do utilizador, como número de seguidores e seguindo.
+ * @param username O nome de utilizador do perfil para buscar estatísticas.
+ */
   private fetchStatistics(username: string): void {
     this.profileService.getUserData(username).subscribe({
       next: (profileData) => {
@@ -431,6 +540,11 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching user statistics:", error)
     });
   }
+
+  /**
+ * Busca o número total de filmes e séries assistidos e para assistir mais tarde pelo utilizador.
+ * @param username O nome de utilizador do perfil para buscar mídias assistidas.
+ */
   private fetchMediaCounts(username: string): void {
     // Fetch watched movies and series
     this.profileService.getUserWatchedMedia(username).subscribe({
@@ -450,6 +564,11 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching watch later media:", error)
     });
   }
+
+  /**
+ * Busca o número total de comentários feitos pelo utilizador.
+ * @param username O nome de utilizador do perfil para buscar o número total de comentários.
+ */
   private fetchTotalComments(username: string): void {
     // Chamadas existentes para buscar followers, following, etc.
     this.profileService.getUserTotalComments(username).subscribe({
@@ -460,6 +579,10 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Busca o número total de medalhas conquistadas pelo utilizador.
+ * @param username O nome de utilizador do perfil para buscar o número total de medalhas.
+ */
   private fetchTotalMedals(username: string): void {
     // Chamadas existentes para buscar followers, following, etc.
     this.profileService.getUserTotalMedals(username).subscribe({
@@ -470,6 +593,10 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Busca o número total de curtidas recebidas pelo utilizador.
+ * @param username O nome de utilizador do perfil para buscar o número total de curtidas.
+ */
   private fetchTotalLikes(username: string): void {
     // Chamadas existentes para buscar followers, following, etc.
     this.profileService.getUserTotalLikesReceived(username).subscribe({
@@ -479,6 +606,11 @@ export class StatisticsComponent implements OnInit {
       error: (error) => console.error("Error fetching total user likes:", error)
     });
   }
+
+  /**
+ * Busca o número total de tentativas de quiz realizadas pelo utilizador.
+ * @param userId O ID do utilizador para buscar o número total de tentativas de quiz.
+ */
   private fetchTotalQuizAttempts(userId: string): void {
     this.profileService.getTotalQuizAttempts(userId).subscribe({
       next: (totalAttempts) => {
@@ -488,6 +620,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Carrega o número total de atores favoritos do utilizador.
+ */
   private loadTotalFavoriteActors(): void {
     this.profileService.getTotalFavoriteActors().subscribe({
       next: (total) => {
@@ -499,6 +634,9 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
+  /**
+ * Carrega o número total de avaliações feitas pelo utilizador.
+ */
   private loadTotalRatings(): void {
     this.profileService.getTotalRatingsByUser().subscribe({
       next: (total) => {

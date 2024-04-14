@@ -1,1 +1,1 @@
-search_result['56']=["topic_000000000000001A.html","EmailSendDto.To Property","Recipient\u0027s email address."];
+search_result['56']=["topic_0000000000000018.html","AdminController.GetTotalBannedUsers Method","Obtém o número total de utilizadores banidos no sistema."];

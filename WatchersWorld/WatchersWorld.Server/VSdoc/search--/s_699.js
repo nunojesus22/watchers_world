@@ -1,0 +1,1 @@
+search_result['699']=["topic_0000000000000174.html","Medals.Description Property","Descrição da medalha.\r\nFornece informações sobre como a medalha pode ser obtida ou o que ela representa."];

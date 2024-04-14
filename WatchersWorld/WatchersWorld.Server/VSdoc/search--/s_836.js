@@ -1,0 +1,1 @@
+search_result['836']=["topic_00000000000001C2.html","UserMedia.MediaListModel Property","Propriedade de navegação para a tabela `MediaListModel`. Esta propriedade virtual permite o acesso\r\ndireto à lista de Media associada ao utilizador através de `IdListMedia`, facilitando o acesso aos\r\n..."];

@@ -1,0 +1,1 @@
+search_result['184']=["topic_0000000000000057.html","ProfileController Class","Controlador responsável pela gestão de perfis de utilizadores, incluindo a obtenção de informações de perfil,\r\natualização de informações de perfil, e gestão de seguidores."];

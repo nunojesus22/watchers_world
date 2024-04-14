@@ -393,11 +393,11 @@ export class ProfileComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Erro ao seguir usuário', error);
+          console.error('Erro ao seguir utilizador', error);
         }
       });
     } else {
-      console.error('Nome de usuário atual ou nome de usuário logado está indefinido.');
+      console.error('Nome de utilizador atual ou nome de utilizador logado está indefinido.');
     }
   }
 
@@ -412,11 +412,11 @@ export class ProfileComponent implements OnInit {
             this.isFollowing = false;
           },
           error: (error) => {
-            console.error('Erro ao deixar de seguir usuário', error);
+            console.error('Erro ao deixar de seguir utilizador', error);
           }
         });
     } else {
-      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
+      console.error('Os nomes de utilizador do perfil logado ou do perfil a ser seguido não estão definidos.');
     }
   }
 
@@ -432,7 +432,7 @@ export class ProfileComponent implements OnInit {
       } as ProfileChat;
       this.chatService.selectUser(profile);
     } else {
-      console.error('Os nomes de usuário do perfil logado ou do perfil a ser seguido não estão definidos.');
+      console.error('Os nomes de utilizador do perfil logado ou do perfil a ser seguido não estão definidos.');
     }
   }
 
@@ -542,7 +542,7 @@ export class ProfileComponent implements OnInit {
         }
       }
     } catch (error) {
-      console.error('Erro ao buscar mídia favorita para usuário', username, error);
+      console.error('Erro ao buscar mídia favorita para utilizador', username, error);
     }
   }
 
@@ -562,7 +562,7 @@ export class ProfileComponent implements OnInit {
 
       await this.fetchWatchedMediaDetails();
     } catch (error) {
-      console.error('Erro ao buscar mídia assistida para usuário', username, error);
+      console.error('Erro ao buscar mídia assistida para utilizador', username, error);
     }
   }
 
@@ -605,7 +605,7 @@ export class ProfileComponent implements OnInit {
 
       await this.fetchWatchLaterMediaDetails();
     } catch (error) {
-      console.error('Erro ao buscar mídia para ver mais tarde para o usuário', username, error);
+      console.error('Erro ao buscar mídia para ver mais tarde para o utilizador', username, error);
     }
   }
 

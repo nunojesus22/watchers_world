@@ -1,0 +1,1 @@
+search_result['687']=["topic_000000000000016D.html","Followers.WhosFollowing Property","Identificador do utilizador que está a seguir outro utilizador. Chave estrangeira que referencia o identificador único do utilizador na tabela User."];

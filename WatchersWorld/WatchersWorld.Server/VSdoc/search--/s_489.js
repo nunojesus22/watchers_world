@@ -1,0 +1,1 @@
+search_result['489']=["topic_00000000000000FC.html","FollowNotificationDto Constructor","Construtor que inicializa uma nova instância da classe FollowNotificationDto com o tipo de evento específico."];

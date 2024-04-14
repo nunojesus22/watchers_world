@@ -1,0 +1,1 @@
+search_result['182']=["topic_0000000000000055.html","NotificationsController.GetMyMediaNotifications Method","Obtém as notificações de novas mídias ou episódios para o utilizador autenticado,\r\npossivelmente filtradas por nome e foto da mídia."];

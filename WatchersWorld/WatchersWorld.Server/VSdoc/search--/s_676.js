@@ -1,0 +1,1 @@
+search_result['676']=["topic_0000000000000167.html","MessagesVisibility.UserId Property","Identificador do utilizador para o qual a visibilidade da mensagem é definida. Este campo é obrigatório."];

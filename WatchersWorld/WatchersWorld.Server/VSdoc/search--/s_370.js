@@ -1,0 +1,1 @@
+search_result['370']=["topic_00000000000000C1.html","MessageDto.SentAt Property","Data e hora em que a mensagem foi enviada. É opcional e pode ser nulo se a mensagem ainda não tiver sido enviada."];

@@ -1,0 +1,1 @@
+search_result['1012']=["topic_0000000000000227.html","IGamificationService Interface","Define as operações de gamificação, como atribuir medalhas e recuperar medalhas bloqueadas e desbloqueadas."];

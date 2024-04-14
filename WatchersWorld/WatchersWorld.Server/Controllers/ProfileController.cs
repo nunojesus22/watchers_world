@@ -461,7 +461,18 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-
+        /// <summary>
+        /// Deleta a conta de um utilizador especificado, juntamente com todas as informações associadas.
+        /// </summary>
+        /// <param name="usernameAuthenticated">Nome do utilizador que será deletado. Este utilizador deve estar autenticado.</param>
+        /// <returns>
+        /// Uma resposta de sucesso com uma mensagem indicando a remoção bem-sucedida da conta,
+        /// ou uma resposta de erro se a conta não puder ser deletada ou o nome do utilizador não for fornecido.
+        /// </returns>
+        /// <remarks>
+        /// Este método exige que o nome do utilizador seja fornecido e que corresponda a uma conta autenticada.
+        /// Se o utilizador não estiver autenticado ou o nome for nulo ou vazio, a operação não será realizada.
+        /// </remarks>
         [HttpDelete("deleteAccount/{usernameAuthenticated}")]
         public async Task<IActionResult> DeleteAccount(string usernameAuthenticated)
         {

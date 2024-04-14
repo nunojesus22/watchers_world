@@ -1,1 +1,1 @@
-search_result['74']=["topic_0000000000000022.html","RegisterDto.Email Property","Email address for the new user account."];
+search_result['74']=["topic_0000000000000020.html","FavoriteActorChoiceController.GetUserChoiceGeForMedia Method","Obtém a escolha de ator favorito de um utilizador para uma media específica."];

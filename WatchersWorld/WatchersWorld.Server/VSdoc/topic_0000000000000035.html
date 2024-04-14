@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>ProfileInfo Class</title>
+	<title>MediaController.UnmarkAsWatched Method</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">ProfileInfo Class</h1>
+		<h1 class="title">MediaController.UnmarkAsWatched Method</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_0000000000000034.html">WatchersWorld.Server.Models.Authentication</a>
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers</a>
 
 
 
@@ -89,9 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Profile class representing a user's profile.
-Associates additional details such as bio, photos, and status with a user.
-This class is intended to capture and convey user-specific profile information.</summary-info>
+        <summary-info>Remove a marcação de assistido de uma media para um utilizador.</summary-info>
 
 
 
@@ -141,7 +139,7 @@ This class is intended to capture and convey user-specific profile information.<
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Public Class ProfileInfo</pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;Authorize()&gt; _&nbsp;<br />&lt;HttpPost(&quot;/api/media/unmark-watched&quot;)&gt; _&nbsp;<br />Public Function UnmarkAsWatched( _&nbsp;<br />   &lt;FromBody()&gt; _&nbsp;<br />   ByVal <i>request</i> As <a target="_top" href="topic_00000000000000F1.html" onclick="this.target='';return true;">UserMediaDto</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a></pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -180,7 +178,7 @@ This class is intended to capture and convey user-specific profile information.<
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">public class ProfileInfo</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[Authorize()]&nbsp;<br />[HttpPost(&quot;/api/media/unmark-watched&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a> UnmarkAsWatched(&nbsp;<br />   [FromBody()]&nbsp;<br />   <a target="_top" href="topic_00000000000000F1.html" onclick="this.target='';return true;">UserMediaDto</a> <i>request</i>&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -220,7 +218,7 @@ This class is intended to capture and convey user-specific profile information.<
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">public ref class ProfileInfo </pre>			
+					<pre xml:space="preserve" class="brush: cpp">[Authorize()]&nbsp;<br />[HttpPost(&quot;/api/media/unmark-watched&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>^ UnmarkAsWatched(&nbsp;<br />   [FromBody()]&nbsp;<br />   <a target="_top" href="topic_00000000000000F1.html" onclick="this.target='';return true;">UserMediaDto</a>^ <i>request</i>&nbsp;<br />) </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -259,7 +257,7 @@ This class is intended to capture and convey user-specific profile information.<
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">public class ProfileInfo</pre>			
+					<pre xml:space="preserve" class="brush: js">public &nbsp;<br />   Authorize()&nbsp;<br />   HttpPost(&quot;/api/media/unmark-watched&quot;)&nbsp;<br />function UnmarkAsWatched(&nbsp;<br />   FromBody()&nbsp;<br />    <i>request</i> : <a target="_top" href="topic_00000000000000F1.html" onclick="this.target='';return true;">UserMediaDto</a>&nbsp;<br />) : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a>;</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -270,6 +268,30 @@ This class is intended to capture and convey user-specific profile information.<
 	</div>
 
 
+<h4 class="subHeading">
+	Parameters</h4><dl paramName="request" class="parameterList">
+	<dt>
+		<span class="parameter">
+			request
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="topic_00000000000000F1.html" onclick="this.target='';return true;">UserMediaDto</a> 
+	</dd>
+</dl>
+<p>
+	Dados da media a ser removida da lista de assistidos. 
+</p>
+
+<p />
+
+	<h4 class="subHeading">
+		Return Value</h4>
+	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.iactionresult">IActionResult</a> 
+		<p>
+		Um resultado indicando se a operação foi bem-sucedida. 
+	</p>
+	
 
 
 
@@ -286,207 +308,6 @@ This class is intended to capture and convey user-specific profile information.<
 
 	</div>
 </div>
-
-
-
-
-<div class="section_container">
-	<div class="section_heading">
-		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">Properties</a></span>
-		<div>&nbsp;</div>
-	</div>
-
-	<div id="PropertiesSection" class="section">	
-  <table class="memberListTable">
-    <tr>
-      <th></th>
-      <th>
-        Name
-      </th>
-      <th>
-        Description
-      </th>
-    </tr>
-
-
-	
-		<tr class="
-
-
-">
-	<td>
-<img alt="Public property" title="Public property" src="msdn2019/pubproperty.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_0000000000000037.html">BirthDate</a>
-
-	</td>
-	<td>
-
-The user's date of birth.
-This information can be used for age verification or displayed in user profiles for personalization.
-
-	</td>
-</tr>
-	
-
-
-	
-		<tr class="
-
-
-">
-	<td>
-<img alt="Public property" title="Public property" src="msdn2019/pubproperty.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_000000000000003A.html">CoverPhoto</a>
-
-	</td>
-	<td>
-
-URL or path to the user's cover photo.
-This is often a larger image displayed prominently at the top of the user's profile page, typically used for personalization and branding.
-
-	</td>
-</tr>
-	
-
-
-	
-		<tr class="
-
-
-">
-	<td>
-<img alt="Public property" title="Public property" src="msdn2019/pubproperty.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_0000000000000038.html">Description</a>
-
-	</td>
-	<td>
-
-A brief description or bio of the user.
-This could be a personal statement, professional summary, or any other information the user wishes to share publicly.
-
-	</td>
-</tr>
-	
-
-
-	
-		<tr class="
-
-
-">
-	<td>
-<img alt="Public property" title="Public property" src="msdn2019/pubproperty.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_0000000000000039.html">ProfilePhoto</a>
-
-	</td>
-	<td>
-
-URL or path to the user's profile photo.
-This image is typically shown in the user's profile or alongside user-generated content to represent the user visually.
-
-	</td>
-</tr>
-	
-
-
-	
-		<tr class="
-
-
-">
-	<td>
-<img alt="Public property" title="Public property" src="msdn2019/pubproperty.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_000000000000003B.html">ProfileStatus</a>
-
-	</td>
-	<td>
-
-Enum representing the visibility status of the profile (e.g., Public, Private).
-It dictates the visibility or accessibility of the profile to other users on the platform.
-
-	</td>
-</tr>
-	
-
-
-	
-		<tr class="
-
-
-">
-	<td>
-<img alt="Public property" title="Public property" src="msdn2019/pubproperty.png"></img>
-
-
-    
-	</td>
-	<td>
-	<a href="topic_0000000000000036.html">UserEmail</a>
-
-	</td>
-	<td>
-
-Email associated with the user's profile.
-Used as a unique identifier for the user's profile and for communication purposes.
-
-	</td>
-</tr>
-	
-
-
-  </table>
-
-  <a href="#mainBody">
-    Top
-  </a>
-
-	</div>					
-</div>
-
-
-
-
-
-
-  
-
-<!-- Classes -->
-
-<!-- Classes End -->
-
-<!-- Standard Modules -->
-
-<!-- Standard Modules End -->
-
-  
-
-
-
 
 
 
@@ -550,7 +371,6 @@ Used as a unique identifier for the user's profile and for communication purpose
 	</div>					
 </div>
 
-
 <div class="section_container">
 	<div class="section_heading">
 		<span><a href="javascript:void(0)" title="Collapse" onclick="toggleSection(this);">See Also</a></span>
@@ -559,10 +379,14 @@ Used as a unique identifier for the user's profile and for communication purpose
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-	<a href="topic_0000000000000034.html">WatchersWorld.Server.Models.Authentication Namespace</a><br />
+			<a href="topic_000000000000002C.html">MediaController Class</a><br />
 
 
-	
+
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers Namespace</a><br />
+
+
+			
 
 		</div>
 	</div>					

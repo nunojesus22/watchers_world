@@ -1,0 +1,1 @@
+search_result['618']=["topic_0000000000000146.html","ProfileInfo.ProfileStatus Property","Estado de visibilidade do perfil, representado por uma enumeração (por exemplo, Público, Privado).\r\nDetermina a visibilidade ou acessibilidade do perfil a outros utilizadores na plataforma."];

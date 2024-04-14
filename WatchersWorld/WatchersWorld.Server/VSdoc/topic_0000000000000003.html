@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>AccountController.RefreshUserToken Method</title>
+	<title>AccountController.Login Method</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,7 +74,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">AccountController.RefreshUserToken Method</h1>
+		<h1 class="title">AccountController.Login Method</h1>
         
 		<div class="metadata">
         Namespace:
@@ -89,7 +89,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
        
        
-        <summary-info>Constructor for AccountController.</summary-info>
+        <summary-info>Processa o login de um utilizador.</summary-info>
 
 
 
@@ -139,7 +139,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">&lt;Authorize()&gt; _&nbsp;<br />&lt;HttpGet(&quot;api/account/refresh-user-token&quot;)&gt; _&nbsp;<br />Public Function RefreshUserToken() As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>(Of <a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>))</pre>			
+					<pre xml:space="preserve" class="brush: vb">&lt;AllowAnonymous()&gt; _&nbsp;<br />&lt;HttpPost(&quot;api/account/login&quot;)&gt; _&nbsp;<br />Public Function Login( _&nbsp;<br />   ByVal <i>model</i> As <a target="_top" href="topic_000000000000009E.html" onclick="this.target='';return true;">LoginDto</a> _&nbsp;<br />) As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>(Of <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>(Of <a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>))</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -178,7 +178,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">[Authorize()]&nbsp;<br />[HttpGet(&quot;api/account/refresh-user-token&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; RefreshUserToken()</pre>			
+					<pre xml:space="preserve" class="brush: csharp">[AllowAnonymous()]&nbsp;<br />[HttpPost(&quot;api/account/login&quot;)]&nbsp;<br />public <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; Login(&nbsp;<br />   <a target="_top" href="topic_000000000000009E.html" onclick="this.target='';return true;">LoginDto</a> <i>model</i>&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -218,7 +218,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">[Authorize()]&nbsp;<br />[HttpGet(&quot;api/account/refresh-user-token&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>^&gt;^&gt;^ RefreshUserToken() </pre>			
+					<pre xml:space="preserve" class="brush: cpp">[AllowAnonymous()]&nbsp;<br />[HttpPost(&quot;api/account/login&quot;)]&nbsp;<br />public: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>^&gt;^&gt;^ Login(&nbsp;<br />   <a target="_top" href="topic_000000000000009E.html" onclick="this.target='';return true;">LoginDto</a>^ <i>model</i>&nbsp;<br />) </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -268,10 +268,29 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 	</div>
 
 
+<h4 class="subHeading">
+	Parameters</h4><dl paramName="model" class="parameterList">
+	<dt>
+		<span class="parameter">
+			model
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="topic_000000000000009E.html" onclick="this.target='';return true;">LoginDto</a> 
+	</dd>
+</dl>
+<p>
+	DTO de Login contendo as credenciais do utilizador. 
+</p>
+
+<p />
 
 	<h4 class="subHeading">
 		Return Value</h4>
-	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_0000000000000028.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; 
+	<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.actionresult-1">ActionResult</a>&lt;<a target="_top" href="topic_00000000000000B4.html" onclick="this.target='';return true;">UserDto</a>&gt;&gt; 
+		<p>
+		UserDto em caso de login bem-sucedido; caso contrário, retorna um erro. 
+	</p>
 	
 
 

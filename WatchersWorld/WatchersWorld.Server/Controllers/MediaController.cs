@@ -200,7 +200,7 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
-                return Unauthorized(); // Se não houver usuário logado, retorne um erro
+                return Unauthorized(); // Se não houver utilizador logado, retorne um erro
             }
 
             var isWatched = _context.UserMedia
@@ -222,7 +222,7 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
-                return Unauthorized(); // Se não houver usuário logado, retorne um erro
+                return Unauthorized(); // Se não houver utilizador logado, retorne um erro
             }
 
             var isToWatchLater = _context.UserMedia
@@ -397,7 +397,7 @@ namespace WatchersWorld.Server.Controllers
             }
 
             var watchLaterMedia = await _context.UserMedia
-                .Where(um => um.UserId == user.Id && (um.IdListMedia == 3 || um.IdListMedia == 4)) // 3 para filmes para assistir mais tarde, 4 para séries
+                .Where(um => um.UserId == user.Id && (um.IdListMedia == 3 || um.IdListMedia == 4)) 
                 .Select(um => new UserMediaDto
                 {
                     MediaId = um.MediaInfoModel.IdMedia,
@@ -411,7 +411,11 @@ namespace WatchersWorld.Server.Controllers
 
         //COMENTARIOS 
 
-
+        /// <summary>
+        /// Adiciona um comentário a uma mídia.
+        /// </summary>
+        /// <param name="request">Os dados necessários para criar o comentário.</param>
+        /// <returns>Um objeto indicando que o comentário foi adicionado com sucesso.</returns>
         [HttpPost("/api/media/add-comment")]
         public IActionResult AddComment([FromBody] CreateCommentDto request)
         {
@@ -431,10 +435,16 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Comentário adicionado com sucesso." });
         }
+
+        /// <summary>
+        /// Obtém todos os comentários para uma mídia específica.
+        /// </summary>
+        /// <param name="mediaId">O ID da mídia para a qual os comentários devem ser obtidos.</param>
+        /// <returns>Uma lista de comentários para a mídia especificada, incluindo respostas aninhadas.</returns>
         [HttpGet("/api/media/get-comments/{mediaId}")]
         public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do usuário atual
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do utilizador atual
 
             // Obter todos os comentários (principais e respostas) para o MediaId fornecido
             var allComments = _context.Comments
@@ -471,8 +481,11 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-
-        // Para postar uma resposta a um comentário
+        /// <summary>
+        /// Responde a um comentário existente em uma mídia.
+        /// </summary>
+        /// <param name="request">Os dados necessários para criar a resposta ao comentário.</param>
+        /// <returns>Um objeto indicando que a resposta ao comentário foi adicionada com sucesso.</returns>
         [Authorize]
         [HttpPost("/api/media/add-comment-reply")]
         public async Task<IActionResult> ReplyCommentAsync([FromBody] CreateCommentDto request)
@@ -502,7 +515,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "Resposta adicionada com sucesso." });
         }
 
-
+        /// <summary>
+        /// Exclui um comentário em uma mídia.
+        /// </summary>
+        /// <param name="commentId">O ID do comentário a ser excluído.</param>
+        /// <returns>Um objeto indicando que o comentário foi excluído com sucesso.</returns>
         [Authorize]
         [HttpDelete("/api/media/delete-comment/{commentId}")]
         public IActionResult DeleteComment(int commentId)
@@ -539,8 +556,10 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "Comentário excluído com sucesso." });
         }
 
-
-        // Método auxiliar para remover comentários filhos
+        /// <summary>
+        /// Remove recursivamente todos os comentários filhos de um comentário pai.
+        /// </summary>
+        /// <param name="parentId">O ID do comentário pai.</param>
         private void RemoveChildComments(int parentId)
         {
             var childComments = _context.Comments.Where(c => c.ParentCommentId == parentId).ToList();
@@ -551,6 +570,12 @@ namespace WatchersWorld.Server.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Adiciona uma curtida a um comentário em uma mídia.
+        /// </summary>
+        /// <param name="commentId">O ID do comentário a ser curtido.</param>
+        /// <returns>Um objeto indicando que o comentário foi curtido com sucesso.</returns>
         [Authorize]
         [HttpPost("/api/media/like-comment/{commentId}")]
         public IActionResult LikeComment(int commentId)
@@ -575,6 +600,7 @@ namespace WatchersWorld.Server.Controllers
 
             return Ok(new { message = "Comentário curtido com sucesso." });
         }
+
         [Authorize]
         [HttpPost("/api/media/dislike-comment/{commentId}")]
         public IActionResult DisLikeComment(int commentId)
@@ -600,6 +626,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "Comentário curtido com sucesso." });
         }
 
+        /// <summary>
+        /// Adiciona uma descurtida a um comentário em uma mídia.
+        /// </summary>
+        /// <param name="commentId">O ID do comentário a ser descurtido.</param>
+        /// <returns>Um objeto indicando que o comentário foi descurtido com sucesso.</returns>
         [Authorize]
         [HttpDelete("/api/media/remove-like/{commentId}")]
         public IActionResult RemoveLikeFromComment(int commentId)
@@ -619,6 +650,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "Like removido com sucesso." });
         }
 
+        /// <summary>
+        /// Obtém os comentários para uma mídia específica e os ordena por data de criação, do mais antigo ao mais recente.
+        /// </summary>
+        /// <param name="mediaId">O ID da mídia para a qual os comentários devem ser obtidos.</param>
+        /// <returns>Uma lista de comentários para a mídia especificada, ordenada por data de criação.</returns>
         [Authorize]
         [HttpDelete("/api/media/remove-dislike/{commentId}")]
         public IActionResult RemoveDislikeFromComment(int commentId)
@@ -638,6 +674,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(new { message = "Dislike removido com sucesso." });
         }
 
+        /// <summary>
+        /// Remove uma descurtida de um comentário em uma mídia.
+        /// </summary>
+        /// <param name="commentId">O ID do comentário do qual a descurtida deve ser removida.</param>
+        /// <returns>Um objeto indicando que a descurtida foi removida com sucesso.</returns>
         [Authorize]
         [HttpGet("/api/media/get-sorted-comments-by-likes/{mediaId}")]
         public ActionResult<IEnumerable<CommentDto>> GetSortedMostLikedComments(int mediaId)
@@ -656,6 +697,15 @@ namespace WatchersWorld.Server.Controllers
             return result.Result;
         }
 
+
+        /// <summary>
+        /// Obtém os comentários para uma mídia específica e os ordena por data de criação, do mais antigo ao mais recente.
+        /// </summary>
+        /// <param name="mediaId">O ID da mídia para a qual os comentários devem ser obtidos.</param>
+        /// <returns>
+        /// Uma lista de comentários para a mídia especificada, ordenada por data de criação, ou
+        /// o resultado da obtenção dos comentários (por exemplo, um erro).
+        /// </returns>
         [HttpGet("/api/media/get-sorted-comments-by-date/{mediaId}")]
         public ActionResult<IEnumerable<CommentDto>> GetSortedMostOldComments(int mediaId)
         {
@@ -673,7 +723,14 @@ namespace WatchersWorld.Server.Controllers
             return result.Result;
         }
 
-
+        /// <summary>
+        /// Obtém o total de comentários feitos por um utilizador específico.
+        /// </summary>
+        /// <param name="username">O nome de utilizador do utilizador para o qual o total de comentários deve ser obtido.</param>
+        /// <returns>
+        /// Um número inteiro representando o total de comentários feitos pelo utilizador especificado,
+        /// ou uma mensagem de erro se o utilizador não for encontrado.
+        /// </returns>
         [Authorize]
         [HttpGet("/api/media/get-total-comments/{username}")]
         public async Task<ActionResult<int>> GetTotalCommentsByUser(string username)
@@ -689,6 +746,11 @@ namespace WatchersWorld.Server.Controllers
             return Ok(totalComments);
         }
 
+        /// <summary>
+        /// Obtém o total de comentários feitos por um utilizador específico.
+        /// </summary>
+        /// <param name="username">O nome de utilizador do utilizador para o qual o total de comentários deve ser obtido.</param>
+        /// <returns>O número total de comentários feitos pelo utilizador especificado.</returns>
         [HttpGet("/api/media/get-total-likes-received/{username}")]
         public async Task<ActionResult<int>> GetTotalLikesReceived(string username)
         {
@@ -704,12 +766,14 @@ namespace WatchersWorld.Server.Controllers
         }
 
 
-        public class CommentsCountByDateDto
-        {
-            public DateTime Date { get; set; }
-            public int Count { get; set; }
-        }
-
+        /// <summary>
+        /// Obtém a contagem de comentários feitos por um utilizador específico, agrupados por data de criação.
+        /// </summary>
+        /// <param name="username">O nome de utilizador do utilizador para o qual a contagem de comentários por data deve ser obtida.</param>
+        /// <returns>
+        /// Uma lista de objetos que representam a contagem de comentários feitos pelo utilizador especificado, agrupados por data de criação.
+        /// Cada objeto contém a data e o número de comentários feitos nesse dia.
+        /// </returns>
         [HttpGet("/api/media/get-comments-count-by-date/{username}")]
         public async Task<ActionResult<IEnumerable<CommentsCountByDateDto>>> GetCommentsCountByDate(string username)
         {
@@ -733,7 +797,14 @@ namespace WatchersWorld.Server.Controllers
             return Ok(commentsByDate);
         }
 
-
+        /// <summary>
+        /// Obtém a contagem de mídias adicionadas por um utilizador específico, agrupadas por data de adição.
+        /// </summary>
+        /// <param name="username">O nome de utilizador do utilizador para o qual a contagem de mídias adicionadas por data deve ser obtida.</param>
+        /// <returns>
+        /// Uma lista de objetos que representam a contagem de mídias adicionadas pelo utilizador especificado, agrupadas por data de adição.
+        /// Cada objeto contém a data e o número de mídias adicionadas nesse dia.
+        /// </returns>
         [HttpGet("/api/media/get-media-added-by-date/{username}")]
         public async Task<ActionResult<IEnumerable<MediaAddedByDateDto>>> GetMediaAddedByDate(string username)
         {
@@ -757,6 +828,15 @@ namespace WatchersWorld.Server.Controllers
             return Ok(mediaAddedByDate);
         }
 
+
+        /// <summary>
+        /// Obtém a contagem de séries adicionadas por um utilizador específico, agrupadas por data de adição.
+        /// </summary>
+        /// <param name="username">O nome de utilizador do utilizador para o qual a contagem de séries adicionadas por data deve ser obtida.</param>
+        /// <returns>
+        /// Uma lista de objetos que representam a contagem de séries adicionadas pelo utilizador especificado, agrupadas por data de adição.
+        /// Cada objeto contém a data e o número de séries adicionadas nesse dia.
+        /// </returns>
         [HttpGet("/api/media/get-serie-added-by-date/{username}")]
         public async Task<ActionResult<IEnumerable<MediaAddedByDateDto>>> GetSerieAddedByDate(string username)
         {
@@ -780,11 +860,7 @@ namespace WatchersWorld.Server.Controllers
             return Ok(mediaAddedByDate);
         }
 
-        public class MediaAddedByDateDto
-        {
-            public DateTime Date { get; set; }
-            public int Count { get; set; }
-        }
+
     }
 
 

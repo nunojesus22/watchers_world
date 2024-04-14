@@ -1,0 +1,1 @@
+search_result['751']=["topic_0000000000000190.html","QuizAttempt.Score Property","A pontuação obtida na tentativa de quiz."];

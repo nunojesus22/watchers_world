@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="GENERATOR" content="VSdocman - documentation generator; https://www.helixoft.com" />
 	<link rel="icon" href="favicon.ico">
-	<title>AddingUserToDatabase.BuildTargetModel Method</title>
+	<title>AdminController Constructor</title>
 
 	<link rel="stylesheet" type="text/css" href="msdn2019/toc.css" />
 	<script src="msdn2019/toc.js"></script>
@@ -74,11 +74,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
   </div>
 
 <div id="mainBody">
-		<h1 class="title">AddingUserToDatabase.BuildTargetModel Method</h1>
+		<h1 class="title">AdminController Constructor</h1>
         
 		<div class="metadata">
         Namespace:
-<a href="topic_000000000000000C.html">WatchersWorld.Server.Data.Migrations</a>
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers</a>
 
 
 
@@ -138,7 +138,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeVB">
-					<pre xml:space="preserve" class="brush: vb">Protected Overrides Sub BuildTargetModel( _&nbsp;<br />   ByVal <i>modelBuilder</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.modelbuilder">ModelBuilder</a> _&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: vb">Public Sub New( _&nbsp;<br />   ByVal <i>userManager</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>(Of <a target="_top" href="topic_000000000000014B.html" onclick="this.target='';return true;">User</a>), _&nbsp;<br />   ByVal <i>emailService</i> As <a target="_top" href="topic_00000000000001DF.html" onclick="this.target='';return true;">EmailService</a>, _&nbsp;<br />   ByVal <i>context</i> As <a target="_top" href="topic_000000000000007A.html" onclick="this.target='';return true;">WatchersWorldServerContext</a>, _&nbsp;<br />   ByVal <i>logger</i> As <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>(Of <a target="_top" href="topic_0000000000000001.html" onclick="this.target='';return true;">AccountController</a>), _&nbsp;<br />   ByVal <i>adminService</i> As <a target="_top" href="topic_00000000000001E1.html" onclick="this.target='';return true;">IAdminService</a> _&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -177,7 +177,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCsharp">
-					<pre xml:space="preserve" class="brush: csharp">protected override <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.void">void</a> BuildTargetModel(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.modelbuilder">ModelBuilder</a> <i>modelBuilder</i>&nbsp;<br />)</pre>			
+					<pre xml:space="preserve" class="brush: csharp">public AdminController(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_000000000000014B.html" onclick="this.target='';return true;">User</a>&gt; <i>userManager</i>,&nbsp;<br />   <a target="_top" href="topic_00000000000001DF.html" onclick="this.target='';return true;">EmailService</a> <i>emailService</i>,&nbsp;<br />   <a target="_top" href="topic_000000000000007A.html" onclick="this.target='';return true;">WatchersWorldServerContext</a> <i>context</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a target="_top" href="topic_0000000000000001.html" onclick="this.target='';return true;">AccountController</a>&gt; <i>logger</i>,&nbsp;<br />   <a target="_top" href="topic_00000000000001E1.html" onclick="this.target='';return true;">IAdminService</a> <i>adminService</i>&nbsp;<br />)</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -217,7 +217,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeCpp">
-					<pre xml:space="preserve" class="brush: cpp">protected: &nbsp;<br /><a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/system.void">void</a> BuildTargetModel(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.modelbuilder">ModelBuilder</a>^ <i>modelBuilder</i>&nbsp;<br />) </pre>			
+					<pre xml:space="preserve" class="brush: cpp">public: &nbsp;<br />AdminController(&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_000000000000014B.html" onclick="this.target='';return true;">User</a>^&gt;^ <i>userManager</i>,&nbsp;<br />   <a target="_top" href="topic_00000000000001DF.html" onclick="this.target='';return true;">EmailService</a>^ <i>emailService</i>,&nbsp;<br />   <a target="_top" href="topic_000000000000007A.html" onclick="this.target='';return true;">WatchersWorldServerContext</a>^ <i>context</i>,&nbsp;<br />   <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a target="_top" href="topic_0000000000000001.html" onclick="this.target='';return true;">AccountController</a>^&gt;^ <i>logger</i>,&nbsp;<br />   <a target="_top" href="topic_00000000000001E1.html" onclick="this.target='';return true;">IAdminService</a>^ <i>adminService</i>&nbsp;<br />) </pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -256,7 +256,7 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 				</div>
 				
 				<div class="codeSnippetCode codeJScript">
-					<pre xml:space="preserve" class="brush: js">protected function BuildTargetModel(&nbsp;<br />    <i>modelBuilder</i> : <a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.modelbuilder">ModelBuilder</a>&nbsp;<br />);</pre>			
+					<pre xml:space="preserve" class="brush: js">JScript does not support generic types and methods.</pre>			
 				</div>
 				<div class="codeSnippetCode codeNA">
 					<pre xml:space="preserve">This language is not supported or no code example is available.</pre>			
@@ -268,14 +268,66 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 
 <h4 class="subHeading">
-	Parameters</h4><dl paramName="modelBuilder" class="parameterList">
+	Parameters</h4><dl paramName="userManager" class="parameterList">
 	<dt>
 		<span class="parameter">
-			modelBuilder
+			userManager
 		</span>
 	</dt>
 	<dd>
-		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.modelbuilder">ModelBuilder</a> 
+		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.usermanager-1">UserManager</a>&lt;<a target="_top" href="topic_000000000000014B.html" onclick="this.target='';return true;">User</a>&gt; 
+	</dd>
+</dl>
+<p>
+	 
+</p>
+<dl paramName="emailService" class="parameterList">
+	<dt>
+		<span class="parameter">
+			emailService
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="topic_00000000000001DF.html" onclick="this.target='';return true;">EmailService</a> 
+	</dd>
+</dl>
+<p>
+	 
+</p>
+<dl paramName="context" class="parameterList">
+	<dt>
+		<span class="parameter">
+			context
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="topic_000000000000007A.html" onclick="this.target='';return true;">WatchersWorldServerContext</a> 
+	</dd>
+</dl>
+<p>
+	 
+</p>
+<dl paramName="logger" class="parameterList">
+	<dt>
+		<span class="parameter">
+			logger
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a target="_top" href="topic_0000000000000001.html" onclick="this.target='';return true;">AccountController</a>&gt; 
+	</dd>
+</dl>
+<p>
+	 
+</p>
+<dl paramName="adminService" class="parameterList">
+	<dt>
+		<span class="parameter">
+			adminService
+		</span>
+	</dt>
+	<dd>
+		<a target="_top" href="topic_00000000000001E1.html" onclick="this.target='';return true;">IAdminService</a> 
 	</dd>
 </dl>
 <p>
@@ -371,11 +423,11 @@ document.write(getCssCustomProperty('--headerTopCustomLineHtml'));
 
 	<div id="seeAlsoSection" class="section">	
 		<div>
-			<a href="topic_000000000000000D.html">AddingUserToDatabase Class</a><br />
+			<a href="topic_000000000000000F.html">AdminController Class</a><br />
 
 
 
-<a href="topic_000000000000000C.html">WatchersWorld.Server.Data.Migrations Namespace</a><br />
+<a href="topic_0000000000000000.html">WatchersWorld.Server.Controllers Namespace</a><br />
 
 
 			
