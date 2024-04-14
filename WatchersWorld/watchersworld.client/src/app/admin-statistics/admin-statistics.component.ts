@@ -103,7 +103,7 @@ export class AdminStatisticsComponent {
  */
   setBannedVsRegisteredChartOptions(): void {
     // Assegura-se de que os dados necessários estão carregados
-    if (this.totalBannedUsers !== undefined && this.totalRegisteredUsers !== undefined) {
+   
       this.chartBannedVsRegistered = {
         chart: {
           type: 'pie',
@@ -129,7 +129,7 @@ export class AdminStatisticsComponent {
           ]
         }]
       };
-    }
+    
   }
 
   /**
