@@ -45,6 +45,7 @@ import { MessageService } from 'primeng/api'
 
 
 import { HighchartsChartModule } from 'highcharts-angular';
+import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
     GamificationComponent,
     AdminStatisticsComponent,
     ConfirmDialogComponent,
+    TermsAndConditionsComponent,
   ],
   imports: [
     BrowserModule,

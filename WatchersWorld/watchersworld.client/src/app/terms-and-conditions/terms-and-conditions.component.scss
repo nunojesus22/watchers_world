@@ -1,0 +1,18 @@
+.about-us-container {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  min-height: 100vh; /* Define a altura mínima para ocupar toda a tela verticalmente */
+}
+
+.about-us-box {
+  width: 80%;
+  max-width: 800px; /* Defina um tamanho máximo para a caixa */
+  background-color: #ffffff; /* Adicione uma cor de fundo se necessário */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adicione uma sombra para destacar a caixa */
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
