@@ -161,6 +161,7 @@ export class NavMenuComponent {
       console.error('Error fetching user role', error);
       this.router.navigate(['/home']); // Fallback in case of an error
     });
+    this.closeNav();
   }
 
   /**
