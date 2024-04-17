@@ -30,8 +30,7 @@
 .about-us-text {
   width: 100%;
   color: black;
-  font-size: 25px;
-  font-family: Inter;
+  font-size: 20px;
   font-weight: 400;
   word-wrap: break-word;
   margin-top: 20px; /* Adiciona margem superior para separação */
@@ -54,9 +53,12 @@
     width: 100px; /* Define a largura da imagem */
     height: 100px; /* Define a altura da imagem */
     border-radius: 50%; /* Arredonda a imagem */
+    border: 2px solid #4CAEFE;
   }
 
   .creator p {
     margin-top: 10px; /* Espaço entre a imagem e o texto */
-    font-size: 16px; /* Tamanho da fonte do nome do criador */
+    font-size: 20px; /* Tamanho da fonte do nome do criador */
+    font-weight: 350;
+    
   }
