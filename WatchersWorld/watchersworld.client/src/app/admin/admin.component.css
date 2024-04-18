@@ -1,15 +1,25 @@
+
 .moderator-panel {
   background-color: #ffffff;
+  max-width: 100%; /* Ajuste para não ultrapassar a largura da tela */
+  margin: 20px auto; /* Centraliza o painel */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 20px;
   font-family: 'Arial', sans-serif;
+  overflow: hidden; /* Previne que elementos internos ultrapassem o painel */
 }
 
-h4, h3 {
+h3 {
   font-weight: bold;
   padding-bottom: 10px;
+  font-size: 28px;
+}
+
+h4 {
+  font-weight: bold;
+  padding-bottom: 10px;
+  font-size: 25px;
 }
 
 .profile-icon img {
@@ -53,6 +63,7 @@ h4, h3 {
   background-color: #f0f0f0;
   transform: scale(1.1);
 }
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -67,25 +78,28 @@ h4, h3 {
 }
 
 .search-input {
+  width: calc(100% - 60px); /* Subtrai a largura do ícone da largura total */
   padding: 10px;
   padding-left: 50px; /* Adicione esta linha */
   border-radius: 20px;
   font-size: 18px;
   font-family: 'Inter';
-  width: 280px; /* Ajuste conforme necessário */
 }
 
 
 .user {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* Adicione esta linha */
   margin-bottom: 10px;
 }
 
 
 .user-info {
+  flex-grow: 1;
   display: flex;
   align-items: center;
+  overflow: hidden; /* Previne que nomes longos ultrapassem o espaço */
 }
 
 .avatar {
@@ -96,26 +110,36 @@ h4, h3 {
 }
 
 .name {
+  white-space: nowrap; /* Evita a quebra de linha do nome */
+  overflow: hidden; /* Esconde o excesso de texto */
+  text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
   font-size: 24px;
   font-weight: bold;
   margin-top: 15px;
 }
 
 
-.actions button {
-  display: inline-block;
-  padding: 8px 15px; /* Ajuste conforme necessário */
-  background-color: #4CAEFE;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-  margin-left: 5px;
-  font-size: 16px;
-  width: 180px;
-  height: 40px;
-  font-weight: bold;
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espaçamento entre os botões */
 }
+
+  .actions button {
+    width: 130px; /* Largura fixa para todos os botões */
+    display: inline-block;
+    padding: 8px 15px; /* Ajuste conforme necessário */
+    background-color: #4CAEFE;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    margin-left: 5px;
+    font-size: 16px;
+    width: 180px;
+    height: 40px;
+    font-weight: bold;
+  }
 
   .actions button:hover {
     background-color: #0056b3; /* Cor mais escura no hover */
@@ -203,16 +227,35 @@ h4, h3 {
 
 
 
-
-/* Add responsiveness if needed */
+/* Ajustes Responsivos */
 @media (max-width: 768px) {
   .user {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch; /* Estica os itens para ocupar a largura total */
   }
 
-  .actions button {
-    margin-top: 5px;
-    margin-left: 0;
+  .user-info, .actions {
+    justify-content: center; /* Centraliza os itens */
+  }
+
+    .actions button {
+      width: 100%; /* Faz com que os botões ocupem a largura total */
+      margin-bottom: 5px; /* Adiciona um espaçamento abaixo dos botões */
+    }
+
+  .search-input {
+    width: 100%; /* Faz com que a barra de pesquisa ocupe a largura total */
+    margin-bottom: 10px; /* Espaçamento abaixo da barra de pesquisa */
+  }
+}
+
+/* Ajustes para telas ainda menores */
+@media (max-width: 480px) {
+  .search-input, .actions button {
+    padding: 8px 10px; /* Reduz o preenchimento para economizar espaço */
+  }
+
+  .name {
+    font-size: 18px; /* Diminui o tamanho da fonte para economizar espaço */
   }
 }
