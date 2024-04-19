@@ -1,0 +1,38 @@
+<div class="moderator-panel">
+  <div class="p-2">
+    <div class="search-bar">
+      <input type="text"
+             placeholder="Procurar..."
+             class="form-control flex-grow-1"
+             [(ngModel)]="searchTerm"
+             (input)="filterUsers()">
+
+    </div>
+  </div>
+
+  <div class="user-list">
+    <h4>Utilizadores:</h4>
+    <!-- Verifica se a lista filtrada tem conteúdo -->
+    <ng-container *ngIf="filteredUsersProfiles.length > 0; else noResults">
+      <div class="user" *ngFor="let userProfile of filteredUsersProfiles">
+        <div class="user-info">
+
+          <img class="avatar" [src]="userProfile.profilePhoto" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">
+          <p class="name" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</p>
+        </div>
+      </div>
+    </ng-container>
+    <div class="pagination-controls">
+      <button *ngIf="hasPreviousPage" class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
+      <button *ngIf="hasNextPage" class="pagination-button pagination-next" (click)="nextPage()" [disabled]="page * pageSize >= collectionSize"> &gt; </button>
+    </div>
+    <ng-template #noResults>
+      <div class="no-results-message">
+        Não existe nenhum utilizador com esse nome.
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+
