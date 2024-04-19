@@ -38,8 +38,13 @@
               <button class="expand-button" *ngIf="isWatched" (click)="toggleFavoriteMedia()">
                 {{ isFavorite ? 'Remover dos Favoritos' : 'Marcar como Favorito' }}
               </button>
-              <button class="expand-button" *ngIf="!isToWatchLater" (click)="markAsWatched()">{{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}</button>
-              <button class="expand-button" *ngIf="!isWatched" (click)="markToWatchLater()">{{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}</button>
+              <button class="expand-button" *ngIf="!isToWatchLater" (click)="handleMarkAsWatched()">
+                {{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}
+              </button>
+
+              <button class="expand-button" *ngIf="!isWatched" (click)="handleMarkToWatchLater()">
+                {{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}
+              </button>
             </div>
           </div>
 

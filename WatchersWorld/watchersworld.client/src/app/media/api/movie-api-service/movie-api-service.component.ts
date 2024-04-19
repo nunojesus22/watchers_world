@@ -131,7 +131,7 @@ export class MovieApiServiceComponent {
    */
   getSearchMovie(data: any): Observable<any> {
     console.log(data, 'movie#');
-    return this.http.get(`${this.baseurl}/search/movie?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}`);
+    return this.http.get(`${this.baseurl}/search/movie?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}&language=pt`);
   }
 
    /**
@@ -142,7 +142,7 @@ export class MovieApiServiceComponent {
   getSearchSerie(data: any): Observable<any> {
     console.log(data, 'serie#');
 
-    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}`);
+    return this.http.get(`${this.baseurl}/search/tv?api_key=${this.apikey}&query=${data.movieName}&page=${data.page}&language=pt`);
   }
 
 
@@ -152,7 +152,7 @@ export class MovieApiServiceComponent {
    * @returns Um Observable com a resposta da solicitação HTTP que contém os detalhes do filme.
    */
     getMovieDetails(data: any): Observable<any> {
-    return this.http.get(`${this.baseurl}/movie/${data}?api_key=${this.apikey}`)
+    return this.http.get(`${this.baseurl}/movie/${data}?api_key=${this.apikey}&language=pt`)
   }
 
 /**
@@ -161,7 +161,7 @@ export class MovieApiServiceComponent {
    * @returns Um Observable com a resposta da solicitação HTTP que contém os detalhes da série de TV.
    */
   getSerieDetails(data: any): Observable<any> {
-    return this.http.get(`${this.baseurl}/tv/${data}?api_key=${this.apikey}`)
+    return this.http.get(`${this.baseurl}/tv/${data}?api_key=${this.apikey}&language=pt`)
   }
 
 /**
@@ -170,7 +170,7 @@ export class MovieApiServiceComponent {
    * @returns Um Observable com a resposta da solicitação HTTP que contém os resultados da pesquisa multipla.
    */
   getMultiDetails(data: any): Observable<any> {
-    return this.http.get(`${this.baseurl}/search/multi?api_key=${this.apikey}&query=${data.movieName}`)
+    return this.http.get(`${this.baseurl}/search/multi?api_key=${this.apikey}&query=${data.movieName}&language=pt`)
   }
 
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { MovieApiServiceComponent } from '../../api/movie-api-service/movie-api-service.component';
 import { AuthenticationService } from '../../../authentication/services/authentication.service';
@@ -20,7 +20,7 @@ import { GamificationService } from '../../../gamification/Service/gamification.
  * MovieDetailsComponent Classe
  */
 export class MovieDetailsComponent {
-  constructor(private service: MovieApiServiceComponent, private router: ActivatedRoute, private title: Title, private meta: Meta, private auth: AuthenticationService, private adminService: AdminService, private gamificationService: GamificationService) {
+  constructor(private service: MovieApiServiceComponent,private route:Router,private router: ActivatedRoute, private title: Title, private meta: Meta, public auth: AuthenticationService, private adminService: AdminService, private gamificationService: GamificationService) {
     this.setUserRole();
   }
 
@@ -97,6 +97,31 @@ export class MovieDetailsComponent {
         setTimeout(() => {
           this.scrollToComment(commentId);
         }, 100);
+      }
+    });
+  }
+  /** Método Redirecionar para a página de login e normal do botão. */
+  handleMarkAsWatched() {
+    this.auth.user$.subscribe(user => {
+      if (user) {
+        // Lógica normal do botão
+        this.markAsWatched();
+      } else {
+        // Redirecionar para a página de login
+        this.route.navigate(['/account/login']);
+      }
+    });
+  }
+
+  /** Método Redirecionar para a página de login e normal do botão. */
+  handleMarkToWatchLater() {
+    this.auth.user$.subscribe(user => {
+      if (user) {
+        // Lógica normal do botão
+        this.markToWatchLater();
+      } else {
+        // Redirecionar para a página de login
+        this.route.navigate(['/account/login']);
       }
     });
   }

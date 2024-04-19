@@ -132,6 +132,16 @@ export class NavMenuComponent {
       this.router.navigate(['/search'], { queryParams: { title: this.searchQuery } });
     }
   }
+  /**
+ * Submete uma consulta de pesquisa e navega para a página de resultados da pesquisa.
+ */
+  submitSearch() {
+    if (this.searchQuery) {
+      // Isso garante que a pesquisa é comunicada através de parâmetros de consulta
+      this.router.navigate(['/search'], { queryParams: { title: this.searchQuery } });
+    }
+  }
+
 
   /**
    * Lida com o evento de tecla levantada no campo de pesquisa.
