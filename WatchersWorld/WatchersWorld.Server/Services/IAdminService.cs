@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Data;
-using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Chat;
+using User = WatchersWorld.Server.Models.Authentication.User;
 
 namespace WatchersWorld.Server.Services
 {
@@ -183,63 +183,58 @@ namespace WatchersWorld.Server.Services
         /// <inheritdoc />
         public async Task<string> DeleteUserByUsernameAsync(string username)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
-                try
+            try{
+                var user = await _userManager.FindByNameAsync(username);
+                if (user == null)
                 {
-                    var user = await _userManager.FindByNameAsync(username);
-                    if (user == null)
-                    {
-                        await transaction.RollbackAsync();
-                        return "User not found.";
-                    }
-
-                    // Retrieve all related messages
-                    var messages = await _context.Messages.Where(m => m.SendUserId == user.Id).ToListAsync();
-
-                    // Collect all MessageIds from the messages list
-                    var messageIds = messages.Select(m => m.Id).ToList();
-
-                    // Retrieve and remove all related MessagesStatus by MessageIds
-                    var messagesStatuses = await _context.MessagesStatus
-                                                    .Where(ms => messageIds.Contains(ms.MessageId))
-                                                    .ToListAsync();
-                    _context.MessagesStatus.RemoveRange(messagesStatuses);
-
-                    var messagesVisibility = await _context.MessagesVisibility.Where(mv => mv.UserId == user.Id).ToListAsync();
-                    _context.MessagesVisibility.RemoveRange(messagesVisibility);
-
-                    // Remove the messages (after MessagesStatuses, if there's a FK relationship)
-                    _context.Messages.RemoveRange(messages);
-
-                    // Continue with the rest of your removals
-                    var chats = await _context.Chats.Where(c => c.User1Id == user.Id).ToListAsync();
-                    _context.Chats.RemoveRange(chats);
-
-                    var profileInfo = await _context.ProfileInfo.SingleOrDefaultAsync(pi => pi.UserName == username);
-                    if (profileInfo != null)
-                    {
-                        _context.ProfileInfo.Remove(profileInfo);
-                    }
-
-                    var result = await _userManager.DeleteAsync(user);
-                    if (!result.Succeeded)
-                    {
-                        await transaction.RollbackAsync();
-                        return $"Error: {string.Join(", ", result.Errors.Select(e => e.Description))}";
-                    }
-
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                    return "User and profile info successfully deleted.";
+                    return "User not found.";
                 }
-                catch (Exception ex)
+
+                var messagesAsSender = await _context.Messages.Where(m => m.SendUserId == user.Id).ToListAsync();
+                var messagesStatusAsReceiver = await _context.MessagesStatus.Where(ms => ms.RecipientUserId == user.Id).Select(ms => ms.MessageId).ToListAsync();
+
+                var messagesAsReceiver = await _context.Messages.Where(m => messagesStatusAsReceiver.Contains(m.Id)).ToListAsync();
+
+                var combinedMessages = new List<Messages>(messagesAsSender);
+                combinedMessages.AddRange(messagesAsReceiver);
+
+                var messageIds = combinedMessages.Select(m => m.Id).Distinct().ToList();
+
+                var messagesVisibility = await _context.MessagesVisibility .Where(mv => messageIds.Contains(mv.MessageId)).ToListAsync();
+                _context.MessagesVisibility.RemoveRange(messagesVisibility);
+
+                var messagesStatuses = await _context.MessagesStatus.Where(ms => messageIds.Contains(ms.MessageId)).ToListAsync();
+                _context.MessagesStatus.RemoveRange(messagesStatuses);
+
+                var messagesNotifications = await _context.MessageNotifications.Where(mn => messageIds.Contains(mn.MessageId)).ToListAsync();
+                _context.MessageNotifications.RemoveRange(messagesNotifications);
+
+                _context.Messages.RemoveRange(combinedMessages);
+
+                var chats = await _context.Chats.Where(c => c.User1Id == user.Id || c.User2Id == user.Id).ToListAsync();
+                _context.Chats.RemoveRange(chats);
+
+                var profileInfo = await _context.ProfileInfo.SingleOrDefaultAsync(pi => pi.UserName == username);
+                if (profileInfo != null)
                 {
-                    _logger.LogError(ex, "An error occurred while deleting user and profile info.");
-                    await transaction.RollbackAsync();
-                    return "An error occurred while deleting the user and profile info.";
+                    _context.ProfileInfo.Remove(profileInfo);
                 }
+
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    return $"Error: {string.Join(", ", result.Errors.Select(e => e.Description))}";
+                }
+
+                await _context.SaveChangesAsync();
+                return "User and profile info successfully deleted.";
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting user and profile info.");
+                return "An error occurred while deleting the user and profile info.";
+            }
+            
         }
 
 
