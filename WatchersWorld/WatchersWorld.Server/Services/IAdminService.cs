@@ -181,43 +181,70 @@ namespace WatchersWorld.Server.Services
 
 
         /// <inheritdoc />
-
         public async Task<string> DeleteUserByUsernameAsync(string username)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-                    if (profileInfo != null)
-                    {
-                        _context.ProfileInfo.Remove(profileInfo);
-                        await _context.SaveChangesAsync();
-                    }
-
                     var user = await _userManager.FindByNameAsync(username);
                     if (user == null)
                     {
+                        await transaction.RollbackAsync();
                         return "User not found.";
+                    }
+
+                    // Retrieve all related messages
+                    var messages = await _context.Messages.Where(m => m.SendUserId == user.Id).ToListAsync();
+
+                    // Collect all MessageIds from the messages list
+                    var messageIds = messages.Select(m => m.Id).ToList();
+
+                    // Retrieve and remove all related MessagesStatus by MessageIds
+                    var messagesStatuses = await _context.MessagesStatus
+                                                    .Where(ms => messageIds.Contains(ms.MessageId))
+                                                    .ToListAsync();
+                    _context.MessagesStatus.RemoveRange(messagesStatuses);
+
+                    var messagesVisibility = await _context.MessagesVisibility.Where(mv => mv.UserId == user.Id).ToListAsync();
+                    _context.MessagesVisibility.RemoveRange(messagesVisibility);
+
+                    // Remove the messages (after MessagesStatuses, if there's a FK relationship)
+                    _context.Messages.RemoveRange(messages);
+
+                    // Continue with the rest of your removals
+                    var chats = await _context.Chats.Where(c => c.User1Id == user.Id).ToListAsync();
+                    _context.Chats.RemoveRange(chats);
+
+                    var profileInfo = await _context.ProfileInfo.SingleOrDefaultAsync(pi => pi.UserName == username);
+                    if (profileInfo != null)
+                    {
+                        _context.ProfileInfo.Remove(profileInfo);
                     }
 
                     var result = await _userManager.DeleteAsync(user);
                     if (!result.Succeeded)
                     {
+                        await transaction.RollbackAsync();
                         return $"Error: {string.Join(", ", result.Errors.Select(e => e.Description))}";
                     }
 
+                    await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
                     return "User and profile info successfully deleted.";
                 }
                 catch (Exception ex)
                 {
-                    await transaction.RollbackAsync();
                     _logger.LogError(ex, "An error occurred while deleting user and profile info.");
+                    await transaction.RollbackAsync();
                     return "An error occurred while deleting the user and profile info.";
                 }
             }
         }
+
+
+
+
 
 
         /// <inheritdoc />

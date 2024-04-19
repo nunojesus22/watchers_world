@@ -25,6 +25,15 @@
         </div>
         <div class="actions">
           <button class="delete" (click)="deleteAccount(userProfile.userName)">Apagar conta</button>
+          <!-- <app-confirm-dialog
+                       [classCss]="'delete'"
+                       [titleButton]="'Delete'"
+                       [titlePopup]="'Confirmação'"
+                       [messagePopup]="'Tem certeza que deseja eliminar esta conta?'"
+                       [confirmationTextButton]="'Confirmar'"
+                       [cancelTextButton]="'Cancelar'"
+                       (confirmAction)="deleteAccount(userProfile.userName)">
+          </app-confirm-dialog> -->
           <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
           <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
           <button *ngIf="!userProfile.isModerator" class="moderator" (click)="makeModerator(userProfile.userName)">Tornar Moderador</button>

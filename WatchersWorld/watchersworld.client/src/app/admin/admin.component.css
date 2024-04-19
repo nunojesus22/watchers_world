@@ -1,13 +1,13 @@
 
 .moderator-panel {
   background-color: #ffffff;
-  max-width: 100%; /* Ajuste para não ultrapassar a largura da tela */
-  margin: 20px auto; /* Centraliza o painel */
+  max-width: 100%; 
+  margin: 20px auto;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
-  overflow: hidden; /* Previne que elementos internos ultrapassem o painel */
+  overflow: hidden; 
 }
 
 h3 {
@@ -23,14 +23,14 @@ h4 {
 }
 
 .profile-icon img {
-  width: 30px; /* Tamanho fixo para os ícones */
+  width: 30px; 
 }
 
 .pagination-controls {
   display: flex;
-  justify-content: space-between; /* Alinha os itens nas pontas opostas */
+  justify-content: space-between; 
   align-items: center;
-  margin-top: 20px; /* Espaçamento no topo, ajuste conforme necessário */
+  margin-top: 20px; 
 }
 
 .pagination-button {
@@ -47,7 +47,7 @@ h4 {
 }
 
   .pagination-button:hover {
-    background-color: #0056b3; /* Cor mais escura no hover */
+    background-color: #0056b3; 
   }
 
 .pagination-prev {
@@ -58,7 +58,7 @@ h4 {
   margin-left: auto;
 }
 
-/* Aumenta ligeiramente o ícone ao passar o mouse ou clicar */
+
 .profile-icon:hover, .profile-icon:active {
   background-color: #f0f0f0;
   transform: scale(1.1);
@@ -72,15 +72,15 @@ h4 {
 }
 
 .search-icon {
-  position: absolute; /* Adicione esta linha */
-  left: 10px; /* Adicione esta linha */
-  color: #474747; /* Cor do ícone */
+  position: absolute; 
+  left: 10px; 
+  color: #474747;
 }
 
 .search-input {
-  width: calc(100% - 60px); /* Subtrai a largura do ícone da largura total */
+  width: calc(100% - 60px); 
   padding: 10px;
-  padding-left: 50px; /* Adicione esta linha */
+  padding-left: 50px; 
   border-radius: 20px;
   font-size: 18px;
   font-family: 'Inter';
@@ -90,7 +90,7 @@ h4 {
 .user {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Adicione esta linha */
+  justify-content: space-between; 
   margin-bottom: 10px;
 }
 
@@ -99,7 +99,7 @@ h4 {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  overflow: hidden; /* Previne que nomes longos ultrapassem o espaço */
+  overflow: hidden; 
 }
 
 .avatar {
@@ -110,9 +110,9 @@ h4 {
 }
 
 .name {
-  white-space: nowrap; /* Evita a quebra de linha do nome */
-  overflow: hidden; /* Esconde o excesso de texto */
-  text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
   font-size: 24px;
   font-weight: bold;
   margin-top: 15px;
@@ -122,18 +122,18 @@ h4 {
 .actions {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Espaçamento entre os botões */
+  gap: 10px; 
 }
 
   .actions button {
-    width: 130px; /* Largura fixa para todos os botões */
+    width: 130px; 
     display: inline-block;
-    padding: 8px 15px; /* Ajuste conforme necessário */
+    padding: 8px 15px;
     background-color: #4CAEFE;
     color: white;
     border: none;
     border-radius: 25px;
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    cursor: pointer; 
     margin-left: 5px;
     font-size: 16px;
     width: 180px;
@@ -142,12 +142,55 @@ h4 {
   }
 
   .actions button:hover {
-    background-color: #0056b3; /* Cor mais escura no hover */
+    background-color: #0056b3; 
+  }
+
+.delete {
+  /* Copie as propriedades de .actions button aqui */
+  width: 130px;
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 16px;
+  width: 180px;
+  height: 40px;
+  font-weight: bold;
+}
+
+  .delete:hover {
+    background-color: #0056b3;
   }
 
 
+  .delete {
+  /* Copie as propriedades de .actions button aqui */
+  width: 130px;
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 16px;
+  width: 180px;
+  height: 40px;
+  font-weight: bold;
+}
 
-/* Add new styles for the popup */
+.delete:hover {
+  background-color: #0056b3;
+}
+
+
+
+
 .ban-popup {
   position: fixed;
   top: 0;
@@ -168,7 +211,7 @@ h4 {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  position: relative; /* Ensure the close button is positioned relative to this container */
+  position: relative; 
 }
 
 .ban-buttons-container {
@@ -179,27 +222,27 @@ h4 {
 
 .ban-duration-input {
   padding: 10px;
-  margin-top: 20px; /* space above the input field */
-  width: 80%; /* Adjust the width as needed */
+  margin-top: 20px; 
+  width: 80%; 
   border-radius: 25px;
 }
 
 .ban-duration-container {
-  order: 2; /* Make sure it comes after the buttons */
-  width: 100%; /* Match the width with the buttons if needed */
+  order: 2; 
+  width: 100%; 
   display: flex;
-  justify-content: center; /* Center the input field */
+  justify-content: center; 
 }
 
 
 .banTemp, .banPerm {
   display: inline-block;
-  padding: 8px 15px; /* Ajuste conforme necessário */
+  padding: 8px 15px; 
   background-color: #4CAEFE;
   color: white;
   border: none;
   border-radius: 25px;
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  cursor: pointer; 
   font-size: 16px;
   text-align: center;
   width: 160px;
@@ -209,7 +252,7 @@ h4 {
 }
 
   .banPerm:hover, .banTemp:hover {
-    background-color: #0056b3; /* Cor mais escura no hover */
+    background-color: #0056b3;
   }
 
 
@@ -227,35 +270,33 @@ h4 {
 
 
 
-/* Ajustes Responsivos */
 @media (max-width: 768px) {
   .user {
     flex-direction: column;
-    align-items: stretch; /* Estica os itens para ocupar a largura total */
+    align-items: stretch; 
   }
 
   .user-info, .actions {
-    justify-content: center; /* Centraliza os itens */
+    justify-content: center;
   }
 
     .actions button {
-      width: 100%; /* Faz com que os botões ocupem a largura total */
-      margin-bottom: 5px; /* Adiciona um espaçamento abaixo dos botões */
+      width: 100%; 
+      margin-bottom: 5px; 
     }
 
   .search-input {
-    width: 100%; /* Faz com que a barra de pesquisa ocupe a largura total */
-    margin-bottom: 10px; /* Espaçamento abaixo da barra de pesquisa */
+    width: 100%; 
+    margin-bottom: 10px; 
   }
 }
 
-/* Ajustes para telas ainda menores */
 @media (max-width: 480px) {
   .search-input, .actions button {
-    padding: 8px 10px; /* Reduz o preenchimento para economizar espaço */
+    padding: 8px 10px; 
   }
 
   .name {
-    font-size: 18px; /* Diminui o tamanho da fonte para economizar espaço */
+    font-size: 18px;
   }
 }
