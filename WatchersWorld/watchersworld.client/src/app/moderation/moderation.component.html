@@ -1,0 +1,54 @@
+<div class="moderator-panel">
+  <h3>Bem vindo {{ loggedUserName }}</h3>
+  <!-- Search Bar -->
+  <div class="p-2">
+    <div class="search-bar">
+      <i class="fa fa-search search-icon"></i>
+      <input type="text"
+             placeholder="Procurar..."
+             class="search-input"
+             [(ngModel)]="searchTerm"
+             (input)="filterUsers()">
+    </div>
+  </div>
+  <div class="user-list">
+    <h4>Utilizadores:</h4>
+    <!-- Verifica se a lista filtrada tem conteúdo -->
+    <ng-container *ngIf="filteredUsersProfiles.length > 0; else noResults">
+      <div class="user" *ngFor="let userProfile of filteredUsersProfiles">
+        <div class="user-info">
+          <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+          <p class="name">{{ userProfile.userName }}</p>
+        </div>
+        <div class="actions">
+          <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
+          <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
+        </div>
+      </div>
+    </ng-container>
+    <div class="pagination-controls">
+      <button *ngIf="hasPreviousPage" class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
+      <button *ngIf="hasNextPage" class="pagination-button pagination-next" (click)="nextPage()" [disabled]="page * pageSize >= collectionSize"> &gt; </button>
+    </div>
+    <!-- Mostra esta mensagem se não houver resultados -->
+    <ng-template #noResults>
+      <div class="no-results-message">
+        Não existe nenhum utilizador com esse nome.
+      </div>
+    </ng-template>
+  </div>
+  <!-- Ban Popup -->
+  <div *ngIf="isBanPopupVisible" class="ban-popup">
+    <div class="popup-content">
+      <button class="close-popup" (click)="hideBanPopup()">X</button>
+      <h4>Selecione o tipo de ban:</h4>
+      <div class="ban-buttons-container">
+        <button class="banPerm" (click)="banPerm(selectedUserForBan)">Banir permanentemente</button>
+        <button class="banTemp" (click)="banTemp(selectedUserForBan)">Banir temporariamente</button>
+      </div>
+      <div class="ban-duration-container">
+        <input type="number" [(ngModel)]="banDuration" placeholder="Duração em dias" min="1" class="ban-duration-input">
+      </div>
+    </div>
+  </div>
+</div>

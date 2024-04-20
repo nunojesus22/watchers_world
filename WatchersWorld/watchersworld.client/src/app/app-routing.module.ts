@@ -21,6 +21,7 @@ import { NotificationsComponent } from './notifications/notifications/notificati
 import { GamificationComponent } from './gamification/gamification.component';
 import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
+import { ModerationComponent } from './moderation/moderation.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -53,7 +54,9 @@ const routes: Routes = [
   { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent },
   { path: 'statistics/:username', component: StatisticsComponent },
   { path: 'admin-statistics', component: AdminStatisticsComponent },
-  { path: 'terms-and-conditions', component: TermsAndConditionsComponent }
+  { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
+  { path: 'moderation/:username', component: ModerationComponent},
+
 
 ];
 
