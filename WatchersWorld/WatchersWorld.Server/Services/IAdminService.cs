@@ -202,6 +202,9 @@ namespace WatchersWorld.Server.Services
                 var notifications = await _context.Notifications.Where(n => n.TriggeredByUserId == user.Id).ToListAsync();
                 _context.Notifications.RemoveRange(notifications);
 
+                var replyNotifications = await _context.ReplyNotifications.Where(rn => rn.TargetUserId == user.Id).ToListAsync();
+                _context.ReplyNotifications.RemoveRange(replyNotifications);
+
                 var followers = await _context.Followers.Where(f => f.WhosFollowing == user.Id || f.WhosBeingFollowed == user.Id).ToListAsync();
                 _context.Followers.RemoveRange(followers);
 
@@ -209,6 +212,7 @@ namespace WatchersWorld.Server.Services
                 _context.FollowNotifications.RemoveRange(followNotifications);
 
                 var userMedals = await _context.UserMedals.Where(um => um.UserName == user.UserName).ToListAsync();
+                _context.UserMedals.RemoveRange(userMedals);
 
                 var messagesAsSender = await _context.Messages.Where(m => m.SendUserId == user.Id).ToListAsync();
                 var messagesStatusAsReceiver = await _context.MessagesStatus.Where(ms => ms.RecipientUserId == user.Id).Select(ms => ms.MessageId).ToListAsync();
