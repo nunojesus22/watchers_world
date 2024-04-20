@@ -190,6 +190,26 @@ namespace WatchersWorld.Server.Services
                     return "User not found.";
                 }
 
+                var favoriteActorChoice = await _context.FavoriteActorChoice.Where(m => m.UserThatChooseId == user.Id).ToListAsync();
+                _context.FavoriteActorChoice.RemoveRange(favoriteActorChoice);
+
+                var comments = await _context.Comments.Where(c => c.UserId == user.Id).ToListAsync();
+                _context.Comments.RemoveRange(comments);
+
+                var commentLikes = await _context.CommentLikes.Where(cl => cl.UserId == user.Id).ToListAsync();
+                _context.CommentLikes.RemoveRange(commentLikes);
+
+                var notifications = await _context.Notifications.Where(n => n.TriggeredByUserId == user.Id).ToListAsync();
+                _context.Notifications.RemoveRange(notifications);
+
+                var followers = await _context.Followers.Where(f => f.WhosFollowing == user.Id || f.WhosBeingFollowed == user.Id).ToListAsync();
+                _context.Followers.RemoveRange(followers);
+
+                var followNotifications = await _context.FollowNotifications.Where(fn => fn.TriggeredByUserId == user.Id || fn.TargetUserId == user.Id).ToListAsync();
+                _context.FollowNotifications.RemoveRange(followNotifications);
+
+                var userMedals = await _context.UserMedals.Where(um => um.UserName == user.UserName).ToListAsync();
+
                 var messagesAsSender = await _context.Messages.Where(m => m.SendUserId == user.Id).ToListAsync();
                 var messagesStatusAsReceiver = await _context.MessagesStatus.Where(ms => ms.RecipientUserId == user.Id).Select(ms => ms.MessageId).ToListAsync();
 
