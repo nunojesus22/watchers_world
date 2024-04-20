@@ -168,30 +168,30 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador a ser banido temporariamente.
    */
   banTemp(username: string | null): void {
-    if (!username) {
-      console.error('Username is undefined, cannot ban user temporarily.');
-      return;
-    }
-    if (this.banDuration == null || this.banDuration <= 0) {
-      console.error('Ban duration is not specified or is invalid.');
-      return;
-    }
-    console.log(`Attempting to ban user temporarily: ${username} for ${this.banDuration} days`);
-
-    this.adminService.BanUserTemporarily(username, this.banDuration).subscribe({
-      next: () => {
-        console.log(`User banned temporarily for ${this.banDuration} days`);
-        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
-        this.hideBanPopup();
-        if (user) {
-          user.isBanned = true;
-          this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
-        }
-      },
-      error: error => {
-        console.error("Error banning user temporarily:", error);
+    if (confirm('Tem a certeza que pretende banir temporariamente este utilizador?')) {
+      if (!username) {
+        console.error('Username is undefined, cannot ban user temporarily.');
+        return;
       }
-    });
+      if (this.banDuration == null || this.banDuration <= 0) {
+        console.error('Ban duration is not specified or is invalid.');
+        return;
+      }
+      this.adminService.BanUserTemporarily(username, this.banDuration).subscribe({
+        next: () => {
+          const user = this.filteredUsersProfiles?.find(u => u.userName === username);
+          this.banDuration = undefined;
+          this.hideBanPopup();
+          if (user) {
+            user.isBanned = true;
+            this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
+          }
+        },
+        error: error => {
+          console.error("Error banning user temporarily:", error);
+        }
+      });
+    }
   }
 
   /**
@@ -200,25 +200,27 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador a ser banido permanentemente.
    */
   banPerm(username: string | null): void {
-    if (!username) {
-      console.error('Username is undefined, cannot ban user.');
-      return;
-    }
-    console.log(`Attempting to ban user permanently: ${username}`);
-    this.adminService.banUserPermanently(username).subscribe({
-      next: () => {
-        console.log('User banned permanently');
-        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
-        this.hideBanPopup();
-        if (user) {
-          user.isBanned = true;
-        }
-        this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
-      },
-      error: error => {
-        console.error("Error banning user:", error);
+    if (confirm('Tem a certeza que pretende banir permanentemente este utilizador?')) {
+      if (!username) {
+        console.error('Username is undefined, cannot ban user.');
+        return;
       }
-    });
+      console.log(`Attempting to ban user permanently: ${username}`);
+      this.adminService.banUserPermanently(username).subscribe({
+        next: () => {
+          console.log('User banned permanently');
+          const user = this.filteredUsersProfiles?.find(u => u.userName === username);
+          this.hideBanPopup();
+          if (user) {
+            user.isBanned = true;
+          }
+          this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
+        },
+        error: error => {
+          console.error("Error banning user:", error);
+        }
+      });
+    }
   }
 
   /**
@@ -227,20 +229,22 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador cuja conta será deletada.
    */
   deleteAccount(username: string | undefined): void {
-    if (!username) {
-      console.error('Username is undefined, cannot delete account.');
-      return;
-    }
-    console.log(`Attempting to delete user: ${username}`);
-    this.adminService.deleteUserByUsername(username).subscribe({
-      next: () => {
-        this.filteredUsersProfiles = this.filteredUsersProfiles?.filter(user => user.userName !== username);
-        console.log('User deleted successfully');
-      },
-      error: error => {
-        console.error("Error deleting user:", error);
+    if (confirm('Tem a certeza que pretende apagar a conta deste utilizador? Esta ação será permanente.')) {
+      if (!username) {
+        console.error('Username is undefined, cannot delete account.');
+        return;
       }
-    });
+      console.log(`Attempting to delete user: ${username}`);
+      this.adminService.deleteUserByUsername(username).subscribe({
+        next: () => {
+          this.filteredUsersProfiles = this.filteredUsersProfiles?.filter(user => user.userName !== username);
+          console.log('User deleted successfully');
+        },
+        error: error => {
+          console.error("Error deleting user:", error);
+        }
+      });
+    }
   }
 
   /**
@@ -249,24 +253,26 @@ export class AdminComponent implements OnDestroy {
    * @param userName O nome do utilizador a ser promovido.
    */
   makeModerator(userName: string): void {
-    if (!userName) {
-      console.error('Username is undefined, cannot change role.');
-      return;
-    }
-    console.log(`Changing role of user: ${userName} to Moderator`);
-    this.adminService.changeRoleToModerator(userName).subscribe({
-      next: response => {
-        console.log('User role updated to Moderator successfully:', response);
-        this.verifyUserRole(userName);
-        const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
-        if (user) {
-          user.isModerator = true;
-        }
-      },
-      error: error => {
-        console.error("Error changing user role:", error);
+    if (confirm('Tem a certeza que pretende tornar este utilizador um Moderator?')) {
+      if (!userName) {
+        console.error('Username is undefined, cannot change role.');
+        return;
       }
-    });
+      console.log(`Changing role of user: ${userName} to Moderator`);
+      this.adminService.changeRoleToModerator(userName).subscribe({
+        next: response => {
+          console.log('User role updated to Moderator successfully:', response);
+          this.verifyUserRole(userName);
+          const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
+          if (user) {
+            user.isModerator = true;
+          }
+        },
+        error: error => {
+          console.error("Error changing user role:", error);
+        }
+      });
+    }
   }
 
 
@@ -288,24 +294,26 @@ export class AdminComponent implements OnDestroy {
    * @param userName O nome do utilizador a ser rebaixado.
    */
   demoteToUser(userName: string): void {
-    if (!userName) {
-      console.error('Username is undefined, cannot change role.');
-      return;
-    }
-    console.log(`Changing role of user: ${userName} to User`);
-    this.adminService.changeRoleToUser(userName).subscribe({
-      next: response => {
-        console.log('Moderator role updated to User successfully:', response);
-        this.verifyUserRole(userName);
-        const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
-        if (user) {
-          user.isModerator = false;
-        }
-      },
-      error: error => {
-        console.error("Error changing user role:", error);
+    if (confirm('Tem a certeza que pretende remover a role Moderator do utilizador?')) {
+      if (!userName) {
+        console.error('Username is undefined, cannot change role.');
+        return;
       }
-    });
+      console.log(`Changing role of user: ${userName} to User`);
+      this.adminService.changeRoleToUser(userName).subscribe({
+        next: response => {
+          console.log('Moderator role updated to User successfully:', response);
+          this.verifyUserRole(userName);
+          const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
+          if (user) {
+            user.isModerator = false;
+          }
+        },
+        error: error => {
+          console.error("Error changing user role:", error);
+        }
+      });
+    }
   }
 
   /**
@@ -314,23 +322,25 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador a ser desbanido.
    */
   unban(username: string | undefined): void {
-    if (!username) {
-      console.error('Username is undefined, cannot unban user.');
-      return;
-    }
-    this.adminService.unbanUser(username).subscribe({
-      next: (response) => {
-        console.log(response.message);
-        const user = this.filteredUsersProfiles?.find(u => u.userName === username);
-        if (user) {
-          user.isBanned = false;
-        }
-        this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
-      },
-      error: (error) => {
-        console.error("Error unbanning user:", error);
+    if (confirm('Tem a certeza que pretende remover o ban do utilizador?')) {
+      if (!username) {
+        console.error('Username is undefined, cannot unban user.');
+        return;
       }
-    });
+      this.adminService.unbanUser(username).subscribe({
+        next: (response) => {
+          console.log(response.message);
+          const user = this.filteredUsersProfiles?.find(u => u.userName === username);
+          if (user) {
+            user.isBanned = false;
+          }
+          this.filteredUsersProfiles = [...this.filteredUsersProfiles!];
+        },
+        error: (error) => {
+          console.error("Error unbanning user:", error);
+        }
+      });
+    }
   }
 
   /**
