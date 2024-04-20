@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.DTOs.ProfileInfoDtos;
 using WatchersWorld.Server.Models.Authentication;
+using WatchersWorld.Server.Models.Chat;
 
 namespace WatchersWorld.Server.Services
 {
@@ -104,38 +106,82 @@ namespace WatchersWorld.Server.Services
 
         public async Task<string> DeleteOwnAccountAsync(string username)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
+            try
             {
-                try
+                var user = await _userManager.FindByNameAsync(username);
+                if (user == null)
                 {
-                    var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(p => p.UserName == username);
-                    if (profileInfo != null)
-                    {
-                        _context.ProfileInfo.Remove(profileInfo);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    var user = await _userManager.FindByNameAsync(username);
-                    if (user == null)
-                    {
-                        return "User not found.";
-                    }
-
-                    var result = await _userManager.DeleteAsync(user);
-                    if (!result.Succeeded)
-                    {
-                        return $"Error: {string.Join(", ", result.Errors.Select(e => e.Description))}";
-                    }
-
-                    await transaction.CommitAsync();
-                    return "Your account and profile info have been successfully deleted.";
+                    return "User not found.";
                 }
-                catch (Exception)
+
+                var favoriteActorChoice = await _context.FavoriteActorChoice.Where(m => m.UserThatChooseId == user.Id).ToListAsync();
+                _context.FavoriteActorChoice.RemoveRange(favoriteActorChoice);
+
+                var comments = await _context.Comments.Where(c => c.UserId == user.Id).ToListAsync();
+                _context.Comments.RemoveRange(comments);
+
+                var commentLikes = await _context.CommentLikes.Where(cl => cl.UserId == user.Id).ToListAsync();
+                _context.CommentLikes.RemoveRange(commentLikes);
+
+                var notifications = await _context.Notifications.Where(n => n.TriggeredByUserId == user.Id).ToListAsync();
+                _context.Notifications.RemoveRange(notifications);
+
+                var replyNotifications = await _context.ReplyNotifications.Where(rn => rn.TargetUserId == user.Id).ToListAsync();
+                _context.ReplyNotifications.RemoveRange(replyNotifications);
+
+                var followers = await _context.Followers.Where(f => f.WhosFollowing == user.Id || f.WhosBeingFollowed == user.Id).ToListAsync();
+                _context.Followers.RemoveRange(followers);
+
+                var followNotifications = await _context.FollowNotifications.Where(fn => fn.TriggeredByUserId == user.Id || fn.TargetUserId == user.Id).ToListAsync();
+                _context.FollowNotifications.RemoveRange(followNotifications);
+
+                var userMedals = await _context.UserMedals.Where(um => um.UserName == user.UserName).ToListAsync();
+                _context.UserMedals.RemoveRange(userMedals);
+
+                var messagesAsSender = await _context.Messages.Where(m => m.SendUserId == user.Id).ToListAsync();
+                var messagesStatusAsReceiver = await _context.MessagesStatus.Where(ms => ms.RecipientUserId == user.Id).Select(ms => ms.MessageId).ToListAsync();
+
+                var messagesAsReceiver = await _context.Messages.Where(m => messagesStatusAsReceiver.Contains(m.Id)).ToListAsync();
+
+                var combinedMessages = new List<Messages>(messagesAsSender);
+                combinedMessages.AddRange(messagesAsReceiver);
+
+                var messageIds = combinedMessages.Select(m => m.Id).Distinct().ToList();
+
+                var messagesVisibility = await _context.MessagesVisibility.Where(mv => messageIds.Contains(mv.MessageId)).ToListAsync();
+                _context.MessagesVisibility.RemoveRange(messagesVisibility);
+
+                var messagesStatuses = await _context.MessagesStatus.Where(ms => messageIds.Contains(ms.MessageId)).ToListAsync();
+                _context.MessagesStatus.RemoveRange(messagesStatuses);
+
+                var messagesNotifications = await _context.MessageNotifications.Where(mn => messageIds.Contains(mn.MessageId)).ToListAsync();
+                _context.MessageNotifications.RemoveRange(messagesNotifications);
+
+                _context.Messages.RemoveRange(combinedMessages);
+
+                var chats = await _context.Chats.Where(c => c.User1Id == user.Id || c.User2Id == user.Id).ToListAsync();
+                _context.Chats.RemoveRange(chats);
+
+                var profileInfo = await _context.ProfileInfo.SingleOrDefaultAsync(pi => pi.UserName == username);
+                if (profileInfo != null)
                 {
-                    await transaction.RollbackAsync();
-                    return "An error occurred while deleting your account and profile info.";
+                    _context.ProfileInfo.Remove(profileInfo);
                 }
+
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    return $"Error: {string.Join(", ", result.Errors.Select(e => e.Description))}";
+                }
+
+                await _context.SaveChangesAsync();
+                return "Your account and profile info have been successfully deleted.";
             }
+            catch (Exception ex)
+            {
+                return "An error occurred while deleting the user and profile info.";
+            }
+
         }
     }
 }
