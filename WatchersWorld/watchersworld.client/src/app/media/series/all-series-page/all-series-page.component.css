@@ -63,6 +63,10 @@
   font-weight: bold;
 }
 
+  .expand-button:hover {
+    background-color: #0056b3;
+  }
+
 .row-container {
   display: flex;
   align-items: center;

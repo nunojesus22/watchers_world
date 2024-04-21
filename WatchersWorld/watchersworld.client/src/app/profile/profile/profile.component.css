@@ -117,6 +117,10 @@ input[type="text"] {
   height: 40px;
 }
 
+  .follow-button:hover, .unfollow-button:hover {
+    background-color: #0056b3;
+  }
+
 .send-message-button {
   font-size: 16px;
   background-color: #4CAEFE;
@@ -129,6 +133,10 @@ input[type="text"] {
   width: 200px;
   height: 40px;
 }
+
+  .send-message-button:hover {
+    background-color: #0056b3;
+  }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
 /* -------------------------------------------------------- FOLLOWS ---------------------------------------------------------- */
@@ -198,22 +206,26 @@ input[type="text"] {
   font-weight: bold;
 }
 
+  .expand-followers-button:hover,
+  .expand-following-button:hover {
+    background-color: #0056b3;
+  }
 
-/* --------------------------------------------------------------------------------------------------------------------------- */
-/* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
-/* --------------------------------------------------------------------------------------------------------------------------- */
 
-.favorites-section,
-.watched-movies-section,
-.to-watch-movies-section,
-.watched-series-section,
-.to-watch-series-section,
-.medals-section {
-  padding: 10px;
-  margin-top: 20px; /* Espaço acima da seção */
-  margin-left: 20px;
-  width: 750px;
-}
+  /* --------------------------------------------------------------------------------------------------------------------------- */
+  /* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
+  /* --------------------------------------------------------------------------------------------------------------------------- */
+  .favorites-section,
+  .watched-movies-section,
+  .to-watch-movies-section,
+  .watched-series-section,
+  .to-watch-series-section,
+  .medals-section {
+    padding: 10px;
+    margin-top: 20px; /* Espaço acima da seção */
+    margin-left: 20px;
+    width: 750px;
+  }
 
 .favorites-section-content-expanded,
 .movies-section-content-expanded,
@@ -323,11 +335,20 @@ input[type="text"] {
   font-weight: bold;
 }
 
-.user-media {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centraliza os itens na vertical */
-}
+  .expand-favorites-button:hover,
+  .expand-watched-movies-button:hover,
+  .expand-to-watch-movies-button:hover,
+  .expand-watched-series-button:hover,
+  .expand-to-watch-series-button:hover,
+  .expand-medals-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+  .user-media {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens na vertical */
+  }
 
 .rowposter-user-media {
   display: flex;
@@ -429,12 +450,17 @@ input[type="text"] {
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
 }
 
-.other-users-user-photo {
-  width: 75px; /* Tamanho desejado das imagens */
-  height: 75px;
-  border-radius: 50%;
-  object-fit: cover;
-}
+  .side-div-users > .expand-link:hover,
+  .side-div-suggestions > .expand-link:hover {
+    background-color: #c3c1c1; /* Cor mais escura no hover */
+  }
+
+  .other-users-user-photo {
+    width: 75px; /* Tamanho desejado das imagens */
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
 .side-div-users .item-list {
   list-style: none; /* Remove o ponto padrão da lista */

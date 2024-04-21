@@ -146,6 +146,10 @@ button.btn-md {
   font-weight: bold;
 }
 
+.btn-md:hover {
+  background-color: #0056b3;
+}
+
   button.btn-md.active {
     background-color: #007bff; /* Cor de fundo para página ativa */
     color: #fff; /* Cor do texto para página ativa */
@@ -206,7 +210,8 @@ button.btn-md[_ngcontent-ng-c1193286722] {
 }
 
 
-a {
-  color: #4CAEFE;
-  text-decoration: none;
-}
+
+  a {
+    color: #4CAEFE;
+    text-decoration: none;
+  }
