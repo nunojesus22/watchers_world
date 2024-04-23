@@ -26,7 +26,7 @@ export class EditProfileComponent {
   profileForm: FormGroup = new FormGroup({});
 
   private unsubscribed$ = new Subject<void>();
-  usersProfiles: Profile[] | undefined;
+  usersProfiles: Profile[] = [];
   message: string | undefined;
   errorMessages: any;
   userNameEditable = false;
@@ -162,9 +162,9 @@ export class EditProfileComponent {
    */
   toggleLock() {
     this.isProfileLocked = !this.isProfileLocked;
-    console.log(this.isProfileLocked);
+    //console.log(this.isProfileLocked);
     this.profileLocked = this.profileLocked === "Public" ? "Private" : "Public";
-    console.log(this.profileLocked);
+    //console.log(this.profileLocked);
   }
 
   /**
@@ -282,7 +282,7 @@ export class EditProfileComponent {
     this.profileForm.get('gender')?.disable();
     this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
-        console.log(userData);
+        //console.log(userData);
         if (userData.coverPhoto && this.coverPhoto !== userData.coverPhoto) { this.coverPhoto = userData.coverPhoto; }
         if (userData.profilePhoto && this.profilePhoto !== userData.profilePhoto) { this.profilePhoto = userData.profilePhoto; }
         if (userData.userName) {
@@ -342,11 +342,11 @@ export class EditProfileComponent {
     const numberOfFollowing = this.followingCount || 0;
 
     const data = new Profile(date, hobby, gender, profilePhoto, coverPhoto, profileStatus, numberOfFollowers, numberOfFollowing);
-    console.log(data);
+    //console.log(data);
     if (this.profileForm.valid) {
       this.profileService.setUserData(data).subscribe({
         next: (response: any) => {
-          console.log(response);
+          //console.log(response);
           this.setFormFields(username);
         },
         error: (error) => {
@@ -355,6 +355,22 @@ export class EditProfileComponent {
       },
       );
     }
+  }
+
+  /**
+  * Gera uma lista aleatória de outros utilizadores, limitada pelo tamanho especificado.
+  * 
+  * @param array Array original de perfis de utilizadores.
+  * @param size Tamanho máximo da lista resultante.
+  * @returns Array de `Profile` com tamanho máximo especificado e elementos aleatórios.
+  */
+  getRandomOtherUsers(array: Profile[], size: number): Profile[] {
+    const arrayCopy = [...array];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+    }
+    return arrayCopy.slice(0, size);
   }
 
   /**
@@ -367,7 +383,7 @@ export class EditProfileComponent {
     if (date && !this.isOldEnough(date)) {
       this.messageService.clear();
       this.messageService.add({ key: 'toast1', severity: 'error', summary: 'Data Inválida', detail: 'Data de nascimento inválida. O utilizador deve ter mais de 12 anos.' });
-      console.log("Data de nascimento inválida. O utilizador deve ter mais de 12 anos.")
+      //console.log("Data de nascimento inválida. O utilizador deve ter mais de 12 anos.")
       return;
     }
 
@@ -406,7 +422,7 @@ export class EditProfileComponent {
       if (LoggedInUsername)
         this.profileService.deleteOwnAccount(LoggedInUsername).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(response);
             this.router.navigateByUrl('/home');
           },
           (error) => {

@@ -121,7 +121,7 @@
                (click)="rateMovie(i + 1)"></i>
           </div>
           <!--<a class="btn btn-md" href="https://www.themoviedb.org/video/play?key={{getSerieVideoResult?}}"
-  target="_blank">watch trailer</a>-->
+          target="_blank">watch trailer</a>-->
           <br />
           <div class="container">
             <h2 class="text-black">Principais atores</h2>
@@ -186,7 +186,7 @@
                       <button *ngIf="currentQuestionIndex < quizQuestions.length - 1" type="button" class="btn btn-secondary" (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1">Próximo</button>
                     </div>
                     <!-- Mostrar botão de enviar apenas na última pergunta -->
-                    <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-success">Enviar respostas</button>
+                    <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-secondary">Enviar respostas</button>
                   </form>
                 </div>
               </div>
@@ -286,4 +286,3 @@
 </div>
 <br />
 <br />
-

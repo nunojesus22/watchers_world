@@ -3,20 +3,21 @@
   <p-toast key="toast1"></p-toast>
   <p-toast key="toast2"></p-toast>
 </div>
+
 <div class="container mt-5" *ngIf="(authService.user$ | async) as user">
   <div class="row" *ngIf="user.username === currentUsername">
-    <div class="col-12 col-lg-8">
+    <div class="col-lg-8">
       <div class="card mb-3">
         <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">
         <img src="{{ coverPhoto }}" class="cover-photo" (click)="openFileInput('coverPhoto')">
-        <div class="card-body text-center" >
+        <div class="card-body text-center">
           <input type="file" id="fileInput" accept="image/*" (change)="changeImage($event)" style="display: none;">
           <img src="{{ profilePhoto }}" class="profile-photo" (click)="openFileInput('profilePhoto')">
-          <div class="user-details" >
+          <div class="user-details">
             <div class="user-icons">
-              <p> Modo do perfil: </p>
+              <p style="margin-top:25px;"> Modo do perfil: </p>
               <button class="lock-button" (click)="toggleLock()">
-                <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Lock Status">
+                <img [src]="isProfileLocked ? profileLockedPhoto : profileUnlockedPhoto" alt="Modo do perfil:">
               </button>
               <button class="change-password-button" (click)="sendEmailChangePassword()">
                 Alterar palavra-passe
@@ -25,6 +26,7 @@
                 Apagar conta
               </button>
             </div>
+            <br />
             <form [formGroup]="profileForm" class="user-details text-left">
               <div class="mb-3">
                 <label for="hobby">Descrição:</label>
@@ -39,7 +41,7 @@
                 <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('hobby')"></button>
               </div>
               <div class="mb-3">
-                <label>Género:  </label>
+                <label>Género:</label>
                 <div class="form-check form-check-inline">
                   <input formControlName="gender" type="radio" id="male" name="gender" value="M" class="form-check-input" [checked]="profileForm.controls['gender'].value === 'M'">
                   <label class="form-check-label" for="male">Masculino</label>
@@ -53,7 +55,7 @@
               <div class="mb-3">
                 <label for="birthdate">Data de nascimento:</label>
                 <div class="form-check form-check-inline">
-                  <input formControlName="date" type="date" id="birthdate" name="birthdate"  [min]="minDate" [max]="currentDate"  class="form-control" [readonly]="!birthdateEditable">
+                  <input formControlName="date" type="date" id="birthdate" name="birthdate" [min]="minDate" [max]="currentDate" class="form-control" [readonly]="!birthdateEditable">
                 </div>
                 <button type="button" class="btn btn-link p-0 editButton" (click)="toggleEdit('birthdate')"></button>
               </div>
@@ -62,6 +64,21 @@
               </div>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 side-divs">
+      <div class="card mb-3">
+        <div class="card-body side-div-users">
+          <h2>Outros Utilizadores</h2>
+          <ul class="item-list">
+            <li *ngFor="let userProfile of usersProfiles.slice(0, 4)">
+              <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
+                <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+                <span class="other-users-user-name">{{ userProfile.userName }}</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

@@ -39,6 +39,7 @@ export class NavMenuComponent {
     this.checkForUnreadNotifications();
   }
 
+
   /**
    * Carrega as solicitações de seguimento pendentes do utilizador autenticado.
    * Atualiza a lista de solicitações pendentes no menu de navegação.

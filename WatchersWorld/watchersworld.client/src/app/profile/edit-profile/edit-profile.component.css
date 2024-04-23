@@ -1,3 +1,13 @@
+.container {
+  width: 100%; /* Isso fará a div esticar pela largura total da página */
+  margin: 0; /* Remove margens padrão */
+  max-width: none; /* Override do Bootstrap se necessário */
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- USER INFO -------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
 /* Custom CSS para ajustar o layout com Bootstrap */
 
 /* Ajusta a imagem de capa para cobrir toda a área disponível */
@@ -7,7 +17,13 @@
   object-fit: cover; /* Garante que a imagem cubra o espaço sem distorção */
   position: relative;
   z-index: 1;
+  cursor: pointer;
+  opacity: 1;
 }
+
+  .cover-photo:hover {
+    opacity: 0.75; /* Opacidade quando o mouse está sobre o elemento */
+  }
 
 
 /* Estiliza a foto do perfil */
@@ -21,8 +37,17 @@
   border: 3px solid #fff;
   z-index: 3;
   left: 80px;
+  cursor: pointer;
+  opacity: 1;
 }
 
+  .profile-photo:hover {
+    opacity: 0.75; /* Opacidade quando o mouse está sobre o elemento */
+  }
+
+.form-check-input {
+  margin-left: 0px;
+}
 
 /* Ajusta o título do utilizador para ficar à direita da foto do perfil */
 .card-title {
@@ -73,95 +98,6 @@
   transform: scale(1.1);
 }
 
-/* Estilos para as divs laterais */
-.side-divs {
-  position: absolute; /* ou 'fixed' dependendo se quer que movam com a página ou não */
-  top: 130px; /* Ajuste conforme necessário */
-  right: 250px; /* Ajuste conforme necessário */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Alinha as divs à direita */
-  z-index: 2; /* Garante que as divs fiquem acima do fundo mas abaixo de qualquer conteúdo interativo */
-  gap: 20px; /* Espaço entre as divs */
-}
-
-.side-div-users, .side-div-suggestions {
-  background-color: white;
-  width: 300px; /* Largura das divs laterais */
-  margin: 10px 0; /* Espaço superior e inferior entre as divs */
-  padding: 20px; /* Padding interno para o conteúdo das divs */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para dar profundidade */
-  border-radius: 10px; /* Borda arredondada */
-  box-sizing: border-box; /* Garante que padding e border estão incluídos na largura */
-}
-
-  /* Títulos para cada div lateral */
-  .side-div-users > h2, .side-div-suggestions > h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin: 0 0 16px 0; /* Margem inferior */
-  }
-
-/* Ajuste a classe para os itens de utilizador e sugestões */
-.item-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-  .item-list > li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Espaço entre os itens */
-  }
-
-    .item-list > li > img {
-      width: 50px; /* Largura das imagens dos utilizadors */
-      height: 50px; /* Altura das imagens dos utilizadors */
-      border-radius: 50%; /* Torna as imagens redondas */
-      margin-right: 10px; /* Espaço entre a imagem e o texto */
-    }
-
-@media (max-width: 991px) { /* Para tablets e desktops menores */
-  .side-divs {
-    position: static; /* As divs se tornam parte do fluxo normal do documento */
-    margin-top: 20px; /* Espaçamento acima das divs laterais */
-  }
-}
-
-@media (max-width: 767px) { /* Para dispositivos móveis */
-  .side-divs {
-    display: none; /* Esconde as divs laterais em dispositivos móveis */
-  }
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-users > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-/* Estilizar botões ou links para "Expandir" */
-.side-div-suggestions > .expand-link {
-  display: block; /* Faz com que ocupe toda a largura da linha */
-  text-align: center; /* Centraliza o texto */
-  margin-top: 20px; /* Espaçamento acima */
-  padding: 10px 0; /* Espaçamento vertical */
-  background-color: #f0f0f0; /* Cor de fundo */
-  color: #000; /* Cor do texto */
-  border-radius: 5px; /* Arredonda os cantos do botão/link */
-  text-decoration: none; /* Remove o sublinhado do link */
-  font-weight: bold; /* Torna o texto em negrito */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
 
 .user-name {
   font-size: 1em; /* Define o tamanho da fonte */
@@ -191,7 +127,6 @@
 }
 
 .button-container {
- 
 }
 
 .lock-button img {
@@ -227,12 +162,12 @@
   margin-bottom: 5px;
   margin-right: 10px;
   width: 200px;
-  font-weight:bold;
+  font-weight: bold;
 }
 
-.change-password-button:hover {
-  background-color: #0056b3;
-}
+  .change-password-button:hover {
+    background-color: #0056b3;
+  }
 
 .delete-account-button {
   padding: 10px 20px;
@@ -245,7 +180,7 @@
   margin-bottom: 5px;
   margin-right: 10px;
   width: 120px;
-  font-weight:bold;
+  font-weight: bold;
 }
 
   .delete-account-button:hover {
@@ -253,106 +188,84 @@
   }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
-/* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
+/* -------------------------------------------------------- OUTROS UTILIZADORES ---------------------------------------------- */
 /* --------------------------------------------------------------------------------------------------------------------------- */
 
-.favorites-section,
-.movies-section,
-.series-section,
-.medals-section {
-  padding: 10px;
-  margin-top: 20px; /* Espaço acima da seção */
-  margin-left: 90px;
-  width: 600px;
-}
-
-.favorites-section-content-expanded,
-.movies-section-content-expanded,
-.series-section-content-expanded,
-.medals-section-content-expanded {
-  height: 200px; /* Altura quando expandido */
-  /* suas outras propriedades como padding, margin, background-color, etc. */
-}
-
-.favorites-section-content-collapsed,
-.movies-section-content-collapsed,
-.series-section-content-collapsed,
-.medals-section-content-collapsed {
-  height: 0; /* Altura quando colapsado */
-  overflow: hidden; /* Esconde o conteúdo que excede a altura */
-  /* suas outras propriedades como padding, margin, background-color, etc. */
-}
-
-.favorites-section-header,
-.movies-section-header,
-.series-section-header,
-.medals-section-header {
+.side-divs {
   display: flex;
-  align-items: center;
-  justify-content: space-between; /* Espaça o título e o botão uniformemente */
+  flex-direction: column;
+  align-items: flex-end; /* Alinha as divs à direita */
+  gap: 20px; /* Espaço entre as divs */
 }
 
-.favorites-title,
-.movies-title,
-.series-title,
-.medals-title {
-  display: flex;
-  align-items: center;
+.side-div-users {
+  height: 507px;
 }
 
-.section-header h3 {
-  margin-right: 10px; /* Espaço entre o título e a seta */
+/* Títulos para cada div lateral */
+.side-div-users > h2, .side-div-suggestions > h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin: 0 0 16px 0; /* Margem inferior */
 }
 
-.filter-button {
-  padding: 5px 10px; /* Ajuste conforme necessário */
-  background-color: #007bff; /* Cor do botão, pode ser alterada */
-  color: white;
-  border: none;
-  border-radius: 4px;
+/* Estilizar botões ou links para "Expandir" */
+.side-div-users > .expand-link,
+.side-div-suggestions > .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
   cursor: pointer; /* Muda o cursor para indicar que é clicável */
 }
 
-  .filter-button:hover {
-    background-color: #0056b3; /* Cor mais escura no hover */
+  .side-div-users > .expand-link:hover,
+  .side-div-suggestions > .expand-link:hover {
+    background-color: #c3c1c1; /* Cor mais escura no hover */
   }
 
-.favorites-down-arrow,
-.movies-down-arrow,
-.series-down-arrow,
-.medals-down-arrow {
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-  color: #4CAEFE;
-  margin-left: 20px;
+.other-users-user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor:pointer;
 }
 
-.favorites-right-arrow,
-.movies-right-arrow,
-.series-right-arrow,
-.medals-right-arrow {
-  cursor: pointer;
-  /* Estilos da seta para cima, você pode usar uma transformação para rotacionar a seta para baixo */
-  transform: rotate(180deg);
+.side-div-users .item-list {
+  list-style: none; /* Remove o ponto padrão da lista */
+  padding: 0; /* Remove o padding padrão */
 }
 
-.favorites-section-content,
-.movies-section-content,
-.series-section-content,
-.medals-section-content {
-  /* TODO */
+.side-div-users .user-item {
+  display: flex; /* Cria um layout flexível para alinhar itens horizontalmente */
+  align-items: center; /* Centraliza os itens verticalmente */
+  gap: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  margin-bottom: 20px; /* Adiciona espaço abaixo de cada item */
 }
 
-.filter-favorites-button,
-.filter-movies-button,
-.filter-series-button,
-.filter-medals-button {
-  font-size: 16px;
-  background-color: #4CAEFE;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  width: 120px;
-  height: 40px;
-  font-weight: bold;
+.other-users-user-name {
+  margin-left: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  white-space: nowrap; /* Impede que o nome quebre em várias linhas */
+  overflow: hidden; /* Esconde o texto que excede a área */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+}
+
+
+/* Add responsiveness if needed */
+@media (max-width: 768px) {
+  .user {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions button {
+    margin-top: 5px;
+    margin-left: 0;
+  }
 }

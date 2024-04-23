@@ -347,7 +347,7 @@ export class StatisticsComponent implements OnInit {
         type: 'column' // 'column' para gráfico de colunas verticais, 'bar' para barras horizontais
       },
       title: {
-        text: 'Series Vistos por Data'
+        text: 'Séries Vistas por Data'
       },
       xAxis: {
         categories: this.mediaSerieByDate.map(item => item.date.split('T')[0]),
@@ -358,7 +358,7 @@ export class StatisticsComponent implements OnInit {
       yAxis: {
         min: 0,
         title: {
-          text: 'Total de Serie'
+          text: 'Total de Séries'
         }
       },
       legend: {
