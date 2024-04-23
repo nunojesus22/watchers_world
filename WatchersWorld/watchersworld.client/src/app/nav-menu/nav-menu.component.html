@@ -42,15 +42,14 @@
     <div *ngIf="!loggedUserName">
       <a routerLink="/account/login"><i class="fas fa-user"></i> Perfil </a>
     </div>
-    <a [routerLink]="['/all-series-page']"> <i class="fas fa-tv"></i> Séries </a>
-    <a [routerLink]="['/all-movies-page']"> <i class="fas fa-film"></i> Filmes </a>
+    <a [routerLink]="['/all-series-page']" (click)="closeNav()"> <i class="fas fa-tv"></i> Séries </a>
+    <a [routerLink]="['/all-movies-page']" (click)="closeNav()"> <i class="fas fa-film"></i> Filmes </a>
     <!--<a href="#"> <i class="fas fa-cog"></i> Definições </a>-->
     <a *ngIf="(authService.user$ | async) as user; else showLogin"
-       (click)="logout()"> <i class="fas fa-sign-out-alt"></i> Terminar Sessão </a>
+       (click)="logout()"> <i class="fas fa-sign-out-alt"></i> Sair </a>
     <ng-template #showLogin>
-      <a routerLink="/account/login"><i class="fas fa-sign-in-alt"></i> Logar </a>
+      <a routerLink="/account/login" (click)="closeNav()"><i class="fas fa-sign-in-alt"></i> Entrar </a>
     </ng-template>
-
     <a class="closebtn" (click)="closeNav()"><i class="fas fa-times"></i></a>
   </div>
 </nav>

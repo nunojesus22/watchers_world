@@ -23,6 +23,12 @@ nav {
     font-weight: bold;
   }
 
+    nav a:hover {
+      transform: scale(1.09);
+      cursor: pointer;
+      color: #4CAEFE;
+    }
+
 /* Aumentar o tamanho do ícone do menu */
 .fa-bars {
   font-size: 50px; /* Ajuste o tamanho conforme necessário */
@@ -31,6 +37,7 @@ nav {
 a:hover {
   transform: scale(1.09);
   cursor: pointer;
+  color: #4CAEFE;
 }
 
 .logo {
@@ -124,15 +131,15 @@ a:hover {
 /* Estilo inicial para a barra lateral */
 .sidebar {
   height: 100%;
-  width: 0;
+  width: 0px;
   position: fixed;
-  z-index: 1;
   top: 0;
   left: 0;
   background-color: #111;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
+  z-index: 1000;
 }
 
   .sidebar a {
@@ -145,11 +152,10 @@ a:hover {
     transition: 0.3s;
     height: 40px; /* Altura fixa para os links */
     line-height: 40px; /* Alinha verticalmente o texto */
-    z-index:1;
   }
 
     .sidebar a:hover {
-      color: dodgerblue;
+      color: #4CAEFE;
     }
 
     .sidebar a i {
@@ -159,9 +165,13 @@ a:hover {
   .sidebar .closebtn {
     position: absolute;
     top: 0;
-    left: 155px;
+    left: 215px;
     font-size: 36px;
     margin-top:10px;
+  }
+
+  .sidebar .closebtn:hover {
+    color:red;
   }
 
 

@@ -97,6 +97,10 @@ a {
   font-weight: bold;
 }
 
+  .expand-button:hover {
+    background-color: #004080; /* Efeito ao passar o mouse */
+  }
+
 .container {
   --bs-gutter-x: 0rem;
 }
@@ -118,7 +122,7 @@ a {
 
 .actor-image-container {
   height: 300px; /* Ajuste este valor conforme necessário */
-  overflow: hidden;
+  /* overflow: hidden;*/
 }
 
 .card {
@@ -164,7 +168,6 @@ a {
   color: var(--bs-card-color);
   padding: 0;
 }
-
 
 .fa-star {
   cursor: pointer;
@@ -357,15 +360,34 @@ a {
   border-color: #4CAEFE; /* Cor da borda dos botões primários */
 }
 
+.btn-outline-secondary,
+.btn btn-secondary {
+  background-color: #4CAEFE; /* Cor de fundo dos botões primários */
+  border-color: #4CAEFE; /* Cor da borda dos botões primários */
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #4CAEFE; /* Cor de fundo dos botões primários */
+  border-color: #4CAEFE; /* Cor da borda dos botões primários */
+  color: white;
+}
+
 .btn-success {
   background-color: #4CAEFE; /* Cor de fundo para botões de sucesso */
   border-color: #4CAEFE; /* Cor da borda para botões de sucesso */
 }
 
   .btn-primary:hover,
+  .btn-outline-secondary:hover,
+  .btn btn-secondary:hover,
   .btn-success:hover {
-    opacity: 0.85; /* Efeito ao passar o mouse */
+    background-color: #004080; /* Efeito ao passar o mouse */
   }
+
+.fa-thumbs-up:hover {
+  color: #004080; /* Efeito ao passar o mouse */
+}
 
 /* Cards das questões */
 .card {
@@ -413,77 +435,126 @@ a {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 600px;
-  z-index: 1050; /* Garanta que o popup esteja sobre outros elementos */
-  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: auto;
+  max-width: 500px;
+  padding: 2rem;
+  z-index: 1050;
 }
 
 /* Conteúdo do Popup */
 .popup-content {
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Botão de Fechar */
 .close-popup {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.5rem;
+  right: 0.5rem;
   border: none;
-  background-color: transparent;
-  font-size: 20px;
+  background: none;
+  font-size: 1.5rem;
   cursor: pointer;
-  color: #333;
-}
-
-/* Melhora a aparência dos botões */
-.btn {
-  margin: 5px;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-  .btn-secondary:hover {
-    background-color: #5a6268;
-    color: white;
-  }
-
-.btn-success {
-  background-color: #4CAEFE;
-  color: white;
-}
-
-
-
-/* Estilo das perguntas e respostas */
-.card-header {
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #e7e7e7;
+  color: #cb2431;
+  margin-right: 20px;
+  margin-top: 20px;
   font-weight: bold;
 }
 
+.btn-quiz {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  display: block; /* ocupar a largura total */
+  text-align: center;
+  margin-top: 1rem;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.btn-quiz-primary {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+  .btn-quiz-primary:hover {
+    background-color: #004494;
+    transform: translateY(-2px);
+  }
+
+.btn-quiz-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+  .btn-quiz-secondary:hover {
+    background-color: #565e64;
+    transform: translateY(-2px);
+  }
+
+/* Botão de enviar respostas */
+.btn-quiz-success {
+  background-color: #28a745;
+  color: white;
+}
+
+  .btn-quiz-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+  }
+
+
+/* Cabeçalho do card de questões */
+.card-header {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #e3e3e3;
+  font-weight: bold;
+}
+
+/* Lista de respostas */
 .list-group-item {
+  border-color: #ddd;
   background-color: #f8f9fa;
 }
 
+  /* Alternar a cor de fundo para itens ímpares da lista */
   .list-group-item:nth-child(odd) {
     background-color: #e9ecef;
   }
 
-/* Formatação dos inputs e labels dentro do quiz */
+/* Estilo dos inputs de seleção */
 .form-check-input {
   margin-top: 0.3rem;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   cursor: pointer;
 }
 
 .form-check-label {
   cursor: pointer;
+}
+
+/* Botões de Navegação */
+.navigation-buttons .btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+  .navigation-buttons .btn:hover {
+    background-color: #004080;
+  }
+
+/* Estilos para alertas de resultado */
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+  z-index:10;
 }
 
 .row-comments {
@@ -496,4 +567,38 @@ a {
   width: auto;
   margin-right: 0;
   border: 3px solid #4CAEFE; /* Creates a white border around the image */
+}
+
+::-webkit-scrollbar {
+  width: auto; /* Largura da barra de rolagem */
+  height: auto; /* Altura da barra de rolagem */
+}
+
+
+/* Estiliza o fundo da barra (a trilha) */
+::-webkit-scrollbar-track {
+  cursor: pointer;
+}
+
+/* Estiliza a alça da barra de rolagem (o "thumb") */
+::-webkit-scrollbar-thumb {
+  background: #4CAEFE; /* Cor do "thumb" da barra de rolagem */
+  cursor: pointer;
+}
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #004080; /* Cor do "thumb" no hover */
+    cursor: pointer;
+  }
+
+/* Estilo de sobreposição */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1049; /* Certifique-se de que isto é menor do que o z-index do popup do quiz */
 }

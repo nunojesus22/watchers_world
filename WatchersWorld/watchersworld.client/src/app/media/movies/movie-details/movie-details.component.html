@@ -38,11 +38,11 @@
                 {{ isFavorite ? 'Remover dos Favoritos' : 'Marcar como Favorito' }}
               </button>
 
-              <button class="expand-button"*ngIf="!isToWatchLater" (click)="handleMarkAsWatched()">
+              <button class="expand-button" *ngIf="!isToWatchLater" (click)="handleMarkAsWatched()">
                 {{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}
               </button>
 
-              <button class="expand-button" *ngIf="!isWatched"  (click)="handleMarkToWatchLater()">
+              <button class="expand-button" *ngIf="!isWatched" (click)="handleMarkToWatchLater()">
                 {{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}
               </button>
             </div>
@@ -148,50 +148,51 @@
             <button *ngIf="!quizCompleted" (click)="showQuizPopup()" class="btn btn-primary my-3">
               Iniciar Quiz
             </button>
-
-            <div *ngIf="isQuizPopupVisible" class="quiz-popup">
-              <div class="popup-content">
-                <button class="close-popup" (click)="hideQuizPopup()">X</button>
-                <h4>Quiz sobre o filme</h4>
-                <form *ngIf="!quizResult">
-                  <!-- Exibe apenas a pergunta atual baseada em currentQuestionIndex -->
-                  <div class="card mb-3">
-                    <div class="card-header">
-                      {{ quizQuestions[currentQuestionIndex].text }}
+            <div class="overlay" *ngIf="isQuizPopupVisible">
+              <div *ngIf="isQuizPopupVisible" class="quiz-popup" id="quiz-popup">
+                <div class="popup-content">
+                  <button class="close-popup" (click)="hideQuizPopup()">X</button>
+                  <h4>Quiz geral </h4>
+                  <form *ngIf="!quizResult">
+                    <!-- Exibe apenas a pergunta atual baseada em currentQuestionIndex -->
+                    <div class="card mb-3">
+                      <div class="card-header">
+                        {{ quizQuestions[currentQuestionIndex].text }}
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let answer of quizQuestions[currentQuestionIndex].answers">
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" [name]="'question' + quizQuestions[currentQuestionIndex].id" [(ngModel)]="userAnswers[quizQuestions[currentQuestionIndex].id]" [value]="answer.id">
+                            <label class="form-check-label" for="answer{{ answer.id }}">
+                              {{ answer.text }}
+                            </label>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item" *ngFor="let answer of quizQuestions[currentQuestionIndex].answers">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" [name]="'question' + quizQuestions[currentQuestionIndex].id" [(ngModel)]="userAnswers[quizQuestions[currentQuestionIndex].id]" [value]="answer.id">
-                          <label class="form-check-label" for="answer{{ answer.id }}">
-                            {{ answer.text }}
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- Botões de Navegação -->
-                  <div class="navigation-buttons">
-                    <button type="button" class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">Anterior</button>
-                    <button type="button" class="btn btn-secondary" (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1">Próximo</button>
-                  </div>
-                  <!-- Mostrar botão de enviar apenas na última pergunta -->
-                  <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-success">Enviar respostas</button>
-                </form>
+                    <!-- Botões de Navegação -->
+                    <div class="navigation-buttons">
+                      <button *ngIf="currentQuestionIndex > 0" type="button" class="btn btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">Anterior</button>
+                      <button *ngIf="currentQuestionIndex < quizQuestions.length - 1" type="button" class="btn btn-secondary" (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1">Próximo</button>
+                    </div>
+                    <!-- Mostrar botão de enviar apenas na última pergunta -->
+                    <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-success">Enviar respostas</button>
+                  </form>
+                </div>
               </div>
             </div>
+              <div *ngIf="quizResult">
+                <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
+              </div>
 
-            <div *ngIf="quizResult">
-              <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
-            </div>
 
+              <!-- Mensagem de conclusão do quiz -->
+              <div *ngIf="quizCompleted" class="alert alert-info">
+                <p>Já completou este quiz. A sua última pontuação foi de {{ lastQuizScore }} pontos.</p>
+              </div>
+            
 
-            <!-- Mensagem de conclusão do quiz -->
-            <div *ngIf="quizCompleted" class="alert alert-info">
-              <p>Já completou esse quiz. A sua última pontuação foi de {{ lastQuizScore }} pontos</p>
-            </div>
           </div>
-
           <div class="comments-section mt-5" *ngIf="showComments">
             <h2 class="mb-4">Adicionar comentário</h2>
 
@@ -205,14 +206,15 @@
             <div class="comment-list" *ngIf="isWatched">
               <h2 class="mb-4">Comentários</h2>
               <div class="row-comments">
-                <h3 class="mb-4" *ngIf="comments.length > 0">Ordenar comentários</h3>
+                <h3 class="mb-4" *ngIf="comments.length > 0" style="margin-top:10px;">Ordenar comentários</h3>
                 <select *ngIf="comments.length > 0" (change)="sortComments($event)" class="form-select">
                   <option value="recentes">Mais recentes</option>
                   <option value="likes">Mais Likes</option>
                   <option value="antigos">Mais antigos</option>
                 </select>
               </div>
-              <h5 *ngIf="comments.length > 0" class="mb-4"> Número total de comentários: {{comments.length}}</h5>
+              <h5 *ngIf="comments.length > 0" class="mb-4" style="margin-top:10px;"> Número total de comentários: {{comments.length}}</h5>
+
               <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded" [id]="'comment-' + comment.id">
                 <div class="d-flex justify-content-between">
                   <div class="user-info d-flex align-items-center">
@@ -271,3 +273,5 @@
     </div>
   </div>
 </div>
+<br />
+<br />

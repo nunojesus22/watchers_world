@@ -138,23 +138,32 @@ export class SeriesDetailsComponent {
   }
 
   /**
-   * Mostra o pop-up do quiz.
-   * Define o sinalizador `isQuizPopupVisible` como verdadeiro e reinicia as respostas e o resultado do quiz, se necessário.
-   */
+ * Mostra o pop-up do quiz na interface do utilizador.
+ * Isso também redefine as respostas do utilizador e o resultado do quiz, se necessário,
+ * e carrega as perguntas do quiz.
+ */
   showQuizPopup(): void {
     this.isQuizPopupVisible = true;
     // Resetar respostas e resultado do quiz se necessário
     this.userAnswers = {};
     this.quizResult = null;
     this.loadQuizQuestions();
+    const popupElement = document.getElementById('.quiz-popup');
+    if (popupElement) {
+      popupElement.style.display = 'block';
+    }
   }
 
+
   /**
-   * Esconde o pop-up do quiz.
-   * Define o sinalizador `isQuizPopupVisible` como falso.
-   */  
+   * Esconde o pop-up do quiz na interface do utilizador.
+   */
   hideQuizPopup(): void {
     this.isQuizPopupVisible = false;
+    const popupElement = document.getElementById('.quiz-popup');
+    if (popupElement) {
+      popupElement.style.display = 'none';
+    }
   }
 
 
@@ -218,7 +227,7 @@ export class SeriesDetailsComponent {
         this.quizQuestions = [
           {
             id: 1,
-            text: 'Qual é o título original da serie?',
+            text: 'Qual é o título original da série?',
             answers: [
               { id: 1, text: `${movieDetails.original_name}` }, // Resposta correta
               { id: 2, text: 'Arrakis: A New Hope' }, // Inventada
@@ -227,7 +236,7 @@ export class SeriesDetailsComponent {
           },
           {
             id: 2,
-            text: 'Qual é o numero total de episodios da serie?',
+            text: 'Qual é o número total de episódios da série?',
             answers: [
               { id: 1, text: `${movieDetails.number_of_episodes}` }, // Resposta correta
               { id: 2, text: '12' }, // Inventada
@@ -236,7 +245,7 @@ export class SeriesDetailsComponent {
           },
           {
             id: 3,
-            text: 'Qualé o numero total de temporadas da serie?',
+            text: 'Qual é o número total de temporadas da série?',
             answers: [
               {
                 id: 1, text: `${movieDetails.number_of_seasons}`
@@ -247,7 +256,7 @@ export class SeriesDetailsComponent {
           },
           {
             id: 4,
-            text: 'Qual é a data de lançamento da serie?',
+            text: 'Qual é a data de lançamento da série?',
             answers: [
               { id: 1, text: `${movieDetails.last_air_date}` },
               { id: 2, text: '2024-03-15' }, // Inventada
@@ -256,7 +265,7 @@ export class SeriesDetailsComponent {
           },
           {
             id: 5,
-            text: 'Qual é o gênero principal do filme?',
+            text: 'Qual é o género principal da série?',
             answers: [
               { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
               { id: 2, text: 'Comédia' }, // Inventada
@@ -265,14 +274,13 @@ export class SeriesDetailsComponent {
           },
           {
             id: 6,
-            text: 'Qual é o idioma original do filme?',
+            text: 'Qual é o idioma original da série?',
             answers: [
               { id: 1, text: movieDetails.original_language === 'en' ? 'Inglês' : movieDetails.original_language }, // Resposta correta
               { id: 2, text: 'Francês' }, // Inventada
               { id: 3, text: 'Alemão' } // Inventada
             ]
           },
-
 
           {
             id: 7,
@@ -282,7 +290,6 @@ export class SeriesDetailsComponent {
               { id: 2, text: movieDetails.in_production ? 'Não' : 'Sim' }  // Opção incorreta
             ]
           }
-          // Adicione mais perguntas conforme necessário
         ];
       }
 
