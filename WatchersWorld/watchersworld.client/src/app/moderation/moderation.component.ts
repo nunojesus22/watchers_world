@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subject, forkJoin, of } from 'rxjs';
 import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { Profile } from '../profile/models/profile';
@@ -15,13 +15,13 @@ import { Router } from '@angular/router';
  * e desbanir utilizadores. Além disso, gere a visualização e filtragem dos perfis de utilizador.
  */
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  selector: 'app-moderation',
+  templateUrl: './moderation.component.html',
+  styleUrl: './moderation.component.css'
 })
 
 
-export class AdminComponent implements OnDestroy {
+export class ModerationComponent implements OnDestroy {
   isBanPopupVisible = false;
   unsubscribed$: Subject<void> = new Subject<void>();
   usersProfiles: Profile[] = [];
@@ -52,7 +52,7 @@ export class AdminComponent implements OnDestroy {
     if (this.loggedUserName) {
       this.authService.getUserRole(this.loggedUserName).subscribe({
         next: (roles) => {
-          if (!roles.includes('Admin')) {
+          if (!roles.includes('Moderator')) {
             this.router.navigate(['/']);
             return;
           }
@@ -64,25 +64,26 @@ export class AdminComponent implements OnDestroy {
     } else {
       this.router.navigate(['/']);
     }
-    this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
-      (profiles: Profile[]) => {
-        console.log("Perfis recebidos:", profiles);
 
-        this.usersProfiles = profiles;
-        this.filteredUsersProfiles = profiles;
-        this.updateSelectedUser();
-      },
-      error => {
-        console.error("Error while fetching users' profiles:", error);
-      }
-    );
-
-    if (this.usersProfiles.length > 0) {
-      this.updateSelectedUser();
-    }
 
     this.collectionSize = this.filteredUsersProfiles.length;
 
+    this.loggedUserName = this.authService.getLoggedInUserName();
+    this.getUserProfiles();
+    if (this.loggedUserName)
+      this.profileService.getUserProfilesNotLoggedIn(this.loggedUserName).pipe(takeUntil(this.unsubscribed$)).subscribe(
+        (profiles: Profile[]) => {
+          this.usersProfiles = profiles;
+          this.filteredUsersProfiles = profiles;
+          this.collectionSize = profiles.length;
+          this.updateSelectedUser();
+          this.sortAlphabetically();
+          this.filterUsers();
+        },
+        error => {
+          console.error("Error while fetching users' profiles:", error);
+        }
+      );
   }
 
   /**
@@ -99,44 +100,38 @@ export class AdminComponent implements OnDestroy {
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(
       takeUntil(this.unsubscribed$),
+      map(profiles => profiles.filter(profile => profile.userName !== this.loggedUserName)),
       mergeMap(profiles => {
         const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
-        return forkJoin(filteredProfiles.map(profile => {
-          if (!profile.userName) {
-            console.warn(`Perfil sem nome de utilizador encontrado:`, profile);
-            return of({ ...profile, isModerator: false });
-          }
+        const profilesWithRoles$ = filteredProfiles.map(profile => {
           return this.adminService.getUserRole(profile.userName).pipe(
-            map(roles => {
-              console.log(`Roles for ${profile.userName}:`, roles);
-              return {
-                ...profile,
-                isBanned: this.checkIfUserIsBanned(profile),
-                isModerator: roles.includes('Moderator')
-              };
-            }),
+            map(roles => ({
+              ...profile,
+              isBanned: this.checkIfUserIsBanned(profile),
+              isModerator: roles.includes('Moderator'),
+            })),
             catchError(error => {
-              console.error('Error fetching roles for user:', profile.userName, error);
+              console.error('Error fetching roles:', profile.userName, error);
               return of({ ...profile, isModerator: false });
             })
           );
-        }));
+        });
+        return forkJoin(profilesWithRoles$);
       })
     ).subscribe(
       (profiles) => {
-        console.log("Perfis com informação de moderador:", profiles);
-
         this.filteredUsersProfiles = profiles;
         this.collectionSize = profiles.length;
-
         this.sortAlphabetically();
         this.filterUsers();
+
       },
       (error) => {
-        console.error("Erro ao buscar perfis de utilizadors:", error);
+        console.error("Error while fetching users' profiles:", error);
       }
     );
   }
+
 
   /**
    * Verifica se um utilizador está atualmente banido com base nas datas de início e fim do banimento.
@@ -218,99 +213,6 @@ export class AdminComponent implements OnDestroy {
         },
         error: error => {
           console.error("Error banning user:", error);
-        }
-      });
-    }
-  }
-
-  /**
-   * Deleta a conta de um utilizador.
-   * 
-   * @param username O nome do utilizador cuja conta será deletada.
-   */
-  deleteAccount(username: string | undefined): void {
-    if (confirm('Tem a certeza que pretende apagar a conta deste utilizador? Esta ação será permanente.')) {
-      if (!username) {
-        console.error('Username is undefined, cannot delete account.');
-        return;
-      }
-      console.log(`Attempting to delete user: ${username}`);
-      this.adminService.deleteUserByUsername(username).subscribe({
-        next: () => {
-          this.filteredUsersProfiles = this.filteredUsersProfiles?.filter(user => user.userName !== username);
-          console.log('User deleted successfully');
-        },
-        error: error => {
-          console.error("Error deleting user:", error);
-        }
-      });
-    }
-  }
-
-  /**
-   * Promove um utilizador a moderador.
-   * 
-   * @param userName O nome do utilizador a ser promovido.
-   */
-  makeModerator(userName: string): void {
-    if (confirm('Tem a certeza que pretende tornar este utilizador um Moderator?')) {
-      if (!userName) {
-        console.error('Username is undefined, cannot change role.');
-        return;
-      }
-      console.log(`Changing role of user: ${userName} to Moderator`);
-      this.adminService.changeRoleToModerator(userName).subscribe({
-        next: response => {
-          console.log('User role updated to Moderator successfully:', response);
-          this.verifyUserRole(userName);
-          const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
-          if (user) {
-            user.isModerator = true;
-          }
-        },
-        error: error => {
-          console.error("Error changing user role:", error);
-        }
-      });
-    }
-  }
-
-
-  private verifyUserRole(userName: string): void {
-    this.adminService.getUserRole(userName).subscribe({
-      next: roles => {
-        const isModerator = roles.includes('Moderator');
-        console.log(`Is user a moderator: ${isModerator}`);
-      },
-      error: error => {
-        console.error('Error fetching roles:', error);
-      }
-    });
-  }
-
-  /**
-   * Rebaixa um moderador a utilizador.
-   * 
-   * @param userName O nome do utilizador a ser rebaixado.
-   */
-  demoteToUser(userName: string): void {
-    if (confirm('Tem a certeza que pretende remover a role Moderator do utilizador?')) {
-      if (!userName) {
-        console.error('Username is undefined, cannot change role.');
-        return;
-      }
-      console.log(`Changing role of user: ${userName} to User`);
-      this.adminService.changeRoleToUser(userName).subscribe({
-        next: response => {
-          console.log('Moderator role updated to User successfully:', response);
-          this.verifyUserRole(userName);
-          const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
-          if (user) {
-            user.isModerator = false;
-          }
-        },
-        error: error => {
-          console.error("Error changing user role:", error);
         }
       });
     }

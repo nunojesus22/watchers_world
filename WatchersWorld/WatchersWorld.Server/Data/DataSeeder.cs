@@ -218,7 +218,14 @@ namespace WatchersWorld.Server.Data
             ("usertest5@gmail.com", "Conta Criada"),
             ("usertest6@gmail.com", "Conta Criada"),
             ("usertest7@gmail.com", "Conta Criada"),
-            // Add more pairs as needed
+            ("usertest8@gmail.com", "Conta Criada"),
+            ("usertest9@gmail.com", "Conta Criada"),
+            ("usertest10@gmail.com", "Conta Criada"),
+            ("usertest11@gmail.com", "Conta Criada"),
+            ("usertest12@gmail.com", "Conta Criada"),
+            ("usertest13@gmail.com", "Conta Criada"),
+            ("usertest14@gmail.com", "Conta Criada"),
+            ("usertest15@gmail.com", "Conta Criada"),
         };
 
             foreach (var (userEmail, medalName) in userMedalsInfo)

@@ -2315,3 +2315,8 @@ C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\Watche
 C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
 C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
 C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Common.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NodaTime.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll

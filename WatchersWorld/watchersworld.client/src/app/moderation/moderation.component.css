@@ -1,13 +1,13 @@
 
 .moderator-panel {
   background-color: #ffffff;
-  max-width: 100%; 
+  max-width: 100%;
   margin: 20px auto;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 h3 {
@@ -23,14 +23,14 @@ h4 {
 }
 
 .profile-icon img {
-  width: 30px; 
+  width: 30px;
 }
 
 .pagination-controls {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 .pagination-button {
@@ -47,7 +47,7 @@ h4 {
 }
 
   .pagination-button:hover {
-    background-color: #0056b3; 
+    background-color: #0056b3;
   }
 
 .pagination-prev {
@@ -72,15 +72,15 @@ h4 {
 }
 
 .search-icon {
-  position: absolute; 
-  left: 10px; 
+  position: absolute;
+  left: 10px;
   color: #474747;
 }
 
 .search-input {
-  width: calc(100% - 60px); 
+  width: calc(100% - 60px);
   padding: 10px;
-  padding-left: 50px; 
+  padding-left: 50px;
   border-radius: 20px;
   font-size: 18px;
   font-family: 'Inter';
@@ -90,7 +90,7 @@ h4 {
 .user {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
@@ -99,7 +99,7 @@ h4 {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .avatar {
@@ -110,9 +110,9 @@ h4 {
 }
 
 .name {
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 24px;
   font-weight: bold;
   margin-top: 15px;
@@ -122,18 +122,18 @@ h4 {
 .actions {
   display: flex;
   justify-content: center;
-  gap: 10px; 
+  gap: 10px;
 }
 
   .actions button {
-    width: 130px; 
+    width: 130px;
     display: inline-block;
     padding: 8px 15px;
     background-color: #4CAEFE;
     color: white;
     border: none;
     border-radius: 25px;
-    cursor: pointer; 
+    cursor: pointer;
     margin-left: 5px;
     font-size: 16px;
     width: 180px;
@@ -141,9 +141,9 @@ h4 {
     font-weight: bold;
   }
 
-  .actions button:hover {
-    background-color: #0056b3; 
-  }
+    .actions button:hover {
+      background-color: #0056b3;
+    }
 
 .delete {
   /* Copie as propriedades de .actions button aqui */
@@ -167,7 +167,7 @@ h4 {
   }
 
 
-  .delete {
+.delete {
   /* Copie as propriedades de .actions button aqui */
   width: 130px;
   display: inline-block;
@@ -184,9 +184,9 @@ h4 {
   font-weight: bold;
 }
 
-.delete:hover {
-  background-color: #0056b3;
-}
+  .delete:hover {
+    background-color: #0056b3;
+  }
 
 
 
@@ -211,7 +211,7 @@ h4 {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  position: relative; 
+  position: relative;
 }
 
 .ban-buttons-container {
@@ -222,27 +222,27 @@ h4 {
 
 .ban-duration-input {
   padding: 10px;
-  margin-top: 20px; 
-  width: 80%; 
+  margin-top: 20px;
+  width: 80%;
   border-radius: 25px;
 }
 
 .ban-duration-container {
-  order: 2; 
-  width: 100%; 
+  order: 2;
+  width: 100%;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 
 .banTemp, .banPerm {
   display: inline-block;
-  padding: 8px 15px; 
+  padding: 8px 15px;
   background-color: #4CAEFE;
   color: white;
   border: none;
   border-radius: 25px;
-  cursor: pointer; 
+  cursor: pointer;
   font-size: 16px;
   text-align: center;
   width: 160px;
@@ -273,7 +273,7 @@ h4 {
 @media (max-width: 768px) {
   .user {
     flex-direction: column;
-    align-items: stretch; 
+    align-items: stretch;
   }
 
   .user-info, .actions {
@@ -281,19 +281,19 @@ h4 {
   }
 
     .actions button {
-      width: 100%; 
-      margin-bottom: 5px; 
+      width: 100%;
+      margin-bottom: 5px;
     }
 
   .search-input {
-    width: 100%; 
-    margin-bottom: 10px; 
+    width: 100%;
+    margin-bottom: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .search-input, .actions button {
-    padding: 8px 10px; 
+    padding: 8px 10px;
   }
 
   .name {

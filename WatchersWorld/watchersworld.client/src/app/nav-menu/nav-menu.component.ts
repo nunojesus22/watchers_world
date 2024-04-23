@@ -179,6 +179,7 @@ export class NavMenuComponent {
    */
   logout() {
     this.authService.logout();
+    this.closeNav();
   }
 }
 

@@ -155,105 +155,6 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.Chat", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("User1Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("User2Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("User1Id");
-
-                    b.HasIndex("User2Id");
-
-                    b.ToTable("Chats");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessageStatus", b =>
-                {
-                    b.Property<string>("MessageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("ReadAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RecipientUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("MessageId");
-
-                    b.HasIndex("RecipientUserId");
-
-                    b.ToTable("MessagesStatus");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.Messages", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("ChatId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SendUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("SendUserId");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessagesVisibility", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("MessageId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Visibility")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MessagesVisibility");
-                });
-
             modelBuilder.Entity("WatchersWorld.Server.Models.Authentication.ProfileInfo", b =>
                 {
                     b.Property<string>("UserName")
@@ -367,6 +268,105 @@ namespace WatchersWorld.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.Chat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("User1Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("User2Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("User1Id");
+
+                    b.HasIndex("User2Id");
+
+                    b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.MessageStatus", b =>
+                {
+                    b.Property<string>("MessageId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RecipientUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("RecipientUserId");
+
+                    b.ToTable("MessagesStatus");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.Messages", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SendUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("SendUserId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.MessagesVisibility", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MessageId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Visibility")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MessagesVisibility");
+                });
+
             modelBuilder.Entity("WatchersWorld.Server.Models.Followers.Followers", b =>
                 {
                     b.Property<Guid>("FollowersId")
@@ -396,12 +396,15 @@ namespace WatchersWorld.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -849,7 +852,7 @@ namespace WatchersWorld.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.Chat", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.Chat", b =>
                 {
                     b.HasOne("WatchersWorld.Server.Models.Authentication.User", "User1")
                         .WithMany()
@@ -870,9 +873,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("User2");
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessageStatus", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.MessageStatus", b =>
                 {
-                    b.HasOne("WatchersWorld.Server.Chat.Models.Messages", "Message")
+                    b.HasOne("WatchersWorld.Server.Models.Chat.Messages", "Message")
                         .WithMany()
                         .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -889,9 +892,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("RecipientUser");
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.Messages", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.Messages", b =>
                 {
-                    b.HasOne("WatchersWorld.Server.Chat.Models.Chat", "Chat")
+                    b.HasOne("WatchersWorld.Server.Models.Chat.Chat", "Chat")
                         .WithMany()
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -908,9 +911,9 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("SendUser");
                 });
 
-            modelBuilder.Entity("WatchersWorld.Server.Chat.Models.MessagesVisibility", b =>
+            modelBuilder.Entity("WatchersWorld.Server.Models.Chat.MessagesVisibility", b =>
                 {
-                    b.HasOne("WatchersWorld.Server.Chat.Models.Messages", "Message")
+                    b.HasOne("WatchersWorld.Server.Models.Chat.Messages", "Message")
                         .WithMany()
                         .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Restrict)

@@ -47,6 +47,7 @@ import { MessageService } from 'primeng/api'
 import { HighchartsChartModule } from 'highcharts-angular';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
+import { ModerationComponent } from './moderation/moderation.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { SearchUsersComponent } from './search-users/search-users.component';
     ConfirmDialogComponent,
     TermsAndConditionsComponent,
     SearchUsersComponent,
+    ModerationComponent,
   ],
   imports: [
     BrowserModule,

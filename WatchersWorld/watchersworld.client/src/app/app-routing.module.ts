@@ -22,6 +22,7 @@ import { GamificationComponent } from './gamification/gamification.component';
 import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.component';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
+import { ModerationComponent } from './moderation/moderation.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -55,7 +56,9 @@ const routes: Routes = [
   { path: 'statistics/:username', component: StatisticsComponent },
   { path: 'admin-statistics', component: AdminStatisticsComponent },
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
-  { path: 'search-users', component: SearchUsersComponent}
+  { path: 'search-users', component: SearchUsersComponent},
+  { path: 'moderation/:username', component: ModerationComponent},
+
 
 ];
 
