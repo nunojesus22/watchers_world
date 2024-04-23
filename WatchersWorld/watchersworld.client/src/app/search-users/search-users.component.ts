@@ -38,6 +38,7 @@ export class SearchUsersComponent {
         this.usersProfiles = profiles;
         this.filteredUsersProfiles = profiles;
         this.updateSelectedUser();
+
       },
       error => {
         console.error("Error while fetching users' profiles:", error);

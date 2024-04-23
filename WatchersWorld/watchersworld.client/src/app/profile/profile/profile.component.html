@@ -259,7 +259,7 @@
             <li *ngFor="let userProfile of (showFiveOtherUsers ? usersProfiles : usersProfiles.slice(0, 3))">
               <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
                 <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-                <span class="other-users-user-name">{{ userProfile.userName }}</span>
+                <span class="other-users-user-name" style="cursor: pointer;"[routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</span>
               </div>
             </li>
           </ul>

@@ -1,3 +1,4 @@
+
 <div class="white_container mt-5 p-5">
   <div class="row">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
@@ -20,7 +21,7 @@
               <i class="fa-solid fa-tv"></i>
               <a id="serie" class="search_tab" title="Series" alt="Series">Series</a>
             </li>
-          
+
           </ul>
         </div>
       </div>
@@ -49,42 +50,53 @@
           </ul>
         </div>
       </div>
-      <button routerLink="/search-users">Pesquisar Utilizadores</button>
+      <button class="btn btn-md ml-2" routerLink="/search-users">Pesquisar Utilizadores</button>
 
     </div>
     <div class="col-md-9">
       <div class="row mt-5">
-        <div class="col-md-12" *ngFor="let media of searchResult">
-          <div class="row mb-4 shadow-sm bg-white rounded">
-            <div class="col-md-2">
-              <img class="bd-placeholder-img" *ngIf="media.poster_path; else defaultImage" src="https://image.tmdb.org/t/p/original/{{ media.poster_path }}"
-                   [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">
-              <ng-template #defaultImage>
-                <img class="bd-placeholder-img" src="../assets/img/default_media_pic.jpg" [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">
-              </ng-template>
-            </div>
-            <div class="col-md-10">
-              <div *ngIf="searchForm.value.type === 'serie'; else movieBlock">
-                <h5 class="card-title"><a [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">{{media.name}}</a></h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{media.first_air_date}}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">{{media.overview | slice:0:250}}...</h6>
+        <!-- Verifica se há resultados na lista -->
+        <ng-container *ngIf="searchResult.length > 0; else noResults">
+          <div class="col-md-12" *ngFor="let media of searchResult">
+            <div class="row mb-4 shadow-sm bg-white rounded">
+              <div class="col-md-2">
+                <img class="bd-placeholder-img" *ngIf="media.poster_path; else defaultImage" src="https://image.tmdb.org/t/p/original/{{ media.poster_path }}"
+                     [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">
+                <ng-template #defaultImage>
+                  <img class="bd-placeholder-img" src="../assets/img/default_media_pic.jpg" [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">
+                </ng-template>
               </div>
-              <ng-template #movieBlock>
-                <h5 class="card-title"><a [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">{{media.title}}</a></h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{media.release_date}}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">{{media.overview | slice:0:250}}...</h6>
-              </ng-template>
+              <div class="col-md-10">
+                <div *ngIf="searchForm.value.type === 'serie'; else movieBlock">
+                  <h5 class="card-title"><a [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">{{media.name}}</a></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{media.first_air_date}}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">{{media.overview | slice:0:250}}...</h6>
+                </div>
+                <ng-template #movieBlock>
+                  <h5 class="card-title"><a [routerLink]="[searchForm.value.type === 'serie' ? '/serie' : '/movie', media.id]">{{media.title}}</a></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{media.release_date}}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">{{media.overview | slice:0:250}}...</h6>
+                </ng-template>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+        <!-- Mostra a mensagem quando não há resultados -->
+        <ng-template #noResults>
+          <div class="col-md-12">
+            <div class="alert alert-info" role="alert">
+              Não existem resultados disponíveis.
+            </div>
+          </div>
+        </ng-template>
+
         <div class="mt-3 d-flex justify-content-center">
           <button class="btn btn-md" *ngIf="currentPage > 1" (click)="updateSearch(currentPage - 1)">&lt;</button>
           <button class="btn btn-md" *ngFor="let page of displayPages" [class.active]="page === currentPage" (click)="updateSearch(page)">{{ page }}</button>
           <button class="btn btn-md" *ngIf="currentPage < totalPagesArray.length" (click)="updateSearch(currentPage + 1)">&gt;</button>
         </div>
-
-
       </div>
     </div>
+
   </div>
 </div>

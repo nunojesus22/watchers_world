@@ -13,7 +13,7 @@ h4, h3 {
 }
 
 .profile-icon img {
-  width: 30px; /* Tamanho fixo para os ícones */
+  width: 40px; /* Tamanho fixo para os ícones */
 }
 
 .pagination-controls {
@@ -90,8 +90,8 @@ h4, h3 {
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   margin-right: 10px;
 }
@@ -123,23 +123,6 @@ h4, h3 {
 }
 
 
-
-/* Add new styles for the popup */
-.ban-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .popup-content {
   background: #fff;
   padding: 20px;
@@ -148,58 +131,7 @@ h4, h3 {
   position: relative; /* Ensure the close button is positioned relative to this container */
 }
 
-.ban-buttons-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.ban-duration-input {
-  padding: 10px;
-  margin-top: 20px; /* space above the input field */
-  width: 80%; /* Adjust the width as needed */
-  border-radius: 25px;
-}
-
-.ban-duration-container {
-  order: 2; /* Make sure it comes after the buttons */
-  width: 100%; /* Match the width with the buttons if needed */
-  display: flex;
-  justify-content: center; /* Center the input field */
-}
-
-
-.banTemp, .banPerm {
-  display: inline-block;
-  padding: 8px 15px; /* Ajuste conforme necessário */
-  background-color: #4CAEFE;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
-  font-size: 16px;
-  text-align: center;
-  width: 160px;
-  height: 60px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.banPerm:hover, .banTemp:hover {
-  background-color: #0056b3; /* Cor mais escura no hover */
-}
-
-
-.close-popup {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #333;
-}
 
 
 

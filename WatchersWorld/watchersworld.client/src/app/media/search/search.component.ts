@@ -251,6 +251,7 @@ import { MovieApiServiceComponent } from '../api/movie-api-service/movie-api-ser
  * @returns Uma lista de páginas para exibição.
  */
     get displayPages() {
+      if (this.totalPagesArray.length === 0 || this.totalPagesArray.length === 1) return [];
       let start = this.currentPage - 1;
       let end = this.currentPage + 2;
 
