@@ -460,7 +460,16 @@ input[type="text"] {
     height: 75px;
     border-radius: 50%;
     object-fit: cover;
+    cursor:pointer;
   }
+
+.other-users-user-photo:hover {
+  width: 80px; /* Tamanho desejado das imagens */
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
 
 .side-div-users .item-list {
   list-style: none; /* Remove o ponto padrão da lista */
@@ -479,6 +488,7 @@ input[type="text"] {
   white-space: nowrap; /* Impede que o nome quebre em várias linhas */
   overflow: hidden; /* Esconde o texto que excede a área */
   text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  font-weight:bold;
 }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
@@ -526,6 +536,8 @@ input[type="text"] {
   flex-wrap: wrap;
   justify-content: left; /* Center the medals horizontally */
   gap: 10px; /* Adds space between the medals */
+  margin-top:10px;
+  margin-left:20px;
 }
 
 .medals-user-media {
@@ -537,6 +549,11 @@ input[type="text"] {
 
   .medals-user-media img {
     width: 100%; /* Make the image responsive to the container width */
+    height: auto;
+  }
+
+  .medals-user-media img:hover {
+    width: 110%; /* Make the image responsive to the container width */
     height: auto;
   }
 

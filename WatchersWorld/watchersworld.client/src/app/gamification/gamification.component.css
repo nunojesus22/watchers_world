@@ -37,10 +37,16 @@ hr {
   display: inline-block;
 }
 
+  /* Estilo das medalhas quando o mouse passa sobre elas */
+  .medal:hover {
+    transform: scale(1.1); /* Aumenta o tamanho da medalha em 10% */
+  }
+
   .medal img {
     max-width: 100px;
     height: auto;
   }
+
 
   .medal h3 {
     margin-top: 0.5em;
@@ -78,4 +84,3 @@ hr {
   margin-top: 5px; /* Space above the icon */
   margin-bottom: 5px; /* Space below the icon */
 }
-

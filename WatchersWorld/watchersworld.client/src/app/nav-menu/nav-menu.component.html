@@ -18,7 +18,7 @@
   <div routerLinkActive #rla="routerLinkActive">
     <ng-container *ngIf="(authService.user$ | async) as user; else notLoggedIn">
       <img (click)="navigateBasedOnRole(user.username)"
-           [src]="router.url.includes('/profile') ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
+           [src]="router.url.includes(user.username) ? 'assets/img/user-selected.png' : 'assets/img/user.png'"
            alt="User Icon"
            class="user-icon" />
     </ng-container>

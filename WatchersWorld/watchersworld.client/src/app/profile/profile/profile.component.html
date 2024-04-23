@@ -7,7 +7,7 @@
         <img src="" class="card-img-top cover-photo" alt="Capa do perfil">
         <div class="card-body text-center">
           <img src="" class="rounded-circle mb-3 profile-photo" alt="Foto do perfil" style="width: 120px; height: 120px;">
-          <h1 class="card-title"> </h1>
+          <h1 class="card-title">{{ currentUsername }} </h1>
           <div *ngIf="(authService.user$ | async) as user">
             <div class="user-icons">
               <a *ngIf="user.username === currentUsername" [routerLink]="['/statistics', user.username]" class="profile-icon">
@@ -28,18 +28,16 @@
           <div class="user-details">
             <form [formGroup]="profileForm" class="user-details">
               <div>
-                <label for="hobby">Descrição:</label>
+                <label style="font-weight:bold;" for="hobby">Descrição:</label>
                 <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
               </div>
               <div>
-                <label>Género:</label>
-                <input formControlName="gender" type="radio" id="male" name="gender" value="M" [checked]="profileForm.controls['gender'].value === 'M'">
-                <label for="male">Masculino</label>
-                <input formControlName="gender" type="radio" id="female" name="gender" value="F" [checked]="profileForm.controls['gender'].value === 'F'">
-                <label for="female">Feminino</label>
+                <label style="font-weight:bold;">Género:</label>
+                <span *ngIf="profileForm.controls['gender'].value === 'M'"> Masculino</span>
+                <span *ngIf="profileForm.controls['gender'].value === 'F'"> Feminino</span>
               </div>
               <div>
-                <label for="birthdate">Data de nascimento:</label>
+                <label style="font-weight:bold;" for="birthdate">Data de nascimento:</label>
                 <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
               </div>
             </form>

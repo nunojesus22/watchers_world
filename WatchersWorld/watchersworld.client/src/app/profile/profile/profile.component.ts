@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -114,6 +114,8 @@ export class ProfileComponent implements OnInit {
   medals: any[] = [];
   showAllMedals = false;
 
+  @ViewChild('usernameHeader') usernameHeader!: ElementRef;
+
   /**
  * Construtor do componente ProfileComponent.
  * Inicializa os serviços e ferramentas necessárias para a gestão do perfil do utilizador.
@@ -162,15 +164,19 @@ export class ProfileComponent implements OnInit {
         this.getMedals(this.currentUsername);
       }
     });
+    if (this.currentUsername && this.usernameHeader) {
+      this.usernameHeader.nativeElement.textContent = this.currentUsername;
+    }
+
     this.loggedUserName = this.authService.getLoggedInUserName();
 
-    
     this.getUserProfiles();
     this.initializeForm();
     this.categories = [
       { name: 'Trending Movies', results: [], activeIndex: 0, media_type: "movie" },
     ];
     this.fetchTrending();
+   
   }
 
   /**
@@ -306,9 +312,9 @@ export class ProfileComponent implements OnInit {
         next: (userData: Profile) => {
           if (userName) { userName.textContent = username; }
           this.profileForm.patchValue({
-            hobby: userData.description || "Por definir",
+            hobby: " " + userData.description || "Por definir",
             gender: userData.gender || "Por definir",
-            date: userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
+            date: "‎ " + userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
           });
           this.profileForm.get('gender')?.disable();
           this.followersCount = userData.followers;

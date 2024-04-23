@@ -176,21 +176,21 @@
                       <button *ngIf="currentQuestionIndex < quizQuestions.length - 1" type="button" class="btn btn-secondary" (click)="nextQuestion()" [disabled]="currentQuestionIndex === quizQuestions.length - 1">Próximo</button>
                     </div>
                     <!-- Mostrar botão de enviar apenas na última pergunta -->
-                    <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-success">Enviar respostas</button>
+                    <button *ngIf="currentQuestionIndex === quizQuestions.length - 1" (click)="submitQuiz()" class="btn btn-secondary">Enviar respostas</button>
                   </form>
                 </div>
               </div>
             </div>
-              <div *ngIf="quizResult">
-                <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
-              </div>
+            <div *ngIf="quizResult">
+              <p>Acertou {{ quizResult.correctAnswers }} de {{ quizResult.totalQuestions }} perguntas.</p>
+            </div>
 
 
-              <!-- Mensagem de conclusão do quiz -->
-              <div *ngIf="quizCompleted" class="alert alert-info">
-                <p>Já completou este quiz. A sua última pontuação foi de {{ lastQuizScore }} pontos.</p>
-              </div>
-            
+            <!-- Mensagem de conclusão do quiz -->
+            <div *ngIf="quizCompleted" class="alert alert-info">
+              <p>Já completou este quiz. A sua última pontuação foi de {{ lastQuizScore }} pontos.</p>
+            </div>
+
 
           </div>
           <div class="comments-section mt-5" *ngIf="showComments">

@@ -1,13 +1,13 @@
 <div class="title-panel" *ngIf="loggedUserName === currentUsername">
-  <h3 class="title-center">Notificações</h3>
+  <h1>Notificações</h1>
+  <hr>
   <div class="actions">
     <button (click)="clearAllNotifications()" class="clear-notifications">Limpar Notificações</button>
   </div>
-  <hr class="divider">
   <div class="notification-panel" *ngIf="pendingFollowRequests.length > 0">
     <div class="user-list">
       <h4>Número de pedidos para seguir: {{pendingFollowRequests.length}}</h4>
-      <div *ngFor="let request of pendingFollowRequests.reverse()" >
+      <div *ngFor="let request of pendingFollowRequests.reverse()">
         <div class="user-info">
           <img class="avatar" [src]="request.profilePhoto" [routerLink]="['/profile', request.username]">
           <p class="user-name">{{ request.username }}</p>
@@ -17,9 +17,9 @@
             <button (click)="rejectFollowRequest(request.username)" class="recuse-follow-request">Recusar</button>
           </div>
         </div>
-        </div>
       </div>
     </div>
+  </div>
 
   <div class="notification-panel" *ngIf="followNotifications.length > 0">
     <h4>Seguidores:</h4>
@@ -42,7 +42,7 @@
   </div>
 
   <div class="notification-panel" *ngIf="replyNotifications.length > 0">
-    <h4>Respostas aos seus comentários</h4>
+    <h4>Respostas a comentários:</h4>
     <div class="user-list">
       <div *ngFor="let notification of replyNotifications.reverse()" class="notification-item">
         <div class="user-info">
