@@ -105,7 +105,7 @@ export class NavMenuComponent {
     let sidebar = document.getElementById("sidebar");
     if (sidebar) {
       if (this.showMenu) {
-        sidebar.style.width = "250px";
+        sidebar.style.width = "305px";
       } else {
         sidebar.style.width = "0";
       }

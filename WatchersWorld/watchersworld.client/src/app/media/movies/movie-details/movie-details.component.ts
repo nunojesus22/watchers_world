@@ -147,6 +147,10 @@ export class MovieDetailsComponent {
     this.userAnswers = {};
     this.quizResult = null;
     this.loadQuizQuestions();
+    const popupElement = document.getElementById('.quiz-popup');
+    if (popupElement) {
+      popupElement.style.display = 'block';
+    }
   }
 
 
@@ -155,6 +159,10 @@ export class MovieDetailsComponent {
  */
   hideQuizPopup(): void {
     this.isQuizPopupVisible = false;
+    const popupElement = document.getElementById('.quiz-popup');
+    if (popupElement) {
+      popupElement.style.display = 'none';
+    }
   }
 
 
@@ -271,7 +279,7 @@ export class MovieDetailsComponent {
 
           {
             id: 8,
-            text: 'Qual é o gênero principal do filme?',
+            text: 'Qual é o género principal do filme?',
             answers: [
               { id: 1, text: movieDetails.genres[0].name }, // Resposta correta, supondo que o primeiro gênero é o principal
               { id: 2, text: 'Comédia' }, // Inventada
@@ -280,14 +288,13 @@ export class MovieDetailsComponent {
           },
           {
             id: 9,
-            text: 'Qual é a duração do filme (em minutos)?',
+            text: 'Qual é a duração do filme (em minutos) ?',
             answers: [
               { id: 1, text: `${movieDetails.runtime}` }, // Resposta correta
               { id: 2, text: '142' }, // Inventada
               { id: 3, text: '156' } // Inventada
             ]
           }
-          // Adicione mais perguntas conforme necessário
         ];
       }
     }
@@ -352,7 +359,7 @@ export class MovieDetailsComponent {
     this.hideQuizPopup();
 
     this.service.submitQuizAttempt(quizAttempt).subscribe({
-      next: (result) => console.log(result),
+      //next: (result) => console.log(result),
       error: (error) => console.error('Erro ao enviar tentativa do quiz', error)
     });
   }
@@ -427,7 +434,7 @@ export class MovieDetailsComponent {
       this.service.markMediaAsFavorite(+mediaId, this.type).subscribe({
         next: (response) => {
           this.isFavorite = true;
-          console.log('Mídia adicionada aos favoritos com sucesso!');
+          //console.log('Mídia adicionada aos favoritos com sucesso!');
         },
         error: (error) => {
           console.error('Erro ao marcar a mídia como favorita', error);
@@ -446,7 +453,7 @@ export class MovieDetailsComponent {
       this.service.unmarkMediaAsFavorite(+mediaId, this.type).subscribe({
         next: (response) => {
           this.isFavorite = false;
-          console.log('Mídia removida dos favoritos com sucesso!');
+          //console.log('Mídia removida dos favoritos com sucesso!');
         },
         error: (error) => {
           console.error('Erro ao desmarcar a mídia como favorita', error);
@@ -576,7 +583,7 @@ export class MovieDetailsComponent {
  */
   getMovie(id: any) {
     this.service.getMovieDetails(id).subscribe(async (result) => {
-      console.log(result, 'getmoviedetails#');
+      //console.log(result, 'getmoviedetails#');
       this.getMovieDetailResult = await result;
 
 
@@ -589,7 +596,7 @@ export class MovieDetailsComponent {
  */
   getVideo(id: any) {
     this.service.getMovieVideo(id).subscribe((result) => {
-      console.log(result, 'getMovieVideo#');
+      //console.log(result, 'getMovieVideo#');
       result.results.forEach((element: any) => {
         if (element.type == "Trailer") {
           this.getMovieVideoResult = element.key;
@@ -604,7 +611,7 @@ export class MovieDetailsComponent {
  */
   getMovieCast(id: any) {
     this.service.getMovieCast(id).subscribe((result) => {
-      console.log(result, 'movieCast#');
+      //console.log(result, 'movieCast#');
       this.getMovieCastResult = result.cast;
     });
   }
@@ -615,9 +622,9 @@ export class MovieDetailsComponent {
  */
   getProviders(id: any) {
     this.service.getStreamingProvider(id).subscribe((result) => {
-      console.log(result, 'movieProviders#');
+      //console.log(result, 'movieProviders#');
       this.getMovieProviders = result.results.PT;
-      console.log(result.results.PT, 'portugalProviders');
+      //console.log(result.results.PT, 'portugalProviders');
     });
   }
 
@@ -1154,6 +1161,22 @@ export class MovieDetailsComponent {
  */
   isFavoriteActor(actorId: number): boolean {
     return actorId === this.userFavoriteActorId;
+  }
+
+  /**
+ * Abre um popup.
+ * @param popupId O ID do popup a ser aberto.
+ */
+  openPopup(popupId: string): void {
+   
+  }
+
+  /**
+   * Fecha um popup.
+   * @param popupId O ID do popup a ser fechado.
+   */
+  closePopup(popupId: string): void {
+   
   }
 
 

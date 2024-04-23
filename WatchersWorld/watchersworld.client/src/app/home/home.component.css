@@ -46,6 +46,7 @@
 
 .carousel-inner {
   height: 700px;
+  margin-top:50px;
 }
 
   .carousel-inner .carousel-item img {
@@ -94,7 +95,7 @@
   font-size: 3.5em;
   background-color: transparent;
   border: none;
-  color: dodgerblue;
+  color: #4CAEFE;
 }
 
 .row-container {
@@ -117,7 +118,7 @@
 
 
 .custom-btn {
-  color: dodgerblue;
+  color: #4CAEFE;
   background-color: transparent;
 }
 
@@ -159,6 +160,7 @@
 .carousel-dark .carousel-control-prev-icon {
   filter: brightness(0) saturate(100%) invert(27%) sepia(95%) saturate(6402%) hue-rotate(188deg) brightness(101%) contrast(101%);
   opacity: 1; /* Garante que o ícone seja totalmente opaco */
+  z-index:5;
 }
 
 .carousel-control-next-icon, .carousel-control-prev-icon {
