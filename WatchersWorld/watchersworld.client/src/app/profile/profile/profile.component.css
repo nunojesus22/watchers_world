@@ -1,3 +1,4 @@
+
 .container {
   width: 100%; /* Isso fará a div esticar pela largura total da página */
   margin: 0; /* Remove margens padrão */
@@ -89,8 +90,7 @@
 
 /* Aumenta ligeiramente o ícone ao passar o mouse ou clicar */
 .profile-icon:hover, .profile-icon:active {
-  background-color: #f0f0f0;
-  transform: scale(1.1);
+  transform: scale(1.3);
 }
 
 input[type="text"],
@@ -139,15 +139,12 @@ input[type="text"] {
   }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
-/* -------------------------------------------------------- FOLLOWS ---------------------------------------------------------- */
+/* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
 /* --------------------------------------------------------------------------------------------------------------------------- */
 
-.followers-container,
-.following-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: space-between;
-  max-width: calc(6 * (75px + 50px * 2)); /* 6 vezes a largura do item mais o espaço */
+.section-empty-message {
+  margin: 0; /* Remove a margem padrão do parágrafo */
+  padding-left: 10px; /* Um pouco de padding para alinhamento com o título */
 }
 
 .no-list-style {
@@ -166,67 +163,40 @@ input[type="text"] {
   font-size: 1em; /* Define o tamanho da fonte */
   padding-top: 10px;
   color: #333; /* Define a cor do texto */
+  font-weight:bold;
 }
 
 .user-photo {
   width: 75px; /* Tamanho desejado das imagens */
   height: 75px;
   border-radius: 50%;
+  cursor:pointer;
 }
 
-.search-followers-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start; /* Isso alinhará o texto e a barra de pesquisa à esquerda do contêiner */
-}
-
-.following-count-container {
-  display: flex;
-  flex-direction: row;
-}
-
-.follows-text {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  font-weight: bold;
-  margin-right: 300px;
-}
-
-.expand-followers-button,
-.expand-following-button {
-  font-size: 16px;
-  background-color: #4CAEFE;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  width: 120px;
-  height: 40px;
-  font-weight: bold;
-}
-
-  .expand-followers-button:hover,
-  .expand-following-button:hover {
-    background-color: #0056b3;
+  .user-photo:hover {
+    width: 80px; /* Tamanho desejado das imagens */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
   }
 
+.followers-section,
+.following-section,
+.favorites-section,
+.watched-movies-section,
+.to-watch-movies-section,
+.watched-series-section,
+.to-watch-series-section,
+.medals-section {
+  padding: 10px;
+  margin-top: 20px; /* Espaço acima da seção */
+  margin-left: 20px;
+  width: 750px;
+}
 
-  /* --------------------------------------------------------------------------------------------------------------------------- */
-  /* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
-  /* --------------------------------------------------------------------------------------------------------------------------- */
-  .favorites-section,
-  .watched-movies-section,
-  .to-watch-movies-section,
-  .watched-series-section,
-  .to-watch-series-section,
-  .medals-section {
-    padding: 10px;
-    margin-top: 20px; /* Espaço acima da seção */
-    margin-left: 20px;
-    width: 750px;
-  }
-
+.followers-section-content-expanded,
+.following-section-content-expanded,
 .favorites-section-content-expanded,
 .movies-section-content-expanded,
 .series-section-content-expanded,
@@ -234,6 +204,8 @@ input[type="text"] {
   height: 200px; /* Altura quando expandido */
 }
 
+.followers-section-content-collapsed,
+.following-section-content-collapsed,
 .favorites-section-content-collapsed,
 .movies-section-content-collapsed,
 .series-section-content-collapsed,
@@ -242,6 +214,8 @@ input[type="text"] {
   overflow: hidden; /* Esconde o conteúdo que excede a altura */
 }
 
+.followers-section-header,
+.following-section-header,
 .favorites-section-header,
 .movies-watched-section-header,
 .movies-to-watch-section-header,
@@ -260,6 +234,8 @@ input[type="text"] {
   flex-grow: 1; /* Permite que o título ocupe o espaço disponível */
 }
 
+.followers-title,
+.following-title,
 .favorites-title,
 .movies-watched-title,
 .movies-to-watch-title,
@@ -305,6 +281,8 @@ input[type="text"] {
   transform: rotate(270deg);
 }
 
+.followers-section-content,
+.following-section-content,
 .favorites-section-content,
 .movies-section-content,
 .series-section-content,
@@ -312,6 +290,8 @@ input[type="text"] {
   /* TODO */
 }
 
+.expand-followers-button,
+.expand-following-button,
 .expand-favorites-button,
 .expand-watched-movies-button,
 .expand-to-watch-movies-button,
@@ -335,6 +315,8 @@ input[type="text"] {
   font-weight: bold;
 }
 
+  .expand-followers-button:hover,
+  .expand-following-button:hover,
   .expand-favorites-button:hover,
   .expand-watched-movies-button:hover,
   .expand-to-watch-movies-button:hover,
@@ -344,11 +326,11 @@ input[type="text"] {
     background-color: #0056b3; /* Cor mais escura no hover */
   }
 
-  .user-media {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza os itens na vertical */
-  }
+.user-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os itens na vertical */
+}
 
 .rowposter-user-media {
   display: flex;
@@ -455,21 +437,21 @@ input[type="text"] {
     background-color: #c3c1c1; /* Cor mais escura no hover */
   }
 
-  .other-users-user-photo {
-    width: 75px; /* Tamanho desejado das imagens */
-    height: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor:pointer;
-  }
-
-.other-users-user-photo:hover {
-  width: 80px; /* Tamanho desejado das imagens */
-  height: 80px;
+.other-users-user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
 }
+
+  .other-users-user-photo:hover {
+    width: 80px; /* Tamanho desejado das imagens */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
 
 .side-div-users .item-list {
   list-style: none; /* Remove o ponto padrão da lista */
@@ -488,7 +470,7 @@ input[type="text"] {
   white-space: nowrap; /* Impede que o nome quebre em várias linhas */
   overflow: hidden; /* Esconde o texto que excede a área */
   text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
-  font-weight:bold;
+  font-weight: bold;
 }
 
 /* --------------------------------------------------------------------------------------------------------------------------- */
@@ -536,8 +518,8 @@ input[type="text"] {
   flex-wrap: wrap;
   justify-content: left; /* Center the medals horizontally */
   gap: 10px; /* Adds space between the medals */
-  margin-top:10px;
-  margin-left:20px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .medals-user-media {
@@ -552,10 +534,10 @@ input[type="text"] {
     height: auto;
   }
 
-  .medals-user-media img:hover {
-    width: 110%; /* Make the image responsive to the container width */
-    height: auto;
-  }
+    .medals-user-media img:hover {
+      width: 110%; /* Make the image responsive to the container width */
+      height: auto;
+    }
 
   .medals-user-media p {
     margin-top: 8px;

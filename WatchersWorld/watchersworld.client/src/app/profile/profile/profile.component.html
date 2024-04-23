@@ -81,18 +81,16 @@
             </div>
           </div>
           <div *ngIf="canViewData">
-            <!-- Lista de seguidores -->
-            <!-- Envolve as listas de seguidores e seguindo em um container flex -->
-            <div class="followers-container" *ngIf="showFollowers">
-              <!-- Lista de seguidores -->
-              <div *ngIf="followers.length > 0; else noFollowers">
-                <div class="search-followers-container">
-                  <p class="follows-text">Seguidores: {{ followers.length }}</p>
-                  <button class="expand-followers-button" (click)="toggleFollowersScroll()">
+            <div class="user-media">
+              <div class="followers-section" *ngIf="showFollowers">
+                <div class="followers-section-header">
+                  <div class="followers-title">
+                    <h3>Seguidores:</h3>
+                  </div>
+                  <button *ngIf="followers.length > 0;" (click)="toggleFollowersScroll(); $event.preventDefault()" class="expand-followers-button">
                     {{ expandedFollowers ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
-                <br />
                 <ul class="no-list-style">
                   <li *ngFor="let follower of showAllFollowers ? followers : followers.slice(0, 6)">
                     <div>
@@ -101,33 +99,29 @@
                     </div>
                   </li>
                 </ul>
+                <p *ngIf="!followers.length" class="section-empty-message">Não tem nenhum seguidor neste momento.</p>
               </div>
-              <ng-template #noFollowers><p>Não tem seguidores no momento.</p></ng-template>
-            </div>
-            <br />
-            <div class="following-container" *ngIf="showFollowing">
-              <!-- Lista de seguindo -->
-              <div *ngIf="following.length > 0; else noFollowing">
-                <div class="following-count-container">
-                  <p class="follows-text">A seguir: {{ following.length }}</p>
-                  <button class="expand-following-button" (click)="toggleFollowingScroll()">
+
+              <div class="following-section" *ngIf="showFollowing">
+                <div class="following-section-header">
+                  <div class="following-title">
+                    <h3>A seguir:</h3>
+                  </div>
+                  <button *ngIf="following.length > 0;" (click)="toggleFollowingScroll(); $event.preventDefault()" class="expand-following-button">
                     {{ expandedFollowing ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
-                <br />
                 <ul class="no-list-style">
-                  <li *ngFor="let follow of showAllFollowing ? following : following.slice(0, 6)">
+                  <li *ngFor="let following of showAllFollowing ? following : following.slice(0, 6)">
                     <div>
-                      <img [src]="follow.profilePhoto" [routerLink]="['/profile', follow.username]" class="user-photo">
-                      <p class="user-name">{{ follow.username }}</p>
+                      <img [src]="following.profilePhoto" [routerLink]="['/profile', following.username]" class="user-photo">
+                      <p class="user-name">{{ following.username }}</p>
                     </div>
                   </li>
                 </ul>
+                <p *ngIf="!following.length" class="section-empty-message">Não está a seguir ningúem neste momento.</p>
               </div>
-              <ng-template #noFollowing><p>Não está a seguir ninguém no momento.</p></ng-template>
-            </div>
 
-            <div class="user-media">
               <div class="favorites-section" *ngIf="showFavorites">
                 <div class="favorites-section-header">
                   <div class="favorites-title">
