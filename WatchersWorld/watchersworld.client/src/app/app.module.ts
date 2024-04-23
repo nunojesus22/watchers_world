@@ -48,6 +48,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
 import { ModerationComponent } from './moderation/moderation.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({

@@ -7,6 +7,7 @@ import { PendingVerificationComponent } from '../pending-verification/pending-ve
 import { SendEmailComponent } from '../send-email/send-email.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { RegisterWithThirdPartyComponent } from '../register-with-third-party/register-with-third-party.component';
+import { PageNotFoundComponent } from '../../page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
@@ -15,7 +16,6 @@ const routes: Routes = [
   { path: 'send-email/:mode', component: SendEmailComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'register/third-party/:provider', component: RegisterWithThirdPartyComponent },
-
 ];
 
 

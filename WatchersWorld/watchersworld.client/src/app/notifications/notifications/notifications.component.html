@@ -2,7 +2,7 @@
   <h1>Notificações</h1>
   <hr>
   <div class="actions">
-    <button (click)="clearAllNotifications()" class="clear-notifications">Limpar Notificações</button>
+    <button *ngIf="pendingFollowRequests.length !== 0 || followNotifications.length !== 0 || replyNotifications.length !== 0 || achievementNotifications.length !== 0 || messageNotifications.length !== 0 || mediaNotifications.length != 0" (click)="clearAllNotifications()" class="clear-notifications">Limpar Notificações</button>
   </div>
   <div class="notification-panel" *ngIf="pendingFollowRequests.length > 0">
     <div class="user-list">

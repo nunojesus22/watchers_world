@@ -12,6 +12,7 @@ import { BlockedAccountComponent } from './blocked-account/blocked-account.compo
 import { SendEmailComponent } from './send-email/send-email.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { RegisterWithThirdPartyComponent } from './register-with-third-party/register-with-third-party.component';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RegisterWithThirdPartyComponent } from './register-with-third-party/reg
     SendEmailComponent,
     ResetPasswordComponent,
     RegisterWithThirdPartyComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,

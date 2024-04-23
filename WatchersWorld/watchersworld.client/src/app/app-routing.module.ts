@@ -23,6 +23,7 @@ import { AdminStatisticsComponent } from './admin-statistics/admin-statistics.co
 import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
 import { ModerationComponent } from './moderation/moderation.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -31,20 +32,32 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthorizationGuard],
     children: [
-      { path: 'profile', component: ProfileComponent }
+      { path: 'profile', component: ProfileComponent },
     ]
   },
   { path: 'home', component: HomeComponent },
   { path: 'profile/:username', component: ProfileComponent },
-  { path: 'editProfile/:username', component: EditProfileComponent },
+  {
+    path: 'editProfile/:username',
+    component: EditProfileComponent,
+    canActivate: [AuthorizationGuard]
+  },
   { path: 'account', loadChildren: () => import('./authentication/authentication.module').then(module => module.AuthenticationModule) },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'all-movies-page', component: AllMoviesPageComponent },
   { path: 'all-series-page', component: AllSeriesPageComponent },
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'serie/:id', component: SeriesDetailsComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'notifications/:username', component: NotificationsComponent },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthorizationGuard]
+  },
+  {
+    path: 'notifications/:username',
+    component: NotificationsComponent,
+    canActivate: [AuthorizationGuard]
+  },
   { path: 'suspendedAccount', component: SuspendedAccountComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'chat/:username', component: ChatComponent },
@@ -53,13 +66,25 @@ const routes: Routes = [
   { path: 'search/:searchTerm', component: SearchComponent },
   { path: 'serie/:id/season', component: SeasonDetailsComponent },
   { path: 'serie/:id/season/:seasonNumber', component: SeasonDetailsInfoComponent },
-  { path: 'statistics/:username', component: StatisticsComponent },
-  { path: 'admin-statistics', component: AdminStatisticsComponent },
+  {
+    path: 'statistics/:username',
+    component: StatisticsComponent,
+    canActivate: [AuthorizationGuard]
+  },
+  {
+    path: 'admin-statistics',
+    component: AdminStatisticsComponent,
+    canActivate: [AuthorizationGuard]
+  },
   { path: 'terms-and-conditions', component: TermsAndConditionsComponent },
-  { path: 'search-users', component: SearchUsersComponent},
-  { path: 'moderation/:username', component: ModerationComponent},
-
-
+  { path: 'search-users', component: SearchUsersComponent },
+  {
+    path: 'moderation/:username',
+    component: ModerationComponent,
+    canActivate: [AuthorizationGuard]
+  },
+  { path: 'page-not-found', component: PageNotFoundComponent },
+  { path: '**', redirectTo: '/page-not-found', pathMatch: 'full' },
 ];
 
 @NgModule({
