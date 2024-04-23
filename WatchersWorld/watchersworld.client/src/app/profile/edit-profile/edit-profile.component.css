@@ -237,6 +237,14 @@
   cursor:pointer;
 }
 
+  .other-users-user-photo:hover {
+    width: 80px; /* Tamanho desejado das imagens */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
 .side-div-users .item-list {
   list-style: none; /* Remove o ponto padrão da lista */
   padding: 0; /* Remove o padding padrão */
@@ -254,6 +262,7 @@
   white-space: nowrap; /* Impede que o nome quebre em várias linhas */
   overflow: hidden; /* Esconde o texto que excede a área */
   text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  font-weight: bold;
 }
 
 

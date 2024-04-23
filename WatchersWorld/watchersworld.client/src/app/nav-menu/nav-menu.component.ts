@@ -68,7 +68,7 @@ export class NavMenuComponent {
       this.notificationService.hasUnreadNotifications(this.loggedUserName)
         .subscribe({
           next: (response) => {
-            console.log(response);
+           //console.log(response);
            this.hasUnreadNotifications = response.hasUnread;
           },
           error: (err) => {
