@@ -99,7 +99,7 @@ namespace WatchersWorld.Server.Controllers
                 return Ok(new { message = "A conta está por confirmar!", Field = "EmailPorConfirmar", user = CreateApplicationUserDto(user) });
             }
 
-            // Check if the user is currently banned
+            
             var profileInfo = await _context.ProfileInfo.FirstOrDefaultAsync(pi => pi.UserId == user.Id);
 
             if (profileInfo != null)
@@ -108,12 +108,12 @@ namespace WatchersWorld.Server.Controllers
                 if (profileInfo.StartBanDate.HasValue && profileInfo.EndBanDate.HasValue &&
                     now >= profileInfo.StartBanDate.Value && now <= profileInfo.EndBanDate.Value)
                 {
-                    var banDuration = profileInfo.EndBanDate.Value - now; // Changed to show remaining ban time
+                    var banDuration = profileInfo.EndBanDate.Value - now; 
                     return BadRequest(new
                     {
                         Message = "This account is currently suspended.",
                         Field = "Banned",
-                        BanDuration = banDuration // You might want to format it properly
+                        BanDuration = banDuration 
                     });
                 }
             }
@@ -179,12 +179,12 @@ namespace WatchersWorld.Server.Controllers
                 if (profileInfo.StartBanDate.HasValue && profileInfo.EndBanDate.HasValue &&
                     now >= profileInfo.StartBanDate.Value && now <= profileInfo.EndBanDate.Value)
                 {
-                    var banDuration = profileInfo.EndBanDate.Value - now; // Changed to show remaining ban time
+                    var banDuration = profileInfo.EndBanDate.Value - now; 
                     return BadRequest(new
                     {
                         Message = "This account is currently suspended.",
                         Field = "Banned",
-                        BanDuration = banDuration // You might want to format it properly
+                        BanDuration = banDuration 
                     });
                 }
             }
