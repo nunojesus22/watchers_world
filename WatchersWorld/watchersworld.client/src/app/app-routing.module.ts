@@ -24,6 +24,13 @@ import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-co
 import { SearchUsersComponent } from './search-users/search-users.component';
 import { ModerationComponent } from './moderation/moderation.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ProfileFavoritesComponent } from './profile-favorites/profile-favorites.component';
+import { ProfileFollowersComponent } from './profile-followers/profile-followers.component';
+import { ProfileFollowingComponent } from './profile-following/profile-following.component';
+import { ProfileMoviesWatchedComponent } from './profile-movies-watched/profile-movies-watched.component';
+import { ProfileMoviesToWatchLaterComponent } from './profile-movies-to-watch-later/profile-movies-to-watch-later.component';
+import { ProfileSeriesWatchedComponent } from './profile-series-watched/profile-series-watched.component';
+import { ProfileSeriesToWatchLaterComponent } from './profile-series-to-watch-later/profile-series-to-watch-later.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -37,6 +44,13 @@ const routes: Routes = [
   },
   { path: 'home', component: HomeComponent },
   { path: 'profile/:username', component: ProfileComponent },
+  { path: 'profile/:username/followers', component: ProfileFollowersComponent },
+  { path: 'profile/:username/following', component: ProfileFollowingComponent },
+  { path: 'profile/:username/favorites', component: ProfileFavoritesComponent },
+  { path: 'profile/:username/watched-movies', component: ProfileMoviesWatchedComponent },
+  { path: 'profile/:username/to-watch-movies', component: ProfileMoviesToWatchLaterComponent },
+  { path: 'profile/:username/watched-series', component: ProfileSeriesWatchedComponent },
+  { path: 'profile/:username/to-watch-series', component: ProfileSeriesToWatchLaterComponent },
   {
     path: 'editProfile/:username',
     component: EditProfileComponent,

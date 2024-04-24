@@ -47,29 +47,21 @@
           </div>
           <div *ngIf="canViewData">
             <div class="user-media">
-              <div class="medals-section" *ngIf="showMedals">
-                <div class="medals-section-header">
-                  <div class="medals-title">
-                    <h3>Medalhas:</h3>
+              <div class="followers-section" *ngIf="showFollowers">
+                <div class="followers-section-header">
+                  <div class="followers-title">
+                    <h3>Seguidores:</h3>
                   </div>
                 </div>
-                <div *ngIf="medals.length > 0 || unlockedMedals.length > 0; else noMedals" class="medals-container">
-                  <!-- Unlocked Medals -->
-                  <div *ngFor="let medal of medals; let i = index" class="medals-user-media medal unlocked">
-                    <img [src]="medal.image" [alt]="medal.name">
-                    <h5>{{ medal.name }}</h5>
-                    <p>{{ medal.description }}</p>
-                  </div>
-                  <!-- Locked Medals -->
-                  <div *ngFor="let medal of unlockedMedals; let i = index" class="medals-user-media medal locked">
-                    <img [src]="medal.image" [alt]="medal.name">
-                    <h5>{{ medal.name }}</h5>
-                    <p>{{ medal.description }}</p>
-                  </div>
-                </div>
-                <ng-template #noMedals>
-                  <p>Ainda não desbloqueou medalhas.</p>
-                </ng-template>
+                <ul class="no-list-style">
+                  <li *ngFor="let follower of followers">
+                    <div>
+                      <img [src]="follower.profilePhoto" [routerLink]="['/profile', follower.username]" class="user-photo">
+                      <p style="cursor:pointer;" class="user-name" [routerLink]="['/profile', follower.username]">{{ follower.username }}</p>
+                    </div>
+                  </li>
+                </ul>
+                <p *ngIf="!followers.length" class="section-empty-message">Não tem nenhum seguidor neste momento.</p>
               </div>
             </div>
           </div>
@@ -84,7 +76,7 @@
             <li *ngFor="let userProfile of (showFiveOtherUsers ? usersProfiles : usersProfiles.slice(0, 3))">
               <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
                 <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-                <span [routerLink]="['/profile', userProfile.userName]" style="cursor:pointer;" class="other-users-user-name">{{ userProfile.userName }}</span>
+                <span class="other-users-user-name" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</span>
               </div>
             </li>
           </ul>

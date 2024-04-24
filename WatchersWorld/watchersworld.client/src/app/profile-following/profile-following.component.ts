@@ -1,16 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GamificationService } from './Service/gamification.service';
-import { MedalsDto } from './models/MedalsDto';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, catchError, firstValueFrom, forkJoin, map, mergeMap, of, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Profile } from '../profile/models/profile';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { FollowerProfile } from '../profile/models/follower-profile';
 import { ProfileService } from '../profile/services/profile.service';
 import { ChatService } from '../chat/services/chat.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
+import { GamificationService } from '../gamification/Service/gamification.service';
 import { AdminService } from '../admin/service/admin.service';
-import { FollowerProfile } from '../profile/models/follower-profile';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { ProfileChat } from '../chat/models/profileChat';
 
 interface MovieCategory {
@@ -19,17 +18,12 @@ interface MovieCategory {
   activeIndex: number;
   media_type: string;
 }
-/**
- * Componente responsável por exibir a gamificação do utilizador, incluindo medalhas desbloqueadas e bloqueadas.
- * Este componente permite aos utilizadores verem as suas conquistas dentro do sistema e o que ainda podem alcançar,
- * aumentando a interação e o engajamento com a plataforma.
- */
 @Component({
-  selector: 'app-gamification',
-  templateUrl: './gamification.component.html',
-  styleUrl: './gamification.component.css'
+  selector: 'app-profile-following',
+  templateUrl: './profile-following.component.html',
+  styleUrl: './profile-following.component.css'
 })
-export class GamificationComponent implements OnInit {
+export class ProfileFollowingComponent implements OnInit {
 
   currentUsername: string | undefined;
   loggedUserName: string | null = null;
@@ -85,6 +79,9 @@ export class GamificationComponent implements OnInit {
   expandedSeriesWatchList: boolean = false;
   expandedSeriesToWatchList: boolean = false;
 
+  followers: FollowerProfile[] = [];
+  following: FollowerProfile[] = [];
+
   showAllFollowing = false;
   showAllFollowers = false;
   showFiveOtherUsers = false;
@@ -106,8 +103,7 @@ export class GamificationComponent implements OnInit {
   selectedUserForBan: string | null = null;
 
 
-  unlockedMedals: MedalsDto[] = [];
-  medals: MedalsDto[] = [];
+  medals: any[] = [];
   showAllMedals = false;
 
   @ViewChild('usernameHeader') usernameHeader!: ElementRef;
@@ -137,6 +133,7 @@ export class GamificationComponent implements OnInit {
    * Inicializa o formulário de perfil e carrega dados de media e gamificação associados ao perfil visualizado.
    */
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
@@ -152,9 +149,7 @@ export class GamificationComponent implements OnInit {
         this.getUserProfileInfo(this.currentUsername);
         this.setFormFields(this.currentUsername);
         this.setImages(this.currentUsername);
-        this.getMedals(this.currentUsername);
-        this.getLockedMedals();
-
+        this.getFollowingList();
       }
     });
     if (this.currentUsername && this.usernameHeader) {
@@ -340,6 +335,89 @@ export class GamificationComponent implements OnInit {
   }
 
   /**
+  * Define a propriedade `followRequestSent` como verdadeira, indicando que um pedido
+  * de seguimento foi enviado.
+  */
+  requestToFollow(): void {
+    this.followRequestSent = true;
+  }
+
+  /**
+  * Envia um pedido para seguir o utilizador atual. Atualiza as propriedades `isFollowing`
+  * e `followRequestSent` baseadas na resposta.
+  */
+  followUser(): void {
+    if (this.currentUsername && this.loggedUserName) {
+      this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
+        next: () => {
+          if (this.isProfilePublic === 'Private') {
+            this.isFollowing = false;
+            this.followRequestSent = true;
+          } else {
+            this.isFollowing = true;
+            this.followRequestSent = false;
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao seguir utilizador', error);
+        }
+      });
+    } else {
+      console.error('Nome de utilizador atual ou nome de utilizador logado está indefinido.');
+    }
+  }
+
+  /**
+  * Envia um pedido para deixar de seguir o utilizador atual. Atualiza a propriedade `isFollowing`.
+  */
+  unfollowUser(): void {
+    if (this.currentUsername && this.loggedUserName) {
+      this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
+        .subscribe({
+          next: () => {
+            this.isFollowing = false;
+          },
+          error: (error) => {
+            console.error('Erro ao deixar de seguir utilizador', error);
+          }
+        });
+    } else {
+      console.error('Os nomes de utilizador do perfil logado ou do perfil a ser seguido não estão definidos.');
+    }
+  }
+
+
+  /**
+  * Gera uma lista aleatória de seguidores ou de utilizadores que estão a seguir,
+  * limitada pelo tamanho especificado.
+  * 
+  * @param array Array original de seguidores ou seguindo.
+  * @param size Tamanho máximo da lista resultante.
+  * @returns Array de `FollowerProfile` com tamanho máximo especificado e elementos aleatórios.
+  */
+  getRandomFollowslist(array: FollowerProfile[], size: number): FollowerProfile[] {
+    const arrayCopy = [...array];
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+    }
+    return arrayCopy.slice(0, size);
+  }
+
+  /**
+  * Obtém e atualiza a lista de utilizadores que o utilizador atual está a seguir.
+  */
+  getFollowingList(): void {
+    if (this.currentUsername) {
+      this.profileService.getFollowing(this.currentUsername).subscribe(following => {
+        this.following = this.getRandomFollowslist(following, following.length);
+      }, error => {
+        console.error("Error while fetching following:", error);
+      });
+    }
+  }
+
+  /**
   * Gera uma lista aleatória de outros utilizadores, limitada pelo tamanho especificado.
   * 
   * @param array Array original de perfis de utilizadores.
@@ -369,46 +447,27 @@ export class GamificationComponent implements OnInit {
     );
   }
 
+  /* A seguir */
+
+  toggleFollowing() {
+    this.showFollowing = !this.showFollowing;
+  }
+
+  toggleFollowingDisplay(): void {
+    this.showAllFollowing = !this.showAllFollowing;
+  }
+
+  toggleFollowingScroll(): void {
+    this.expandedFollowing = !this.expandedFollowing;
+    this.toggleFollowingDisplay();
+  }
+
   toggleAllFiveOtherUsers(): void {
     this.showFiveOtherUsers = !this.showFiveOtherUsers;
   }
 
   toggleExpandedSuggestions() {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
-  }
-
-
-  //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
-
-  /**
-   * Recupera as medalhas desbloqueadas pelo utilizador.
-   * Este método consulta o serviço de gamificação para obter as medalhas que o utilizador já conseguiu desbloquear.
-   */
-  getMedals(username: string) {
-    if (this.currentUsername) {
-      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
-        next: (medals) => {
-          this.medals = medals;
-        },
-        error: (err) => {
-          console.error('Error retrieving medals:', err);
-        }
-      });
-    } else {
-      console.error('User ID is not defined');
-    }
-  }
-
-  getLockedMedals(): void {
-    if (this.currentUsername)
-      this.gamificationService.getLockedMedals(this.currentUsername).subscribe({
-        next: (medals) => {
-          this.unlockedMedals = medals;
-        },
-        error: (err) => {
-          console.error('Error retrieving available medals:', err);
-        }
-      });
   }
 
 }

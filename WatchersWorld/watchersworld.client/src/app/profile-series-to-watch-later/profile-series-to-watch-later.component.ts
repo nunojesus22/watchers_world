@@ -1,16 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GamificationService } from './Service/gamification.service';
-import { MedalsDto } from './models/MedalsDto';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, catchError, firstValueFrom, forkJoin, map, mergeMap, of, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Profile } from '../profile/models/profile';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { FollowerProfile } from '../profile/models/follower-profile';
 import { ProfileService } from '../profile/services/profile.service';
 import { ChatService } from '../chat/services/chat.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { AdminService } from '../admin/service/admin.service';
-import { FollowerProfile } from '../profile/models/follower-profile';
+import { GamificationService } from '../gamification/Service/gamification.service';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { ProfileChat } from '../chat/models/profileChat';
 
 interface MovieCategory {
@@ -19,17 +18,13 @@ interface MovieCategory {
   activeIndex: number;
   media_type: string;
 }
-/**
- * Componente responsável por exibir a gamificação do utilizador, incluindo medalhas desbloqueadas e bloqueadas.
- * Este componente permite aos utilizadores verem as suas conquistas dentro do sistema e o que ainda podem alcançar,
- * aumentando a interação e o engajamento com a plataforma.
- */
+
 @Component({
-  selector: 'app-gamification',
-  templateUrl: './gamification.component.html',
-  styleUrl: './gamification.component.css'
+  selector: 'app-profile-series-to-watch-later',
+  templateUrl: './profile-series-to-watch-later.component.html',
+  styleUrl: './profile-series-to-watch-later.component.css'
 })
-export class GamificationComponent implements OnInit {
+export class ProfileSeriesToWatchLaterComponent implements OnInit {
 
   currentUsername: string | undefined;
   loggedUserName: string | null = null;
@@ -85,6 +80,9 @@ export class GamificationComponent implements OnInit {
   expandedSeriesWatchList: boolean = false;
   expandedSeriesToWatchList: boolean = false;
 
+  followers: FollowerProfile[] = [];
+  following: FollowerProfile[] = [];
+
   showAllFollowing = false;
   showAllFollowers = false;
   showFiveOtherUsers = false;
@@ -106,8 +104,7 @@ export class GamificationComponent implements OnInit {
   selectedUserForBan: string | null = null;
 
 
-  unlockedMedals: MedalsDto[] = [];
-  medals: MedalsDto[] = [];
+  medals: any[] = [];
   showAllMedals = false;
 
   @ViewChild('usernameHeader') usernameHeader!: ElementRef;
@@ -137,6 +134,7 @@ export class GamificationComponent implements OnInit {
    * Inicializa o formulário de perfil e carrega dados de media e gamificação associados ao perfil visualizado.
    */
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
@@ -152,9 +150,7 @@ export class GamificationComponent implements OnInit {
         this.getUserProfileInfo(this.currentUsername);
         this.setFormFields(this.currentUsername);
         this.setImages(this.currentUsername);
-        this.getMedals(this.currentUsername);
-        this.getLockedMedals();
-
+        this.getWatchLaterMedia(this.currentUsername);
       }
     });
     if (this.currentUsername && this.usernameHeader) {
@@ -369,6 +365,63 @@ export class GamificationComponent implements OnInit {
     );
   }
 
+  /*----------------------------------------------------------------  MEDIA A VER ---------------------------------------------------------------- */
+
+  /**
+  * Obtém e processa a lista de mídias marcadas para ver mais tarde pelo utilizador, incluindo filmes e séries.
+  * Busca detalhes adicionais para cada mídia marcada.
+  * 
+  * @param username Nome do utilizador cujas mídias para ver mais tarde serão obtidas.
+  */
+  async getWatchLaterMedia(username: string): Promise<void> {
+    try {
+      const media = await firstValueFrom(this.profileService.getUserWatchLaterMedia(username));
+      this.watchLaterMovies = media.filter(m => m.type === 'movie').reverse();
+      this.watchLaterSeries = media.filter(m => m.type === 'serie').reverse();
+
+      await this.fetchWatchLaterMediaDetails();
+    } catch (error) {
+      console.error('Erro ao buscar mídia para ver mais tarde para o utilizador', username, error);
+    }
+  }
+
+  /**
+  * Busca detalhes adicionais para as mídias marcadas para ver mais tarde previamente obtidas.
+  */
+  async fetchWatchLaterMediaDetails(): Promise<void> {
+    for (const movie of this.watchLaterMovies) {
+      try {
+        const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+        movie.details = details;
+      } catch (error) {
+        console.error('Erro ao buscar detalhes do filme para ver mais tarde', error);
+      }
+    }
+
+    for (const series of this.watchLaterSeries) {
+      try {
+        const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+        series.details = details;
+      } catch (error) {
+        console.error('Erro ao buscar detalhes da série para ver mais tarde', error);
+      }
+    }
+  }
+
+  /*----------------------------------------------------------------  Séries a ver -------------------------------------------------------------------- */
+
+  toggleSeriesToWatchList(): void {
+    this.showSeriesToWatch = !this.showSeriesToWatch;
+  }
+
+  toggleSeriesToWatchListDisplay(): void {
+    this.showAllSeriesToWatch = !this.showAllSeriesToWatch;
+  }
+
+  toggleToWatchSeriesScroll(): void {
+    this.expandedSeriesToWatchList = !this.expandedSeriesToWatchList;
+  }
+
   toggleAllFiveOtherUsers(): void {
     this.showFiveOtherUsers = !this.showFiveOtherUsers;
   }
@@ -376,39 +429,4 @@ export class GamificationComponent implements OnInit {
   toggleExpandedSuggestions() {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
   }
-
-
-  //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
-
-  /**
-   * Recupera as medalhas desbloqueadas pelo utilizador.
-   * Este método consulta o serviço de gamificação para obter as medalhas que o utilizador já conseguiu desbloquear.
-   */
-  getMedals(username: string) {
-    if (this.currentUsername) {
-      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
-        next: (medals) => {
-          this.medals = medals;
-        },
-        error: (err) => {
-          console.error('Error retrieving medals:', err);
-        }
-      });
-    } else {
-      console.error('User ID is not defined');
-    }
-  }
-
-  getLockedMedals(): void {
-    if (this.currentUsername)
-      this.gamificationService.getLockedMedals(this.currentUsername).subscribe({
-        next: (medals) => {
-          this.unlockedMedals = medals;
-        },
-        error: (err) => {
-          console.error('Error retrieving available medals:', err);
-        }
-      });
-  }
-
 }

@@ -163,14 +163,14 @@ input[type="text"] {
   font-size: 1em; /* Define o tamanho da fonte */
   padding-top: 10px;
   color: #333; /* Define a cor do texto */
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .user-photo {
   width: 75px; /* Tamanho desejado das imagens */
   height: 75px;
   border-radius: 50%;
-  cursor:pointer;
+  cursor: pointer;
 }
 
   .user-photo:hover {
@@ -756,6 +756,7 @@ h4, h3 {
   }
 }
 
+
 /* Botão Voltar */
 .btn-secondary {
   display: inline-block;
@@ -771,5 +772,5 @@ h4, h3 {
 }
 
   .btn-secondary:hover {
-    background-color: #0056b3;
+    background-color: #4CAEFE;
   }

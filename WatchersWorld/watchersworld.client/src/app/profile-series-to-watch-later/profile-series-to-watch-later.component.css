@@ -163,14 +163,14 @@ input[type="text"] {
   font-size: 1em; /* Define o tamanho da fonte */
   padding-top: 10px;
   color: #333; /* Define a cor do texto */
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .user-photo {
   width: 75px; /* Tamanho desejado das imagens */
   height: 75px;
   border-radius: 50%;
-  cursor:pointer;
+  cursor: pointer;
 }
 
   .user-photo:hover {

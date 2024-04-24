@@ -75,7 +75,7 @@
             <li *ngFor="let userProfile of usersProfiles.slice(0, 4)">
               <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
                 <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-                <span class="other-users-user-name">{{ userProfile.userName }}</span>
+                <span [routerLink]="['/profile', userProfile.userName]" style="cursor:pointer;" class="other-users-user-name">{{ userProfile.userName }}</span>
               </div>
             </li>
           </ul>

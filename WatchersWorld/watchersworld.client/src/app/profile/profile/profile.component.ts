@@ -499,8 +499,8 @@ export class ProfileComponent implements OnInit {
     try {
       const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
 
-      this.favoriteMovies = favorites.filter(m => m.type === 'movie');
-      this.favoriteSeries = favorites.filter(m => m.type === 'serie');
+      this.favoriteMovies = favorites.filter(m => m.type === 'movie').reverse();
+      this.favoriteSeries = favorites.filter(m => m.type === 'serie').reverse();
 
       for (const movie of this.favoriteMovies) {
         try {

@@ -1,16 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GamificationService } from './Service/gamification.service';
-import { MedalsDto } from './models/MedalsDto';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, catchError, firstValueFrom, forkJoin, map, mergeMap, of, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { Profile } from '../profile/models/profile';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { FollowerProfile } from '../profile/models/follower-profile';
 import { ProfileService } from '../profile/services/profile.service';
 import { ChatService } from '../chat/services/chat.service';
 import { AuthenticationService } from '../authentication/services/authentication.service';
-import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
 import { AdminService } from '../admin/service/admin.service';
-import { FollowerProfile } from '../profile/models/follower-profile';
+import { MovieApiServiceComponent } from '../media/api/movie-api-service/movie-api-service.component';
+import { GamificationService } from '../gamification/Service/gamification.service';
 import { ProfileChat } from '../chat/models/profileChat';
 
 interface MovieCategory {
@@ -19,17 +19,13 @@ interface MovieCategory {
   activeIndex: number;
   media_type: string;
 }
-/**
- * Componente responsável por exibir a gamificação do utilizador, incluindo medalhas desbloqueadas e bloqueadas.
- * Este componente permite aos utilizadores verem as suas conquistas dentro do sistema e o que ainda podem alcançar,
- * aumentando a interação e o engajamento com a plataforma.
- */
+
 @Component({
-  selector: 'app-gamification',
-  templateUrl: './gamification.component.html',
-  styleUrl: './gamification.component.css'
+  selector: 'app-profile-favorites',
+  templateUrl: './profile-favorites.component.html',
+  styleUrl: './profile-favorites.component.css'
 })
-export class GamificationComponent implements OnInit {
+export class ProfileFavoritesComponent implements OnInit {
 
   currentUsername: string | undefined;
   loggedUserName: string | null = null;
@@ -85,6 +81,9 @@ export class GamificationComponent implements OnInit {
   expandedSeriesWatchList: boolean = false;
   expandedSeriesToWatchList: boolean = false;
 
+  followers: FollowerProfile[] = [];
+  following: FollowerProfile[] = [];
+
   showAllFollowing = false;
   showAllFollowers = false;
   showFiveOtherUsers = false;
@@ -106,24 +105,23 @@ export class GamificationComponent implements OnInit {
   selectedUserForBan: string | null = null;
 
 
-  unlockedMedals: MedalsDto[] = [];
-  medals: MedalsDto[] = [];
+  medals: any[] = [];
   showAllMedals = false;
 
   @ViewChild('usernameHeader') usernameHeader!: ElementRef;
 
   /**
- * Construtor do componente ProfileComponent.
- * Inicializa os serviços e ferramentas necessárias para a gestão do perfil do utilizador.
- * @param profileService Serviço para interação com dados de perfil do utilizador.
- * @param chatService Serviço para gestão de mensagens e chat.
- * @param formBuilder Ferramenta para criação de formulários reativos.
- * @param route Serviço para interação com a rota ativa.
- * @param authService Serviço de autenticação, utilizado para gestão do estado de login do utilizador.
- * @param service Serviço para interação com a API de media (filmes e séries).
- * @param adminService Serviço para interações específicas de administradores.
- * @param gamificationService Serviço para gestão de elementos de gamificação, como medalhas.
- */
+* Construtor do componente ProfileComponent.
+* Inicializa os serviços e ferramentas necessárias para a gestão do perfil do utilizador.
+* @param profileService Serviço para interação com dados de perfil do utilizador.
+* @param chatService Serviço para gestão de mensagens e chat.
+* @param formBuilder Ferramenta para criação de formulários reativos.
+* @param route Serviço para interação com a rota ativa.
+* @param authService Serviço de autenticação, utilizado para gestão do estado de login do utilizador.
+* @param service Serviço para interação com a API de media (filmes e séries).
+* @param adminService Serviço para interações específicas de administradores.
+* @param gamificationService Serviço para gestão de elementos de gamificação, como medalhas.
+*/
   constructor(private profileService: ProfileService,
     private chatService: ChatService,
     private formBuilder: FormBuilder,
@@ -152,9 +150,7 @@ export class GamificationComponent implements OnInit {
         this.getUserProfileInfo(this.currentUsername);
         this.setFormFields(this.currentUsername);
         this.setImages(this.currentUsername);
-        this.getMedals(this.currentUsername);
-        this.getLockedMedals();
-
+        this.getFavorites(this.currentUsername);
       }
     });
     if (this.currentUsername && this.usernameHeader) {
@@ -369,6 +365,62 @@ export class GamificationComponent implements OnInit {
     );
   }
 
+  /*----------------------------------------------------------------  FAVORITOS ---------------------------------------------------------------- */
+
+  /**
+  * Obtém e processa a lista de mídias favoritas do utilizador especificado, incluindo filmes e séries.
+  * Para cada mídia, busca detalhes adicionais como descrição e capa.
+  * 
+  * @param username Nome do utilizador cujas mídias favoritas serão obtidas.
+  */
+  async getFavorites(username: string): Promise<void> {
+    try {
+      const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
+
+      this.favoriteMovies = favorites.filter(m => m.type === 'movie');
+      this.favoriteSeries = favorites.filter(m => m.type === 'serie');
+
+      for (const movie of this.favoriteMovies) {
+        try {
+          const details = await firstValueFrom(this.service.getMovieDetails(movie.mediaId));
+          movie.details = details;
+        } catch (error) {
+          console.error('Erro ao buscar detalhes do filme favorito', error);
+        }
+      }
+
+      for (const series of this.favoriteSeries) {
+        try {
+          const details = await firstValueFrom(this.service.getSerieDetails(series.mediaId));
+          series.details = details;
+        } catch (error) {
+          console.error('Erro ao buscar detalhes da série favorita', error);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao buscar mídia favorita para utilizador', username, error);
+    }
+  }
+
+  /*----------------------------------------------------------------  Favoritos ----------------------------------------------------------------------- */
+
+  toggleFavoritesList(): void {
+    this.showFavorites = !this.showFavorites;
+  }
+
+  toggleMedalsList(): void {
+    this.showMedals = !this.showMedals;
+  }
+
+  toggleFavoritesListDisplay(): void {
+    this.showAllFavorites = !this.showAllFavorites;
+  }
+
+  toggleFavoritesScroll(): void {
+    this.expandedFavoritesList = !this.expandedFavoritesList;
+    this.toggleMedalsList();
+  }
+
   toggleAllFiveOtherUsers(): void {
     this.showFiveOtherUsers = !this.showFiveOtherUsers;
   }
@@ -377,38 +429,5 @@ export class GamificationComponent implements OnInit {
     this.showExpandedSuggestions = !this.showExpandedSuggestions;
   }
 
-
-  //--------------------------------------------------MEDALHAS-------------------------------------------------------------------
-
-  /**
-   * Recupera as medalhas desbloqueadas pelo utilizador.
-   * Este método consulta o serviço de gamificação para obter as medalhas que o utilizador já conseguiu desbloquear.
-   */
-  getMedals(username: string) {
-    if (this.currentUsername) {
-      this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
-        next: (medals) => {
-          this.medals = medals;
-        },
-        error: (err) => {
-          console.error('Error retrieving medals:', err);
-        }
-      });
-    } else {
-      console.error('User ID is not defined');
-    }
-  }
-
-  getLockedMedals(): void {
-    if (this.currentUsername)
-      this.gamificationService.getLockedMedals(this.currentUsername).subscribe({
-        next: (medals) => {
-          this.unlockedMedals = medals;
-        },
-        error: (err) => {
-          console.error('Error retrieving available medals:', err);
-        }
-      });
-  }
-
 }
+

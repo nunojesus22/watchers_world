@@ -47,28 +47,22 @@
           </div>
           <div *ngIf="canViewData">
             <div class="user-media">
-              <div class="medals-section" *ngIf="showMedals">
-                <div class="medals-section-header">
-                  <div class="medals-title">
-                    <h3>Medalhas:</h3>
+              <div class="favorites-section" *ngIf="showFavorites">
+                <div class="favorites-section-header">
+                  <div class="favorites-title">
+                    <h3>Favoritos:</h3>
                   </div>
                 </div>
-                <div *ngIf="medals.length > 0 || unlockedMedals.length > 0; else noMedals" class="medals-container">
-                  <!-- Unlocked Medals -->
-                  <div *ngFor="let medal of medals; let i = index" class="medals-user-media medal unlocked">
-                    <img [src]="medal.image" [alt]="medal.name">
-                    <h5>{{ medal.name }}</h5>
-                    <p>{{ medal.description }}</p>
-                  </div>
-                  <!-- Locked Medals -->
-                  <div *ngFor="let medal of unlockedMedals; let i = index" class="medals-user-media medal locked">
-                    <img [src]="medal.image" [alt]="medal.name">
-                    <h5>{{ medal.name }}</h5>
-                    <p>{{ medal.description }}</p>
-                  </div>
+                <div *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0; else noFavoritesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let movie of favoriteMovies">
+                    <img *ngIf="movie.details" [src]="'https://image.tmdb.org/t/p/original/' + movie.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
+                  </ng-container>
+                  <ng-container *ngFor="let series of favoriteSeries">
+                    <img *ngIf="series.details" [src]="'https://image.tmdb.org/t/p/original/' + series.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
+                  </ng-container>
                 </div>
-                <ng-template #noMedals>
-                  <p>Ainda não desbloqueou medalhas.</p>
+                <ng-template #noFavoritesTemplate>
+                  <p class="text-center">Ainda não adicionou mídia aos favoritos.</p>
                 </ng-template>
               </div>
             </div>
@@ -84,7 +78,7 @@
             <li *ngFor="let userProfile of (showFiveOtherUsers ? usersProfiles : usersProfiles.slice(0, 3))">
               <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
                 <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-                <span [routerLink]="['/profile', userProfile.userName]" style="cursor:pointer;" class="other-users-user-name">{{ userProfile.userName }}</span>
+                <span class="other-users-user-name" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</span>
               </div>
             </li>
           </ul>
