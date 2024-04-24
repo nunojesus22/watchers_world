@@ -755,3 +755,21 @@ h4, h3 {
     margin-left: 0;
   }
 }
+
+/* Botão Voltar */
+.btn-secondary {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background-color: #4CAEFE;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+  .btn-secondary:hover {
+    background-color: #0056b3;
+  }
