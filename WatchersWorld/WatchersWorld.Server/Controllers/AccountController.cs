@@ -113,7 +113,7 @@ namespace WatchersWorld.Server.Controllers
                     {
                         Message = "This account is currently suspended.",
                         Field = "Banned",
-                        BanDuration = banDuration 
+                        BanDuration = banDuration.Days.ToString(),
                     });
                 }
             }
@@ -184,7 +184,7 @@ namespace WatchersWorld.Server.Controllers
                     {
                         Message = "This account is currently suspended.",
                         Field = "Banned",
-                        BanDuration = banDuration 
+                        BanDuration = banDuration.Days.ToString(),
                     });
                 }
             }

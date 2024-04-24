@@ -122,9 +122,9 @@ export class LoginComponent {
         },
         error: (error) => {
           // Handle the banned user case
-          if (error.error.Field === "Banned") {
-            this.router.navigateByUrl('/suspendedAccount');
-            return;
+          if (error.error.field === "Banned") {
+            this.banDurationMessage = `A sua conta encontra-se suspensa por ${error.error.banDuration} dias.`;
+            this.router.navigateByUrl('/suspendedAccount', { state: { banDurationMessage: this.banDurationMessage } });
           }
 
           // Handle other errors
@@ -192,9 +192,7 @@ export class LoginComponent {
           this.ngZone.run(() => {
             // Check if the error field indicates the user is banned and handle the message
             if (error.error.field === "Banned") {
-              // Here we assume the backend sends a readable ban duration in the response
-              //this.banDurationMessage = `A sua conta encontra-se suspensa por ${error.error.BanDuration}.`;
-              this.banDurationMessage = `A sua conta encontra-se suspensa.`;
+              this.banDurationMessage = `A sua conta encontra-se suspensa por ${error.error.banDuration} dias.`;
               this.router.navigateByUrl('/suspendedAccount', { state: { banDurationMessage: this.banDurationMessage } });
             } else {
               // Handle other errors by displaying them to the user

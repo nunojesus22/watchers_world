@@ -66,8 +66,6 @@ export class AdminComponent implements OnDestroy {
     }
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
-        console.log("Perfis recebidos:", profiles);
-
         this.usersProfiles = profiles;
         this.filteredUsersProfiles = profiles;
         this.updateSelectedUser();
@@ -108,7 +106,6 @@ export class AdminComponent implements OnDestroy {
           }
           return this.adminService.getUserRole(profile.userName).pipe(
             map(roles => {
-              console.log(`Roles for ${profile.userName}:`, roles);
               return {
                 ...profile,
                 isBanned: this.checkIfUserIsBanned(profile),
@@ -124,8 +121,7 @@ export class AdminComponent implements OnDestroy {
       })
     ).subscribe(
       (profiles) => {
-        console.log("Perfis com informação de moderador:", profiles);
-
+        this.usersProfiles = profiles;
         this.filteredUsersProfiles = profiles;
         this.collectionSize = profiles.length;
 
@@ -205,10 +201,8 @@ export class AdminComponent implements OnDestroy {
         console.error('Username is undefined, cannot ban user.');
         return;
       }
-      console.log(`Attempting to ban user permanently: ${username}`);
       this.adminService.banUserPermanently(username).subscribe({
         next: () => {
-          console.log('User banned permanently');
           const user = this.filteredUsersProfiles?.find(u => u.userName === username);
           this.hideBanPopup();
           if (user) {
@@ -234,11 +228,9 @@ export class AdminComponent implements OnDestroy {
         console.error('Username is undefined, cannot delete account.');
         return;
       }
-      console.log(`Attempting to delete user: ${username}`);
       this.adminService.deleteUserByUsername(username).subscribe({
         next: () => {
           this.filteredUsersProfiles = this.filteredUsersProfiles?.filter(user => user.userName !== username);
-          console.log('User deleted successfully');
         },
         error: error => {
           console.error("Error deleting user:", error);
@@ -258,10 +250,8 @@ export class AdminComponent implements OnDestroy {
         console.error('Username is undefined, cannot change role.');
         return;
       }
-      console.log(`Changing role of user: ${userName} to Moderator`);
       this.adminService.changeRoleToModerator(userName).subscribe({
         next: response => {
-          console.log('User role updated to Moderator successfully:', response);
           this.verifyUserRole(userName);
           const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
           if (user) {
@@ -280,7 +270,6 @@ export class AdminComponent implements OnDestroy {
     this.adminService.getUserRole(userName).subscribe({
       next: roles => {
         const isModerator = roles.includes('Moderator');
-        console.log(`Is user a moderator: ${isModerator}`);
       },
       error: error => {
         console.error('Error fetching roles:', error);
@@ -299,10 +288,8 @@ export class AdminComponent implements OnDestroy {
         console.error('Username is undefined, cannot change role.');
         return;
       }
-      console.log(`Changing role of user: ${userName} to User`);
       this.adminService.changeRoleToUser(userName).subscribe({
         next: response => {
-          console.log('Moderator role updated to User successfully:', response);
           this.verifyUserRole(userName);
           const user = this.filteredUsersProfiles?.find(u => u.userName === userName);
           if (user) {
@@ -329,7 +316,6 @@ export class AdminComponent implements OnDestroy {
       }
       this.adminService.unbanUser(username).subscribe({
         next: (response) => {
-          console.log(response.message);
           const user = this.filteredUsersProfiles?.find(u => u.userName === username);
           if (user) {
             user.isBanned = false;

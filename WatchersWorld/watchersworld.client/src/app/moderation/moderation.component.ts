@@ -120,6 +120,7 @@ export class ModerationComponent implements OnDestroy {
       })
     ).subscribe(
       (profiles) => {
+        this.usersProfiles = profiles;
         this.filteredUsersProfiles = profiles;
         this.collectionSize = profiles.length;
         this.sortAlphabetically();
@@ -200,10 +201,8 @@ export class ModerationComponent implements OnDestroy {
         console.error('Username is undefined, cannot ban user.');
         return;
       }
-      console.log(`Attempting to ban user permanently: ${username}`);
       this.adminService.banUserPermanently(username).subscribe({
         next: () => {
-          console.log('User banned permanently');
           const user = this.filteredUsersProfiles?.find(u => u.userName === username);
           this.hideBanPopup();
           if (user) {
@@ -231,7 +230,6 @@ export class ModerationComponent implements OnDestroy {
       }
       this.adminService.unbanUser(username).subscribe({
         next: (response) => {
-          console.log(response.message);
           const user = this.filteredUsersProfiles?.find(u => u.userName === username);
           if (user) {
             user.isBanned = false;
