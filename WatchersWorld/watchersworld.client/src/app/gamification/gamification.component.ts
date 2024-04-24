@@ -137,6 +137,7 @@ export class GamificationComponent implements OnInit {
    * Inicializa o formulário de perfil e carrega dados de media e gamificação associados ao perfil visualizado.
    */
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
