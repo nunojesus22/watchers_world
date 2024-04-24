@@ -1985,17 +1985,15 @@ C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\Watche
 C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.csproj.CopyComplete
 C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.csproj.AssemblyReference.cache
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\spa.proxy.json
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.GeneratedMSBuildEditorConfig.editorconfig
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.AssemblyInfoInputs.cache
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.AssemblyInfo.cs
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.csproj.CoreCompileInputs.cache
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.MvcApplicationPartsAssemblyInfo.cs
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.MvcApplicationPartsAssemblyInfo.cache
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.RazorAssemblyInfo.cache
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.RazorAssemblyInfo.cs
-D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.sourcelink.json
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Common.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
+C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Common.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NodaTime.dll
+C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\spa.proxy.json
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\appsettings.Development.json
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\appsettings.json
@@ -2297,6 +2295,17 @@ D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\Watche
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.csproj.AssemblyReference.cache
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\spa.proxy.json
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.GeneratedMSBuildEditorConfig.editorconfig
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.AssemblyInfoInputs.cache
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.AssemblyInfo.cs
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.csproj.CoreCompileInputs.cache
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.MvcApplicationPartsAssemblyInfo.cs
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.MvcApplicationPartsAssemblyInfo.cache
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.RazorAssemblyInfo.cache
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.RazorAssemblyInfo.cs
+D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.sourcelink.json
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\staticwebassets.build.json
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\staticwebassets.development.json
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\staticwebassets\msbuild.WatchersWorld.Server.Microsoft.AspNetCore.StaticWebAssets.props
@@ -2311,12 +2320,3 @@ D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\Watche
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.pdb
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\WatchersWorld.Server.genruntimeconfig.cache
 D:\Escola\uni\3 ANO 1 SEMESTRE\ESA\Projeto\watchers_world_1\WatchersWorld\WatchersWorld.Server\obj\Debug\net8.0\ref\WatchersWorld.Server.dll
-C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Common.dll
-C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
-C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
-C:\Users\nunoj\OneDrive\Ambiente de Trabalho\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
-C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Common.dll
-C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.dll
-C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\Microsoft.Azure.SignalR.Protocols.dll
-C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\NodaTime.dll
-C:\Users\diogo\Desktop\Projeto ESA\watchers_world\WatchersWorld\WatchersWorld.Server\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll

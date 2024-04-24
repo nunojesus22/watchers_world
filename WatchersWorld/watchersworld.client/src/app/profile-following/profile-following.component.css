@@ -1,0 +1,771 @@
+
+.container {
+  width: 100%; /* Isso fará a div esticar pela largura total da página */
+  margin: 0; /* Remove margens padrão */
+  max-width: none; /* Override do Bootstrap se necessário */
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- USER INFO -------------------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+/* Ajusta a imagem de capa para cobrir toda a área disponível */
+.cover-photo {
+  width: 100%;
+  height: 200px; /* Altura fixa para a imagem de capa */
+  object-fit: cover; /* Garante que a imagem cubra o espaço sem distorção */
+  position: relative;
+}
+
+
+/* Estiliza a foto do perfil */
+.profile-photo {
+  position: absolute;
+  left: 2%; /* Ajuste este valor conforme necessário */
+  top: 140px; /* Ajuste vertical para alinhar com o nome, se necessário */
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  left: 80px;
+}
+
+
+/* Ajusta o título do utilizador para ficar à direita da foto do perfil */
+.card-title {
+  position: absolute;
+  left: 215px; /* Ajuste conforme a largura da sua foto do perfil */
+  top: 200px; /* Ajuste esta propriedade para alinhar verticalmente com a sua foto do perfil */
+  z-index: 3;
+}
+
+/* Organizar os campos do formulário e botões */
+.user-details {
+  display: flex;
+  flex-direction: column; /* Organiza os campos do formulário em coluna */
+  justify-content: flex-start; /* Alinha ao início do container */
+  align-items: flex-start;
+  padding-top: 30px;
+  gap: 5px;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+  .user-details form {
+    width: 100%; /* Garante que o formulário ocupe todo o espaço horizontal disponível */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura total */
+  }
+
+.user-icons {
+  display: flex;
+  gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
+  position: absolute; /* Continua com posicionamento absoluto */
+  top: 215px; /* Ajuste conforme necessário para mover os ícones para dentro da caixa branca */
+  left: 550px;
+  z-index: 2;
+}
+
+.action-icons {
+  display: flex;
+  gap: 10px; /* Isso adiciona um espaço de 10px entre cada ícone */
+  margin-bottom: 2rem;
+}
+
+/* Ajusta o posicionamento da área de informação do utilizador */
+.profile-info {
+  display: flex;
+  flex-direction: row; /* Organiza o conteúdo em linha */
+}
+
+/* Título e ícones do perfil */
+.user-name-and-icons {
+  margin-top: -60px; /* Ajusta o posicionamento com base na altura da foto do perfil */
+  padding-bottom: 30px; /* Espaço extra abaixo dos ícones */
+}
+
+/* Ícones do perfil */
+.profile-icon img {
+  width: 30px; /* Tamanho fixo para os ícones */
+}
+
+/* Aumenta ligeiramente o ícone ao passar o mouse ou clicar */
+.profile-icon:hover, .profile-icon:active {
+  transform: scale(1.3);
+}
+
+input[type="text"],
+input[type="date"] {
+  border: none; /* Remove as bordas */
+  outline: none; /* Remove o contorno que aparece ao focar */
+}
+
+input[type="text"] {
+  width: 600px;
+}
+
+
+.follow-button,
+.unfollow-button {
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  width: 150px;
+  height: 40px;
+}
+
+  .follow-button:hover, .unfollow-button:hover {
+    background-color: #0056b3;
+  }
+
+.send-message-button {
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  width: 200px;
+  height: 40px;
+}
+
+  .send-message-button:hover {
+    background-color: #0056b3;
+  }
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- MEDIA ------------------------------------------------------------ */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.section-empty-message {
+  margin: 0; /* Remove a margem padrão do parágrafo */
+  padding-left: 10px; /* Um pouco de padding para alinhamento com o título */
+}
+
+.no-list-style {
+  list-style: none;
+  padding-left: 50px; /* Remove qualquer padding */
+  margin: 0; /* Remove qualquer margem */
+}
+
+  .no-list-style li {
+    display: inline-block; /* Exibe itens inline com bloco */
+    margin-right: 50px; /* Espaço após cada item */
+    padding: 0; /* Sem padding interno */
+  }
+
+.user-name {
+  font-size: 1em; /* Define o tamanho da fonte */
+  padding-top: 10px;
+  color: #333; /* Define a cor do texto */
+  font-weight: bold;
+}
+
+.user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+  .user-photo:hover {
+    width: 80px; /* Tamanho desejado das imagens */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+.followers-section,
+.following-section,
+.favorites-section,
+.watched-movies-section,
+.to-watch-movies-section,
+.watched-series-section,
+.to-watch-series-section,
+.medals-section {
+  padding: 10px;
+  margin-top: 20px; /* Espaço acima da seção */
+  margin-left: 20px;
+  width: 750px;
+}
+
+.followers-section-content-expanded,
+.following-section-content-expanded,
+.favorites-section-content-expanded,
+.movies-section-content-expanded,
+.series-section-content-expanded,
+.medals-section-content-expanded {
+  height: 200px; /* Altura quando expandido */
+}
+
+.followers-section-content-collapsed,
+.following-section-content-collapsed,
+.favorites-section-content-collapsed,
+.movies-section-content-collapsed,
+.series-section-content-collapsed,
+.medals-section-content-collapsed {
+  height: 0; /* Altura quando colapsado */
+  overflow: hidden; /* Esconde o conteúdo que excede a altura */
+}
+
+.followers-section-header,
+.following-section-header,
+.favorites-section-header,
+.movies-watched-section-header,
+.movies-to-watch-section-header,
+.series-watched-section-header,
+.series-to-watch-section-header,
+.medals-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espaça o título e o botão uniformemente */
+}
+
+.movies-watched-title h3 {
+  white-space: nowrap; /* Impede a quebra do título em múltiplas linhas */
+  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse o contêiner */
+  text-overflow: ellipsis; /* Adiciona "..." ao final do texto se for muito longo */
+  flex-grow: 1; /* Permite que o título ocupe o espaço disponível */
+}
+
+.followers-title,
+.following-title,
+.favorites-title,
+.movies-watched-title,
+.movies-to-watch-title,
+.series-watched-title,
+.series-to-watch-title,
+.medals-title {
+  display: flex;
+  align-items: center;
+}
+
+.section-header h3 {
+  margin-right: 10px; /* Espaço entre o título e a seta */
+}
+
+.filter-button {
+  padding: 5px 10px; /* Ajuste conforme necessário */
+  background-color: #007bff; /* Cor do botão, pode ser alterada */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+  .filter-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.favorites-down-arrow,
+.movies-down-arrow,
+.series-down-arrow,
+.medals-down-arrow {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  color: #4CAEFE;
+  margin-left: 20px;
+}
+
+.favorites-right-arrow,
+.movies-right-arrow,
+.series-right-arrow,
+.medals-right-arrow {
+  cursor: pointer;
+  /* Estilos da seta para cima, você pode usar uma transformação para rotacionar a seta para baixo */
+  transform: rotate(270deg);
+}
+
+.followers-section-content,
+.following-section-content,
+.favorites-section-content,
+.movies-section-content,
+.series-section-content,
+.medals-section-content {
+  /* TODO */
+}
+
+.expand-followers-button,
+.expand-following-button,
+.expand-favorites-button,
+.expand-watched-movies-button,
+.expand-to-watch-movies-button,
+.expand-watched-series-button,
+.expand-to-watch-series-button,
+.expand-medals-button {
+  white-space: nowrap; /* Evita que o texto do botão quebre em linhas */
+  overflow: hidden; /* Esconde qualquer texto que exceda o tamanho do botão */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  max-width: 100%; /* Evita que o botão seja maior que o contêiner */
+  margin-right: 50px;
+  margin-top: 10px; /* Espaço acima do botão */
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  font-weight: bold;
+}
+
+  .expand-followers-button:hover,
+  .expand-following-button:hover,
+  .expand-favorites-button:hover,
+  .expand-watched-movies-button:hover,
+  .expand-to-watch-movies-button:hover,
+  .expand-watched-series-button:hover,
+  .expand-to-watch-series-button:hover,
+  .expand-medals-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.user-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os itens na vertical */
+}
+
+.rowposter-user-media {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* ou 'space-around' se você quer que fique distribuído uniformemente */
+  padding: 0;
+  margin: 0 -5px; /* Ajuste negativo para compensar o padding nos itens individuais */
+}
+
+  .rowposter-user-media img {
+    padding: 0 5px; /* Adiciona um pouco de espaço em torno de cada imagem */
+    flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
+    max-width: calc(16.66% - 10px); /* Reduz o tamanho para contar com o padding */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-top: 10px;
+  }
+
+.expanded .rowposter-user-media {
+  justify-content: space-around; /* Isso centralizará os itens igualmente */
+}
+
+.rowimg {
+  object-fit: contain;
+  width: 100%; /* Ocupa toda a largura disponível dentro do seu contêiner */
+  max-width: 100%; /* Adiciona um máximo de largura */
+  height: auto; /* Altura auto para manter a proporção da imagem */
+  transition: transform 450ms;
+}
+
+  .rowimg:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
+.largeposter {
+  max-height: 150px; /* reduzir para o tamanho desejado */
+}
+
+.p-4 {
+  padding: 1.5rem !important;
+}
+
+@media (max-width: 1200px) {
+  .rowposter-user-media img {
+    max-width: calc(25% - 10px); /* Mostra 4 imagens por linha em telas menores */
+  }
+}
+
+@media (max-width: 992px) {
+  .rowposter-user-media img {
+    max-width: calc(33.33% - 10px); /* Mostra 3 imagens por linha em telas ainda menores */
+  }
+}
+
+@media (max-width: 768px) {
+  .rowposter-user-media img {
+    max-width: calc(50% - 10px); /* Mostra 2 imagens por linha em telas de tablet */
+  }
+}
+
+@media (max-width: 576px) {
+  .rowposter-user-media img {
+    max-width: 100%; /* Mostra 1 imagem por linha em telas de celular */
+    padding: 0 10px; /* Ajuste o padding conforme necessário */
+  }
+}
+
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------- OUTROS UTILIZADORES ---------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.side-divs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinha as divs à direita */
+  gap: 20px; /* Espaço entre as divs */
+}
+
+/* Títulos para cada div lateral */
+.side-div-users > h2, .side-div-suggestions > h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin: 0 0 16px 0; /* Margem inferior */
+}
+
+/* Estilizar botões ou links para "Expandir" */
+.side-div-users > .expand-link,
+.side-div-suggestions > .expand-link {
+  display: block; /* Faz com que ocupe toda a largura da linha */
+  text-align: center; /* Centraliza o texto */
+  margin-top: 20px; /* Espaçamento acima */
+  padding: 10px 0; /* Espaçamento vertical */
+  background-color: #f0f0f0; /* Cor de fundo */
+  color: #000; /* Cor do texto */
+  border-radius: 5px; /* Arredonda os cantos do botão/link */
+  text-decoration: none; /* Remove o sublinhado do link */
+  font-weight: bold; /* Torna o texto em negrito */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+  .side-div-users > .expand-link:hover,
+  .side-div-suggestions > .expand-link:hover {
+    background-color: #c3c1c1; /* Cor mais escura no hover */
+  }
+
+.other-users-user-photo {
+  width: 75px; /* Tamanho desejado das imagens */
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+  .other-users-user-photo:hover {
+    width: 80px; /* Tamanho desejado das imagens */
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+.side-div-users .item-list {
+  list-style: none; /* Remove o ponto padrão da lista */
+  padding: 0; /* Remove o padding padrão */
+}
+
+.side-div-users .user-item {
+  display: flex; /* Cria um layout flexível para alinhar itens horizontalmente */
+  align-items: center; /* Centraliza os itens verticalmente */
+  gap: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  margin-bottom: 20px; /* Adiciona espaço abaixo de cada item */
+}
+
+.other-users-user-name {
+  margin-left: 10px; /* Espaço entre a imagem e o nome do utilizador */
+  white-space: nowrap; /* Impede que o nome quebre em várias linhas */
+  overflow: hidden; /* Esconde o texto que excede a área */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  font-weight: bold;
+}
+
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ SUGESTÕES ---------------------------------------------- */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
+.side-div-suggestions {
+  width: 100%;
+}
+
+.rowposter {
+  display: flex;
+  flex-direction: column; /* Isso irá organizar as imagens em uma coluna */
+  align-items: center;
+  gap: 20px; /* Espaço entre as imagens */
+  padding-right: 0; /* Se houver padding, defina para 0 */
+  max-width: 150px;
+  margin-left: 5px;
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+  .rowposter img {
+    padding: 0 5px; /* Adiciona um pouco de espaço em torno de cada imagem */
+    flex: 1 1 auto; /* Adapta o tamanho baseado no espaço disponível */
+    margin-top: 10px;
+  }
+
+.rowimg {
+  object-fit: contain;
+  width: 100%; /* Ocupa toda a largura disponível dentro do seu contêiner */
+  max-width: 100%; /* Adiciona um máximo de largura */
+  height: auto; /* Altura auto para manter a proporção da imagem */
+  transition: transform 450ms;
+}
+
+  .rowimg:hover {
+    transform: scale(1.09);
+    cursor: pointer;
+  }
+
+/*-----------------------------------------------MEDALHAS----------------------------------------------------------------------*/
+
+.medals-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left; /* Center the medals horizontally */
+  gap: 10px; /* Adds space between the medals */
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.medals-user-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 150px; /* Set a max-width for each medal container */
+}
+
+  .medals-user-media img {
+    width: 100%; /* Make the image responsive to the container width */
+    height: auto;
+  }
+
+    .medals-user-media img:hover {
+      width: 110%; /* Make the image responsive to the container width */
+      height: auto;
+    }
+
+  .medals-user-media p {
+    margin-top: 8px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+/*-----------------------------------------------MODERADOR----------------------------------------------------------------------*/
+.moderator-panel {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+h4, h3 {
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between; /* Alinha os itens nas pontas opostas */
+  align-items: center;
+  margin-top: 20px; /* Espaçamento no topo, ajuste conforme necessário */
+}
+
+.pagination-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+  .pagination-button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+.pagination-prev {
+  margin-right: auto;
+}
+
+.pagination-next {
+  margin-left: auto;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-icon {
+  position: absolute; /* Adicione esta linha */
+  left: 10px; /* Adicione esta linha */
+  color: #474747; /* Cor do ícone */
+}
+
+.search-input {
+  padding: 10px;
+  padding-left: 50px; /* Adicione esta linha */
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: 'Inter';
+  width: 280px; /* Ajuste conforme necessário */
+}
+
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+
+.actions button {
+  display: inline-block;
+  padding: 8px 15px; /* Ajuste conforme necessário */
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  margin-left: 5px;
+  font-size: 16px;
+  width: 180px;
+  height: 40px;
+  font-weight: bold;
+}
+
+  .actions button:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+
+
+/* Add new styles for the popup */
+.ban-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative; /* Ensure the close button is positioned relative to this container */
+}
+
+.ban-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ban-duration-input {
+  padding: 10px;
+  margin-top: 20px; /* space above the input field */
+  width: 80%; /* Adjust the width as needed */
+  border-radius: 25px;
+}
+
+.ban-duration-container {
+  order: 2; /* Make sure it comes after the buttons */
+  width: 100%; /* Match the width with the buttons if needed */
+  display: flex;
+  justify-content: center; /* Center the input field */
+}
+
+
+.banTemp, .banPerm {
+  display: inline-block;
+  padding: 8px 15px; /* Ajuste conforme necessário */
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  font-size: 16px;
+  text-align: center;
+  width: 160px;
+  height: 60px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+  .banPerm:hover, .banTemp:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+  }
+
+
+.close-popup {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Add responsiveness if needed */
+@media (max-width: 768px) {
+  .user {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions button {
+    margin-top: 5px;
+    margin-left: 0;
+  }
+}
+
+/* Botão Voltar */
+.btn-secondary {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background-color: #4CAEFE;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+  .btn-secondary:hover {
+    background-color: #0056b3;
+  }

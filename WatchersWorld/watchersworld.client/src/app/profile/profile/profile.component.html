@@ -87,15 +87,15 @@
                   <div class="followers-title">
                     <h3>Seguidores:</h3>
                   </div>
-                  <button *ngIf="followers.length > 0;" (click)="toggleFollowersScroll(); $event.preventDefault()" class="expand-followers-button">
-                    {{ expandedFollowers ? 'Ver menos' : 'Ver mais' }}
+                  <button *ngIf="followers.length > 0;" [routerLink]="['/profile', currentUsername, 'followers']" class="expand-followers-button">
+                    Ver mais
                   </button>
                 </div>
                 <ul class="no-list-style">
                   <li *ngFor="let follower of showAllFollowers ? followers : followers.slice(0, 6)">
                     <div>
                       <img [src]="follower.profilePhoto" [routerLink]="['/profile', follower.username]" class="user-photo">
-                      <p class="user-name">{{ follower.username }}</p>
+                      <p style="cursor:pointer;" class="user-name" [routerLink]="['/profile', follower.username]">{{ follower.username }}</p>
                     </div>
                   </li>
                 </ul>
@@ -107,7 +107,7 @@
                   <div class="following-title">
                     <h3>A seguir:</h3>
                   </div>
-                  <button *ngIf="following.length > 0;" (click)="toggleFollowingScroll(); $event.preventDefault()" class="expand-following-button">
+                  <button *ngIf="following.length > 0;" [routerLink]="['/profile', currentUsername, 'following']" class="expand-following-button">
                     {{ expandedFollowing ? 'Ver menos' : 'Ver mais' }}
                   </button>
                 </div>
@@ -115,7 +115,7 @@
                   <li *ngFor="let following of showAllFollowing ? following : following.slice(0, 6)">
                     <div>
                       <img [src]="following.profilePhoto" [routerLink]="['/profile', following.username]" class="user-photo">
-                      <p class="user-name">{{ following.username }}</p>
+                      <p style="cursor:pointer;" class="user-name" [routerLink]="['/profile', following.username]">{{ following.username }}</p>
                     </div>
                   </li>
                 </ul>
@@ -127,8 +127,8 @@
                   <div class="favorites-title">
                     <h3>Favoritos:</h3>
                   </div>
-                  <button *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0" (click)="toggleFavoritesScroll(); $event.preventDefault()" class="expand-favorites-button">
-                    {{ expandedFavoritesList ? 'Ver menos' : 'Ver mais' }}
+                  <button *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0" [routerLink]="['/profile', currentUsername, 'favorites']" class="expand-favorites-button">
+                    Ver mais
                   </button>
                 </div>
                 <div *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0; else noFavoritesTemplate" class="rowposter-user-media">
@@ -144,14 +144,13 @@
                 </ng-template>
               </div>
 
-
               <div class="watched-movies-section" *ngIf="showMoviesWatched">
                 <div class="movies-watched-section-header">
                   <div class="movies-watched-title">
                     <h3>Filmes visualizados:</h3>
                   </div>
-                  <button *ngIf="watchedMovies.length > 0" (click)="toggleWatchedMoviesScroll(); $event.preventDefault()" class="expand-watched-movies-button">
-                    {{ expandedMoviesWatchList ? 'Ver menos' : 'Ver mais' }}
+                  <button *ngIf="watchedMovies.length > 0" [routerLink]="['/profile', currentUsername, 'watched-movies']" class="expand-watched-movies-button">
+                    Ver mais
                   </button>
                 </div>
                 <div *ngIf="watchedMovies.length > 0; else noWatchedMoviesTemplate" class="rowposter-user-media">
@@ -169,8 +168,8 @@
                   <div class="movies-to-watch-title">
                     <h3>Filmes a ver:</h3>
                   </div>
-                  <button *ngIf="watchLaterMovies.length > 0" (click)="toggleToWatchMoviesScroll(); $event.preventDefault()" class="expand-to-watch-movies-button">
-                    {{ expandedMoviesToWatchList ? 'Ver menos' : 'Ver mais' }}
+                  <button *ngIf="watchLaterMovies.length > 0" [routerLink]="['/profile', currentUsername, 'to-watch-movies']" class="expand-to-watch-movies-button">
+                    Ver mais
                   </button>
                 </div>
                 <div *ngIf="watchLaterMovies.length > 0; else noToWatchMoviesTemplate" class="rowposter-user-media">
@@ -188,8 +187,8 @@
                   <div class="series-watched-title">
                     <h3>Séries visualizadas:</h3>
                   </div>
-                  <button *ngIf="watchedSeries.length > 0" (click)="toggleWatchedSeriesScroll(); $event.preventDefault()" class="expand-watched-series-button">
-                    {{ expandedSeriesWatchList ? 'Ver menos' : 'Ver mais' }}
+                  <button *ngIf="watchedSeries.length > 0" [routerLink]="['/profile', currentUsername, 'watched-series']" class="expand-watched-series-button">
+                    Ver mais
                   </button>
                 </div>
                 <div *ngIf="watchedSeries.length > 0; else noWatchedSeriesTemplate" class="rowposter-user-media">
@@ -207,8 +206,8 @@
                   <div class="series-to-watch-title">
                     <h3>Séries a ver:</h3>
                   </div>
-                  <button *ngIf="watchLaterSeries.length > 0" (click)="toggleToWatchSeriesScroll(); $event.preventDefault()" class="expand-to-watch-series-button">
-                    {{ expandedSeriesToWatchList ? 'Ver menos' : 'Ver mais' }}
+                  <button *ngIf="watchLaterSeries.length > 0" [routerLink]="['/profile', currentUsername, 'to-watch-series']" class="expand-to-watch-series-button">
+                    Ver mais
                   </button>
                 </div>
                 <div *ngIf="watchLaterSeries.length > 0; else noToWatchSeriesTemplate" class="rowposter-user-media">
@@ -253,7 +252,7 @@
             <li *ngFor="let userProfile of (showFiveOtherUsers ? usersProfiles : usersProfiles.slice(0, 3))">
               <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
                 <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-                <span class="other-users-user-name" style="cursor: pointer;"[routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</span>
+                <span [routerLink]="['/profile', userProfile.userName]" style="cursor:pointer;" class="other-users-user-name">{{ userProfile.userName }}</span>
               </div>
             </li>
           </ul>

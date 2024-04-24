@@ -1,0 +1,110 @@
+<!-- p *ngIf="message">{{message}}</!--p>-->
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card mb-3">
+        <img src="" class="card-img-top cover-photo" alt="Capa do perfil">
+        <div class="card-body text-center">
+          <img src="" class="rounded-circle mb-3 profile-photo" alt="Foto do perfil" style="width: 120px; height: 120px;">
+          <h1 class="card-title">{{ currentUsername }} </h1>
+          <div *ngIf="(authService.user$ | async) as user">
+            <div class="user-icons">
+              <a *ngIf="user.username === currentUsername" [routerLink]="['/statistics', user.username]" class="profile-icon">
+                <img src="assets/img/statistic.png" alt="Estatísticas">
+              </a>
+              <a *ngIf="user.username === currentUsername" routerLink="/chat" class="profile-icon">
+                <img src="assets/img/messenger.png" alt="Chat">
+              </a>
+              <a *ngIf="user.username === currentUsername" [routerLink]="['/editProfile', user.username]" class="profile-icon">
+                <img src="assets/img/edit profile.png" alt="Editar perfil">
+              </a>
+              <a *ngIf="user.username === currentUsername && isModerator" [routerLink]="['/moderation', user.username]" class="profile-icon">
+                <img src="assets/img/worker.png" alt="Editar perfil">
+              </a>
+            </div>
+
+          </div>
+          <div class="user-details">
+            <form [formGroup]="profileForm" class="user-details">
+              <div>
+                <label style="font-weight:bold;" for="hobby">Descrição:</label>
+                <input formControlName="hobby" type="text" id="hobby" name="hobby" readonly>
+              </div>
+              <div>
+                <label style="font-weight:bold;">Género:</label>
+                <span *ngIf="profileForm.controls['gender'].value === 'M'"> Masculino</span>
+                <span *ngIf="profileForm.controls['gender'].value === 'F'"> Feminino</span>
+              </div>
+              <div>
+                <label style="font-weight:bold;" for="birthdate">Data de nascimento:</label>
+                <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
+              </div>
+            </form>
+            <br />
+            <button [routerLink]="['/profile', currentUsername]" class="btn btn-secondary shadow-sm">
+              <i class="fas fa-arrow-left"></i> Voltar
+            </button>
+          </div>
+          <div *ngIf="canViewData">
+            <div class="user-media">
+              <div class="watched-movies-section" *ngIf="showMoviesWatched">
+                <div class="movies-watched-section-header">
+                  <div class="movies-watched-title">
+                    <h3>Filmes visualizados:</h3>
+                  </div>
+                </div>
+                <div *ngIf="watchedMovies.length > 0; else noWatchedMoviesTemplate" class="rowposter-user-media">
+                  <ng-container *ngFor="let movie of watchedMovies">
+                    <img *ngIf="movie.details" src="https://image.tmdb.org/t/p/original/{{ movie.details.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
+                  </ng-container>
+                </div>
+                <ng-template #noWatchedMoviesTemplate>
+                  <p class="text-center">Ainda não adicionou filmes como visualizados.</p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 side-divs">
+      <div class="card mb-3">
+        <div class="card-body side-div-users">
+          <h2>Outros Utilizadores</h2>
+          <ul class="item-list">
+            <li *ngFor="let userProfile of (showFiveOtherUsers ? usersProfiles : usersProfiles.slice(0, 3))">
+              <div *ngIf="userProfile.userName !== loggedUserName" class="user-item">
+                <img class="other-users-user-photo" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
+                <span class="other-users-user-name" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</span>
+              </div>
+            </li>
+          </ul>
+          <a (click)="toggleAllFiveOtherUsers(); $event.preventDefault()" class="expand-link">
+            {{ showFiveOtherUsers ? 'Ver Menos' : 'Ver mais' }}
+          </a>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body side-div-suggestions">
+          <h2>Algumas Sugestões</h2>
+          <div class="contain p-4">
+            <div *ngFor="let category of categories.slice(0)" class="row2">
+              <div class="rowposter mt-3 p-2">
+                <ng-container *ngFor="let movie of (showExpandedSuggestions ? category.results.slice(0, 4) : category.results.slice(0, 3)); let i = index">
+                  <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" class="rowimg largeposter" alt="..." [routerLink]="[category.media_type === 'movie' ? '/movie' : '/serie', movie.id]">
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <a (click)="toggleExpandedSuggestions()" class="expand-link">
+            {{ showExpandedSuggestions ? 'Ver Menos' : 'Ver mais' }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

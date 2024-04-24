@@ -49,6 +49,13 @@ import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-co
 import { SearchUsersComponent } from './search-users/search-users.component';
 import { ModerationComponent } from './moderation/moderation.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ProfileFavoritesComponent } from './profile-favorites/profile-favorites.component';
+import { ProfileMoviesWatchedComponent } from './profile-movies-watched/profile-movies-watched.component';
+import { ProfileMoviesToWatchLaterComponent } from './profile-movies-to-watch-later/profile-movies-to-watch-later.component';
+import { ProfileSeriesWatchedComponent } from './profile-series-watched/profile-series-watched.component';
+import { ProfileSeriesToWatchLaterComponent } from './profile-series-to-watch-later/profile-series-to-watch-later.component';
+import { ProfileFollowersComponent } from './profile-followers/profile-followers.component';
+import { ProfileFollowingComponent } from './profile-following/profile-following.component';
 
 
 @NgModule({
@@ -79,6 +86,13 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     TermsAndConditionsComponent,
     SearchUsersComponent,
     ModerationComponent,
+    ProfileFavoritesComponent,
+    ProfileMoviesWatchedComponent,
+    ProfileMoviesToWatchLaterComponent,
+    ProfileSeriesWatchedComponent,
+    ProfileSeriesToWatchLaterComponent,
+    ProfileFollowersComponent,
+    ProfileFollowingComponent,
   ],
   imports: [
     BrowserModule,
