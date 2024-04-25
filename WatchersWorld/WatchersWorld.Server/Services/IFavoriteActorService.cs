@@ -26,16 +26,18 @@ namespace WatchersWorld.Server.Services
         /// Obtém as percentagens de votos para atores numa determinada mídia.
         /// </summary>
         /// <param name="mediaId">Identificador da mídia.</param>
+        /// <param name="type">Tipo de media (movie, serie)</param>
         /// <returns>Lista das percentagens de votos para cada ator.</returns>
-        Task<List<ActorVotePercentageDto>> GetChoicesForMedia(int mediaId);
+        Task<List<ActorVotePercentageDto>> GetChoicesForMedia(int mediaId, string type);
 
         /// <summary>
         /// Obtém a escolha de ator favorito de um utilizador para uma mídia específica.
         /// </summary>
         /// <param name="userId">Identificador do utilizador.</param>
         /// <param name="mediaId">Identificador da mídia.</param>
+        /// <param name="type">Tipo de media (movie, serie)</param>
         /// <returns>Identificador do ator escolhido, ou 0 se não houver escolha.</returns>
-        Task<int> GetUserChoice(string userId, int mediaId);
+        Task<int> GetUserChoice(string userId, int mediaId, string type);
 
         Task<int> GetTotalFavoriteActorsByUser(string username);
 
@@ -75,7 +77,7 @@ namespace WatchersWorld.Server.Services
         /// </remarks>
         public async Task<bool> ChooseAnActor(string userId, int actorId, UserMediaDto media, List<ActorDto> actors)
         {
-            if (!await MediaAlreadyOnDatabase(media.MediaId))
+            if (!await MediaAlreadyOnDatabase(media.MediaId, media.Type))
             {
                 var result = await AddMediaToDatabase(media);
                 if(!result) return false;
@@ -90,15 +92,15 @@ namespace WatchersWorld.Server.Services
                 if (!result) return false;
             }
 
-            var connectActorsToMedia = await EnsureActorMediaRelations(actors, media.MediaId);
+            var connectActorsToMedia = await EnsureActorMediaRelations(actors, media.MediaId, media.Type);
             if(!connectActorsToMedia) return false;
 
             try
             {
                 var actorMediaEntry = await Context.ActorMedia
-                    .FirstOrDefaultAsync(am => am.MediaInfo.IdMedia == media.MediaId && am.ActorId == actorId);
+                    .FirstOrDefaultAsync(am => am.MediaInfo.IdMedia == media.MediaId && am.MediaInfo.Type == media.Type && am.ActorId == actorId);
 
-                var favoriteActorChoice = await UserAlreadyChoose(userId, media.MediaId);
+                var favoriteActorChoice = await UserAlreadyChoose(userId, media.MediaId, media.Type);
 
                 if (favoriteActorChoice != null)
                 {
@@ -129,15 +131,16 @@ namespace WatchersWorld.Server.Services
         /// Obtém as percentagens de votos para os atores de uma determinada mídia.
         /// </summary>
         /// <param name="mediaId">Identificador da mídia.</param>
+        /// <param name="type">Tipo de media (movie, serie)</param>
         /// <returns>Lista de DTOs com os identificadores dos atores e as suas respectivas percentagens de votos.</returns>
         /// <remarks>
         /// Calcula a percentagem de escolhas de cada ator como favorito para uma dada mídia, com base nas escolhas dos utilizadores.
         /// </remarks>
-        public async Task<List<ActorVotePercentageDto>> GetChoicesForMedia(int mediaId)
+        public async Task<List<ActorVotePercentageDto>> GetChoicesForMedia(int mediaId, string type)
         {
             var choicesForMedia = await Context.FavoriteActorChoice
                 .Include(fac => fac.ActorMedia)
-                .Where(fac => fac.ActorMedia.MediaInfo.IdMedia == mediaId)
+                .Where(fac => fac.ActorMedia.MediaInfo.IdMedia == mediaId && fac.ActorMedia.MediaInfo.Type == type)
                 .ToListAsync();
 
             var totalChoices = choicesForMedia.Count;
@@ -165,13 +168,14 @@ namespace WatchersWorld.Server.Services
         /// </summary>
         /// <param name="userId">Identificador do utilizador.</param>
         /// <param name="mediaId">Identificador da mídia.</param>
+        /// <param name="type">Tipo de media (movie, serie)</param>
         /// <returns>Identificador do ator escolhido pelo utilizador, ou 0 se nenhuma escolha foi feita.</returns>
         /// <remarks>
         /// Verifica se o utilizador já fez uma escolha de ator favorito para a mídia especificada e retorna o identificador do ator escolhido.
         /// </remarks>
-        public async Task<int> GetUserChoice(string userId, int mediaId)
+        public async Task<int> GetUserChoice(string userId, int mediaId, string type)
         {
-            var favoriteActorChoice = await UserAlreadyChoose(userId, mediaId);
+            var favoriteActorChoice = await UserAlreadyChoose(userId, mediaId, type);
             if (favoriteActorChoice != null)
             {
                 return await Context.ActorMedia.Where(am => am.Id == favoriteActorChoice.ActorMediaId).Select(am => am.ActorId).SingleAsync();
@@ -188,15 +192,15 @@ namespace WatchersWorld.Server.Services
         /// <remarks>
         /// Adiciona relações entre atores e mídias na base de dados para atores que ainda não estão relacionados com a mídia especificada.
         /// </remarks>
-        private async Task<bool> EnsureActorMediaRelations(List<ActorDto> actors, int mediaId)
+        private async Task<bool> EnsureActorMediaRelations(List<ActorDto> actors, int mediaId,string type)
         {
             var existingActorMediaRelations = await Context.ActorMedia
-                .Where(am => am.MediaInfo.IdMedia == mediaId && actors.Select(a => a.ActorId).Contains(am.ActorId))
+                .Where(am => am.MediaInfo.IdMedia == mediaId && am.MediaInfo.Type == type && actors.Select(a => a.ActorId).Contains(am.ActorId))
                 .Select(am => am.ActorId)
                 .ToListAsync();
 
             var actorsToAdd = actors.Where(a => !existingActorMediaRelations.Contains(a.ActorId)).ToList();
-            var idTableMedia = await Context.MediaInfoModel.Where(m => m.IdMedia == mediaId).Select(m => m.IdTableMedia).SingleAsync();
+            var idTableMedia = await Context.MediaInfoModel.Where(m => m.IdMedia == mediaId && m.Type == type).Select(m => m.IdTableMedia).SingleAsync();
 
             foreach (var actor in actorsToAdd)
             {
@@ -255,10 +259,10 @@ namespace WatchersWorld.Server.Services
         /// <remarks>
         /// Consulta a base de dados para verificar se já existe uma escolha de ator favorito feita pelo utilizador para a mídia especificada.
         /// </remarks>
-        private async Task<FavoriteActorChoice?> UserAlreadyChoose(string userId, int mediaId)
+        private async Task<FavoriteActorChoice?> UserAlreadyChoose(string userId, int mediaId, string type)
         {
             var favoriteActorChoice = await Context.FavoriteActorChoice
-                    .FirstOrDefaultAsync(fac => fac.UserThatChooseId == userId && fac.ActorMedia.MediaInfo.IdMedia == mediaId);
+                    .FirstOrDefaultAsync(fac => fac.UserThatChooseId == userId && fac.ActorMedia.MediaInfo.IdMedia == mediaId && fac.ActorMedia.MediaInfo.Type == type);
             return favoriteActorChoice;
         }
 
@@ -270,9 +274,9 @@ namespace WatchersWorld.Server.Services
         /// <remarks>
         /// Consulta a base de dados para verificar a existência da mídia pelo seu identificador.
         /// </remarks>
-        private async Task<bool> MediaAlreadyOnDatabase(int mediaId)
+        private async Task<bool> MediaAlreadyOnDatabase(int mediaId, string type)
         {
-            var media = await Context.MediaInfoModel.Where(m => m.IdMedia == mediaId).FirstOrDefaultAsync();
+            var media = await Context.MediaInfoModel.Where(m => m.IdMedia == mediaId && m.Type == type).FirstOrDefaultAsync();
             if (media != null) return true;
             return false;
         }

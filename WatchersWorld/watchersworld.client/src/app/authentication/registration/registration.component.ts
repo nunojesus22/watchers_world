@@ -25,6 +25,8 @@ export class RegistrationComponent implements OnInit{
   submitted = false;
   errorMessages: any = {};
   submittedValues: any = {};
+  passwordFieldType: string = 'password';
+  passwordIcon: string = 'fa fa-solid fa-eye-slash';
 
   /**
    * Construtor para inicializar dependências e configurações.
@@ -61,6 +63,19 @@ export class RegistrationComponent implements OnInit{
   ngOnInit(): void {
     this.initializeGoogleButton();
     this.initializeForm();
+  }
+
+  /**
+   * Troca a visualização da palavra passe.
+   */
+  togglePasswordVisibility(): void {
+    if (this.passwordFieldType === 'password') {
+      this.passwordFieldType = 'text';
+      this.passwordIcon = 'fa fa-solid fa-eye';
+    } else {
+      this.passwordFieldType = 'password';
+      this.passwordIcon = 'fa fa-solid fa-eye-slash';
+    }
   }
 
     ngAfterViewInit() {

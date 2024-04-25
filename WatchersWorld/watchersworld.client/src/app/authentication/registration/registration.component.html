@@ -46,11 +46,12 @@
          </span>
        </div>
 
-      <div class="input-with-icon"
-           [class.has-error]="submitted && registrationForm.get('password')?.errors">
-        <i class="fa fa-lock"></i>
-        <input formControlName="password" type="password" placeholder="PALAVRA-PASSE" />
-      </div>
+       <div class="input-with-icon"
+            [class.has-error]="submitted && registrationForm.get('password')?.errors">
+         <i class="fa fa-lock"></i>
+         <input formControlName="password" [type]="passwordFieldType" placeholder="PALAVRA-PASSE" />
+         <i [ngClass]="passwordIcon" (click)="togglePasswordVisibility()"></i>
+       </div>
 
       <div class="error-container" *ngIf="submitted && registrationForm.get('password')?.errors">
         <span class="error-message" *ngIf="registrationForm.get('password')?.hasError('required')">

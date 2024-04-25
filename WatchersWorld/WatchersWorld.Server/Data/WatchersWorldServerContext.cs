@@ -65,7 +65,7 @@ namespace WatchersWorld.Server.Data
 
             modelBuilder.Entity<MediaInfoModel>()
                 .HasIndex(p => p.IdMedia)
-                .IsUnique(true);
+                .IsUnique(false);
 
             modelBuilder.Entity<Actor>()
                 .Property(a => a.ActorId)

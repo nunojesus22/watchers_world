@@ -42,36 +42,39 @@ namespace WatchersWorld.Server.Controllers
                 case false:
                     return BadRequest("Não foi possível selecionar o ator favorito.");
                 case true:
-                    var choicesPercentage = await _ratingMediaService.GetRatesForMedia(ratingMediaDto.Media.MediaId);
+                    var choicesPercentage = await _ratingMediaService.GetRatesForMedia(ratingMediaDto.Media.MediaId, ratingMediaDto.Media.Type);
                     return Ok(choicesPercentage);
             }
         }
 
         /// <summary>
-        /// Obtém as avaliações de uma media específica.
+        /// Obtém as avaliações de uma mídia específica.
         /// </summary>
-        /// <param name="mediaId">Identificador da media.</param>
-        /// <returns>Percentagens de avaliação da media.</returns>
-        [HttpGet("get-rates/{mediaId}")]
-        public async Task<IActionResult> GetChoicesForMedia(int mediaId)
+        /// <param name="mediaId">Identificador da mídia.</param>
+        /// <param name="type">Tipo da mídia.</param>
+        /// <returns>Percentagens de avaliação da mídia.</returns>
+        [HttpGet("get-rates")]
+        public async Task<IActionResult> GetChoicesForMedia([FromQuery] string mediaId, [FromQuery] string type)
         {
-            var choicesPercentage = await _ratingMediaService.GetRatesForMedia(mediaId);
+            var choicesPercentage = await _ratingMediaService.GetRatesForMedia(int.Parse(mediaId), type);
             return Ok(choicesPercentage);
         }
+
 
         /// <summary>
         /// Obtém a avaliação de um utilizador para uma media específica.
         /// </summary>
         /// <param name="username">Nome do utilizador.</param>
         /// <param name="mediaId">Identificador da media.</param>
+        /// <param name="type">Tipo da media.</param>
         /// <returns>Avaliação do utilizador para a media, se existir.</returns>
-        [HttpGet("get-user-choice/{username}/{mediaId}")]
-        public async Task<IActionResult> GetUserChoicesForMedia(string username, int mediaId)
+        [HttpGet("get-user-choice/{username}")]
+        public async Task<IActionResult> GetUserChoicesForMedia(string username, [FromQuery] string mediaId, [FromQuery] string type)
         {
             var userAuthenticated = await _userManager.FindByNameAsync(username);
             if (userAuthenticated == null) return BadRequest("User não reconhecido no sistema!");
 
-            var result = await _ratingMediaService.GetUserRate(userAuthenticated.Id, mediaId);
+            var result = await _ratingMediaService.GetUserRate(userAuthenticated.Id, int.Parse(mediaId), type);
             if (result != 0)
             {
                 return Ok(result);
@@ -84,13 +87,15 @@ namespace WatchersWorld.Server.Controllers
         /// Obtém a avaliação média de uma media específica.
         /// </summary>
         /// <param name="mediaId">Identificador da media.</param>
+        /// <param name="type">Tipo da media.</param>
         /// <returns>Avaliação média da media.</returns>
-        [HttpGet("get-average-rating/{mediaId}")]
-        public async Task<IActionResult> GetAverageRatingForMedia(int mediaId)
+        [HttpGet("get-average-rating")]
+        public async Task<IActionResult> GetAverageRatingForMedia([FromQuery] string mediaId, [FromQuery] string type)
         {
-            var averageRating = await _ratingMediaService.GetAverageRatingForMedia(mediaId);
+            var averageRating = await _ratingMediaService.GetAverageRatingForMedia(int.Parse(mediaId), type);
             return Ok(averageRating);
         }
+
 
         [HttpGet("get-rating-by-user")]
         public async Task<IActionResult> GetTotalFavoriteActors()

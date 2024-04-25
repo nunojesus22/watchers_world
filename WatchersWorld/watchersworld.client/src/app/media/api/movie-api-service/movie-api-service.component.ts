@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { User } from '../../../authentication/models/user';
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { FavoriteActor } from '../../media-models/fav-actor';
+import { UserMedia } from '../../../profile/models/user-media';
 
 
 @Injectable({
@@ -558,8 +559,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com as classificações dadas à mídia.
  */
-  getRatingForMedia(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-rates/${mediaId}`);
+  getRatingForMedia(media: UserMedia): Observable<any> {
+    const headers = this.getHeaders();
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-rates`, { headers, params });
   }
 
   /**
@@ -567,8 +571,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com a classificação média da mídia.
  */
-  getAverageRatingForMedia(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-average-rating/${mediaId}`);
+  getAverageRatingForMedia(media: UserMedia): Observable<any> {
+    const headers = this.getHeaders();
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-average-rating`, {headers, params });
   }
 
   /**
@@ -577,9 +584,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com a classificação dada pelo utilizador à mídia.
  */
-  getUserRatingForMedia(username: string, mediaId: number): Observable<any> {
+  getUserRatingForMedia(username: string, media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-user-choice/${username}/${mediaId}`, { headers });
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/UserRatingMedia/get-user-choice/${username}`, { headers, params });
   }
 
   // ATORES
@@ -589,8 +598,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com as escolhas de atores favoritos para a mídia.
  */
-  getActorChoicesForMedia(mediaId: number): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-choices/${mediaId}`);
+  getActorChoicesForMedia(media: UserMedia): Observable<any> {
+    const headers = this.getHeaders();
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-choices`, { headers, params });
   }
 
   /**
@@ -609,9 +621,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com a escolha de ator favorito do utilizador para a mídia.
  */
-  getUserActorChoice(username: string, mediaId: number): Observable<any> {
+  getUserActorChoice(username: string, media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-user-choice/${username}/${mediaId}`, { headers });
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/FavoriteActorChoice/get-user-choice/${username}`, { headers, params });
   }
 
   /**
