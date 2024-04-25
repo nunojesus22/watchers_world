@@ -10,6 +10,7 @@ using WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration;
 
 namespace WatchersWorld_Teste
 {
+    
     public class IRatingMediaServiceTest : IClassFixture<IntegrationTestsFixture>
     {
         private readonly RatingMediaService _service;
@@ -27,7 +28,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.UserAlreadyGiveRating(user!.Id, 1011985);
+            var result = await _service.UserAlreadyGiveRating(user!.Id, 1011985, "movie");
 
             Assert.IsType<UserRatingMedia>(result);
         }
@@ -37,7 +38,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.UserAlreadyGiveRating(user!.Id, 1096197);
+            var result = await _service.UserAlreadyGiveRating(user!.Id, 1096197, "movie");
 
             Assert.Null(result);
         }
@@ -45,21 +46,21 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task MediaAlreadyOnDatabase_MediaAlreadyOnDatabaseWhenMediaAlreadyExists_ShouldReturnFalse()
         {
-            var result = await _service.MediaAlreadyOnDatabase(1011985);
+            var result = await _service.MediaAlreadyOnDatabase(1011985, "movie");
             Assert.True(result);
         }
 
         [Fact]
         public async Task MediaAlreadyOnDatabase_MediaAlreadyOnDatabaseWhenMediaDoesntExists_ShouldReturnFalse()
         {
-            var result = await _service.MediaAlreadyOnDatabase(1072790);
+            var result = await _service.MediaAlreadyOnDatabase(1072790, "movie");
             Assert.False(result);
         }
 
         [Fact]
         public async Task GetAverageRatingForMedia_GetAverageRatingForMediaThatDoesntExists_ShouldReturnZero()
         {
-            var result = await _service.GetAverageRatingForMedia(1072790);
+            var result = await _service.GetAverageRatingForMedia(1072790, "movie");
 
             Assert.Equal(0, result);
         }
@@ -75,7 +76,7 @@ namespace WatchersWorld_Teste
 
             await _service.AddMediaToDatabase(MadameWeb);
 
-            var result = await _service.GetAverageRatingForMedia(1072790);
+            var result = await _service.GetAverageRatingForMedia(1072790, "movie");
 
             Assert.Equal(0, result);
         }
@@ -83,7 +84,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetAverageRatingForMedia_GetAverageRatingForMediaThatHaveRates_ShouldReturnRigth()
         {
-            var result = await _service.GetAverageRatingForMedia(1011985);
+            var result = await _service.GetAverageRatingForMedia(1011985, "movie");
 
             Assert.Equal(4.5, result);
         }
@@ -93,7 +94,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.GetUserRate(user!.Id, 1072790);
+            var result = await _service.GetUserRate(user!.Id, 1072790, "movie");
 
             Assert.Equal(0, result);
         }
@@ -111,7 +112,7 @@ namespace WatchersWorld_Teste
 
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.GetUserRate(user!.Id, 932420);
+            var result = await _service.GetUserRate(user!.Id, 932420, "movie");
 
             Assert.Equal(0, result);
         }
@@ -121,7 +122,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.GetUserRate(user!.Id, 1011985);
+            var result = await _service.GetUserRate(user!.Id, 1011985, "movie");
 
             Assert.Equal(5, result);
         }
@@ -129,7 +130,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetRatesForMedia_GetRatesForMediaWhenMediaDoesntExist_ShouldReturnEmpty()
         {
-            var result = await _service.GetRatesForMedia(1072790);
+            var result = await _service.GetRatesForMedia(1072790, "movie");
 
             Assert.Empty(result);
         }
@@ -143,7 +144,7 @@ namespace WatchersWorld_Teste
                 Type = "movie"
             };
 
-            var result = await _service.GetRatesForMedia(940551);
+            var result = await _service.GetRatesForMedia(940551, "movie");
 
             Assert.Empty(result);
         }
@@ -151,7 +152,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetRatesForMedia_GetRatesForMediaWhenMediaHasVotes_ShouldReturnRigth()
         {
-            var result = await _service.GetRatesForMedia(1011985);
+            var result = await _service.GetRatesForMedia(1011985, "movie");
 
             Assert.NotEmpty(result);
             Assert.Equal(2, result.Count);
@@ -212,7 +213,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var beforeTest = await _service.GetUserRate(user!.Id, 872585);
+            var beforeTest = await _service.GetUserRate(user!.Id, 872585, "movie");
             Assert.Equal(4, beforeTest);
 
             var result = await _service.GiveRatingToMedia(user!.Id, new UserMediaDto
@@ -223,8 +224,9 @@ namespace WatchersWorld_Teste
 
             Assert.True(result);
 
-            var afterTest = await _service.GetUserRate(user!.Id, 872585);
+            var afterTest = await _service.GetUserRate(user!.Id, 872585, "movie");
             Assert.Equal(5, afterTest);
         }
     }
+    
 }

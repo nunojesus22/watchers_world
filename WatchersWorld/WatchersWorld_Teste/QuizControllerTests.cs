@@ -14,6 +14,7 @@ using static WatchersWorld.Server.Controllers.QuizController;
 
 namespace WatchersWorld_Teste
 {
+    
     public class QuizControllerTests
     {
         private readonly QuizController _controller;
@@ -47,7 +48,8 @@ namespace WatchersWorld_Teste
             var attemptDto = new QuizController.QuizAttemptDto
             {
                 MediaId = 1,
-                Score = 80
+                Score = 80,
+                Type="movie"
             };
 
             var result = await _controller.SubmitAttempt(attemptDto);
@@ -59,8 +61,9 @@ namespace WatchersWorld_Teste
         public async Task CheckQuizStatus_ReturnsOk()
         {
             var mediaId = 1;
+            var type = "movie";
 
-            var result = await _controller.CheckQuizStatus(mediaId);
+            var result = await _controller.CheckQuizStatus(mediaId.ToString(),type);
 
             Assert.IsType<OkObjectResult>(result);
         }
@@ -73,7 +76,8 @@ namespace WatchersWorld_Teste
             var attemptDto = new QuizController.QuizAttemptDto
             {
                 MediaId = 1,
-                Score = 80
+                Score = 80,
+                Type = "movie"
             };
             var result = await _controller.SubmitAttempt(attemptDto);
 
@@ -82,4 +86,5 @@ namespace WatchersWorld_Teste
             Assert.IsType<OkObjectResult>(result);
         }
     }
+    
 }

@@ -14,6 +14,7 @@ using WatchersWorld.Server.Models.Media.FavoriteActor;
 
 namespace WatchersWorld_Teste
 {
+    
     public class FavoriteActorServiceTest : IClassFixture<IntegrationTestsFixture>
     {
         private readonly FavoriteActorService _service;
@@ -31,7 +32,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.GetUserChoice(user!.Id, 792307);
+            var result = await _service.GetUserChoice(user!.Id, 792307,"movie");
 
             Assert.Equal(0, result);
         }
@@ -41,7 +42,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.GetUserChoice(user!.Id, 787699);
+            var result = await _service.GetUserChoice(user!.Id, 787699, "movie");
 
             Assert.Equal(0, result);
         }
@@ -51,7 +52,7 @@ namespace WatchersWorld_Teste
         {
             var user = await _userManager.FindByNameAsync("UserTest1");
 
-            var result = await _service.GetUserChoice(user!.Id, 872585);
+            var result = await _service.GetUserChoice(user!.Id, 872585, "movie");
 
             Assert.Equal(2037, result);
         }
@@ -59,7 +60,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetChoicesForMedia_GetChoicesForMediaWhenMediaDoesntExists_ShouldReturnEmpty()
         {
-            var result = await _service.GetChoicesForMedia(792307);
+            var result = await _service.GetChoicesForMedia(792307, "movie");
 
             Assert.Empty(result);
         }
@@ -67,7 +68,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetChoicesForMedia_GetChoicesForMediaWhenMediaDoesntHaveVotes_ShouldReturnEmpty()
         {
-            var result = await _service.GetChoicesForMedia(787699);
+            var result = await _service.GetChoicesForMedia(787699, "movie");
 
             Assert.Empty(result);
         }
@@ -75,7 +76,7 @@ namespace WatchersWorld_Teste
         [Fact]
         public async Task GetChoiceForMedia_GetChoicesForMediaWhenMediaHaveVotes_ShouldReturnRigth()
         {
-            var result = await _service.GetChoicesForMedia(872585);
+            var result = await _service.GetChoicesForMedia(872585, "movie");
 
             Assert.NotEmpty(result);
             Assert.Equal(2, result.Count);
@@ -125,4 +126,5 @@ namespace WatchersWorld_Teste
 
 
     }
+    
 }
