@@ -720,12 +720,12 @@ namespace WatchersWorld.Server.Controllers
             var url = $"{_config["JWT:ClientUrl"]}/{_config["Email:ConfirmEmailPath"]}?token={token}&email={user.Email}";
 
 
-            var body = $"<p>Hello: {user.UserName}</p>" +
-                        "<p>Please confirm your email address by clicking on the following link.</p>" + $"<p><a href=\"{url}\">Click here</a></p>" +
-                        "<p>Thank you,</p>" +
+            var body = $"<p>Olá: {user.UserName}</p>" +
+                        "<p>Por favor, confirma o teu email clicando no seguinte link.</p>" + $"<p><a href=\"{url}\">Clica aqui.</a></p>" +
+                        "<p>Obrigado, </p>" +
                         $"<br>{_config["Email: ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email, "Confirm your email", body);
+            var emailSend = new EmailSendDto(user.Email, "Confirma o teu email", body);
             return await _emailService.SendEmailAsync(emailSend);
         }
 
@@ -741,12 +741,12 @@ namespace WatchersWorld.Server.Controllers
             var url = $"{_config["JWT:ClientUrl"]}/{_config["Email:ResetPasswordPath"]}?token={token}&email={user.Email}";
 
 
-            var body = $"<p>Hello: {user.UserName}</p>" +
-                        "<p>In order to reset your password, click on the following link.</p>" + $"<p><a href=\"{url}\">Click here</a></p>" +
-                        "<p>Thank you,</p>" +
+            var body = $"<p>Olá: {user.UserName}</p>" +
+                        "<p>Para trocares a tua palavra-passe, clica no seguinte link.</p>" + $"<p><a href=\"{url}\">Clica aqui</a></p>" +
+                        "<p>Obrigado,</p>" +
                         $"<br>{_config["Email: ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email, "Reset your password", body);
+            var emailSend = new EmailSendDto(user.Email, "Troca a tua palavra-passe", body);
             return await _emailService.SendEmailAsync(emailSend);
         }
         #endregion

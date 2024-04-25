@@ -8,6 +8,7 @@ import { AdminService } from '../../../admin/service/admin.service';
 import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { Actor } from '../../media-models/actor';
 import { GamificationService } from '../../../gamification/Service/gamification.service';
+import { UserMedia } from '../../../profile/models/user-media';
 
 @Component({
   selector: 'app-series-details',
@@ -1006,10 +1007,10 @@ export class SeriesDetailsComponent {
  * @returns void
  */
   setUserRatingForMedia(rating: number): void {
-    if (this.currentUser) {
+    if (this.auth.getLoggedInUserName() !== null) {
       const userRatingMedia: UserRatingMedia = {
         Rating: rating,
-        Username: this.currentUser,
+        Username: this.auth.getLoggedInUserName()!,
         Media: { mediaId: this.getSerieDetailsResult.id, type: "serie" },
       };
       this.service.giveRatingToMedia(userRatingMedia).subscribe({
@@ -1046,8 +1047,12 @@ export class SeriesDetailsComponent {
  * @returns void
  */
   loadUserRatingForMedia(mediaId: any): void {
-    if (this.currentUser) {
-      this.service.getUserRatingForMedia(this.currentUser, mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+    if (this.auth.getLoggedInUserName() !== null) {
+      this.service.getUserRatingForMedia(this.auth.getLoggedInUserName()!, media).subscribe({
         next: (rating) => {
           if (rating) {
             this.userRating = rating;
@@ -1071,7 +1076,11 @@ export class SeriesDetailsComponent {
  * @returns void
  */
   loadAverageRatingForMedia(mediaId: any): void {
-    this.service.getAverageRatingForMedia(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+    this.service.getAverageRatingForMedia(media).subscribe({
       next: (averageRating) => {
         if (averageRating) {
           this.averageRating = averageRating.toFixed(2);
@@ -1108,7 +1117,11 @@ export class SeriesDetailsComponent {
  * @returns void
  */
   getFavoriteActorChoicesForMedia(mediaId: any): void {
-    this.service.getActorChoicesForMedia(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+    this.service.getActorChoicesForMedia(media).subscribe({
       next: (choices) => {
         this.actorVotePercentages = {};
         choices.forEach((choice: { actorId: number; percentage: number }) => {
@@ -1129,8 +1142,12 @@ export class SeriesDetailsComponent {
  * @returns void
  */
   getUserFavoriteActorChoice(mediaId: any): void {
-    if (this.currentUser /*&& this.isWatched*/) {
-      this.service.getUserActorChoice(this.currentUser, mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+    if (this.auth.getLoggedInUserName() !== null /*&& this.isWatched*/) {
+      this.service.getUserActorChoice(this.auth.getLoggedInUserName()!, media).subscribe({
         next: (response) => {
           //console.log(response);
           if (response) {

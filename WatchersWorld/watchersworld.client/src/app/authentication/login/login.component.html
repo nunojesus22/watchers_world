@@ -27,8 +27,9 @@
       <div class="input-with-icon"
            [class.has-error]="submitted && (loginForm.get('password')?.errors || (errorMessages['Password'] && !isFieldModified('password')))">
         <i class="fa fa-lock"></i>
-        <input formControlName="password" type="password" placeholder="PALAVRA-PASSE"
+        <input formControlName="password" [type]="passwordFieldType" placeholder="PALAVRA-PASSE"
                [class.is-invalid]="submitted && loginForm.get('password')?.errors" />
+        <i [ngClass]="passwordIcon" (click)="togglePasswordVisibility()"></i>
       </div>
 
       <div class="error-container" *ngIf="submitted && (loginForm.get('password')?.errors || errorMessages['Password'])">

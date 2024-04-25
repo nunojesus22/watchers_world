@@ -9,6 +9,7 @@ import { UserRatingMedia } from '../../media-models/UserRatingMedia';
 import { FavoriteActor } from '../../media-models/fav-actor';
 import { Actor } from '../../media-models/actor';
 import { GamificationService } from '../../../gamification/Service/gamification.service';
+import { UserMedia } from '../../../profile/models/user-media';
 
 @Component({
   selector: 'app-movie-details',
@@ -959,10 +960,10 @@ export class MovieDetailsComponent {
  * @param rating A classificação atribuída pelo utilizador para a mídia.
  */
   setUserRatingForMedia(rating: number): void {
-    if (this.currentUser) {
+    if (this.auth.getLoggedInUserName() !== null) {
       const userRatingMedia: UserRatingMedia = {
         Rating: rating,
-        Username: this.currentUser,
+        Username: this.auth.getLoggedInUserName()!,
         Media: { mediaId: this.getMovieDetailResult.id, type: "movie" },
       };
       this.service.giveRatingToMedia(userRatingMedia).subscribe({
@@ -996,8 +997,12 @@ export class MovieDetailsComponent {
  * @param mediaId O ID da mídia para a qual a classificação do utilizador será carregada.
  */
   loadUserRatingForMedia(mediaId: any): void {
-    if (this.currentUser) {
-      this.service.getUserRatingForMedia(this.currentUser, mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "movie"
+    };
+    if (this.auth.getLoggedInUserName() !== null) {
+      this.service.getUserRatingForMedia(this.auth.getLoggedInUserName()!, media).subscribe({
         next: (rating) => {
           if (rating) {
             this.userRating = rating;
@@ -1019,7 +1024,11 @@ export class MovieDetailsComponent {
  * @param mediaId O ID da mídia para a qual a classificação média será carregada.
  */
   loadAverageRatingForMedia(mediaId: any): void {
-    this.service.getAverageRatingForMedia(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "movie"
+    };
+    this.service.getAverageRatingForMedia(media).subscribe({
       next: (averageRating) => {
         if (averageRating) {
           this.averageRating = averageRating.toFixed(2);
@@ -1058,7 +1067,11 @@ export class MovieDetailsComponent {
  * @param mediaId O ID da mídia para a qual as escolhas de atores favoritos serão obtidas.
  */
   getFavoriteActorChoicesForMedia(mediaId: any): void {
-    this.service.getActorChoicesForMedia(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "movie"
+    };
+    this.service.getActorChoicesForMedia(media).subscribe({
       next: (choices) => {
         this.actorVotePercentages = {};
         choices.forEach((choice: { actorId: number; percentage: number }) => {
@@ -1077,8 +1090,12 @@ export class MovieDetailsComponent {
  * @param mediaId O ID da mídia para a qual a escolha de ator favorito do utilizador será obtida.
  */
   getUserFavoriteActorChoice(mediaId: any): void {
-    if (this.currentUser /*&& this.isWatched*/) {
-      this.service.getUserActorChoice(this.currentUser, mediaId).subscribe({
+    if (this.auth.getLoggedInUserName() !== null /*&& this.isWatched*/) {
+      let media: UserMedia = {
+        mediaId: mediaId,
+        type: "movie"
+      };
+      this.service.getUserActorChoice(this.auth.getLoggedInUserName()!, media).subscribe({
         next: (response) => {
           //console.log(response);
           if (response) {

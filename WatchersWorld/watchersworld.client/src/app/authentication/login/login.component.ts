@@ -28,6 +28,8 @@ export class LoginComponent {
   submittedValues: any = {};
   returnUrl: string | null = null;
   banDurationMessage: string = '';
+  passwordFieldType: string = 'password';
+  passwordIcon: string = 'fa fa-solid fa-eye-slash';
 
   /**
    * Construtor para inicializar dependências e configurações.
@@ -85,6 +87,19 @@ export class LoginComponent {
       email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+  }
+
+  /**
+   * Troca a visualização da palavra passe.
+   */
+  togglePasswordVisibility(): void {
+    if (this.passwordFieldType === 'password') {
+      this.passwordFieldType = 'text';
+      this.passwordIcon = 'fa fa-solid fa-eye';
+    } else {
+      this.passwordFieldType = 'password';
+      this.passwordIcon = 'fa fa-solid fa-eye-slash';
+    }
   }
 
   /**

@@ -42,7 +42,7 @@ namespace WatchersWorld.Server.Controllers
                 case false:
                     return BadRequest("Não foi possível selecionar o ator favorito.");
                 case true:
-                    var choicesPercentage = await _favoriteActorService.GetChoicesForMedia(favoriteActorChoice.Media.MediaId);
+                    var choicesPercentage = await _favoriteActorService.GetChoicesForMedia(favoriteActorChoice.Media.MediaId, favoriteActorChoice.Media.Type);
                     return Ok(choicesPercentage);
             }
         }
@@ -52,10 +52,10 @@ namespace WatchersWorld.Server.Controllers
         /// </summary>
         /// <param name="mediaId">Identificador da media.</param>
         /// <returns>Percentagens de escolhas para a media.</returns>
-        [HttpGet("get-choices/{mediaId}")]
-        public async Task<IActionResult> GetChoicesForMedia(int mediaId)
+        [HttpGet("get-choices")]
+        public async Task<IActionResult> GetChoicesForMedia([FromQuery] string mediaId, [FromQuery] string type)
         {
-            var choicesPercentage = await _favoriteActorService.GetChoicesForMedia(mediaId);
+            var choicesPercentage = await _favoriteActorService.GetChoicesForMedia(int.Parse(mediaId), type);
             return Ok(choicesPercentage);
         }
 
@@ -65,13 +65,13 @@ namespace WatchersWorld.Server.Controllers
         /// <param name="username">Nome de utilizador.</param>
         /// <param name="mediaId">Identificador da media.</param>
         /// <returns>Escolha do utilizador, se existir.</returns>
-        [HttpGet("get-user-choice/{username}/{mediaId}")]
-        public async Task<IActionResult> GetUserChoiceGeForMedia(string username, int mediaId)
+        [HttpGet("get-user-choice/{username}")]
+        public async Task<IActionResult> GetUserChoiceGeForMedia(string username, [FromQuery] string mediaId, [FromQuery] string type)
         {
             var userAuthenticated = await _userManager.FindByNameAsync(username);
             if (userAuthenticated == null) return BadRequest("User não reconhecido no sistema!");
 
-            var result = await _favoriteActorService.GetUserChoice(userAuthenticated.Id, mediaId);
+            var result = await _favoriteActorService.GetUserChoice(userAuthenticated.Id, int.Parse(mediaId), type);
             if (result != 0)
             {
                 return Ok(result);

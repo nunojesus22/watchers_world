@@ -26,6 +26,8 @@ export class ResetPasswordComponent {
   passwordValue: string = "";
   token: string | undefined;
   email: string | undefined;
+  passwordFieldType: string = 'password';
+  passwordIcon: string = 'fa fa-solid fa-eye-slash';
 
   /**
    * Construtor para inicializar dependências.
@@ -73,6 +75,19 @@ export class ResetPasswordComponent {
     this.passwordForm = this.formBuilder.group({
       newPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}"), Validators.maxLength(12)]]
     })
+  }
+
+  /**
+   * Troca a visualização da palavra passe.
+   */
+  togglePasswordVisibility(): void {
+    if (this.passwordFieldType === 'password') {
+      this.passwordFieldType = 'text';
+      this.passwordIcon = 'fa fa-solid fa-eye';
+    } else {
+      this.passwordFieldType = 'password';
+      this.passwordIcon = 'fa fa-solid fa-eye-slash';
+    }
   }
 
   /**

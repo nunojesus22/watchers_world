@@ -26,7 +26,7 @@ namespace WatchersWorld.Server.Services
         /// </summary>
         /// <param name="mediaId">O identificador da Media.</param>
         /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém uma lista de percentagens de avaliações.</returns>
-        Task<List<RatingPercentageDto>> GetRatesForMedia(int mediaId);
+        Task<List<RatingPercentageDto>> GetRatesForMedia(int mediaId, string type);
 
         /// <summary>
         /// Obtém a avaliação específica dada por um utilizador a uma Media.
@@ -34,14 +34,14 @@ namespace WatchersWorld.Server.Services
         /// <param name="userId">O identificador do utilizador.</param>
         /// <param name="mediaId">O identificador da Media.</param>
         /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém o valor da avaliação ou 0 se não houver avaliação.</returns>
-        Task<int> GetUserRate(string userId, int mediaId);
+        Task<int> GetUserRate(string userId, int mediaId, string type);
 
         /// <summary>
         /// Calcula a avaliação média para uma Media específica.
         /// </summary>
         /// <param name="mediaId">O identificador da Media.</param>
         /// <returns>Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém a avaliação média como um double.</returns>
-        Task<double> GetAverageRatingForMedia(int mediaId);
+        Task<double> GetAverageRatingForMedia(int mediaId, string type);
 
         Task<int> GetTotalRatinsByUser(string username);
 
@@ -76,7 +76,7 @@ namespace WatchersWorld.Server.Services
                 return false;
             }
 
-            if (!await MediaAlreadyOnDatabase(media.MediaId))
+            if (!await MediaAlreadyOnDatabase(media.MediaId, media.Type))
             {
                 var result = await AddMediaToDatabase(media);
                 if (!result) return false;
@@ -84,8 +84,8 @@ namespace WatchersWorld.Server.Services
 
             try
             {
-                var userRating = await UserAlreadyGiveRating(userId, media.MediaId);
-                var mediaInfo = await Context.MediaInfoModel.Where(m => m.IdMedia == media.MediaId).FirstOrDefaultAsync();
+                var userRating = await UserAlreadyGiveRating(userId, media.MediaId, media.Type);
+                var mediaInfo = await Context.MediaInfoModel.Where(m => m.IdMedia == media.MediaId && m.Type == media.Type).FirstOrDefaultAsync();
 
                 if (userRating != null)
                 {
@@ -114,11 +114,11 @@ namespace WatchersWorld.Server.Services
         }
 
         /// <inheritdoc />
-        public async Task<List<RatingPercentageDto>> GetRatesForMedia(int mediaId)
+        public async Task<List<RatingPercentageDto>> GetRatesForMedia(int mediaId, string type)
         {
             var ratesForMedia = await Context.UserRatingMedia
                 .Include(urm => urm.MediaInfo)
-                .Where(urm => urm.MediaInfo.IdMedia == mediaId)
+                .Where(urm => urm.MediaInfo.IdMedia == mediaId && urm.MediaInfo.Type == type)
                 .ToListAsync();
 
             var totalChoices = ratesForMedia.Count;
@@ -141,9 +141,9 @@ namespace WatchersWorld.Server.Services
         }
 
         /// <inheritdoc />
-        public async Task<int> GetUserRate(string userId, int mediaId)
+        public async Task<int> GetUserRate(string userId, int mediaId, string type)
         {
-            var userRating = await UserAlreadyGiveRating(userId, mediaId);
+            var userRating = await UserAlreadyGiveRating(userId, mediaId, type);
             if (userRating != null)
             {
                 return userRating.Rating;
@@ -152,11 +152,11 @@ namespace WatchersWorld.Server.Services
         }
 
         /// <inheritdoc />
-        public async Task<double> GetAverageRatingForMedia(int mediaId)
+        public async Task<double> GetAverageRatingForMedia(int mediaId, string type)
         {
             var ratesForMedia = await Context.UserRatingMedia
                 .Include(urm => urm.MediaInfo)
-                .Where(urm => urm.MediaInfo.IdMedia == mediaId)
+                .Where(urm => urm.MediaInfo.IdMedia == mediaId && urm.MediaInfo.Type == type)
                 .ToListAsync();
 
             var totalRatings = ratesForMedia.Count;
@@ -181,10 +181,10 @@ namespace WatchersWorld.Server.Services
         /// Retorna uma instância de <see cref="UserRatingMedia"/> caso o utilizador já tenha avaliado a Media;
         /// caso contrário, retorna null.
         /// </returns>
-        public async Task<UserRatingMedia?> UserAlreadyGiveRating(string userId, int mediaId)
+        public async Task<UserRatingMedia?> UserAlreadyGiveRating(string userId, int mediaId, string type)
         {
             var userRatingMedia = await Context.UserRatingMedia
-                    .FirstOrDefaultAsync(urm => urm.UserThatRateId == userId && urm.MediaInfo.IdMedia == mediaId);
+                    .FirstOrDefaultAsync(urm => urm.UserThatRateId == userId && urm.MediaInfo.IdMedia == mediaId && urm.MediaInfo.Type == type);
             return userRatingMedia;
         }
 
@@ -195,9 +195,9 @@ namespace WatchersWorld.Server.Services
         /// <returns>
         /// Retorna true se a Media já existir na base de dados; caso contrário, retorna false.
         /// </returns>
-        public async Task<bool> MediaAlreadyOnDatabase(int mediaId)
+        public async Task<bool> MediaAlreadyOnDatabase(int mediaId, string type)
         {
-            var media = await Context.MediaInfoModel.Where(m => m.IdMedia == mediaId).FirstOrDefaultAsync();
+            var media = await Context.MediaInfoModel.Where(m => m.IdMedia == mediaId && m.Type == type).FirstOrDefaultAsync();
             if (media != null) return true;
             return false;
         }
