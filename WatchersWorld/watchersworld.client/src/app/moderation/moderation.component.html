@@ -22,7 +22,16 @@
         </div>
         <div class="actions">
           <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
-          <button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>
+          <!--<button *ngIf="userProfile.isBanned" class="unban" (click)="userProfile.userName && unban(userProfile.userName)">Remover ban</button>-->
+          <app-confirm-dialog *ngIf="userProfile.isBanned"
+                              [classCss]="'delete'"
+                              [titleButton]="'Remover ban'"
+                              [titlePopup]="'Confirmação'"
+                              [messagePopup]="'Tem certeza que deseja remover o ban nesta conta?'"
+                              [confirmationTextButton]="'Confirmar'"
+                              [cancelTextButton]="'Cancelar'"
+                              (confirmAction)="unban(userProfile.userName)">
+          </app-confirm-dialog>
         </div>
       </div>
     </ng-container>
@@ -43,8 +52,24 @@
       <button class="close-popup" (click)="hideBanPopup()">X</button>
       <h4>Selecione o tipo de ban:</h4>
       <div class="ban-buttons-container">
-        <button class="banPerm" (click)="banPerm(selectedUserForBan)">Banir permanentemente</button>
-        <button class="banTemp" (click)="banTemp(selectedUserForBan)">Banir temporariamente</button>
+        <!--<button class="banPerm" (click)="banPerm(selectedUserForBan)">Banir permanentemente</button>-->
+        <app-confirm-dialog [classCss]="'banPerm'"
+                            [titleButton]="'Banir permanentemente'"
+                            [titlePopup]="'Confirmação'"
+                            [messagePopup]="'Tem certeza que deseja banir permanentemente esta conta?'"
+                            [confirmationTextButton]="'Confirmar'"
+                            [cancelTextButton]="'Cancelar'"
+                            (confirmAction)="banPerm(selectedUserForBan)">
+        </app-confirm-dialog>
+        <!--<button class="banTemp" (click)="banTemp(selectedUserForBan)">Banir temporariamente</button>-->
+        <app-confirm-dialog [classCss]="'banTemp'"
+                            [titleButton]="'Banir temporariamente'"
+                            [titlePopup]="'Confirmação'"
+                            [messagePopup]="'Tem certeza que deseja banir temporiamente esta conta?'"
+                            [confirmationTextButton]="'Confirmar'"
+                            [cancelTextButton]="'Cancelar'"
+                            (confirmAction)="banTemp(selectedUserForBan)">
+        </app-confirm-dialog>
       </div>
       <div class="ban-duration-container">
         <input type="number" [(ngModel)]="banDuration" placeholder="Duração em dias" min="1" class="ban-duration-input">

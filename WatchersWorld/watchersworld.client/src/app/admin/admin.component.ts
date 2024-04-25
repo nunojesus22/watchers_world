@@ -164,7 +164,7 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador a ser banido temporariamente.
    */
   banTemp(username: string | null): void {
-    if (confirm('Tem a certeza que pretende banir temporariamente este utilizador?')) {
+    //if (confirm('Tem a certeza que pretende banir temporariamente este utilizador?')) {
       if (!username) {
         console.error('Username is undefined, cannot ban user temporarily.');
         return;
@@ -187,7 +187,7 @@ export class AdminComponent implements OnDestroy {
           console.error("Error banning user temporarily:", error);
         }
       });
-    }
+    //}
   }
 
   /**
@@ -196,7 +196,7 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador a ser banido permanentemente.
    */
   banPerm(username: string | null): void {
-    if (confirm('Tem a certeza que pretende banir permanentemente este utilizador?')) {
+    //if (confirm('Tem a certeza que pretende banir permanentemente este utilizador?')) {
       if (!username) {
         console.error('Username is undefined, cannot ban user.');
         return;
@@ -214,7 +214,7 @@ export class AdminComponent implements OnDestroy {
           console.error("Error banning user:", error);
         }
       });
-    }
+    //}
   }
 
   /**
@@ -223,7 +223,7 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador cuja conta será deletada.
    */
   deleteAccount(username: string | undefined): void {
-    if (confirm('Tem a certeza que pretende apagar a conta deste utilizador? Esta ação será permanente.')) {
+    //if (confirm('Tem a certeza que pretende apagar a conta deste utilizador? Esta ação será permanente.')) {
       if (!username) {
         console.error('Username is undefined, cannot delete account.');
         return;
@@ -236,7 +236,7 @@ export class AdminComponent implements OnDestroy {
           console.error("Error deleting user:", error);
         }
       });
-    }
+    //}
   }
 
   /**
@@ -245,7 +245,7 @@ export class AdminComponent implements OnDestroy {
    * @param userName O nome do utilizador a ser promovido.
    */
   makeModerator(userName: string): void {
-    if (confirm('Tem a certeza que pretende tornar este utilizador um Moderator?')) {
+    //if (confirm('Tem a certeza que pretende tornar este utilizador um Moderator?')) {
       if (!userName) {
         console.error('Username is undefined, cannot change role.');
         return;
@@ -262,7 +262,7 @@ export class AdminComponent implements OnDestroy {
           console.error("Error changing user role:", error);
         }
       });
-    }
+    //}
   }
 
 
@@ -283,7 +283,7 @@ export class AdminComponent implements OnDestroy {
    * @param userName O nome do utilizador a ser rebaixado.
    */
   demoteToUser(userName: string): void {
-    if (confirm('Tem a certeza que pretende remover a role Moderator do utilizador?')) {
+    //if (confirm('Tem a certeza que pretende remover a role Moderator do utilizador?')) {
       if (!userName) {
         console.error('Username is undefined, cannot change role.');
         return;
@@ -300,7 +300,7 @@ export class AdminComponent implements OnDestroy {
           console.error("Error changing user role:", error);
         }
       });
-    }
+    //}
   }
 
   /**
@@ -309,7 +309,7 @@ export class AdminComponent implements OnDestroy {
    * @param username O nome do utilizador a ser desbanido.
    */
   unban(username: string | undefined): void {
-    if (confirm('Tem a certeza que pretende remover o ban do utilizador?')) {
+    //if (confirm('Tem a certeza que pretende remover o ban do utilizador?')) {
       if (!username) {
         console.error('Username is undefined, cannot unban user.');
         return;
@@ -326,7 +326,7 @@ export class AdminComponent implements OnDestroy {
           console.error("Error unbanning user:", error);
         }
       });
-    }
+    //}
   }
 
   /**

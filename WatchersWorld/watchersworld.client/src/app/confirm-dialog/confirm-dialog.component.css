@@ -1,3 +1,62 @@
 .confirm-button {
   margin: 0px 5px;
 }
+
+.expand-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  margin-left: 0px !important;
+  font-weight: bold;
+}
+
+.expand-button:hover {
+  background-color: #004080; /* Efeito ao passar o mouse */
+}
+
+.delete {
+  /* Copie as propriedades de .actions button aqui */
+  width: 130px;
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 16px;
+  width: 180px;
+  height: 40px;
+  font-weight: bold;
+}
+
+.delete:hover {
+  background-color: #0056b3;
+}
+
+.banTemp, .banPerm {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #4CAEFE;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  width: 160px;
+  height: 60px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.banPerm:hover, .banTemp:hover {
+  background-color: #0056b3;
+}

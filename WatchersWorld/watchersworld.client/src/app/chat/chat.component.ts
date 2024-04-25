@@ -48,11 +48,6 @@ export class ChatComponent implements AfterViewChecked {
   searchTerm: string = '';
   showNoResults: boolean = false;
 
-  messageForm: boolean = false;
-  usernameOfNewReceiver: string = "";
-  messageTextToNewUser: string = "";
-  errorMessage: string = '';
-
   currentLongPressedMessage: any = null;
   longPressTimer: any;
   shouldScrollToBottom: boolean = true;
@@ -297,7 +292,7 @@ export class ChatComponent implements AfterViewChecked {
         this.newMessage = "";
         this.scrollToBottom();
       }).catch(error => {
-        this.errorMessage = "Erro ao enviar mensagem: " + error;
+        console.log("Erro ao enviar mensagem: " + error);
       });
     }
   }
@@ -329,53 +324,6 @@ export class ChatComponent implements AfterViewChecked {
       this.showNoResults = filtered.length === 0 || filtered.every(u => u.userName === this.loggedUserName);
       this.filteredUsersProfiles = filtered;
     }
-  }
-
-  /**
-   * Alterna a visibilidade do formulário de envio de mensagens para um novo utilizador.
-   */
-  toggleMessageForm(): void {
-    this.messageForm = !this.messageForm;
-    this.messageTextToNewUser = "";
-    this.usernameOfNewReceiver = "";
-  }
-
-  /**
-   * Envia uma mensagem para um novo utilizador. Verifica se o nome do utilizador e a mensagem estão presentes.
-   * Em caso de erro, trata a resposta e apresenta uma mensagem adequada.
-   */
-  sendMessageToNewUser(): void {
-    if (!this.usernameOfNewReceiver || !this.messageTextToNewUser.trim()) {
-      console.log('Nome do utilizador destinatário e mensagem são necessários.');
-      return;
-    }
-
-    var messageToSend: Message = {
-      messageId: undefined,
-      sendUsername: this.authService.getLoggedInUserName()!,
-      text: this.messageTextToNewUser.trim(),
-      sentAt: undefined,
-      readAt: undefined,
-    }
-
-    this.chatService.sendMessage(this.usernameOfNewReceiver, messageToSend)
-      .then(() => {
-        this.toggleMessageForm();
-      })
-      .catch(error => {
-        if (error && error.includes("ID do utilizador receptor não pode ser null.")) {
-          this.errorMessage = "Utilizador não encontrado!";
-        } else {
-          console.error("Erro ao enviar mensagem:", error);
-        }
-      });
-  }
-
-  /**
-   * Limpa as mensagens de erro exibidas no componente.
-   */
-  clearErrorMessage(): void {
-    this.errorMessage = "";
   }
 
   /**

@@ -33,16 +33,43 @@
             <h1 class="mt-2 mb-2">{{getSerieDetailsResult?.name}}</h1>
 
             <div class="buttons-container" style="margin-right:-15%;">
-              <button class="expand-button" *ngIf="isWatched" (click)="toggleFavoriteMedia()">
+              <button class="expand-button" *ngIf="isWatched && !isFavorite" (click)="toggleFavoriteMedia()">
                 {{ isFavorite ? 'Remover dos Favoritos' : 'Marcar como Favorito' }}
               </button>
-              <button class="expand-button" *ngIf="!isToWatchLater" (click)="handleMarkAsWatched()">
+              <app-confirm-dialog *ngIf="isWatched && isFavorite"
+                                  [classCss]="'expand-button'"
+                                  [titleButton]="'Remover dos Favoritos'"
+                                  [titlePopup]="'Confirmação'"
+                                  [messagePopup]="'Tem certeza que deseja remover este filme dos favoritos?'"
+                                  [confirmationTextButton]="'Confirmar'"
+                                  [cancelTextButton]="'Cancelar'"
+                                  (confirmAction)="toggleFavoriteMedia()"></app-confirm-dialog>
+
+
+              <button class="expand-button" *ngIf="!isToWatchLater && !isWatched" (click)="handleMarkAsWatched()">
                 {{ isWatched ? 'Remover dos Assistidos' : 'Marcar como Assistido' }}
               </button>
+              <app-confirm-dialog *ngIf="!isToWatchLater && isWatched"
+                                  [classCss]="'expand-button'"
+                                  [titleButton]="'Remover dos Assistidos'"
+                                  [titlePopup]="'Confirmação'"
+                                  [messagePopup]="'Tem certeza que deseja remover este filme dos assistidos?'"
+                                  [confirmationTextButton]="'Confirmar'"
+                                  [cancelTextButton]="'Cancelar'"
+                                  (confirmAction)="handleMarkAsWatched()"></app-confirm-dialog>
 
-              <button class="expand-button" *ngIf="!isWatched" (click)="handleMarkToWatchLater()">
+
+              <button class="expand-button" *ngIf="!isWatched && !isToWatchLater" (click)="handleMarkToWatchLater()">
                 {{ isToWatchLater ? 'Remover de Assistir Mais Tarde' : 'Assistir Mais Tarde' }}
               </button>
+              <app-confirm-dialog *ngIf="!isWatched && isToWatchLater"
+                                  [classCss]="'expand-button'"
+                                  [titleButton]="'Remover de Assistir Mais Tarde'"
+                                  [titlePopup]="'Confirmação'"
+                                  [messagePopup]="'Tem certeza que deseja remover este filme dos para assisitir mais tarde?'"
+                                  [confirmationTextButton]="'Confirmar'"
+                                  [cancelTextButton]="'Cancelar'"
+                                  (confirmAction)="handleMarkToWatchLater()"></app-confirm-dialog>
             </div>
           </div>
 
@@ -237,6 +264,14 @@
                     <span class="text-muted" *ngIf="comment?.createdAt">em {{ comment.createdAt | date:'short' }}</span>
                   </div>
                   <button *ngIf="comment?.userName && canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" class="btn btn-danger mt-2">Apagar Comentário</button>
+                  <app-confirm-dialog *ngIf="comment?.userName && canDeleteComment(comment.userName)"
+                                      [classCss]="'btn btn-danger mt-2'"
+                                      [titleButton]="'Apagar Comentário'"
+                                      [titlePopup]="'Confirmação'"
+                                      [messagePopup]="'Tem certeza que deseja remover este comentário?'"
+                                      [confirmationTextButton]="'Confirmar'"
+                                      [cancelTextButton]="'Cancelar'"
+                                      (confirmAction)="deleteComment(comment.id)"></app-confirm-dialog>
                 </div>
 
                 <p class="comment-text mt-2" style="margin-left:55px" *ngIf="comment?.text">{{ comment.text }}</p>
@@ -262,7 +297,14 @@
                           <strong>{{ reply?.userName }}</strong>
                           <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
                         </div>
-                        <button *ngIf="canDeleteComment(reply.userName)" (click)="deleteComment(reply.id, comment.id)" class="btn btn-danger btn-sm">Apagar Resposta</button>
+                        <app-confirm-dialog *ngIf="canDeleteComment(reply.userName)"
+                                            [classCss]="'btn btn-danger btn-sm'"
+                                            [titleButton]="'Apagar Resposta'"
+                                            [titlePopup]="'Confirmação'"
+                                            [messagePopup]="'Tem certeza que deseja remover esta resposta?'"
+                                            [confirmationTextButton]="'Confirmar'"
+                                            [cancelTextButton]="'Cancelar'"
+                                            (confirmAction)="deleteComment(reply.id, comment.id)"></app-confirm-dialog>
                       </div>
 
                       <p class="my-1" style="margin-left:45px" *ngIf="reply?.text">{{ reply?.text }}</p>

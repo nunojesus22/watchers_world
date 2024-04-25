@@ -164,7 +164,7 @@ export class ModerationComponent implements OnDestroy {
    * @param username O nome do utilizador a ser banido temporariamente.
    */
   banTemp(username: string | null): void {
-    if (confirm('Tem a certeza que pretende banir temporariamente este utilizador?')) {
+    //if (confirm('Tem a certeza que pretende banir temporariamente este utilizador?')) {
       if (!username) {
         console.error('Username is undefined, cannot ban user temporarily.');
         return;
@@ -187,7 +187,7 @@ export class ModerationComponent implements OnDestroy {
           console.error("Error banning user temporarily:", error);
         }
       });
-    }
+    //}
   }
 
   /**
@@ -196,7 +196,7 @@ export class ModerationComponent implements OnDestroy {
    * @param username O nome do utilizador a ser banido permanentemente.
    */
   banPerm(username: string | null): void {
-    if (confirm('Tem a certeza que pretende banir permanentemente este utilizador?')) {
+    //if (confirm('Tem a certeza que pretende banir permanentemente este utilizador?')) {
       if (!username) {
         console.error('Username is undefined, cannot ban user.');
         return;
@@ -214,7 +214,7 @@ export class ModerationComponent implements OnDestroy {
           console.error("Error banning user:", error);
         }
       });
-    }
+    //}
   }
 
   /**
@@ -223,7 +223,7 @@ export class ModerationComponent implements OnDestroy {
    * @param username O nome do utilizador a ser desbanido.
    */
   unban(username: string | undefined): void {
-    if (confirm('Tem a certeza que pretende remover o ban do utilizador?')) {
+    //if (confirm('Tem a certeza que pretende remover o ban do utilizador?')) {
       if (!username) {
         console.error('Username is undefined, cannot unban user.');
         return;
@@ -240,7 +240,7 @@ export class ModerationComponent implements OnDestroy {
           console.error("Error unbanning user:", error);
         }
       });
-    }
+    //}
   }
 
   /**
