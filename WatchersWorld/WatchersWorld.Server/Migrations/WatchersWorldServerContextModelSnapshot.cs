@@ -584,8 +584,7 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasKey("IdTableMedia");
 
-                    b.HasIndex("IdMedia")
-                        .IsUnique();
+                    b.HasIndex("IdMedia");
 
                     b.ToTable("MediaInfoModel");
                 });
@@ -644,7 +643,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<DateTime>("CompletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MediaId")
+                    b.Property<int>("IdTableMedia")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
@@ -654,6 +653,8 @@ namespace WatchersWorld.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdTableMedia");
 
                     b.ToTable("QuizAttempts");
                 });
@@ -1023,6 +1024,17 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("ActorMedia");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz.QuizAttempt", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfo")
+                        .WithMany()
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaInfo");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>

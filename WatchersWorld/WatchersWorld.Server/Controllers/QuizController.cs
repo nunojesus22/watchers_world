@@ -39,9 +39,13 @@ namespace WatchersWorld.Server.Controllers
         [Authorize]
         public async Task<ActionResult> SubmitAttempt([FromBody] QuizAttemptDto attemptDto)
         {
+            var media = await _context.MediaInfoModel
+               .Where(q => q.IdMedia == attemptDto.MediaId && q.Type == attemptDto.Type)
+               .FirstOrDefaultAsync();
+
             var attempt = new QuizAttempt
             {
-                MediaId = attemptDto.MediaId,
+                IdTableMedia= media.IdTableMedia,
                 UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                 Score = attemptDto.Score,
                 CompletedAt = DateTime.UtcNow
@@ -62,12 +66,12 @@ namespace WatchersWorld.Server.Controllers
         /// - "hasCompleted": Indica se o utilizador já completou o quiz para a mídia especificada.
         /// - "score" (opcional): A pontuação obtida pelo utilizador na última tentativa de quiz, se houver.
         /// </returns>
-        [HttpGet("/api/quiz/check-completed/{mediaId}")]
-        public async Task<ActionResult> CheckQuizStatus(int mediaId)
+        [HttpGet("/api/quiz/check-completed")]
+        public async Task<ActionResult> CheckQuizStatus([FromQuery] string mediaId, [FromQuery] string type)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var lastAttempt = await _context.QuizAttempts
-                .Where(q => q.MediaId == mediaId && q.UserId == userId)
+                .Where(q => q.MediaInfo.IdMedia == int.Parse(mediaId) && q.UserId == userId && type == q.MediaInfo.Type)
                 .OrderByDescending(q => q.CompletedAt)
                 .Select(q => new { q.Score, q.CompletedAt })
                 .FirstOrDefaultAsync();
@@ -104,6 +108,7 @@ namespace WatchersWorld.Server.Controllers
         public class QuizAttemptDto {
             public int Id { get; set; }
             public int MediaId { get; set; } 
+            public string Type { get; set; }
             public string UserId { get; set; } 
             public int Score { get; set; } 
             public DateTime CompletedAt { get; set; } 

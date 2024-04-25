@@ -1,4 +1,6 @@
-﻿namespace WatchersWorld.Server.Models.Media.Quiz
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WatchersWorld.Server.Models.Media.Quiz
 {
     namespace WatchersWorld.Server.Models.Media.Quiz
     {
@@ -11,12 +13,13 @@
             /// O ID da tentativa de quiz.
             /// </summary>
             public int Id { get; set; }
-            
-            
+
             /// <summary>
-            /// O ID da mídia associada à tentativa de quiz.
+            /// Identificador da informação de Media avaliada. Chave estrangeira que referencia a entidade MediaInfoModel.
             /// </summary>
-            public int MediaId { get; set; } 
+            [ForeignKey(nameof(MediaInfo))]
+            public int IdTableMedia { get; set; }
+            public virtual MediaInfoModel MediaInfo { get; set; }
 
             /// <summary>
             /// O ID do utilizador que fez a tentativa de quiz.

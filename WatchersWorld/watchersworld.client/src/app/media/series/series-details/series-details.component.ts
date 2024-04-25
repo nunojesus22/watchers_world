@@ -195,8 +195,11 @@ export class SeriesDetailsComponent {
    * @param mediaId O ID da mídia para a qual verificar se o quiz foi concluído.
    */
   checkQuizCompleted(mediaId: any): void {
-
-    this.service.checkQuizCompleted(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+    this.service.checkQuizCompleted(media).subscribe({
       next: (response: any) => { // Agora tratando response como 'any'
         this.quizCompleted = response.hasCompleted;
         this.lastQuizScore = response.score; // Certifique-se de adicionar lastQuizScore na definição de classe do componente
@@ -344,7 +347,8 @@ export class SeriesDetailsComponent {
     // Preparando os dados para enviar ao back-end
     const quizAttempt = {
       mediaId: this.getSerieDetailsResult.id,
-      score: correctAnswers
+      score: correctAnswers,
+      type:this.type
       // Você pode incluir mais dados aqui, como as respostas do utilizador
     };
     this.lastQuizScore = quizAttempt.score;

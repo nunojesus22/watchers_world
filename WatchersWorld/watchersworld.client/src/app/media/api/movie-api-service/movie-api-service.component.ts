@@ -436,6 +436,7 @@ export class MovieApiServiceComponent {
  */
   getMediaComments(mediaId: any): Observable<any> {
     const headers = this.getHeaders();
+
     return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`, { headers });
   }
   
@@ -535,9 +536,9 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com os comentários da mídia ordenados por data.
  */
-  getCommentsSortedByDate(mediaId: any): Observable<any> {
+  getCommentsSortedByDate(media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-date/${mediaId}`, { headers });
+    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-date`, {headers });
   }
 
 
@@ -651,8 +652,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com a última tentativa de quiz para a mídia.
  */
-  getLastQuizAttempt(mediaId: any): Observable<any> {
-    return this.http.get(`${environment.appUrl}/api/quiz/last-attempt/${mediaId}`);
+  getLastQuizAttempt(media: UserMedia): Observable<any> {
+    const headers = this.getHeaders();
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/quiz/last-attempt`,{ headers, params });
 
   }
   
@@ -661,9 +665,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable indicando se o quiz foi concluído.
  */
-  checkQuizCompleted(mediaId: any): Observable<any> {
+  checkQuizCompleted(media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/quiz/check-completed/${mediaId}`, { headers });
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/quiz/check-completed`,{ headers, params });
   }
 
 

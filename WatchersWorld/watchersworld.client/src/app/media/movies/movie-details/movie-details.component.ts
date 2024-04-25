@@ -191,7 +191,11 @@ export class MovieDetailsComponent {
  * @remarks Este método atualiza as propriedades 'quizCompleted', 'lastQuizScore' e 'showLastScore' do componente.
  */
   checkQuizCompleted(mediaId: any): void {
-    this.service.checkQuizCompleted(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "movie"
+    };
+    this.service.checkQuizCompleted(media).subscribe({
       next: (response: any) => { // Agora tratando response como 'any'
         this.quizCompleted = response.hasCompleted;
         this.lastQuizScore = response.score; // Certifique-se de adicionar lastQuizScore na definição de classe do componente
@@ -354,7 +358,8 @@ export class MovieDetailsComponent {
 
     const quizAttempt = {
       mediaId: this.getMovieDetailResult.id,
-      score: correctAnswers
+      score: correctAnswers,
+      type: this.type,
     };
     this.lastQuizScore = quizAttempt.score;
     this.hideQuizPopup();
