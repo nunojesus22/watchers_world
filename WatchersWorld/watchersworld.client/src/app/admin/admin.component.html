@@ -53,7 +53,7 @@
                               [confirmationTextButton]="'Confirmar'"
                               [cancelTextButton]="'Cancelar'"
                               (confirmAction)="makeModerator(userProfile.userName)"></app-confirm-dialog>
-          <button *ngIf="userProfile.isModerator" class="moderator" (click)="demoteToUser(userProfile.userName)">Tornar User</button>
+          <!--<button *ngIf="userProfile.isModerator" class="moderator" (click)="demoteToUser(userProfile.userName)">Tornar User</button>-->
           <app-confirm-dialog *ngIf="userProfile.isModerator"
                               [classCss]="'delete'"
                               [titleButton]="'Tornar User'"
@@ -64,19 +64,19 @@
                               (confirmAction)="demoteToUser(userProfile.userName)"></app-confirm-dialog>
 
         </div>
-      </div>
-    </ng-container>
-    <div class="pagination-controls">
-      <button *ngIf="hasPreviousPage" class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
-      <button *ngIf="hasNextPage" class="pagination-button pagination-next" (click)="nextPage()" [disabled]="page * pageSize >= collectionSize"> &gt; </button>
     </div>
-    <!-- Mostra esta mensagem se não houver resultados -->
-    <ng-template #noResults>
-      <div class="no-results-message">
-        Não existe nenhum utilizador com esse nome.
-      </div>
-    </ng-template>
+  </ng-container>
+  <div class="pagination-controls">
+    <button *ngIf="hasPreviousPage" class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
+    <button *ngIf="hasNextPage" class="pagination-button pagination-next" (click)="nextPage()" [disabled]="page * pageSize >= collectionSize"> &gt; </button>
   </div>
+  <!-- Mostra esta mensagem se não houver resultados -->
+          <ng-template #noResults>
+            <div class="no-results-message">
+              Não existe nenhum utilizador com esse nome.
+            </div>
+          </ng-template>
+        </div>
   <!-- Ban Popup -->
   <div *ngIf="isBanPopupVisible" class="ban-popup">
     <div class="popup-content">
