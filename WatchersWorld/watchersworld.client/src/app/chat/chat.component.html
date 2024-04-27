@@ -65,7 +65,7 @@
         </div>
 
         <!-- Messages Area -->
-        <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area" #scrollMe>
+        <div *ngIf="selectedUser; else noMessages" class="card-body chat-message-area"style="background-image: url('../assets/img/blue_black_lines_shades_dark_background_hd_black-1920x1080.jpg');"#scrollMe>
 
           <div *ngFor="let message of messages" class="message"
                [ngClass]="{'incoming': message.sendUsername === selectedUsername, 'outgoing': message.sendUsername !== selectedUsername}"
