@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WatchersWorld.Server.Data;
 using WatchersWorld.Server.Models.Authentication;
 using WatchersWorld.Server.Models.Chat;
@@ -51,13 +52,15 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
 
                 context.UserMedia.Add(userMedia);
 
-                var originalComment = new Comment { UserId = user5ToGetId!.Id, MediaId = media.IdMedia, Text = "Ótimo filme!", CreatedAt = DateTime.UtcNow };
+                var tableMediaId = await context.MediaInfoModel.Where(m => m.IdMedia == media.IdMedia && m.Type == media.Type).Select(m => m.IdTableMedia).FirstAsync();
+
+                var originalComment = new Comment { UserId = user5ToGetId!.Id, IdTableMedia = tableMediaId, Text = "Ótimo filme!", CreatedAt = DateTime.UtcNow };
                 context.Comments.Add(originalComment);
 
                 var replyComment = new Comment
                 {
                     UserId = user3ToGetId!.Id,
-                    MediaId = media.IdMedia,
+                    IdTableMedia = tableMediaId,
                     Text = "Concordo, o filme é mesmo bom!",
                     CreatedAt = DateTime.UtcNow,
                     ParentCommentId = originalComment.Id

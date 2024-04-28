@@ -1,4 +1,6 @@
-﻿namespace WatchersWorld.Server.DTOs.Media
+﻿using WatchersWorld.Server.Models.Media;
+
+namespace WatchersWorld.Server.DTOs.Media
 {
     /// <summary>
     /// DTO (Data Transfer Object) que representa os dados necessários para criar um novo comentário.
@@ -8,7 +10,7 @@
         /// <summary>
         /// O ID da mídia à qual o comentário será associado.
         /// </summary>
-        public int MediaId { get; set; }
+        public UserMediaDto Media { get; set; }
 
         /// <summary>
         /// O texto do comentário.
