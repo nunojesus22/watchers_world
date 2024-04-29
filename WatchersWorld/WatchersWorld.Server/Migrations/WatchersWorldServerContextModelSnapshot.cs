@@ -439,10 +439,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("IdTableMedia")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MediaId")
+                    b.Property<int>("IdTableMedia")
                         .HasColumnType("int");
 
                     b.Property<int?>("ParentCommentId")
@@ -935,9 +932,11 @@ namespace WatchersWorld.Server.Migrations
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
                 {
-                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "Media")
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfo")
                         .WithMany("Comments")
-                        .HasForeignKey("IdTableMedia");
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WatchersWorld.Server.Models.Media.Comment", "ParentComment")
                         .WithMany("Replies")
@@ -947,7 +946,7 @@ namespace WatchersWorld.Server.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Media");
+                    b.Navigation("MediaInfo");
 
                     b.Navigation("ParentComment");
 

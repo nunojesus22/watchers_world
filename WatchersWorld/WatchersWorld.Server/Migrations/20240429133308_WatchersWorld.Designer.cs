@@ -12,7 +12,7 @@ using WatchersWorld.Server.Data;
 namespace WatchersWorld.Server.Migrations
 {
     [DbContext(typeof(WatchersWorldServerContext))]
-    [Migration("20240420114551_WatchersWorld")]
+    [Migration("20240429133308_WatchersWorld")]
     partial class WatchersWorld
     {
         /// <inheritdoc />
@@ -442,10 +442,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("IdTableMedia")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MediaId")
+                    b.Property<int>("IdTableMedia")
                         .HasColumnType("int");
 
                     b.Property<int?>("ParentCommentId")
@@ -587,8 +584,7 @@ namespace WatchersWorld.Server.Migrations
 
                     b.HasKey("IdTableMedia");
 
-                    b.HasIndex("IdMedia")
-                        .IsUnique();
+                    b.HasIndex("IdMedia");
 
                     b.ToTable("MediaInfoModel");
                 });
@@ -647,7 +643,7 @@ namespace WatchersWorld.Server.Migrations
                     b.Property<DateTime>("CompletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MediaId")
+                    b.Property<int>("IdTableMedia")
                         .HasColumnType("int");
 
                     b.Property<int>("Score")
@@ -657,6 +653,8 @@ namespace WatchersWorld.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdTableMedia");
 
                     b.ToTable("QuizAttempts");
                 });
@@ -937,9 +935,11 @@ namespace WatchersWorld.Server.Migrations
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.Comment", b =>
                 {
-                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "Media")
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfo")
                         .WithMany("Comments")
-                        .HasForeignKey("IdTableMedia");
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WatchersWorld.Server.Models.Media.Comment", "ParentComment")
                         .WithMany("Replies")
@@ -949,7 +949,7 @@ namespace WatchersWorld.Server.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Media");
+                    b.Navigation("MediaInfo");
 
                     b.Navigation("ParentComment");
 
@@ -1026,6 +1026,17 @@ namespace WatchersWorld.Server.Migrations
                     b.Navigation("ActorMedia");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WatchersWorld.Server.Models.Media.Quiz.WatchersWorld.Server.Models.Media.Quiz.QuizAttempt", b =>
+                {
+                    b.HasOne("WatchersWorld.Server.Models.Media.MediaInfoModel", "MediaInfo")
+                        .WithMany()
+                        .HasForeignKey("IdTableMedia")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MediaInfo");
                 });
 
             modelBuilder.Entity("WatchersWorld.Server.Models.Media.RatingMedia.UserRatingMedia", b =>

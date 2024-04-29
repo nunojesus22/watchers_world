@@ -109,6 +109,7 @@ export class ProfileFavoritesComponent implements OnInit {
   showAllMedals = false;
 
   @ViewChild('usernameHeader') usernameHeader!: ElementRef;
+    userAge: number | undefined;
 
   /**
 * Construtor do componente ProfileComponent.
@@ -135,6 +136,7 @@ export class ProfileFavoritesComponent implements OnInit {
    * Inicializa o formulário de perfil e carrega dados de media e gamificação associados ao perfil visualizado.
    */
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
@@ -287,6 +289,17 @@ export class ProfileFavoritesComponent implements OnInit {
     );
   }
 
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+
   /**
   * Preenche os campos do formulário com os dados do perfil do utilizador.
   * 
@@ -305,6 +318,9 @@ export class ProfileFavoritesComponent implements OnInit {
             gender: userData.gender || "Por definir",
             date: "‎ " + userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
           });
+          if (userData.birthDate) {
+            this.userAge = this.calculateAge(new Date(userData.birthDate));
+          }
           this.profileForm.get('gender')?.disable();
           this.followersCount = userData.followers;
           this.followingCount = userData.following;

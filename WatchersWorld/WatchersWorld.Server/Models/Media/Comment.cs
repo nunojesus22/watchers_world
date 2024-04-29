@@ -21,9 +21,11 @@ namespace WatchersWorld.Server.Models.Media
         public string UserId { get; set; }
 
         /// <summary>
-        /// O ID da mídia à qual o comentário está associado.
+        /// Identificador da informação de Media avaliada. Chave estrangeira que referencia a entidade MediaInfoModel.
         /// </summary>
-        public int MediaId { get; set; } 
+        [ForeignKey(nameof(MediaInfo))]
+        public int IdTableMedia { get; set; }
+        public virtual MediaInfoModel MediaInfo { get; set; }
 
 
         /// <summary>
@@ -41,13 +43,6 @@ namespace WatchersWorld.Server.Models.Media
         /// O utilizador que fez o comentário.
         /// </summary>
         public User User { get; set; }
-
-        /// <summary>
-        /// A mídia à qual o comentário está associado.
-        /// </summary>
-        [ForeignKey("IdTableMedia")]
-        public MediaInfoModel Media { get; set; }
-
 
         /// <summary>
         /// As curtidas recebidas pelo comentário.

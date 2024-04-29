@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -422,10 +423,12 @@ namespace WatchersWorld.Server.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
 
+            var tableMediaId = _context.MediaInfoModel.Where(m => m.IdMedia == request.Media.MediaId && m.Type == request.Media.Type).Select(m => m.IdTableMedia).FirstOrDefault();
+
             var comment = new Comment
             {
                 UserId = userId,
-                MediaId = request.MediaId,
+                IdTableMedia = tableMediaId,
                 Text = request.Text,
                 CreatedAt = DateTime.Now
             };
@@ -441,14 +444,16 @@ namespace WatchersWorld.Server.Controllers
         /// </summary>
         /// <param name="mediaId">O ID da mídia para a qual os comentários devem ser obtidos.</param>
         /// <returns>Uma lista de comentários para a mídia especificada, incluindo respostas aninhadas.</returns>
-        [HttpGet("/api/media/get-comments/{mediaId}")]
-        public ActionResult<IEnumerable<CommentDto>> GetComments(int mediaId)
+        [HttpGet("/api/media/get-comments")]
+        public ActionResult<IEnumerable<CommentDto>> GetComments([FromQuery] string mediaId, [FromQuery] string type)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Obter o ID do utilizador atual
 
+            var tableMediaId = _context.MediaInfoModel.Where(m => m.IdMedia == int.Parse(mediaId) && m.Type == type).Select(m => m.IdTableMedia).FirstOrDefault();
+
             // Obter todos os comentários (principais e respostas) para o MediaId fornecido
             var allComments = _context.Comments
-                .Where(c => c.MediaId == mediaId)
+                .Where(c => c.IdTableMedia == tableMediaId)
                 .Include(c => c.Likes) // Garantir que os likes sejam incluídos
                 .Include(c => c.Dislikes) // Garantir que os dislikes sejam incluídos
                 .OrderBy(c => c.CreatedAt) // Pode ordenar como preferir
@@ -460,7 +465,6 @@ namespace WatchersWorld.Server.Controllers
                 Id = c.Id,
                 ParentCommentId = c.ParentCommentId, // Certifique-se de que essa propriedade exista no seu DTO
                 UserName = _context.Users.FirstOrDefault(u => u.Id == c.UserId)?.UserName,
-                MediaId = c.MediaId,
                 Text = c.Text,
                 CreatedAt = c.CreatedAt,
                 ProfilePhoto = _context.ProfileInfo.FirstOrDefault(pi => pi.UserId == c.UserId)?.ProfilePhoto,
@@ -487,8 +491,8 @@ namespace WatchersWorld.Server.Controllers
         /// <param name="request">Os dados necessários para criar a resposta ao comentário.</param>
         /// <returns>Um objeto indicando que a resposta ao comentário foi adicionada com sucesso.</returns>
         [Authorize]
-        [HttpPost("/api/media/add-comment-reply")]
-        public async Task<IActionResult> ReplyCommentAsync([FromBody] CreateCommentDto request)
+        [HttpPost("/api/media/add-comment-reply/{mediaId}/{type}")]
+        public async Task<IActionResult> ReplyCommentAsync([FromBody] CreateCommentDto request, int mediaId, string type)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Unauthorized();
@@ -497,10 +501,12 @@ namespace WatchersWorld.Server.Controllers
                 .FirstOrDefaultAsync(c => c.Id == request.ParentCommentId);
             if (parentComment == null) return NotFound("Comentário original não encontrado.");
 
+            var tableMediaId = await _context.MediaInfoModel.Where(m => m.IdMedia == mediaId && m.Type == type).Select(m => m.IdTableMedia).FirstAsync();
+
             var reply = new Comment
             {
                 UserId = userId,
-                MediaId = request.MediaId,
+                IdTableMedia = tableMediaId,
                 Text = request.Text,
                 CreatedAt = DateTime.UtcNow,
                 ParentCommentId = request.ParentCommentId
@@ -510,7 +516,7 @@ namespace WatchersWorld.Server.Controllers
             await _context.SaveChangesAsync();
 
             // Cria a notificação de resposta
-            await _notificationService.CreateReplyNotificationAsync(userId, parentComment.UserId, request.MediaId, parentComment.Id, request.Text);
+            await _notificationService.CreateReplyNotificationAsync(userId, parentComment.UserId, mediaId, parentComment.Id, request.Text);
 
             return Ok(new { message = "Resposta adicionada com sucesso." });
         }
@@ -680,10 +686,10 @@ namespace WatchersWorld.Server.Controllers
         /// <param name="commentId">O ID do comentário do qual a descurtida deve ser removida.</param>
         /// <returns>Um objeto indicando que a descurtida foi removida com sucesso.</returns>
         [Authorize]
-        [HttpGet("/api/media/get-sorted-comments-by-likes/{mediaId}")]
-        public ActionResult<IEnumerable<CommentDto>> GetSortedMostLikedComments(int mediaId)
+        [HttpGet("/api/media/get-sorted-comments-by-likes")]
+        public ActionResult<IEnumerable<CommentDto>> GetSortedMostLikedComments([FromQuery] string mediaId, [FromQuery] string type)
         {
-            var result = GetComments(mediaId);
+            var result = GetComments(mediaId, type);
 
             if (result.Result is OkObjectResult okResult && okResult.Value is IEnumerable<CommentDto> comments)
             {
@@ -706,10 +712,10 @@ namespace WatchersWorld.Server.Controllers
         /// Uma lista de comentários para a mídia especificada, ordenada por data de criação, ou
         /// o resultado da obtenção dos comentários (por exemplo, um erro).
         /// </returns>
-        [HttpGet("/api/media/get-sorted-comments-by-date/{mediaId}")]
-        public ActionResult<IEnumerable<CommentDto>> GetSortedMostOldComments(int mediaId)
+        [HttpGet("/api/media/get-sorted-comments-by-date")]
+        public ActionResult<IEnumerable<CommentDto>> GetSortedMostOldComments([FromQuery] string mediaId, [FromQuery] string type)
         {
-            var result = GetComments(mediaId);
+            var result = GetComments(mediaId, type);
 
             if (result.Result is OkObjectResult okResult && okResult.Value is IEnumerable<CommentDto> comments)
             {

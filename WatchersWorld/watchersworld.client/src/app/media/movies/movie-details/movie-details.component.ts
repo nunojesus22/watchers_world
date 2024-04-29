@@ -681,7 +681,11 @@ export class MovieDetailsComponent {
  * @param mediaId O ID da mídia para a qual os comentários serão recuperados.
  */
   getComments(mediaId: any): void {
-    this.service.getMediaComments(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "movie"
+    };
+    this.service.getMediaComments(media).subscribe({
       next: (response: any) => {
         this.comments = response;
         //console.log('Comentários:', this.comments);
@@ -699,7 +703,11 @@ export class MovieDetailsComponent {
   fetchComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      this.service.getMediaComments(+mediaId).subscribe(comments => {
+      let media: UserMedia = {
+        mediaId: +mediaId,
+        type: "movie"
+      };
+      this.service.getMediaComments(media).subscribe(comments => {
         this.comments = comments.reverse();
       });
     }
@@ -711,8 +719,8 @@ export class MovieDetailsComponent {
  * Atualiza o estado de 'comments' com os comentários recuperados.
  * @param mediaId O ID da mídia para a qual os comentários mais curtidos serão recuperados.
  */
-  getMostLikedComments(mediaId: any): void {
-    this.service.getMostLikedComments(mediaId).subscribe({
+  getMostLikedComments(media: any): void {
+    this.service.getMostLikedComments(media).subscribe({
       next: (response: any) => {
         this.comments = response;
       },
@@ -730,7 +738,11 @@ export class MovieDetailsComponent {
   fetchMostLikedComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      this.getMostLikedComments(+mediaId);
+      let media: UserMedia = {
+        mediaId: +mediaId,
+        type: "movie"
+      };
+      this.getMostLikedComments(media);
     }
   }
 
@@ -740,8 +752,8 @@ export class MovieDetailsComponent {
  * Atualiza o estado de 'comments' com os comentários recuperados.
  * @param mediaId O ID da mídia para a qual os comentários serão recuperados e classificados por data.
  */
-  getMostOldComments(mediaId: any): void {
-    this.service.getCommentsSortedByDate(mediaId).subscribe({
+  getMostOldComments(media: any): void {
+    this.service.getCommentsSortedByDate(media).subscribe({
       next: (response: any) => {
         this.comments = response;
       },
@@ -757,7 +769,11 @@ export class MovieDetailsComponent {
   fetchCommentsSortedByDate(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      this.getMostOldComments(+mediaId);
+      let media: UserMedia = {
+        mediaId: +mediaId,
+        type: "movie"
+      };
+      this.getMostOldComments(media);
     }
   }
 
@@ -810,7 +826,12 @@ export class MovieDetailsComponent {
     const mediaId = this.getMovieDetailResult.id;
     const mediaType = this.type;
 
-    this.service.addComment(mediaId, mediaType, this.newCommentText).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: mediaType
+    };
+
+    this.service.addComment(media, this.newCommentText).subscribe({
       next: (newComment) => {
         this.comments.unshift(newComment);
         this.newCommentText = '';
@@ -955,7 +976,13 @@ export class MovieDetailsComponent {
     }
 
     const mediaId = this.getMovieDetailResult.id;
-    this.service.addCommentReply(parentCommentId, mediaId, replyText).subscribe({
+
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "movie"
+    };
+
+    this.service.addCommentReply(parentCommentId, media, replyText).subscribe({
       next: () => {
         this.fetchComments();
         this.replyTexts[parentCommentId] = '';

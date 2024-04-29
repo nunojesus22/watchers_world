@@ -705,7 +705,11 @@ export class SeriesDetailsComponent {
  * @returns void
  */
   getComments(mediaId: any): void {
-    this.service.getMediaComments(mediaId).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+    this.service.getMediaComments(media).subscribe({
       next: (response: any) => {
         this.comments = response;
         //console.log('Comentários:', this.comments);
@@ -725,7 +729,11 @@ export class SeriesDetailsComponent {
   fetchComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      this.service.getMediaComments(+mediaId).subscribe(comments => {
+      let media: UserMedia = {
+        mediaId: +mediaId,
+        type: "serie"
+      };
+      this.service.getMediaComments(media).subscribe(comments => {
         this.comments = comments.reverse();
       });
     }
@@ -737,8 +745,8 @@ export class SeriesDetailsComponent {
  * @param mediaId O ID da mídia para a qual os comentários mais antigos devem ser obtidos.
  * @returns void
  */
-  getMostLikedComments(mediaId: any): void {
-    this.service.getMostLikedComments(mediaId).subscribe({
+  getMostLikedComments(media: any): void {
+    this.service.getMostLikedComments(media).subscribe({
       next: (response: any) => {
         this.comments = response;
       },
@@ -756,7 +764,11 @@ export class SeriesDetailsComponent {
   fetchMostLikedComments(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      this.getMostLikedComments(+mediaId);
+      let media: UserMedia = {
+        mediaId: +mediaId,
+        type: "serie"
+      };
+      this.getMostLikedComments(media);
     }
   }
 
@@ -766,8 +778,8 @@ export class SeriesDetailsComponent {
  * @param event O evento de seleção que desencadeou a ordenação.
  * @returns void
  */
-  getMostOldComments(mediaId: any): void {
-    this.service.getCommentsSortedByDate(mediaId).subscribe({
+  getMostOldComments(media: any): void {
+    this.service.getCommentsSortedByDate(media).subscribe({
       next: (response: any) => {
         this.comments = response;
       },
@@ -784,7 +796,11 @@ export class SeriesDetailsComponent {
   fetchCommentsSortedByDate(): void {
     let mediaId = this.router.snapshot.paramMap.get('id');
     if (mediaId) {
-      this.getMostOldComments(+mediaId);
+      let media: UserMedia = {
+        mediaId: +mediaId,
+        type: "serie"
+      };
+      this.getMostOldComments(media);
     }
   }
 
@@ -838,7 +854,12 @@ export class SeriesDetailsComponent {
     const mediaId = this.getSerieDetailsResult.id;
     const mediaType = this.type;
 
-    this.service.addComment(mediaId, mediaType, this.newCommentText).subscribe({
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: mediaType
+    };
+
+    this.service.addComment(media, this.newCommentText).subscribe({
       next: (newComment) => {
         this.comments.unshift(newComment); // Adiciona imediatamente o novo comentário à lista para atualização instantânea
         this.newCommentText = ''; // Limpar o campo de texto após adicionar o comentário
@@ -998,7 +1019,13 @@ export class SeriesDetailsComponent {
     }
 
     const mediaId = this.getSerieDetailsResult.id;
-    this.service.addCommentReply(parentCommentId, mediaId, replyText).subscribe({
+
+    let media: UserMedia = {
+      mediaId: mediaId,
+      type: "serie"
+    };
+
+    this.service.addCommentReply(parentCommentId, media, replyText).subscribe({
       next: () => {
         this.fetchComments(); // Atualize os comentários para incluir a nova resposta
         this.replyTexts[parentCommentId] = ''; // Limpe o campo de texto da resposta

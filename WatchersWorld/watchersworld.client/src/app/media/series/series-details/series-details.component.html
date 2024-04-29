@@ -72,10 +72,9 @@
                                   (confirmAction)="handleMarkToWatchLater()"></app-confirm-dialog>
             </div>
           </div>
-
           <div class="container">
             <div class="row">
-              <h6 class="mt-2 mb-2">Nome Original: <strong>{{getSerieDetailsResult?.original_name}}</strong></h6>
+              <h6 class="mt-2 mb-2">Nome: <strong>{{getSerieDetailsResult?.original_name}}</strong></h6>
               <div class="  category-div">
                 <p class="genre-p" *ngFor="let genre of getSerieDetailsResult?.genres; let last = last">
                   {{ genre.name }}<span *ngIf="!last">,</span>
@@ -83,20 +82,20 @@
               </div>
               <div class="col-md-6">
                 <div>
-                  <p class="manual-text mt-2 mb-1">Numero de Episodios:</p>
+                  <p class="manual-text mt-2 mb-1">Número de episódios:</p>
                   <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult?.number_of_episodes}}</p>
 
-                  <p class="manual-text mt-2 mb-1">Tempo Medio dos Episodios:</p>
+                  <p class="manual-text mt-2 mb-1">Tempo médio dos episódios:</p>
                   <p class="movie-details mt-1 mb-2">{{convertMinutesToHours(getSerieDetailsResult?.episode_run_time)}}</p>
 
-                  <p class="manual-text mt-2 mb-1">Numero de Temporadas:</p>
+                  <p class="manual-text mt-2 mb-1">Número de temporadas:</p>
                   <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult?.number_of_seasons}}</p>
 
 
-                  <p class="manual-text mt-2 mb-1">Ultimo Episodio Lançado:</p>
+                  <p class="manual-text mt-2 mb-1">Último episódio lançado :</p>
                   <p class="movie-details mt-1 mb-2">{{getSerieDetailsResult?.last_episode_to_air.air_date}}</p>
 
-                  <p class="manual-text mt-2 mb-1">Classificação Geral dos Utilizadores:</p>
+                  <p class="manual-text mt-2 mb-1">Classificação geral dos utilizadores:</p>
                   <p class="movie-details mt-1 mb-2">{{convertToPercentage(getSerieDetailsResult?.vote_average)}}</p>
 
                   <p class="manual-text mt-2 mb-1">Sinopse:</p>
@@ -256,75 +255,75 @@
               <div *ngFor="let comment of comments; let i = index" class="comment mb-4 p-3 bg-light rounded" [id]="'comment-' + comment.id">
                 <div class="d-flex justify-content-between">
                   <div class="user-info d-flex align-items-center">
-                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="User profile image" [routerLink]="['/profile', comment.userName]">
+                    <img *ngIf="comment?.profilePhoto; else defaultProfile" [src]="comment?.profilePhoto" class="img-fluid rounded-circle" style="width: 40px; height: 40px; cursor:pointer" alt="User profile image" [routerLink]="['/profile', comment.userName]">
                     <ng-template #defaultProfile>
-                      <img src="../assets/img/joao-pfp.png" class="img-fluid rounded-circle" style="width: 40px; height: 40px;" alt="Default profile image">
+                      <img src="../assets/img/joao-pfp.png" class="img-fluid rounded-circle" style="width: 40px; height: 40px; cursor:pointer" alt="Default profile image">
                     </ng-template>
-                    <strong *ngIf="comment?.userName">{{ comment.userName }}</strong>
+                    <strong *ngIf="comment?.userName" style="cursor:pointer;" [routerLink]="['/profile', comment.userName]">{{ comment.userName }}</strong>
                     <span class="text-muted" *ngIf="comment?.createdAt">em {{ comment.createdAt | date:'short' }}</span>
                   </div>
-                  <button *ngIf="comment?.userName && canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" class="btn btn-danger mt-2">Apagar Comentário</button>
-                  <app-confirm-dialog *ngIf="comment?.userName && canDeleteComment(comment.userName)"
-                                      [classCss]="'btn btn-danger mt-2'"
-                                      [titleButton]="'Apagar Comentário'"
-                                      [titlePopup]="'Confirmação'"
-                                      [messagePopup]="'Tem certeza que deseja remover este comentário?'"
-                                      [confirmationTextButton]="'Confirmar'"
-                                      [cancelTextButton]="'Cancelar'"
-                                      (confirmAction)="deleteComment(comment.id)"></app-confirm-dialog>
-                </div>
-
-                <p class="comment-text mt-2" style="margin-left:55px" *ngIf="comment?.text">{{ comment.text }}</p>
-                <div class="comment-actions d-flex align-items-center" *ngIf="comment">
-                  <button *ngIf="!comment.hasDisliked" (click)="toggleLikeComment(comment.id)" class="icon-button" [ngClass]="comment.hasLiked ? 'liked' : 'not-liked'">
-                    <i class="fa fa-thumbs-up"></i>
-                  </button>
-                  <span class="likes-count" *ngIf="comment?.likesCount">{{comment.likesCount}}</span>
-                </div>
-
-                <div class="replies mt-3" *ngIf="comment?.replies">
-                  <button *ngIf="!showReplyForms[comment.id]" (click)="toggleReplyForm(comment.id)" class="btn btn-outline-secondary">Responder</button>
-                  <div *ngIf="showReplyForms[comment.id]" class="reply-form mt-2">
-                    <textarea [(ngModel)]="replyTexts[comment.id]" class="form-control" placeholder="Escreva uma resposta..." rows="3"></textarea>
-                    <button (click)="addReply(comment.id)" class="btn btn-secondary mt-2">Enviar Resposta</button>
+                  <!--<button *ngIf="comment?.userName && canDeleteComment(comment.userName)" (click)="deleteComment(comment.id)" class="btn btn-danger mt-2">Apagar Comentário</button>-->
+                    <app-confirm-dialog *ngIf="comment?.userName && canDeleteComment(comment.userName)"
+                                        [classCss]="'btn btn-danger mt-2'"
+                                        [titleButton]="'Apagar Comentário'"
+                                        [titlePopup]="'Confirmação'"
+                                        [messagePopup]="'Tem certeza que deseja remover este comentário?'"
+                                        [confirmationTextButton]="'Confirmar'"
+                                        [cancelTextButton]="'Cancelar'"
+                                        (confirmAction)="deleteComment(comment.id)"></app-confirm-dialog>
                   </div>
 
-                  <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-list">
-                    <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
-                      <div class="d-flex justify-content-between" style="margin-top:15px">
-                        <div class="user-info d-flex align-items-center">
-                          <img *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image" [routerLink]="['/profile', reply.userName]">
-                          <strong>{{ reply?.userName }}</strong>
-                          <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
-                        </div>
-                        <app-confirm-dialog *ngIf="canDeleteComment(reply.userName)"
-                                            [classCss]="'btn btn-danger btn-sm'"
-                                            [titleButton]="'Apagar Resposta'"
-                                            [titlePopup]="'Confirmação'"
-                                            [messagePopup]="'Tem certeza que deseja remover esta resposta?'"
-                                            [confirmationTextButton]="'Confirmar'"
-                                            [cancelTextButton]="'Cancelar'"
-                                            (confirmAction)="deleteComment(reply.id, comment.id)"></app-confirm-dialog>
-                      </div>
+                  <p class="comment-text mt-2" style="margin-left:55px" *ngIf="comment?.text">{{ comment.text }}</p>
+                  <div class="comment-actions d-flex align-items-center" *ngIf="comment">
+                    <button *ngIf="!comment.hasDisliked" (click)="toggleLikeComment(comment.id)" class="icon-button" [ngClass]="comment.hasLiked ? 'liked' : 'not-liked'">
+                      <i class="fa fa-thumbs-up"></i>
+                    </button>
+                    <span class="likes-count" *ngIf="comment?.likesCount">{{comment.likesCount}}</span>
+                  </div>
 
-                      <p class="my-1" style="margin-left:45px" *ngIf="reply?.text">{{ reply?.text }}</p>
-                      <div class="action-buttons d-flex align-items-center">
-                        <button *ngIf="!reply.hasDisliked" (click)="toggleLikeComment(reply.id, comment.id)" class="icon-button" [ngClass]="reply.hasLiked ? 'liked' : 'not-liked'">
-                          <i class="fa fa-thumbs-up"></i>
-                        </button>
-                        <span class="likes-count" *ngIf="reply?.likesCount">{{reply?.likesCount}}</span>
+                  <div class="replies mt-3" *ngIf="comment?.replies">
+                    <button *ngIf="!showReplyForms[comment.id]" (click)="toggleReplyForm(comment.id)" class="btn btn-outline-secondary">Responder</button>
+                    <div *ngIf="showReplyForms[comment.id]" class="reply-form mt-2">
+                      <textarea [(ngModel)]="replyTexts[comment.id]" class="form-control" placeholder="Escreva uma resposta..." rows="3"></textarea>
+                      <button (click)="addReply(comment.id)" class="btn btn-secondary mt-2">Enviar Resposta</button>
+                    </div>
+
+                    <div *ngIf="comment.replies && comment.replies.length > 0" class="reply-list">
+                      <div *ngFor="let reply of comment.replies" class="reply mb-3 p-2 bg-light rounded">
+                        <div class="d-flex justify-content-between" style="margin-top:15px">
+                          <div class="user-info d-flex align-items-center">
+                            <img style="cursor:pointer" *ngIf="reply.profilePhoto; else defaultProfile" [src]="reply.profilePhoto" class="img-fluid rounded-circle" alt="Reply user profile image" [routerLink]="['/profile', reply.userName]">
+                            <strong style="cursor:pointer" [routerLink]="['/profile', reply.userName]">{{ reply?.userName }}</strong>
+                            <span class="text-muted d-block" *ngIf="reply?.createdAt"> {{ reply?.createdAt | date:'short' }}</span>
+                          </div>
+                          <app-confirm-dialog *ngIf="canDeleteComment(reply.userName)"
+                                              [classCss]="'btn btn-danger btn-sm'"
+                                              [titleButton]="'Apagar Resposta'"
+                                              [titlePopup]="'Confirmação'"
+                                              [messagePopup]="'Tem certeza que deseja remover esta resposta?'"
+                                              [confirmationTextButton]="'Confirmar'"
+                                              [cancelTextButton]="'Cancelar'"
+                                              (confirmAction)="deleteComment(reply.id, comment.id)"></app-confirm-dialog>
+                        </div>
+
+                        <p class="my-1" style="margin-left:45px" *ngIf="reply?.text">{{ reply?.text }}</p>
+                        <div class="action-buttons d-flex align-items-center">
+                          <button *ngIf="!reply.hasDisliked" (click)="toggleLikeComment(reply.id, comment.id)" class="icon-button" [ngClass]="reply.hasLiked ? 'liked' : 'not-liked'">
+                            <i class="fa fa-thumbs-up"></i>
+                          </button>
+                          <span class="likes-count" *ngIf="reply?.likesCount">{{reply?.likesCount}}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div *ngIf="comments.length === 0" class="text-muted text-center mt-3">Ainda não há comentários. Seja o primeiro a comentar!</div>
             </div>
-            <div *ngIf="comments.length === 0" class="text-muted text-center mt-3">Ainda não há comentários. Seja o primeiro a comentar!</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<br />
-<br />
+  <br />
+  <br />

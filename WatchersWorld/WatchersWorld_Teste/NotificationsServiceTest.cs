@@ -141,9 +141,9 @@ namespace WatchersWorld_Teste
             // Arrange
             var triggeringUser = await _userManager.FindByNameAsync("UserTest3");
             var targetUser = await _userManager.FindByNameAsync("UserTest5");
-            var media = await _context.MediaInfoModel.FirstOrDefaultAsync(m => m.IdMedia == 787699);
-            var originalComment = await _context.Comments.FirstOrDefaultAsync(c => c.UserId == targetUser!.Id && c.MediaId == media!.IdMedia);
-            var replyComment = await _context.Comments.FirstOrDefaultAsync(c => c.UserId == triggeringUser!.Id && c.MediaId == media!.IdMedia);
+            var media = await _context.MediaInfoModel.FirstOrDefaultAsync(m => m.IdMedia == 787699 && m.Type == "movie");
+            var originalComment = await _context.Comments.FirstOrDefaultAsync(c => c.UserId == targetUser!.Id && c.IdTableMedia == media!.IdTableMedia);
+            var replyComment = await _context.Comments.FirstOrDefaultAsync(c => c.UserId == triggeringUser!.Id && c.IdTableMedia == media!.IdTableMedia);
 
             string replyText = "Concordo, o filme é mesmo bom!";
 

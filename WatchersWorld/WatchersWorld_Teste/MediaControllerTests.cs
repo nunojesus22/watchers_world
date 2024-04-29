@@ -60,7 +60,8 @@ namespace WatchersWorld_Teste
         public void AddComment_ShouldReturnOk_WhenCommentIsAdded()
         {
             // Arrange
-            var request = new CreateCommentDto { MediaId = 1, Text = "Great movie!" };
+            var media = new UserMediaDto { MediaId = 1, Type = "movie" };
+            var request = new CreateCommentDto { Media = media, Text = "Great movie!" };
 
             // Configura o contexto do usuário para simular um usuário autenticado
             _controller.ControllerContext = new ControllerContext

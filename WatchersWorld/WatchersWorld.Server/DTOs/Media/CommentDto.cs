@@ -21,7 +21,7 @@ namespace WatchersWorld.Server.DTOs.Media
         /// <summary>
         /// O ID da mídia à qual o comentário está associado.
         /// </summary>
-        public int MediaId { get; set; }
+        public MediaInfoModel Media { get; set; }
 
 
         /// <summary>

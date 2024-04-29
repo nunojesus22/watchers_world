@@ -434,10 +434,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com os comentários da mídia.
  */
-  getMediaComments(mediaId: any): Observable<any> {
+  getMediaComments(media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-
-    return this.http.get(`${environment.appUrl}/api/media/get-comments/${mediaId}`, { headers });
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/media/get-comments`, { headers, params });
   }
   
 
@@ -448,10 +449,9 @@ export class MovieApiServiceComponent {
  * @param text O texto do comentário.
  * @returns Um Observable com o comentário adicionado.
  */
-  addComment(mediaId: number, mediaType: string, text: string): Observable<any> {
+  addComment(media: UserMedia, text: string): Observable<any> {
     return this.http.post(`${environment.appUrl}/api/media/add-comment`, {
-      mediaId,
-      mediaType,
+      media,
       text
     }).pipe(
       map((response: any) => response.comment) 
@@ -511,11 +511,12 @@ export class MovieApiServiceComponent {
  * @param text O texto da resposta.
  * @returns Um Observable indicando se a resposta foi adicionada com sucesso.
  */
-  addCommentReply(parentCommentId: number, mediaId: number, text: string): Observable<any> {
-    return this.http.post(`${environment.appUrl}/api/media/add-comment-reply`, {
+  addCommentReply(parentCommentId: number, media: UserMedia, text: string): Observable<any> {
+    let mediaId = media.mediaId;
+    let type = media.type;
+    return this.http.post(`${environment.appUrl}/api/media/add-comment-reply/${mediaId}/${type}`, {
       parentCommentId,
-      mediaId,
-      text
+      text,
     });
   }
 
@@ -525,9 +526,11 @@ export class MovieApiServiceComponent {
  * @param mediaId O ID da mídia.
  * @returns Um Observable com os comentários da mídia ordenados pelo número de curtidas.
  */
-  getMostLikedComments(mediaId: any): Observable<any> {
+  getMostLikedComments(media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-likes/${mediaId}`, { headers });
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-likes`, { headers, params });
   }
 
 
@@ -538,7 +541,9 @@ export class MovieApiServiceComponent {
  */
   getCommentsSortedByDate(media: UserMedia): Observable<any> {
     const headers = this.getHeaders();
-    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-date`, {headers });
+    let params = new HttpParams().set('mediaId', media.mediaId);
+    params = params.set('type', media.type);
+    return this.http.get(`${environment.appUrl}/api/media/get-sorted-comments-by-date`, {headers, params });
   }
 
 
