@@ -37,8 +37,9 @@
                 <span *ngIf="profileForm.controls['gender'].value === 'F'"> Feminino</span>
               </div>
               <div>
-                <label style="font-weight:bold;" for="birthdate">Data de nascimento:</label>
-                <input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>
+                <label style="font-weight:bold;" for="birthdate">Idade:</label>
+                <!--<input formControlName="date" type="date" id="birthdate" name="birthdate" readonly>-->
+                <span> {{userAge}} anos </span>
               </div>
             </form>
             <br />

@@ -181,7 +181,7 @@ namespace WatchersWorld.Server.Services
                 NotificationId = Guid.NewGuid(),
                 TriggeredByUserId = triggeredByUserId,
                 Message = $"{triggeredByUser.UserName} começou-te a seguir!",
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow.AddHours(1),
                 IsRead = false,
                 EventType = "NewFollower",
                 TargetUserId = targetUserId,
@@ -242,9 +242,16 @@ namespace WatchersWorld.Server.Services
             var triggeredByUser = await _context.ProfileInfo
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.UserId == triggeredByUserId);
-            var targetUser = await _context.Users
+
+            var targetUser = await _context.ProfileInfo
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == targetUserId);
+                .FirstOrDefaultAsync(u => u.UserId == targetUserId);
+
+            if (triggeredByUser.UserName == targetUser.UserName)
+            {
+                return null;
+            }
+
 
             if (triggeredByUser == null || targetUser == null)
             {
@@ -271,7 +278,7 @@ namespace WatchersWorld.Server.Services
                 TriggeredByUserId = triggeredByUserId,
                 TargetUserId = targetUserId,
                 Message = message,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow.AddHours(1),
                 IsRead = false,
                 EventType = "Reply",
                 IdTableMedia = mediaInfo.IdTableMedia,
@@ -510,7 +517,7 @@ namespace WatchersWorld.Server.Services
                 NotificationId = Guid.NewGuid(),
                 TriggeredByUserId = triggeredByUserId,
                 Message = message,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow.AddHours(1),
                 IsRead = false,
                 EventType = "Achievement",
                 UserMedalId = medalId
@@ -605,7 +612,7 @@ namespace WatchersWorld.Server.Services
                 NotificationId = Guid.NewGuid(),
                 TriggeredByUserId = triggeredByUserId,
                 Message = $"{lastMessage.SendUser.UserName} enviou-te uma mensagem",
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow.AddHours(1),
                 IsRead = false,
                 EventType = "Message",
                 MessageId = lastMessage.Id,
@@ -669,6 +676,7 @@ namespace WatchersWorld.Server.Services
           .Where(um => um.MediaInfoModel.IdMedia == mediaId)
           .ToListAsync();
 
+
             if (!userMediaEntries.Any())
             {
                 throw new NullReferenceException("UserMedia correspondente ao mediaId não encontrado.");
@@ -689,7 +697,7 @@ namespace WatchersWorld.Server.Services
                 NotificationId = Guid.NewGuid(),
                 TriggeredByUserId = triggeredByUserId,
                 Message = $"Um novo episódio de {mediaName} está disponível!",
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow.AddHours(1),
                 IsRead = false,
                 EventType = "NewMedia",
                 UserMediaId = userMedia.Id
@@ -753,15 +761,6 @@ namespace WatchersWorld.Server.Services
                 await _context.SaveChangesAsync();
             }
         }
-
-
-
-
-
-
-
-
-
 
     }
 }

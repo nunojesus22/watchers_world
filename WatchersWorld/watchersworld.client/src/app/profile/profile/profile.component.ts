@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit {
   isFollowing: boolean = false;
   loggedUserProfile: Profile | undefined;
   userPhoto: string | null = null;
+  userAge: number | undefined;
 
   profileForm: FormGroup = new FormGroup({});
 
@@ -141,6 +142,7 @@ export class ProfileComponent implements OnInit {
    * Inicializa o formulário de perfil e carrega dados de media e gamificação associados ao perfil visualizado.
    */
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.route.params.subscribe(params => {
       if (typeof params['username'] === 'string') {
         this.currentUsername = params['username'];
@@ -161,7 +163,7 @@ export class ProfileComponent implements OnInit {
         this.getFavorites(this.currentUsername);
         this.getWatchedMedia(this.currentUsername);
         this.getWatchLaterMedia(this.currentUsername);
-        this.getMedals(this.currentUsername);
+        this.getMedals();
       }
     });
     if (this.currentUsername && this.usernameHeader) {
@@ -298,6 +300,17 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+
    /**
    * Preenche os campos do formulário com os dados do perfil do utilizador.
    * 
@@ -316,6 +329,9 @@ export class ProfileComponent implements OnInit {
             gender: userData.gender || "Por definir",
             date: "‎ " + userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
           });
+          if (userData.birthDate) {
+            this.userAge = this.calculateAge(new Date(userData.birthDate));
+          }
           this.profileForm.get('gender')?.disable();
           this.followersCount = userData.followers;
           this.followingCount = userData.following;
@@ -778,7 +794,7 @@ export class ProfileComponent implements OnInit {
    * Recupera as medalhas desbloqueadas pelo utilizador.
    * Este método consulta o serviço de gamificação para obter as medalhas que o utilizador já conseguiu desbloquear.
    */
-  getMedals(username: string) {
+  getMedals() {
     if (this.currentUsername) {
       this.gamificationService.getUnlockedMedals(this.currentUsername).subscribe({
         next: (medals) => {

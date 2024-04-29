@@ -108,6 +108,7 @@ export class ProfileSeriesToWatchLaterComponent implements OnInit {
   showAllMedals = false;
 
   @ViewChild('usernameHeader') usernameHeader!: ElementRef;
+    userAge: number | undefined;
 
   /**
  * Construtor do componente ProfileComponent.
@@ -287,6 +288,17 @@ export class ProfileSeriesToWatchLaterComponent implements OnInit {
     );
   }
 
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+
   /**
   * Preenche os campos do formulário com os dados do perfil do utilizador.
   * 
@@ -305,6 +317,9 @@ export class ProfileSeriesToWatchLaterComponent implements OnInit {
             gender: userData.gender || "Por definir",
             date: "‎ " + userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : '',
           });
+          if (userData.birthDate) {
+            this.userAge = this.calculateAge(new Date(userData.birthDate));
+          }
           this.profileForm.get('gender')?.disable();
           this.followersCount = userData.followers;
           this.followingCount = userData.following;

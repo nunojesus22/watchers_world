@@ -160,22 +160,6 @@ namespace WatchersWorld.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuizAttempts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MediaId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Score = table.Column<int>(type: "int", nullable: false),
-                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QuizAttempts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserMedals",
                 columns: table => new
                 {
@@ -352,10 +336,9 @@ namespace WatchersWorld.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MediaId = table.Column<int>(type: "int", nullable: false),
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdTableMedia = table.Column<int>(type: "int", nullable: true),
                     ParentCommentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -375,7 +358,30 @@ namespace WatchersWorld.Server.Migrations
                         name: "FK_Comments_MediaInfoModel_IdTableMedia",
                         column: x => x.IdTableMedia,
                         principalTable: "MediaInfoModel",
-                        principalColumn: "IdTableMedia");
+                        principalColumn: "IdTableMedia",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuizAttempts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdTableMedia = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuizAttempts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_QuizAttempts_MediaInfoModel_IdTableMedia",
+                        column: x => x.IdTableMedia,
+                        principalTable: "MediaInfoModel",
+                        principalColumn: "IdTableMedia",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -802,8 +808,7 @@ namespace WatchersWorld.Server.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_MediaInfoModel_IdMedia",
                 table: "MediaInfoModel",
-                column: "IdMedia",
-                unique: true);
+                column: "IdMedia");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MediaNotifications_UserMediaId",
@@ -834,6 +839,11 @@ namespace WatchersWorld.Server.Migrations
                 name: "IX_MessagesVisibility_UserId",
                 table: "MessagesVisibility",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizAttempts_IdTableMedia",
+                table: "QuizAttempts",
+                column: "IdTableMedia");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserMedia_IdListMedia",
