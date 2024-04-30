@@ -465,7 +465,7 @@ namespace WatchersWorld_Teste
             foreach (var notification in mediaNotifications)
             {
                 Assert.Equal(user6.Id, notification.TriggeredByUserId);
-                Assert.Contains("Um novo episódio está disponível!", notification.Message);
+                Assert.Contains("Um novo episódio de Nome do Filme está disponível!", notification.Message);
             }
         }
 

@@ -40,7 +40,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
                 var user6ToGetId = await userManager.FindByNameAsync("UserTest6");
                 var user7ToGetId = await userManager.FindByNameAsync("UserTest7");
 
-                var media = new MediaInfoModel { IdTableMedia = 1, IdMedia = 787699, Type = "movie" };
+                var media = new MediaInfoModel { IdMedia = 787699, Type = "movie" };
                 context.MediaInfoModel.Add(media);
 
                 var userMedia = new UserMedia
@@ -51,6 +51,7 @@ namespace WatchersWorld_Teste.FixtureConfiguration.SeedsConfiguration
                 };
 
                 context.UserMedia.Add(userMedia);
+                context.SaveChanges();
 
                 var tableMediaId = await context.MediaInfoModel.Where(m => m.IdMedia == media.IdMedia && m.Type == media.Type).Select(m => m.IdTableMedia).FirstAsync();
 
