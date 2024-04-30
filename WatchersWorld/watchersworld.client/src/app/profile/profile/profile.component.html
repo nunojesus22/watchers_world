@@ -133,11 +133,9 @@
                   </button>
                 </div>
                 <div *ngIf="(favoriteMovies.length + favoriteSeries.length) > 0; else noFavoritesTemplate" class="rowposter-user-media">
-                  <ng-container *ngFor="let movie of expandedFavoritesList ? favoriteMovies : favoriteMovies.slice(0, 6)">
-                    <img *ngIf="movie.details" [src]="'https://image.tmdb.org/t/p/original/' + movie.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/movie', movie.mediaId]">
-                  </ng-container>
-                  <ng-container *ngFor="let series of expandedFavoritesList ? favoriteSeries : favoriteSeries.slice(0, 6)">
-                    <img *ngIf="series.details" [src]="'https://image.tmdb.org/t/p/original/' + series.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/serie', series.mediaId]">
+                  <ng-container *ngFor="let item of getLimitedFavorites()">
+                    <img *ngIf="item.type === 'movie' && item.details" [src]="'https://image.tmdb.org/t/p/original/' + item.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/movie', item.mediaId]">
+                    <img *ngIf="item.type === 'series' && item.details" [src]="'https://image.tmdb.org/t/p/original/' + item.details.poster_path" class="rowimg largeposter" alt="..." [routerLink]="['/serie', item.mediaId]">
                   </ng-container>
                 </div>
                 <ng-template #noFavoritesTemplate>

@@ -202,22 +202,21 @@ h4, h3 {
   flex-direction: column;
 }
 
-  .notification-item .user-info {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-  }
+.notification-item .user-info {
+  display: flex;
+  align-items: center; /* Alinha os itens verticalmente */
+}
 
   .notification-item .user-info img.avatar {
-    margin-right: 15px;
+    margin-right: 15px; /* Espaçamento à direita para separar a imagem do conteúdo */
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 50%; /* Garante que a imagem seja circular */
   }
 
   .notification-item .user-info .name {
     font-weight: bold;
-    margin-right: auto;
+    margin-right: auto; /* Empurra o nome para a esquerda, deixando a imagem à esquerda */
   }
 
   .notification-item p {
