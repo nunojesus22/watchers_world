@@ -6,7 +6,6 @@
              class="form-control flex-grow-1"
              [(ngModel)]="searchTerm"
              (input)="filterUsers()">
-
     </div>
   </div>
 
@@ -16,14 +15,14 @@
     <ng-container *ngIf="filteredUsersProfiles.length > 0; else noResults">
       <div class="user" *ngFor="let userProfile of filteredUsersProfiles">
         <div class="user-info">
-
           <img class="avatar" [src]="userProfile.profilePhoto" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">
           <p class="name" style="cursor: pointer;" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</p>
         </div>
       </div>
     </ng-container>
     <div class="pagination-controls">
-      <button *ngIf="hasPreviousPage" class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
+      <!-- Mostra os botões de navegação mesmo sem resultados -->
+      <button *ngIf="hasPreviousPage " class="pagination-button pagination-prev" (click)="previousPage()" [disabled]="page <= 1"> &lt; </button>
       <button *ngIf="hasNextPage" class="pagination-button pagination-next" (click)="nextPage()" [disabled]="page * pageSize >= collectionSize"> &gt; </button>
     </div>
     <ng-template #noResults>
@@ -33,6 +32,3 @@
     </ng-template>
   </div>
 </div>
-
-
-

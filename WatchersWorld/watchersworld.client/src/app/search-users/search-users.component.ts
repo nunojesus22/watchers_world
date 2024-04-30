@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Profile } from '../profile/models/profile';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, catchError, forkJoin, mergeMap, of, takeUntil } from 'rxjs';
 import { AuthenticationService } from '../authentication/services/authentication.service';
 import { ProfileService } from '../profile/services/profile.service';
 import { Router } from '@angular/router';
@@ -27,7 +27,7 @@ export class SearchUsersComponent {
   selectedUsername: string | null = null;
 
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 8;
   collectionSize!: number;
   constructor(private profileService: ProfileService, private authService: AuthenticationService, private router: Router) { }
   ngOnInit(): void {
@@ -36,7 +36,9 @@ export class SearchUsersComponent {
         console.log("Perfis recebidos:", profiles);
 
         this.usersProfiles = profiles;
-        this.filteredUsersProfiles = profiles;
+        this.filteredUsersProfiles = profiles.slice(0, this.pageSize);
+        this.collectionSize = profiles.length; // Atualizado aqui
+
         this.updateSelectedUser();
 
       },
@@ -75,18 +77,30 @@ export class SearchUsersComponent {
 * @returns Verdadeiro se a página atual for maior que 1, indicando a existência de uma página anterior.
 */
   get hasPreviousPage(): boolean {
-    return this.page > 1;
+    // Verifica se há uma página anterior com resultados e se a lista de usuários filtrados não está vazia
+    return this.page > 1 && ((this.page - 2) * this.pageSize) < this.collectionSize && this.filteredUsersProfiles.length > 0;
   }
 
   /**
-   * Verifica se existe uma próxima página disponível para navegação.
-   * 
-   * @returns Verdadeiro se o produto da página atual pelo tamanho da página for menor que o tamanho total da coleção,
-   * indicando a existência de uma próxima página.
-   */
+ * Verifica se existe uma próxima página disponível para navegação.
+ * 
+ * @returns Verdadeiro se o produto da página atual pelo tamanho da página for menor que o tamanho total da coleção,
+ * indicando a existência de uma próxima página.
+ */
+
   get hasNextPage(): boolean {
-    return this.page * this.pageSize < this.collectionSize;
+    // Verifica se há uma próxima página com resultados e se a lista de usuários filtrados não está vazia
+    return (this.page * this.pageSize) < this.collectionSize && this.filteredUsersProfiles.length > 0;
   }
+
+ 
+
+
+
+
+
+
+
   /**
    * Navega para a próxima página na lista paginada de utilizadores.
    * Este método incrementa o contador de página atual e filtra novamente os utilizadores
@@ -101,6 +115,33 @@ export class SearchUsersComponent {
     }
   }
 
+  getUserProfiles() {
+    this.profileService.getUserProfiles().pipe(
+      takeUntil(this.unsubscribed$),
+      mergeMap(profiles => {
+        const filteredProfiles = profiles.filter(profile => profile.userName !== this.loggedUserName);
+        return forkJoin(filteredProfiles.map(profile => {
+          if (!profile.userName) {
+            console.warn(`Perfil sem nome de utilizador encontrado:`, profile);
+            return of({ ...profile, isModerator: false });
+          }
+          return of(profile); // Adicione esta linha para retornar o perfil original
+        }));
+      })
+    ).subscribe(
+      (profiles) => {
+        this.usersProfiles = profiles;
+        this.filteredUsersProfiles = profiles;
+        this.collectionSize = profiles.length;
+
+        this.sortAlphabetically();
+        this.filterUsers();
+      },
+      (error) => {
+        console.error("Erro ao buscar perfis de utilizadors:", error);
+      }
+    );
+  }
   /**
  * Filtra a lista de utilizadores baseada no termo de pesquisa.
  */
