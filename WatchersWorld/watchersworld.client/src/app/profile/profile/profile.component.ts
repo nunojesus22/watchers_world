@@ -178,7 +178,7 @@ export class ProfileComponent implements OnInit {
       { name: 'Trending Movies', results: [], activeIndex: 0, media_type: "movie" },
     ];
     this.fetchTrending();
-   
+
   }
 
   /**
@@ -206,15 +206,15 @@ export class ProfileComponent implements OnInit {
     this.unsubscribed$.complete();
   }
 
-   /**
-   * Obtém a informação do perfil do utilizador especificado pelo nome de utilizador.
-   * Atualiza a variável de estado `canViewData` baseada no status do perfil e se
-   * o utilizador logado tem permissão para ver o perfil.
-   * 
-   * @param username Nome do utilizador do perfil a ser obtido.
-   * @returns Promise<void> Uma promessa que resolve quando a informação do perfil
-   * é obtida com sucesso ou rejeitada em caso de erro.
-   */
+  /**
+  * Obtém a informação do perfil do utilizador especificado pelo nome de utilizador.
+  * Atualiza a variável de estado `canViewData` baseada no status do perfil e se
+  * o utilizador logado tem permissão para ver o perfil.
+  * 
+  * @param username Nome do utilizador do perfil a ser obtido.
+  * @returns Promise<void> Uma promessa que resolve quando a informação do perfil
+  * é obtida com sucesso ou rejeitada em caso de erro.
+  */
   getUserProfileInfo(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.profileService.getUserData(username).subscribe({
@@ -248,10 +248,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-   /**
-   * Carrega o papel (role) do utilizador logado para determinar se é um moderador.
-   * Atualiza a propriedade `isModerator` baseada nas roles retornadas.
-   */
+  /**
+  * Carrega o papel (role) do utilizador logado para determinar se é um moderador.
+  * Atualiza a propriedade `isModerator` baseada nas roles retornadas.
+  */
   private loadUserRole() {
     const currentUsername = this.authService.getLoggedInUserName();
     if (currentUsername) {
@@ -274,11 +274,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-   /**
-   * Define as imagens de perfil e de capa para o utilizador especificado.
-   * 
-   * @param username Nome do utilizador para o qual as imagens serão definidas.
-   */
+  /**
+  * Define as imagens de perfil e de capa para o utilizador especificado.
+  * 
+  * @param username Nome do utilizador para o qual as imagens serão definidas.
+  */
   setImages(username: string) {
     this.profileService.getUserData(username).pipe(takeUntil(this.unsubscribed$)).subscribe(
       (userData: Profile) => {
@@ -311,11 +311,11 @@ export class ProfileComponent implements OnInit {
   }
 
 
-   /**
-   * Preenche os campos do formulário com os dados do perfil do utilizador.
-   * 
-   * @param username Nome do utilizador cujos dados do perfil serão utilizados para preencher o formulário.
-   */
+  /**
+  * Preenche os campos do formulário com os dados do perfil do utilizador.
+  * 
+  * @param username Nome do utilizador cujos dados do perfil serão utilizados para preencher o formulário.
+  */
   setFormFields(username: string) {
     const userName = document.querySelector("h1");
     this.profileForm.get('gender')?.disable();
@@ -347,13 +347,13 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-   /**
-   * Verifica se o utilizador autenticado segue o utilizador especificado.
-   * Atualiza a propriedade `isFollowing` baseada no resultado.
-   * 
-   * @param usernameAuthenticated Nome do utilizador autenticado.
-   * @param usernameToCheck Nome do utilizador a verificar se está a ser seguido.
-   */
+  /**
+  * Verifica se o utilizador autenticado segue o utilizador especificado.
+  * Atualiza a propriedade `isFollowing` baseada no resultado.
+  * 
+  * @param usernameAuthenticated Nome do utilizador autenticado.
+  * @param usernameToCheck Nome do utilizador a verificar se está a ser seguido.
+  */
   checkFollowingStatus(usernameAuthenticated: string, usernameToCheck: string): void {
     this.profileService.alreadyFollows(usernameAuthenticated, usernameToCheck).subscribe(isFollowing => {
       this.isFollowing = isFollowing;
@@ -362,18 +362,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-   /**
-   * Define a propriedade `followRequestSent` como verdadeira, indicando que um pedido
-   * de seguimento foi enviado.
-   */
+  /**
+  * Define a propriedade `followRequestSent` como verdadeira, indicando que um pedido
+  * de seguimento foi enviado.
+  */
   requestToFollow(): void {
     this.followRequestSent = true;
   }
 
-   /**
-   * Envia um pedido para seguir o utilizador atual. Atualiza as propriedades `isFollowing`
-   * e `followRequestSent` baseadas na resposta.
-   */
+  /**
+  * Envia um pedido para seguir o utilizador atual. Atualiza as propriedades `isFollowing`
+  * e `followRequestSent` baseadas na resposta.
+  */
   followUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.followUser(this.loggedUserName, this.currentUsername).subscribe({
@@ -395,9 +395,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Envia um pedido para deixar de seguir o utilizador atual. Atualiza a propriedade `isFollowing`.
-   */
+  /**
+  * Envia um pedido para deixar de seguir o utilizador atual. Atualiza a propriedade `isFollowing`.
+  */
   unfollowUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       this.profileService.unfollowUser(this.loggedUserName, this.currentUsername)
@@ -414,9 +414,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Inicia uma conversa com o utilizador atual através do serviço de chat.
-   */
+  /**
+  * Inicia uma conversa com o utilizador atual através do serviço de chat.
+  */
   sendMessageToUser(): void {
     if (this.currentUsername && this.loggedUserName) {
       var profile = {
@@ -430,14 +430,14 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Gera uma lista aleatória de seguidores ou de utilizadores que estão a seguir,
-   * limitada pelo tamanho especificado.
-   * 
-   * @param array Array original de seguidores ou seguindo.
-   * @param size Tamanho máximo da lista resultante.
-   * @returns Array de `FollowerProfile` com tamanho máximo especificado e elementos aleatórios.
-   */
+  /**
+  * Gera uma lista aleatória de seguidores ou de utilizadores que estão a seguir,
+  * limitada pelo tamanho especificado.
+  * 
+  * @param array Array original de seguidores ou seguindo.
+  * @param size Tamanho máximo da lista resultante.
+  * @returns Array de `FollowerProfile` com tamanho máximo especificado e elementos aleatórios.
+  */
   getRandomFollowslist(array: FollowerProfile[], size: number): FollowerProfile[] {
     const arrayCopy = [...array];
     for (let i = arrayCopy.length - 1; i > 0; i--) {
@@ -460,9 +460,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Obtém e atualiza a lista de utilizadores que o utilizador atual está a seguir.
-   */
+  /**
+  * Obtém e atualiza a lista de utilizadores que o utilizador atual está a seguir.
+  */
   getFollowingList(): void {
     if (this.currentUsername) {
       this.profileService.getFollowing(this.currentUsername).subscribe(following => {
@@ -473,13 +473,13 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Gera uma lista aleatória de outros utilizadores, limitada pelo tamanho especificado.
-   * 
-   * @param array Array original de perfis de utilizadores.
-   * @param size Tamanho máximo da lista resultante.
-   * @returns Array de `Profile` com tamanho máximo especificado e elementos aleatórios.
-   */
+  /**
+  * Gera uma lista aleatória de outros utilizadores, limitada pelo tamanho especificado.
+  * 
+  * @param array Array original de perfis de utilizadores.
+  * @param size Tamanho máximo da lista resultante.
+  * @returns Array de `Profile` com tamanho máximo especificado e elementos aleatórios.
+  */
   getRandomOtherUsers(array: Profile[], size: number): Profile[] {
     const arrayCopy = [...array];
     for (let i = arrayCopy.length - 1; i > 0; i--) {
@@ -489,9 +489,9 @@ export class ProfileComponent implements OnInit {
     return arrayCopy.slice(0, size);
   }
 
-   /**
-   * Obtém e atualiza a lista de perfis de utilizadores sugeridos, limitada a 5.
-   */
+  /**
+  * Obtém e atualiza a lista de perfis de utilizadores sugeridos, limitada a 5.
+  */
   getUserProfiles() {
     this.profileService.getUserProfiles().pipe(takeUntil(this.unsubscribed$)).subscribe(
       (profiles: Profile[]) => {
@@ -505,12 +505,12 @@ export class ProfileComponent implements OnInit {
 
   /*----------------------------------------------------------------  FAVORITOS ---------------------------------------------------------------- */
 
-   /**
-   * Obtém e processa a lista de mídias favoritas do utilizador especificado, incluindo filmes e séries.
-   * Para cada mídia, busca detalhes adicionais como descrição e capa.
-   * 
-   * @param username Nome do utilizador cujas mídias favoritas serão obtidas.
-   */
+  /**
+  * Obtém e processa a lista de mídias favoritas do utilizador especificado, incluindo filmes e séries.
+  * Para cada mídia, busca detalhes adicionais como descrição e capa.
+  * 
+  * @param username Nome do utilizador cujas mídias favoritas serão obtidas.
+  */
   async getFavorites(username: string): Promise<void> {
     try {
       const favorites = await firstValueFrom(this.profileService.getFavoriteMedia(username));
@@ -542,12 +542,12 @@ export class ProfileComponent implements OnInit {
 
   /*----------------------------------------------------------------  MEDIA JÁ VISTA ---------------------------------------------------------------- */
 
-   /**
-   * Obtém e processa a lista de mídias assistidas pelo utilizador especificado, separando entre filmes e séries.
-   * Busca detalhes adicionais de cada mídia assistida.
-   * 
-   * @param username Nome do utilizador cujas mídias assistidas serão obtidas.
-   */
+  /**
+  * Obtém e processa a lista de mídias assistidas pelo utilizador especificado, separando entre filmes e séries.
+  * Busca detalhes adicionais de cada mídia assistida.
+  * 
+  * @param username Nome do utilizador cujas mídias assistidas serão obtidas.
+  */
   async getWatchedMedia(username: string): Promise<void> {
     try {
       const media = await firstValueFrom(this.profileService.getUserWatchedMedia(username));
@@ -560,9 +560,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Busca detalhes adicionais para as mídias assistidas previamente obtidas.
-   */
+  /**
+  * Busca detalhes adicionais para as mídias assistidas previamente obtidas.
+  */
   async fetchWatchedMediaDetails(): Promise<void> {
     for (const movie of this.watchedMovies) {
       try {
@@ -585,12 +585,12 @@ export class ProfileComponent implements OnInit {
 
   /*----------------------------------------------------------------  MEDIA A VER ---------------------------------------------------------------- */
 
-   /**
-   * Obtém e processa a lista de mídias marcadas para ver mais tarde pelo utilizador, incluindo filmes e séries.
-   * Busca detalhes adicionais para cada mídia marcada.
-   * 
-   * @param username Nome do utilizador cujas mídias para ver mais tarde serão obtidas.
-   */
+  /**
+  * Obtém e processa a lista de mídias marcadas para ver mais tarde pelo utilizador, incluindo filmes e séries.
+  * Busca detalhes adicionais para cada mídia marcada.
+  * 
+  * @param username Nome do utilizador cujas mídias para ver mais tarde serão obtidas.
+  */
   async getWatchLaterMedia(username: string): Promise<void> {
     try {
       const media = await firstValueFrom(this.profileService.getUserWatchLaterMedia(username));
@@ -603,9 +603,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-   /**
-   * Busca detalhes adicionais para as mídias marcadas para ver mais tarde previamente obtidas.
-   */
+  /**
+  * Busca detalhes adicionais para as mídias marcadas para ver mais tarde previamente obtidas.
+  */
   async fetchWatchLaterMediaDetails(): Promise<void> {
     for (const movie of this.watchLaterMovies) {
       try {
@@ -627,6 +627,39 @@ export class ProfileComponent implements OnInit {
   }
 
   /*----------------------------------------------------------------  Favoritos ----------------------------------------------------------------------- */
+
+  getLimitedFavorites(): any[] {
+    const combinedFavorites = [];
+
+    let movieCount = 0;
+    for (const movie of this.favoriteMovies) {
+      if (movieCount < 3) {
+        combinedFavorites.push({
+          type: 'movie',
+          mediaId: movie.mediaId,
+          details: movie.details
+        });
+        movieCount++;
+      }
+    }
+
+    // Adiciona séries à lista combinada
+    let seriesCount = 0;
+    for (const series of this.favoriteSeries) {
+      if (seriesCount < (6 - movieCount)) { 
+        combinedFavorites.push({
+          type: 'series',
+          mediaId: series.mediaId,
+          details: series.details
+        });
+        seriesCount++;
+      }
+    }
+
+    return combinedFavorites;
+  }
+
+
 
   toggleFavoritesList(): void {
     this.showFavorites = !this.showFavorites;

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WatchersWorld.Server.Controllers;
 using WatchersWorld.Server.Data;
+using WatchersWorld.Server.Models.Media;
 using static WatchersWorld.Server.Controllers.QuizController;
 
 namespace WatchersWorld_Teste
@@ -39,6 +40,15 @@ namespace WatchersWorld_Teste
             {
                 HttpContext = new DefaultHttpContext { User = user }
             };
+
+            var mediaInfoModel = new MediaInfoModel
+            {
+                IdMedia = 1,
+                Type = "movie"
+            };
+
+            dbContext.MediaInfoModel.Add(mediaInfoModel);
+            dbContext.SaveChanges();
         }
 
 
