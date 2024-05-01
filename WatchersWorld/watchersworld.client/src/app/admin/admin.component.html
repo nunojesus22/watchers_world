@@ -21,7 +21,7 @@
       <div class="user" *ngFor="let userProfile of filteredUsersProfiles">
         <div class="user-info">
           <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-          <p class="name">{{ userProfile.userName }}</p>
+          <p class="name" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</p>
         </div>
         <div class="actions">
           <!--<button class="delete" (click)="deleteAccount(userProfile.userName)">Apagar conta</button>-->

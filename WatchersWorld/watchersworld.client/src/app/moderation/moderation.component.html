@@ -18,7 +18,7 @@
       <div class="user" *ngFor="let userProfile of filteredUsersProfiles">
         <div class="user-info">
           <img class="avatar" [src]="userProfile.profilePhoto" [routerLink]="['/profile', userProfile.userName]">
-          <p class="name">{{ userProfile.userName }}</p>
+          <p class="name" [routerLink]="['/profile', userProfile.userName]">{{ userProfile.userName }}</p>
         </div>
         <div class="actions">
           <button *ngIf="!userProfile.isBanned" class="ban" (click)="userProfile.userName && showBanPopup(userProfile.userName)">Banir conta</button>
