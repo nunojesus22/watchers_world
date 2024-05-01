@@ -430,7 +430,7 @@ namespace WatchersWorld.Server.Controllers
                 UserId = userId,
                 IdTableMedia = tableMediaId,
                 Text = request.Text,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow.AddHours(1)
             };
 
             _context.Comments.Add(comment);
@@ -508,7 +508,7 @@ namespace WatchersWorld.Server.Controllers
                 UserId = userId,
                 IdTableMedia = tableMediaId,
                 Text = request.Text,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow.AddHours(1),
                 ParentCommentId = request.ParentCommentId
             };
 
