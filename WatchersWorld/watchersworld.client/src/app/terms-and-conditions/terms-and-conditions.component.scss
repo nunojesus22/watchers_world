@@ -1,36 +1,37 @@
-.about-us-container {
-  width: 100%;
-  display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-  min-height: 100vh; /* Define a altura mínima para ocupar toda a tela verticalmente */
-}
-
-.about-us-box {
-  width: 80%;
-  max-width: 800px; /* Defina um tamanho máximo para a caixa */
-  background-color: #ffffff; /* Adicione uma cor de fundo se necessário */
+.title-panel {
+  background-color: #ffffff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adicione uma sombra para destacar a caixa */
-  margin-bottom: 50px;
-  margin-top: 50px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.about-us-header {
-  color: black;
-  font-size: 48px;
-  font-family: Inter;
-  font-weight: 700;
-  word-wrap: break-word;
-  text-align: center; /* Centraliza o texto horizontalmente */
-  border-bottom: 2px solid black; /* Adiciona uma borda inferior preta */
+h1 {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
 }
-span{
+
+hr {
+  border: 0;
+  height: 6px;
+  background-color: black;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  opacity: 1;
+  width: 100%; /* Adiciona esta linha para garantir que o divisor ocupe toda a largura */
+}
+
+.about-us-text {
   width: 100%;
   color: black;
   font-size: 20px;
   font-weight: 400;
   word-wrap: break-word;
-
+  margin-top: 20px; /* Adiciona margem superior para separação */
 }
