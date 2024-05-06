@@ -125,7 +125,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          if (response.message === "A conta está por confirmar!") {
+          if (response === "A conta está por confirmar!") {
             this.router.navigateByUrl('/account/confirm-email');
           } else if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
